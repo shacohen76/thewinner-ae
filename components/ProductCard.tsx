@@ -37,15 +37,27 @@ interface ProductCardProps {
   reviewCount?: number;
 }
 
-// Split title at first comma, dash, or pipe — short title + rest for "Show more"
+// Split title at first comma or spaced-dash — short title + rest for "Show more"
+// Does NOT split at hyphens inside words (Wi-Fi, 128GB-256GB, etc.)
 function splitTitle(fullTitle: string): { shortTitle: string; restTitle: string | null } {
-  const breakMatch = fullTitle.match(/^([^,|\-–—]+)[,|\-–—]\s*([\s\S]*)/);
-  if (breakMatch && breakMatch[1].trim().length >= 10) {
+  // Try comma first (most common in Amazon titles)
+  const commaIdx = fullTitle.indexOf(',');
+  if (commaIdx >= 10) {
     return {
-      shortTitle: capitalizeFirst(breakMatch[1].trim()),
-      restTitle: breakMatch[2].trim() || null,
+      shortTitle: capitalizeFirst(fullTitle.substring(0, commaIdx).trim()),
+      restTitle: fullTitle.substring(commaIdx + 1).trim() || null,
     };
   }
+
+  // Try spaced dash/pipe: " - ", " – ", " — ", " | "
+  const spacedBreak = fullTitle.match(/^(.{10,}?)\s+[-–—|]\s+([\s\S]*)/);
+  if (spacedBreak) {
+    return {
+      shortTitle: capitalizeFirst(spacedBreak[1].trim()),
+      restTitle: spacedBreak[2].trim() || null,
+    };
+  }
+
   return { shortTitle: capitalizeFirst(fullTitle), restTitle: null };
 }
 
@@ -229,7 +241,7 @@ export default function ProductCard({
 
                 {expanded && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                    <h5 className="font-bold text-gray-700 mb-2">Full Description:</h5>
+                    <h5 className="font-bold text-gray-700 mb-2">The Details:</h5>
                     <p className="text-gray-600 leading-relaxed whitespace-pre-line">{expandableText}</p>
                   </div>
                 )}
@@ -244,45 +256,21 @@ export default function ProductCard({
 
             {/* Amazon Logo + CTA Button */}
             <div className="flex flex-col items-center gap-3 mt-4 lg:mt-0">
-              {/* Amazon Logo — with recognizable smile/arrow */}
-              <svg viewBox="0 0 160 50" className="h-8" xmlns="http://www.w3.org/2000/svg">
-                <text
-                  x="80"
-                  y="28"
-                  fontFamily="Arial, sans-serif"
-                  fontSize="26"
-                  fontWeight="bold"
-                  fill="#232F3E"
-                  textAnchor="middle"
-                  letterSpacing="-0.5"
-                >
-                  Amazon
-                </text>
-                {/* The smile/arrow underneath */}
-                <path
-                  d="M38 36 Q80 48 122 36"
-                  fill="none"
-                  stroke="#FF9900"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                {/* Arrow tip */}
-                <path
-                  d="M116 32 L122 36 L116 39"
-                  fill="none"
-                  stroke="#FF9900"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* Official Amazon Badge */}
+              <Image
+                src="/amazon-badge.png"
+                alt="Available at Amazon"
+                width={100}
+                height={40}
+                className="h-7 w-auto object-contain"
+              />
 
-              {/* CTA Button — rounded-xl like KSP style */}
+              {/* CTA Button */}
               <button
                 onClick={handleCtaClick}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 shadow-lg text-center text-sm"
               >
-                Show Me The Offer
+                Show Offer
               </button>
             </div>
           </div>
