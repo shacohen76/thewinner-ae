@@ -260,9 +260,9 @@ export default function ProductCard({
               <Image
                 src="/amazon-badge.png"
                 alt="Available at Amazon"
-                width={100}
-                height={40}
-                className="h-7 w-auto object-contain"
+                width={120}
+                height={48}
+                className="h-10 w-auto object-contain"
               />
 
               {/* CTA Button */}
