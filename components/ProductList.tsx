@@ -95,7 +95,6 @@ export default function ProductList({ products }: ProductListProps) {
             description={product.description}
             imageUrl={product.image_url}
             wwlPoints={product.wwl_points}
-            discount={product.discount_percentage ? `${product.discount_percentage}%` : null}
             isPrime={product.is_prime}
             reviewCount={Math.floor(Math.random() * 5000) + 500}
           />

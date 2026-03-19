@@ -128,8 +128,8 @@ export default function Footer() {
             <p className="text-xs text-gray-400 mb-2">
               Disclosure: We work with premium partners to ensure great results for our users.
               We may receive a commission separately and never on the behalf of our users.
+              As an Amazon Associates we earn from qualifying purchases.
               Loyalty and trust above all, always.
-              As an Amazon Associate I earn from qualifying purchases.
             </p>
             <p className="text-xs text-gray-600 mt-4">
               © {getCurrentYear()} {CONFIG.siteName} — {CONFIG.siteTagline}. All rights reserved.

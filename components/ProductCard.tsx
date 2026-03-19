@@ -3,8 +3,9 @@
 // ProductCard.tsx — Product comparison card
 // ============================================
 // Created: 2026-03-19
-// Last Modified: 2026-03-19
-// Adapted from KSP: English LTR, Amazon links, no price display
+// Last Modified: 2026-03-20
+// v1.1: Title split at comma, capitalize WWL, default discount text,
+//       Amazon logo SVG with smile, nicer button shape like KSP
 // ============================================
 
 declare global {
@@ -32,9 +33,26 @@ interface ProductCardProps {
   description?: string | null;
   imageUrl?: string | null;
   wwlPoints?: string[] | null;
-  discount?: string | null;
   isPrime?: boolean;
   reviewCount?: number;
+}
+
+// Split title at first comma, dash, or pipe — short title + rest for "Show more"
+function splitTitle(fullTitle: string): { shortTitle: string; restTitle: string | null } {
+  const breakMatch = fullTitle.match(/^([^,|\-–—]+)[,|\-–—]\s*(.*)/s);
+  if (breakMatch && breakMatch[1].trim().length >= 10) {
+    return {
+      shortTitle: capitalizeFirst(breakMatch[1].trim()),
+      restTitle: breakMatch[2].trim() || null,
+    };
+  }
+  return { shortTitle: capitalizeFirst(fullTitle), restTitle: null };
+}
+
+// Capitalize first letter of a string
+function capitalizeFirst(text: string): string {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export default function ProductCard({
@@ -44,7 +62,6 @@ export default function ProductCard({
   description,
   imageUrl,
   wwlPoints,
-  discount,
   isPrime = false,
   reviewCount = 0,
 }: ProductCardProps) {
@@ -53,10 +70,14 @@ export default function ProductCard({
   const isWinner = rank === 1;
   const score = getFixedScore(rank);
   const scoreInfo = getScoreLabel(score);
+  const { shortTitle, restTitle } = splitTitle(title);
   const brand = extractBrand(title);
   const stars = scoreToStars(score);
   const rankPadded = rank.toString().padStart(2, '0');
   const interestedCount = useMemo(() => Math.floor(Math.random() * 9) + 1, []);
+
+  // Combine restTitle and description for the expandable section
+  const expandableText = [restTitle, description].filter(Boolean).join('\n\n');
 
   const handleCtaClick = () => {
     const { gclid, fbclid } = getTrackingParams();
@@ -74,10 +95,11 @@ export default function ProductCard({
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  // Default WWL points if none provided
-  const displayWwl = wwlPoints && wwlPoints.length > 0
+  // Default WWL points if none provided — capitalize first letter of each
+  const displayWwl = (wwlPoints && wwlPoints.length > 0
     ? wwlPoints.slice(0, 4)
-    : ['Recommended product in this category'];
+    : ['Recommended product in this category']
+  ).map(capitalizeFirst);
 
   // ── Score Box (single source of truth, rendered in 2 responsive slots) ──
   const renderScoreBox = (additionalClasses: string = '') => (
@@ -130,13 +152,13 @@ export default function ProductCard({
             {/* Mobile: Image + Score side by side | Desktop: Image only */}
             <div className="flex flex-row items-start gap-4 lg:flex-col lg:items-center lg:gap-3">
 
-              {/* Product Image (LTR: first child = left side) */}
+              {/* Product Image */}
               <div className="relative flex-grow lg:flex-grow-0">
                 <div className="w-full lg:w-44 h-44 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 overflow-hidden">
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
-                      alt={title}
+                      alt={shortTitle}
                       width={176}
                       height={176}
                       className="w-full h-full object-contain"
@@ -156,21 +178,21 @@ export default function ProductCard({
                 </div>
               </div>
 
-              {/* Score Box — MOBILE ONLY (LTR: second child = right side) */}
+              {/* Score Box — MOBILE ONLY */}
               {renderScoreBox('lg:hidden w-28 flex-shrink-0')}
             </div>
           </div>
 
           {/* Center: Content */}
           <div className="flex-grow">
-            {/* Title & Brand */}
-            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">{title}</h3>
+            {/* Short Title & Brand */}
+            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">{shortTitle}</h3>
             {brand && <div className="text-gray-500 text-sm mb-3">{brand}</div>}
 
-            {/* Discount & Prime Badges */}
+            {/* Discount & Prime Badges — always default text */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
-                {discount ? `${discount} off` : 'Extra discount today'}
+                Extra Discount Today
               </span>
               {isPrime && (
                 <span className="border border-blue-500 text-blue-600 text-xs font-medium px-3 py-1 rounded">
@@ -194,8 +216,8 @@ export default function ProductCard({
               </div>
             </div>
 
-            {/* Expand Button */}
-            {description && (
+            {/* Expand Button — shows rest of title + description */}
+            {expandableText && (
               <>
                 <button
                   onClick={() => setExpanded(!expanded)}
@@ -205,11 +227,10 @@ export default function ProductCard({
                   <span>{expanded ? '∧' : '∨'}</span>
                 </button>
 
-                {/* Expandable Description */}
                 {expanded && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-xl">
                     <h5 className="font-bold text-gray-700 mb-2">Full Description:</h5>
-                    <p className="text-gray-600 leading-relaxed">{description}</p>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{expandableText}</p>
                   </div>
                 )}
               </>
@@ -221,27 +242,45 @@ export default function ProductCard({
             {/* Score Box — DESKTOP ONLY */}
             {renderScoreBox('hidden lg:block w-full')}
 
-            {/* Amazon Badge + CTA Button */}
+            {/* Amazon Logo + CTA Button */}
             <div className="flex flex-col items-center gap-3 mt-4 lg:mt-0">
-              {/* Amazon Badge */}
-              <svg viewBox="0 0 120 30" className="h-7">
+              {/* Amazon Logo — with recognizable smile/arrow */}
+              <svg viewBox="0 0 160 50" className="h-8" xmlns="http://www.w3.org/2000/svg">
                 <text
-                  x="60"
-                  y="22"
-                  fontFamily="Arial Black, sans-serif"
-                  fontSize="16"
+                  x="80"
+                  y="28"
+                  fontFamily="Arial, sans-serif"
+                  fontSize="26"
                   fontWeight="bold"
-                  fill="#FF9900"
+                  fill="#232F3E"
                   textAnchor="middle"
+                  letterSpacing="-0.5"
                 >
-                  amazon.ae
+                  Amazon
                 </text>
+                {/* The smile/arrow underneath */}
+                <path
+                  d="M38 36 Q80 48 122 36"
+                  fill="none"
+                  stroke="#FF9900"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+                {/* Arrow tip */}
+                <path
+                  d="M116 32 L122 36 L116 39"
+                  fill="none"
+                  stroke="#FF9900"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
 
-              {/* CTA Button */}
+              {/* CTA Button — rounded-xl like KSP style */}
               <button
                 onClick={handleCtaClick}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all hover:scale-105 shadow-lg text-center"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 shadow-lg text-center text-sm"
               >
                 Show Me The Offer
               </button>
