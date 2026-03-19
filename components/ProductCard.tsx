@@ -39,7 +39,7 @@ interface ProductCardProps {
 
 // Split title at first comma, dash, or pipe — short title + rest for "Show more"
 function splitTitle(fullTitle: string): { shortTitle: string; restTitle: string | null } {
-  const breakMatch = fullTitle.match(/^([^,|\-–—]+)[,|\-–—]\s*(.*)/s);
+  const breakMatch = fullTitle.match(/^([^,|\-–—]+)[,|\-–—]\s*([\s\S]*)/);
   if (breakMatch && breakMatch[1].trim().length >= 10) {
     return {
       shortTitle: capitalizeFirst(breakMatch[1].trim()),
@@ -192,7 +192,7 @@ export default function ProductCard({
             {/* Discount & Prime Badges — always default text */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
-                Extra Discount Today
+                DISCOUNTED TODAY
               </span>
               {isPrime && (
                 <span className="border border-blue-500 text-blue-600 text-xs font-medium px-3 py-1 rounded">
