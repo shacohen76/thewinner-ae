@@ -1,0 +1,10 @@
+# Robots.txt for thewinner.ae
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://thewinner.ae/sitemap.xml
+
+# Disallow admin/api routes
+Disallow: /api/
