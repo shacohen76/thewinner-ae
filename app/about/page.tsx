@@ -110,37 +110,37 @@ export default function AboutPage() {
             <p className="text-gray-600 mb-6">Meet the expert reviewers behind our recommendations:</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="bg-blue-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-blue-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">👨‍💻</div>
+                <img src="/team/alex.jpg" alt="Alex" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Alex</h3>
                 <p className="text-sm text-gray-500 mb-2">Technology Expert</p>
                 <p className="text-xs text-gray-400">Loves gadgets and gaming. Reviews computers, smartphones and gaming gear.</p>
               </div>
               <div className="bg-green-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-green-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">👨‍🍳</div>
+                <img src="/team/adham.jpg" alt="Adham" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Adham</h3>
                 <p className="text-sm text-gray-500 mb-2">Home Appliances Expert</p>
                 <p className="text-xs text-gray-400">Cooking and baking enthusiast. Reviews kitchen appliances, coffee machines and home electronics.</p>
               </div>
               <div className="bg-purple-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-purple-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">🎵</div>
+                <img src="/team/mariam.jpg" alt="Mariam" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Mariam</h3>
                 <p className="text-sm text-gray-500 mb-2">Audio Expert</p>
                 <p className="text-xs text-gray-400">Musician and sound enthusiast. Reviews speakers, headphones and audio systems.</p>
               </div>
               <div className="bg-pink-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-pink-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">✨</div>
+                <img src="/team/fatima.jpg" alt="Fatima" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Fatima</h3>
                 <p className="text-sm text-gray-500 mb-2">Beauty & Home Expert</p>
                 <p className="text-xs text-gray-400">Interior design and beauty lover. Reviews beauty products, skincare and home accessories.</p>
               </div>
               <div className="bg-amber-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-amber-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">🏋️</div>
+                <img src="/team/abdulla.jpg" alt="Abdulla" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Abdulla</h3>
                 <p className="text-sm text-gray-500 mb-2">Sports & Fitness Expert</p>
                 <p className="text-xs text-gray-400">Athlete and fitness trainer. Reviews smartwatches, fitness equipment and sports electronics.</p>
               </div>
               <div className="bg-rose-50 rounded-xl p-4 text-center">
-                <div className="w-16 h-16 bg-rose-200 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl">👩‍👧‍👦</div>
+                <img src="/team/sara.jpg" alt="Sara" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
                 <h3 className="font-bold text-gray-800">Sara</h3>
                 <p className="text-sm text-gray-500 mb-2">Family & Kids Expert</p>
                 <p className="text-xs text-gray-400">Mother of three. Reviews baby products, toys and family essentials.</p>
