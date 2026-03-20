@@ -192,11 +192,25 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 // Get keywords by category (subcat slug)
+// Two-step query: first get category ID from slug, then get keywords by category_id
 export async function getKeywordsByCategory(categorySlug: string): Promise<Keyword[]> {
+  // Step 1: Get category ID from slug
+  const { data: category, error: catError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', categorySlug)
+    .single();
+
+  if (catError || !category) {
+    console.error('Error fetching category by slug:', catError);
+    return [];
+  }
+
+  // Step 2: Get keywords by category_id
   const { data, error } = await supabase
     .from('keywords')
-    .select('*, categories!inner(slug)')
-    .eq('categories.slug', categorySlug)
+    .select('*')
+    .eq('category_id', category.id)
     .order('keyword_text');
 
   if (error) {
