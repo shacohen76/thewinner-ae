@@ -5,7 +5,7 @@
 // ============================================
 
 import { MetadataRoute } from 'next';
-import { getAllKeywords } from '@/lib/supabase';
+import { getAllKeywords, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { CONFIG } from '@/lib/utils';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -45,6 +45,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  // Main category pages
+  const mainCategoryPages: MetadataRoute.Sitemap = Object.keys(MAIN_CATEGORIES).map((slug) => ({
+    url: `${baseUrl}/category/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  // Subcategory pages
+  const subcategoryPages: MetadataRoute.Sitemap = Object.keys(SUBCATEGORY_NAMES).map((slug) => ({
+    url: `${baseUrl}/category/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
   // Dynamic keyword pages from database
   let keywordPages: MetadataRoute.Sitemap = [];
 
@@ -60,5 +76,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching keywords for sitemap:', error);
   }
 
-  return [...staticPages, ...keywordPages];
+  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages];
 }
