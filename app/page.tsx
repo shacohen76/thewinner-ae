@@ -23,12 +23,12 @@ const categories = [
 
 // Popular comparisons
 const popularComparisons = [
-  { title: 'Top 10 Best Portable Speakers', slug: 'portable-speakers', icon: '🔊', gradient: 'from-purple-500 to-indigo-600', description: 'Comprehensive comparison of Bluetooth portable speakers for every budget' },
-  { title: 'Top 10 Best Coffee Machines', slug: 'coffee-machines', icon: '☕', gradient: 'from-amber-500 to-orange-600', description: 'From capsule to professional espresso machines for your home' },
-  { title: 'Top 10 Best Washing Machines', slug: 'washing-machines', icon: '🧺', gradient: 'from-blue-500 to-cyan-600', description: 'Recommended washing machines for every budget and need' },
-  { title: 'Top 10 Best Televisions', slug: 'televisions', icon: '📺', gradient: 'from-rose-500 to-red-600', description: '4K, OLED, QLED — all the leading technologies compared' },
-  { title: 'Top 10 Best Earbuds', slug: 'earbuds', icon: '🎧', gradient: 'from-green-500 to-teal-600', description: 'Wireless earbuds for music, calls, and active lifestyles' },
-  { title: 'Top 10 Best Hair Straighteners', slug: 'hair-straightener', icon: '💇', gradient: 'from-gray-600 to-gray-800', description: 'Professional-grade hair straighteners for salon results at home' },
+  { title: '10 Best Portable Speakers', slug: 'portable-speakers', icon: '🔊', gradient: 'from-purple-500 to-indigo-600', description: 'Comprehensive comparison of Bluetooth portable speakers for every budget' },
+  { title: '10 Best Coffee Machines', slug: 'coffee-machines', icon: '☕', gradient: 'from-amber-500 to-orange-600', description: 'From capsule to professional espresso machines for your home' },
+  { title: '10 Best Washing Machines', slug: 'washing-machines', icon: '🧺', gradient: 'from-blue-500 to-cyan-600', description: 'Recommended washing machines for every budget and need' },
+  { title: '10 Best Televisions', slug: 'televisions', icon: '📺', gradient: 'from-rose-500 to-red-600', description: '4K, OLED, QLED — all the leading technologies compared' },
+  { title: '10 Best Earbuds', slug: 'earbuds', icon: '🎧', gradient: 'from-green-500 to-teal-600', description: 'Wireless earbuds for music, calls, and active lifestyles' },
+  { title: '10 Best Hair Straighteners', slug: 'hair-straightener', icon: '💇', gradient: 'from-gray-600 to-gray-800', description: 'Professional-grade hair straighteners for salon results at home' },
 ];
 
 // Popular search keywords

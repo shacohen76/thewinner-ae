@@ -163,13 +163,13 @@ export function extractBrand(title: string): string {
 // SEO UTILITIES
 // ============================================
 
-// Generate English headline: "Top 10 Best {Keyword} Of {Year}"
+// Generate English headline: "10 Best {Keyword} Of {Year}"
 export function generateEnglishHeadline(keyword: string, year: number): string {
-  return `Top 10 Best ${toTitleCase(keyword)} Of ${year}`;
+  return `10 Best ${toTitleCase(keyword)} Of ${year}`;
 }
 
 export function generatePageTitle(keyword: string): string {
-  return `Top 10 Best ${toTitleCase(keyword)} Of ${getCurrentYear()} | ${CONFIG.siteName}`;
+  return `10 Best ${toTitleCase(keyword)} Of ${getCurrentYear()} | ${CONFIG.siteName}`;
 }
 
 export function generatePageDescription(keyword: string): string {
