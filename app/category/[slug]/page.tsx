@@ -15,6 +15,8 @@ import { generateCategoryTitle, toTitleCase, CONFIG } from '@/lib/utils';
 // Adapted from KSP: English LTR
 // ============================================
 
+export const revalidate = 86400; // Cache category pages for 24 hours
+
 interface PageProps {
   params: { slug: string };
 }

@@ -26,6 +26,8 @@ import {
 // Adapted from KSP: English LTR, ASIN-based, Amazon links.
 // ============================================
 
+export const revalidate = 86400; // Cache keyword pages for 24 hours
+
 interface PageProps {
   params: { slug: string };
 }
