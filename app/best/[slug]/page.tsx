@@ -114,7 +114,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       <Breadcrumbs items={[{ label: toTitleCase(keyword.keyword_text) }]} />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white py-12">
+      <section id="top" className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white py-12">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             {mainHeadline}
@@ -190,6 +190,16 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                   <p className="text-gray-600 leading-relaxed pl-9">{item.a}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Back to top — UAE SEO anchor */}
+            <div className="text-center mt-8">
+              <a
+                href="#top"
+                className="text-blue-600 hover:text-blue-800 hover:underline text-lg font-semibold"
+              >
+                ↑ Back to Top 10 {toTitleCase(keyword.keyword_text)} in United Arab Emirates
+              </a>
             </div>
           </div>
         </section>
