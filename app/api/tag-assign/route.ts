@@ -2,17 +2,41 @@
 // Tag Assignment API — /api/tag-assign
 // ============================================
 // Created: 2026-03-27
-// Assigns a tracking tag from the rotation pool to a visitor session.
-// Called once per visit from TrackingProvider.
+// Last Modified: 2026-03-27
+// v1.1: Added bot filtering (Vercel bots, crawlers)
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
 import { assignTag } from '@/lib/tracking';
 
+// Bot user agents that should NOT get tracking sessions
+const BOT_PATTERNS = [
+  'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'bingbot', 'Baiduspider',
+  'YandexBot', 'facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'Slurp',
+  'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot', 'MJ12bot',
+  'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/',
+];
+
+function isBot(userAgent: string | null): boolean {
+  if (!userAgent) return true; // no UA = likely bot
+  return BOT_PATTERNS.some(pattern => userAgent.includes(pattern));
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const userAgent = request.headers.get('user-agent') || null;
 
+    // Skip bots — don't waste tags or pollute click_log
+    if (isBot(userAgent)) {
+      return NextResponse.json({
+        session_id: null,
+        assigned_tag: process.env.DEFAULT_TAG || 'thewinner_a-21',
+        expires_at: null,
+        is_bot: true,
+      });
+    }
+
+    const body = await request.json();
     const { gclid, fbclid, traffic_source, landing_page } = body;
 
     if (!traffic_source) {
@@ -24,7 +48,6 @@ export async function POST(request: NextRequest) {
 
     // Get country from Vercel geo headers
     const ipCountry = request.headers.get('x-vercel-ip-country') || null;
-    const userAgent = request.headers.get('user-agent') || null;
 
     const result = await assignTag({
       gclid: gclid || null,
