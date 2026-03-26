@@ -3,9 +3,8 @@
 // ProductCard.tsx — Product comparison card
 // ============================================
 // Created: 2026-03-19
-// Last Modified: 2026-03-20
-// v1.1: Title split at comma, capitalize WWL, default discount text,
-//       Amazon logo SVG with smile, nicer button shape like KSP
+// Last Modified: 2026-03-27
+// v1.2: Added logAsinClickBeacon for tag rotation tracking
 // ============================================
 
 declare global {
@@ -25,6 +24,7 @@ import {
   formatNumber,
   getTrackingParams
 } from '@/lib/utils';
+import { logAsinClickBeacon } from '@/components/TrackingProvider';
 
 interface ProductCardProps {
   rank: number;
@@ -104,6 +104,10 @@ export default function ProductCard({
         product_brand: brand,
       });
     }
+
+    // Log ASIN click for reconciliation (fire-and-forget)
+    logAsinClickBeacon(asin);
+
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
