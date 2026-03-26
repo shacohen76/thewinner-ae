@@ -11,10 +11,11 @@ import { assignTag } from '@/lib/tracking';
 
 // Bot user agents that should NOT get tracking sessions
 const BOT_PATTERNS = [
-  'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'bingbot', 'Baiduspider',
-  'YandexBot', 'facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'Slurp',
-  'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot', 'MJ12bot',
-  'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/',
+  'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'AdsBot', 'Mediapartners-Google',
+  'bingbot', 'Baiduspider', 'YandexBot', 'facebookexternalhit', 'Twitterbot',
+  'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
+  'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
+  'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
 ];
 
 function isBot(userAgent: string | null): boolean {
