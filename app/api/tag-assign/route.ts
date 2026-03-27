@@ -12,11 +12,16 @@ import { assignTag } from '@/lib/tracking';
 // Bot user agents that should NOT get tracking sessions
 const BOT_PATTERNS = [
   'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'AdsBot', 'Mediapartners-Google',
+  'Google-Adwords-DisplayAds', 'pageburst',
   'bingbot', 'Baiduspider', 'YandexBot', 'facebookexternalhit', 'Twitterbot',
   'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
   'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
   'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
 ];
+
+// Pages that should not create tracking sessions
+const EXCLUDED_PAGES = ['/admin'];
+
 
 function isBot(userAgent: string | null): boolean {
   if (!userAgent) return true; // no UA = likely bot
@@ -39,6 +44,16 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { gclid, fbclid, traffic_source, landing_page } = body;
+
+    // Skip admin pages — don't track our own dashboard visits
+    if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
+      return NextResponse.json({
+        session_id: null,
+        assigned_tag: process.env.DEFAULT_TAG || 'thewinner_a-21',
+        expires_at: null,
+        is_admin: true,
+      });
+    }
 
     if (!traffic_source) {
       return NextResponse.json(
