@@ -399,9 +399,14 @@ export default function AdminTracking() {
                       <td className="px-3 py-2 text-xs text-gray-400 max-w-[200px] truncate" title={s.landing_page}>
                         {(s.landing_page || '').replace('/best/', '')}
                       </td>
-                      <td className="px-3 py-2 font-mono text-xs">
+                      <td className="px-3 py-2 text-xs">
                         {s.clicked_asins?.length > 0
-                          ? <span className="text-emerald-400" title={s.clicked_asins.join(', ')}>{s.clicked_asins.length} click{s.clicked_asins.length > 1 ? 's' : ''}</span>
+                          ? <div className="flex flex-col gap-0.5">
+                              {s.clicked_asins.map((asin: string) => (
+                                <a key={asin} href={`https://www.amazon.ae/dp/${asin}`} target="_blank" rel="noopener noreferrer"
+                                  className="text-emerald-400 hover:text-emerald-300 font-mono underline">{asin}</a>
+                              ))}
+                            </div>
                           : <span className="text-gray-700">—</span>}
                       </td>
                       <td className="px-3 py-2 text-xs text-gray-500">{s.ip_country || '—'}</td>

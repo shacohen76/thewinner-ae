@@ -4,7 +4,7 @@
 // ============================================
 // Created: 2026-03-19
 // Last Modified: 2026-03-27
-// v1.2: Added logAsinClickBeacon for tag rotation tracking
+// v1.3: CTA changed from button+window.open to <a> tag for reliable tracking
 // ============================================
 
 declare global {
@@ -92,9 +92,6 @@ export default function ProductCard({
   const expandableText = [restTitle, description].filter(Boolean).join('\n\n');
 
   const handleCtaClick = () => {
-    const { gclid, fbclid } = getTrackingParams();
-    const url = buildAffiliateUrl(asin, title, gclid, fbclid);
-
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({
         event: 'affiliate_click',
@@ -107,9 +104,10 @@ export default function ProductCard({
 
     // Log ASIN click for reconciliation (fire-and-forget)
     logAsinClickBeacon(asin);
-
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
+
+  // Build Amazon URL — TrackingProvider rewrites the tag dynamically
+  const amazonUrl = buildAffiliateUrl(asin, title);
 
   // Default WWL points if none provided — capitalize first letter of each
   const displayWwl = (wwlPoints && wwlPoints.length > 0
@@ -269,13 +267,16 @@ export default function ProductCard({
                 className="h-10 w-auto object-contain"
               />
 
-              {/* CTA Button */}
-              <button
+              {/* CTA Button — native <a> tag for reliable tracking + no popup blocker */}
+              <a
+                href={amazonUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={handleCtaClick}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 shadow-lg text-center text-sm"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 shadow-lg text-center text-sm block"
               >
                 Show Offer
-              </button>
+              </a>
             </div>
           </div>
         </div>
