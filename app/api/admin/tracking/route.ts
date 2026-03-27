@@ -2,8 +2,8 @@
 // Admin Tracking Data API — /api/admin/tracking
 // ============================================
 // Created: 2026-03-28
-// Returns tracking data for the admin dashboard.
-// Protected by ADMIN_PASSWORD env var.
+// Last Modified: 2026-03-28
+// v1.1: Fixed timezone — uses Dubai time (UTC+4) for calendar day boundaries
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,6 +11,30 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+// Dubai timezone offset: UTC+4
+const DUBAI_OFFSET_HOURS = 4;
+
+function getDubaiStartOfDay(daysBack: number): string {
+  // Get current time in Dubai
+  const now = new Date();
+  const dubaiNow = new Date(now.getTime() + DUBAI_OFFSET_HOURS * 60 * 60 * 1000);
+
+  // Go back N days and set to start of day (00:00 Dubai time)
+  dubaiNow.setUTCDate(dubaiNow.getUTCDate() - daysBack);
+  dubaiNow.setUTCHours(0, 0, 0, 0);
+
+  // Convert back to UTC for Supabase query
+  const utcTime = new Date(dubaiNow.getTime() - DUBAI_OFFSET_HOURS * 60 * 60 * 1000);
+  return utcTime.toISOString();
+}
+
+function utcToDubaiDate(utcTimestamp: string): string {
+  // Convert UTC timestamp to Dubai calendar date (YYYY-MM-DD)
+  const utc = new Date(utcTimestamp);
+  const dubai = new Date(utc.getTime() + DUBAI_OFFSET_HOURS * 60 * 60 * 1000);
+  return dubai.toISOString().substring(0, 10);
+}
 
 export async function GET(request: NextRequest) {
   // Simple password protection
@@ -24,8 +48,9 @@ export async function GET(request: NextRequest) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
   // Date range from query params (default: last 7 days)
+  // "1" = today only, "2" = yesterday + today, etc.
   const daysBack = parseInt(request.nextUrl.searchParams.get('days') || '7');
-  const since = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000).toISOString();
+  const since = getDubaiStartOfDay(daysBack - 1); // -1 because "1 day" = today = 0 days back
 
   try {
     // Fetch all data in parallel
@@ -44,10 +69,10 @@ export async function GET(request: NextRequest) {
     const tagPool = tagPoolRes.data || [];
     const sessions: any[] = sessionsRes.data || [];
 
-    // Compute daily stats manually if RPC doesn't exist
+    // Compute daily stats grouped by DUBAI calendar date
     const dailyStats: Record<string, any> = {};
-    sessions.forEach(s => {
-      const day = s.created_at.substring(0, 10); // YYYY-MM-DD
+    sessions.forEach((s: any) => {
+      const day = utcToDubaiDate(s.created_at);
       if (!dailyStats[day]) {
         dailyStats[day] = { date: day, sessions: 0, with_gclid: 0, with_clicks: 0, total_asins: 0, sources: {} };
       }
@@ -68,6 +93,7 @@ export async function GET(request: NextRequest) {
       meta: {
         total_sessions: sessions.length,
         date_range: { from: since, to: new Date().toISOString(), days: daysBack },
+        timezone: 'Asia/Dubai (UTC+4)',
         generated_at: new Date().toISOString(),
       }
     });
