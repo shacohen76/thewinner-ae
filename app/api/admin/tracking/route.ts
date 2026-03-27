@@ -9,6 +9,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+// Force dynamic — never cache this API route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
@@ -95,6 +99,11 @@ export async function GET(request: NextRequest) {
         date_range: { from: since, to: new Date().toISOString(), days: daysBack },
         timezone: 'Asia/Dubai (UTC+4)',
         generated_at: new Date().toISOString(),
+      }
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
       }
     });
   } catch (error) {
