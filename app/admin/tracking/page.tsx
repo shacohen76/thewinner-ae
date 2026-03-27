@@ -195,6 +195,7 @@ export default function AdminTracking() {
             <select value={days} onChange={e => setDays(Number(e.target.value))}
               className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5 outline-none">
               <option value={1}>Today</option>
+              <option value={2}>Yesterday + Today</option>
               <option value={3}>3 days</option>
               <option value={7}>7 days</option>
               <option value={14}>14 days</option>

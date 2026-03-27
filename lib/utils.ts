@@ -52,12 +52,23 @@ export function buildAffiliateUrl(
   gclid?: string | null,
   _fbclid?: string | null
 ): string {
-  // Amazon product URL with affiliate tag
-  const baseUrl = `https://www.amazon.ae/dp/${asin}?tag=${CONFIG.amazonTag}`;
+  // Get rotation tag from session (set by TrackingProvider)
+  let tag = CONFIG.amazonTag; // fallback
+  if (typeof window !== 'undefined') {
+    try {
+      const session = sessionStorage.getItem('tw_tracking_session');
+      if (session) {
+        const parsed = JSON.parse(session);
+        if (parsed.assigned_tag) {
+          tag = parsed.assigned_tag;
+        }
+      }
+    } catch {
+      // sessionStorage unavailable — use default
+    }
+  }
 
-  // Note: Amazon does NOT support custom params like GCLID passthrough
-  // GCLID tracking is handled via tag rotation (Phase 1)
-  return baseUrl;
+  return `https://www.amazon.ae/dp/${asin}?tag=${tag}`;
 }
 
 // ============================================
