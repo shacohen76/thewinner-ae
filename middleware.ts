@@ -13,6 +13,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Countries to block completely
+// NOTE: GCC countries are ALLOWED (they buy on amazon.ae):
+//   AE (UAE), SA (Saudi), BH (Bahrain), KW (Kuwait), OM (Oman), QA (Qatar)
+// Also ALLOWED: US, UK, EU (potential future affiliate programs)
 const BLOCKED_COUNTRIES = new Set([
   'IN',  // India
   'BD',  // Bangladesh
