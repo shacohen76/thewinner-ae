@@ -47,6 +47,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: main.description,
       alternates: {
         canonical: `/category/${slug}`,
+        languages: {
+          'en-AE': `https://thewinner.ae/category/${slug}`,
+          'x-default': `https://thewinner.ae/category/${slug}`,
+        },
       },
     };
   }
@@ -59,6 +63,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: `Product comparisons in ${subcat.name} — find the best for you`,
     alternates: {
       canonical: `/category/${slug}`,
+      languages: {
+        'en-AE': `https://thewinner.ae/category/${slug}`,
+        'x-default': `https://thewinner.ae/category/${slug}`,
+      },
     },
   };
 }

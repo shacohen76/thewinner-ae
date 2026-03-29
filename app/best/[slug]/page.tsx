@@ -45,6 +45,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: generatePageDescription(keyword.keyword_text),
     alternates: {
       canonical: `/best/${params.slug}`,
+      languages: {
+        'en-AE': `https://thewinner.ae/best/${params.slug}`,
+        'x-default': `https://thewinner.ae/best/${params.slug}`,
+      },
     },
     openGraph: {
       title: generatePageTitle(keyword.keyword_text),

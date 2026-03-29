@@ -20,6 +20,10 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: '/',
+    languages: {
+      'en-AE': 'https://thewinner.ae',
+      'x-default': 'https://thewinner.ae',
+    },
   },
 
   icons: {
@@ -50,8 +54,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en-AE" dir="ltr">
       <head>
+        {/* Structured Data — WebSite + Organization with geo signals */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://thewinner.ae/#website',
+                  'url': 'https://thewinner.ae',
+                  'name': CONFIG.siteName,
+                  'description': 'The leading product comparison site for the UAE',
+                  'inLanguage': 'en-AE',
+                  'potentialAction': {
+                    '@type': 'SearchAction',
+                    'target': 'https://thewinner.ae/best/{search_term_string}',
+                    'query-input': 'required name=search_term_string',
+                  },
+                },
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://thewinner.ae/#organization',
+                  'name': CONFIG.siteName,
+                  'url': 'https://thewinner.ae',
+                  'areaServed': [
+                    { '@type': 'Country', 'name': 'United Arab Emirates' },
+                    { '@type': 'Country', 'name': 'Saudi Arabia' },
+                    { '@type': 'Country', 'name': 'Bahrain' },
+                    { '@type': 'Country', 'name': 'Kuwait' },
+                    { '@type': 'Country', 'name': 'Oman' },
+                    { '@type': 'Country', 'name': 'Qatar' },
+                  ],
+                  'contactPoint': {
+                    '@type': 'ContactPoint',
+                    'email': 'thewinners@atomicmail.io',
+                    'contactType': 'customer service',
+                    'availableLanguage': 'English',
+                  },
+                },
+              ],
+            }),
+          }}
+        />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
