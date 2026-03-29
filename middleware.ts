@@ -24,6 +24,12 @@ const BLOCKED_COUNTRIES = new Set([
   'IR',  // Iran
   'RU',  // Russia
   'CN',  // China
+  'LK',  // Sri Lanka
+  'VN',  // Vietnam
+  'BR',  // Brazil
+  'MU',  // Mauritius
+  'MX',  // Mexico
+  'ID',  // Indonesia
 ]);
 
 // Known search engine and legitimate bot user-agent patterns
