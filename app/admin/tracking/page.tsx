@@ -85,6 +85,7 @@ export default function AdminTracking() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [days, setDays] = useState(7);
+  const [geoFilter, setGeoFilter] = useState<'ae' | 'all'>('ae');
   const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel'>('overview');
 
   // Check localStorage for saved password
@@ -101,7 +102,7 @@ export default function AdminTracking() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`/api/admin/tracking?key=${encodeURIComponent(key)}&days=${days}`);
+      const res = await fetch(`/api/admin/tracking?key=${encodeURIComponent(key)}&days=${days}&geo=${geoFilter}`);
       if (res.status === 401) {
         setError('Wrong password');
         setAuthenticated(false);
@@ -117,11 +118,11 @@ export default function AdminTracking() {
       setError('Failed to fetch data');
     }
     setLoading(false);
-  }, [password, days]);
+  }, [password, days, geoFilter]);
 
   useEffect(() => {
     if (authenticated && password) fetchData();
-  }, [days, authenticated]);
+  }, [days, geoFilter, authenticated]);
 
   // Login screen
   if (!authenticated) {
@@ -201,6 +202,14 @@ export default function AdminTracking() {
               <option value={14}>14 days</option>
               <option value={30}>30 days</option>
             </select>
+            <button onClick={() => setGeoFilter(geoFilter === 'ae' ? 'all' : 'ae')}
+              className={`px-3 py-1.5 text-sm font-medium rounded-lg border ${
+                geoFilter === 'ae'
+                  ? 'bg-emerald-900/50 border-emerald-700 text-emerald-400'
+                  : 'bg-gray-800 border-gray-700 text-gray-400'
+              }`}>
+              {geoFilter === 'ae' ? '🇦🇪 UAE Only' : '🌍 All GEOs'}
+            </button>
             <button onClick={() => fetchData()} disabled={loading}
               className="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50">
               {loading ? '...' : 'Refresh'}

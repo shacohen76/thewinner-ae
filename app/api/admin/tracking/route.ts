@@ -55,19 +55,25 @@ export async function GET(request: NextRequest) {
   // "1" = today only, "2" = yesterday + today, etc.
   const daysBack = parseInt(request.nextUrl.searchParams.get('days') || '7');
   const since = getDubaiStartOfDay(daysBack - 1); // -1 because "1 day" = today = 0 days back
+  const geoFilter = request.nextUrl.searchParams.get('geo') || 'ae'; // 'ae' = UAE only (default), 'all' = everything
 
   try {
     // Fetch all data in parallel
+    let sessionsQuery = supabase.from('click_log')
+      .select('session_id,gclid,assigned_tag,traffic_source,landing_page,clicked_asins,click_timestamps,user_agent,ip_country,created_at,last_activity,status')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    // Default: only show AE traffic for clean funnel data
+    if (geoFilter === 'ae') {
+      sessionsQuery = sessionsQuery.eq('ip_country', 'AE');
+    }
+
     const [tagPoolRes, sessionsRes] = await Promise.all([
       // Tag pool status
       supabase.from('tag_pool').select('tag_id,tag_type,status,assigned_at,expires_at'),
-
-      // Sessions within date range
-      supabase.from('click_log')
-        .select('session_id,gclid,assigned_tag,traffic_source,landing_page,clicked_asins,click_timestamps,user_agent,ip_country,created_at,last_activity,status')
-        .gte('created_at', since)
-        .order('created_at', { ascending: false })
-        .limit(500),
+      sessionsQuery,
     ]);
 
     const tagPool = tagPoolRes.data || [];
@@ -97,6 +103,7 @@ export async function GET(request: NextRequest) {
       meta: {
         total_sessions: sessions.length,
         date_range: { from: since, to: new Date().toISOString(), days: daysBack },
+        geo_filter: geoFilter,
         timezone: 'Asia/Dubai (UTC+4)',
         generated_at: new Date().toISOString(),
       }
