@@ -2,15 +2,15 @@
 // Geo-Blocking Middleware — thewinner.ae
 // ============================================
 // Created: 2026-03-28
-// Blocks traffic from specified countries at the edge level.
-// Uses Vercel's x-vercel-ip-country header (automatic, no external service).
-// Blocked visitors get a simple text response — no page load, no resources consumed.
-// 
-// IMPORTANT: Does NOT block search engine crawlers — they come from
-// various countries but should always be allowed through for SEO.
+// STATUS: TEMPORARILY DISABLED (2026-03-30)
+// Reason: Amazon reviewed site from a blocked GEO and got blocked.
+//         Appeal submitted. Re-enable after positive reply.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
+
+// TEMPORARILY DISABLED — all traffic allowed through
+const GEO_BLOCKING_ENABLED = false;
 
 // Countries to block completely
 // NOTE: GCC countries are ALLOWED (they buy on amazon.ae):
@@ -49,6 +49,11 @@ function isSearchBot(userAgent: string | null): boolean {
 }
 
 export function middleware(request: NextRequest) {
+  // BYPASS: geo-blocking disabled pending Amazon appeal
+  if (!GEO_BLOCKING_ENABLED) {
+    return NextResponse.next();
+  }
+
   const country = request.headers.get('x-vercel-ip-country') || '';
   const userAgent = request.headers.get('user-agent') || '';
 
