@@ -14,8 +14,8 @@ export const CONFIG = {
   siteName: 'The Winners',
   siteTagline: 'Product Reviews',
   siteUrl: 'https://thewinner.ae',
-  amazonTag: 'thewinner_a-21',
-  amazonStoreId: 'thewinner09-21',
+  amazonTag: 'twnraedirect01-21',
+  amazonStoreId: 'thewinner02',
   gtmId: 'GTM-MLB7SDHC',
 };
 

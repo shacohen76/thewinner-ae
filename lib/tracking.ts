@@ -32,9 +32,9 @@ function getSupabaseAdmin(): SupabaseClient {
 
 export const TRACKING_CONFIG = {
   tagHoldHours: parseInt(process.env.TAG_HOLD_HOURS || '4'),
-  defaultTag: process.env.DEFAULT_TAG || 'thewinner_a-21',
+  defaultTag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
   gadsTagType: 'gads',
-  staticTagTypes: ['seo', 'fb', 'bing', 'chatgpt', 'direct'],
+  staticTagTypes: ['seo', 'fb', 'bing', 'chatgpt', 'direct', 'other_geo', 'other'],
 };
 
 // Static tag mapping — traffic source → first matching tag

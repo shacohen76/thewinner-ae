@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     if (isBot(userAgent)) {
       return NextResponse.json({
         session_id: null,
-        assigned_tag: process.env.DEFAULT_TAG || 'thewinner_a-21',
+        assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
         expires_at: null,
         is_bot: true,
       });
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
       return NextResponse.json({
         session_id: null,
-        assigned_tag: process.env.DEFAULT_TAG || 'thewinner_a-21',
+        assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
         expires_at: null,
         is_admin: true,
       });
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Tag assignment error:', error);
     return NextResponse.json(
-      { error: 'Failed to assign tag', fallback_tag: process.env.DEFAULT_TAG || 'thewinner_a-21' },
+      { error: 'Failed to assign tag', fallback_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21' },
       { status: 500 }
     );
   }
