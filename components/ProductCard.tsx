@@ -121,8 +121,8 @@ export default function ProductCard({
       <div className={`text-4xl font-bold ${scoreInfo.color}`}>{score}</div>
       <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreInfo.label}</div>
 
-      {/* Stars */}
-      <div className="flex justify-center mt-2">
+      {/* Stars — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
+      <div className="hidden flex justify-center mt-2">
         {[1, 2, 3, 4, 5].map((star) => (
           <svg
             key={star}
@@ -135,8 +135,9 @@ export default function ProductCard({
         ))}
       </div>
 
+      {/* Review count — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
       {reviewCount > 0 && (
-        <div className="text-xs text-gray-400 mt-1">
+        <div className="hidden text-xs text-gray-400 mt-1">
           ({formatNumber(reviewCount)} reviews)
         </div>
       )}

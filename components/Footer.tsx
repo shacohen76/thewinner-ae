@@ -134,6 +134,9 @@ export default function Footer() {
             <p className="text-xs text-gray-600 mt-4">
               © {getCurrentYear()} {CONFIG.siteName} — {CONFIG.siteTagline}. All rights reserved.
             </p>
+            <p className="text-xs text-gray-600 mt-2">
+              Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
+            </p>
           </div>
         </div>
       </div>
