@@ -24,7 +24,7 @@ export default function ProductGallery({ products }: ProductGalleryProps) {
 
   return (
     <section className="bg-gray-50 border-t py-12">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 overflow-hidden">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
           Quick Pick
         </h2>
