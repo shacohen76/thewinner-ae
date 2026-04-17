@@ -13,7 +13,7 @@
 export const CONFIG = {
   siteName: 'The Winners',
   siteTagline: 'Product Reviews',
-  siteUrl: 'https://thewinner.ae',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae',
   amazonTag: 'twnraedirect01-21',
   amazonStoreId: 'thewinner02',
   gtmId: 'GTM-MLB7SDHC',

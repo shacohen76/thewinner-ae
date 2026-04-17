@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { CONFIG } from '@/lib/utils';
 
 // ============================================
-// Privacy Policy — thewinner.ae
+// Privacy Policy
 // Created: 2026-03-20
 // UAE jurisdiction, Amazon Associates references
 // ============================================
@@ -28,7 +29,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">1. Introduction</h2>
               <p className="leading-relaxed">
-                Welcome to the Privacy Policy of &quot;The Winners&quot; (thewinner.ae). We respect your privacy and are committed to protecting your personal information.
+                Welcome to the Privacy Policy of &quot;The Winners&quot; ({new URL(CONFIG.siteUrl).hostname}). We respect your privacy and are committed to protecting your personal information.
               </p>
             </section>
 

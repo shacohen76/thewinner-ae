@@ -46,8 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: `/best/${params.slug}`,
       languages: {
-        'en-AE': `https://thewinner.ae/best/${params.slug}`,
-        'x-default': `https://thewinner.ae/best/${params.slug}`,
+        'en-AE': `${CONFIG.siteUrl}/best/${params.slug}`,
+        'x-default': `${CONFIG.siteUrl}/best/${params.slug}`,
       },
     },
     openGraph: {

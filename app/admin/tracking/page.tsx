@@ -8,6 +8,7 @@
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react';
+import { CONFIG } from '@/lib/utils';
 
 interface Session {
   session_id: string;
@@ -130,7 +131,7 @@ export default function AdminTracking() {
       <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
         <div className="bg-gray-900 rounded-2xl p-8 w-full max-w-sm border border-gray-800">
           <h1 className="text-white text-lg font-bold mb-1">Tracking Dashboard</h1>
-          <p className="text-gray-500 text-sm mb-6">thewinner.ae admin</p>
+          <p className="text-gray-500 text-sm mb-6">{new URL(CONFIG.siteUrl).hostname} admin</p>
           <input
             type="password"
             placeholder="Password"
@@ -187,7 +188,7 @@ export default function AdminTracking() {
       <div className="border-b border-gray-800 px-4 md:px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-lg font-bold text-white">thewinner.ae — Tracking</h1>
+            <h1 className="text-lg font-bold text-white">{new URL(CONFIG.siteUrl).hostname} — Tracking</h1>
             <p className="text-xs text-gray-500 mt-0.5">
               {meta.total_sessions} sessions · {days}d range · Updated {meta.generated_at ? timeAgo(meta.generated_at) : '—'}
             </p>
@@ -483,7 +484,7 @@ export default function AdminTracking() {
 
       {/* Footer */}
       <div className="border-t border-gray-800 px-4 py-3 text-center text-xs text-gray-600">
-        thewinner.ae tracking · Rollback: c27338c · <button onClick={() => { localStorage.removeItem('tw_admin_key'); setAuthenticated(false); }} className="text-gray-500 hover:text-white">Logout</button>
+        {new URL(CONFIG.siteUrl).hostname} tracking · Rollback: c27338c · <button onClick={() => { localStorage.removeItem('tw_admin_key'); setAuthenticated(false); }} className="text-gray-500 hover:text-white">Logout</button>
       </div>
     </div>
   );

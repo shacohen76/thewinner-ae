@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { CONFIG } from '@/lib/utils';
 
 // ============================================
-// Terms of Use — thewinner.ae
+// Terms of Use
 // Created: 2026-03-20
 // UAE jurisdiction, Amazon Associates references
 // ============================================
@@ -28,7 +29,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">1. Acceptance of Terms</h2>
               <p className="leading-relaxed">
-                By accessing and using the &quot;The Winners&quot; website (thewinner.ae), you agree to these terms of use. If you do not agree, please refrain from using the site.
+                By accessing and using the &quot;The Winners&quot; website ({new URL(CONFIG.siteUrl).hostname}), you agree to these terms of use. If you do not agree, please refrain from using the site.
               </p>
             </section>
 

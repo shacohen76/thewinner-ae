@@ -36,7 +36,7 @@ function detectTrafficSource(): string {
   if (params.get('msclkid')) return 'bing';
 
   const ref = document.referrer.toLowerCase();
-  if (!ref || ref.includes('thewinner.ae')) return 'direct';
+  if (!ref || ref.includes('thewinner.ae') || ref.includes('thewinners.ae')) return 'direct';
   if (ref.includes('google.') || ref.includes('bing.') || ref.includes('yahoo.') || ref.includes('duckduckgo.')) return 'seo';
   if (ref.includes('facebook.') || ref.includes('instagram.') || ref.includes('fb.')) return 'fb';
   if (ref.includes('chat.openai.') || ref.includes('chatgpt.') || ref.includes('claude.ai') || ref.includes('perplexity.')) return 'chatgpt';

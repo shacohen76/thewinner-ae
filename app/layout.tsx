@@ -16,13 +16,13 @@ export const metadata: Metadata = {
   keywords: ['product comparison', 'reviews', 'electronics', 'perfumes', 'baby', 'coffee', 'garden', 'sports', 'cosmetics', 'appliances', 'computers', 'gaming', 'UAE', 'Amazon'],
   authors: [{ name: CONFIG.siteName }],
   creator: CONFIG.siteName,
-  metadataBase: new URL('https://thewinner.ae'),
+  metadataBase: new URL(CONFIG.siteUrl),
 
   alternates: {
     canonical: '/',
     languages: {
-      'en-AE': 'https://thewinner.ae',
-      'x-default': 'https://thewinner.ae',
+      'en-AE': CONFIG.siteUrl,
+      'x-default': CONFIG.siteUrl,
     },
   },
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AE',
-    url: 'https://thewinner.ae',
+    url: CONFIG.siteUrl,
     siteName: CONFIG.siteName,
   },
   robots: {
@@ -65,22 +65,22 @@ export default function RootLayout({
               '@graph': [
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://thewinner.ae/#website',
-                  'url': 'https://thewinner.ae',
+                  '@id': `${CONFIG.siteUrl}/#website`,
+                  'url': CONFIG.siteUrl,
                   'name': CONFIG.siteName,
                   'description': 'The leading product comparison site for the UAE',
                   'inLanguage': 'en-AE',
                   'potentialAction': {
                     '@type': 'SearchAction',
-                    'target': 'https://thewinner.ae/best/{search_term_string}',
+                    'target': `${CONFIG.siteUrl}/best/{search_term_string}`,
                     'query-input': 'required name=search_term_string',
                   },
                 },
                 {
                   '@type': 'Organization',
-                  '@id': 'https://thewinner.ae/#organization',
+                  '@id': `${CONFIG.siteUrl}/#organization`,
                   'name': CONFIG.siteName,
-                  'url': 'https://thewinner.ae',
+                  'url': CONFIG.siteUrl,
                   'areaServed': [
                     { '@type': 'Country', 'name': 'United Arab Emirates' },
                     { '@type': 'Country', 'name': 'Saudi Arabia' },
