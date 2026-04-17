@@ -113,7 +113,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-gray-50 min-h-screen flex flex-col">
+      <body className="bg-gray-50 min-h-screen flex flex-col overflow-x-hidden">
         {/* GTM noscript */}
         <noscript>
           <iframe
