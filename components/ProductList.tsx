@@ -54,7 +54,7 @@ export default function ProductList({ products }: ProductListProps) {
   return (
     <>
       {/* Sort Controls + Share Button */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
         {/* Sort Controls — Left side (LTR) */}
         <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm px-3 py-2">
           <span className="text-sm text-gray-500">Sort:</span>
