@@ -1,0 +1,172 @@
+{
+  "_meta": {
+    "slug": "tablets",
+    "keyword_text_en": "tablets",
+    "translated_at": "2026-04-18T20:34:14.260386",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "الأجهزة اللوحية",
+  "page_title_ar": "أفضل 10 أجهزة لوحية في الإمارات",
+  "category_name_en": "Tablets",
+  "category_name_ar": "الأجهزة اللوحية",
+  "category_slug": "tablets",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما حجم الشاشة المناسب لاختيار جهاز لوحي؟",
+      "a": "للقراءة والتصفح والاستخدام اليومي، يعتبر حجم 8-10 بوصة مريحاً وسهل الحمل. إذا كنت تخطط لمشاهدة الفيديوهات أو الرسم أو استخدامه كبديل للحاسوب المحمول، اختر 11-12 بوصة - المساحة الإضافية للشاشة تحدث فرقاً حقيقياً."
+    },
+    {
+      "q": "هل سعة التخزين مهمة، وكم أحتاج فعلياً؟",
+      "a": "128GB هو الحد الأدنى لمعظم المستخدمين إذا كنت تقوم بتنزيل التطبيقات والصور والملفات بانتظام. اختر 256GB أو أكثر إذا كنت تخزن الكثير من الأفلام أو الألعاب أو ملفات العمل - التخزين السحابي يساعد ولكنه يعتمد على اتصال الإنترنت."
+    },
+    {
+      "q": "ما الفرق بين iPad والأجهزة اللوحية Android؟",
+      "a": "أجهزة iPad تقدم أداءً أفضل ودعماً أطول للبرامج، مما يجعلها موثوقة لسنوات، لكنها تكلف أكثر مقدماً. الأجهزة اللوحية Android أرخص وأكثر مرونة وتعمل بشكل جيد مع أجهزة متنوعة، رغم أن جودة التطبيقات والتحديثات تختلف حسب العلامة التجارية."
+    },
+    {
+      "q": "هل يستحق دفع المزيد مقابل جهاز لوحي مع قلم رقمي؟",
+      "a": "فقط إذا كنت تخطط للرسم أو تدوين الملاحظات اليدوية أو تحرير المستندات بانتظام - وإلا فهي ميزة غير مستخدمة. الأجهزة اللوحية الاقتصادية تتخطى القلم الرقمي لتخفيض التكلفة، لذا قرر ما إذا كان يتناسب مع استخدامك الفعلي قبل الترقية."
+    },
+    {
+      "q": "هل يجب شراء جهاز لوحي 5G، أم Wi-Fi كافٍ؟",
+      "a": "Wi-Fi كافٍ لمعظم الناس لأن الأجهزة اللوحية ليست عادة جهاز الاتصال الرئيسي. اختر 5G فقط إذا كنت تسافر بشكل متكرر أو تعمل عن بعد دون Wi-Fi مستقر أو تحتاج إنترنت متنقل - فهو يضيف تكلفة وتعقيداً لا يحتاجه معظم المستخدمين."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0GK1HFQ1L",
+      "title_en": "Lenovo Tab with Clear Case, 10.1\" WUXGA (1920x1200), MediaTek Helio G85, Octa-core, 4GB RAM, 64GB Storage, Android 14 - ZAEH0069AE",
+      "title_ar": "جهاز لوحي Lenovo Tab مع حافظة شفافة، شاشة 10.1 بوصة WUXGA (1920x1200)، معالج MediaTek Helio G85، ثماني النواة، ذاكرة عشوائية 4GB RAM، مساحة تخزين 64GB، نظام Android 14 - ZAEH0069AE",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/518d0OaiVWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الجهاز اللوحي الأقوى في فئته",
+        "شاشة مذهلة 1920x1200 تتفوق على أي شاشة",
+        "الحافظة الشفافة المرفقة تحافظ عليه نظيفاً فوراً"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0FQ5TRQTD",
+      "title_en": "Samsung Galaxy Tab A11, Wifi, Android Tablet, Gray, 4GB RAM, 64GB Storage, 8.7\" Screen (UAE Version)",
+      "title_ar": "جهاز لوحي Samsung Galaxy Tab A11، Wi-Fi، Android، رمادي، ذاكرة عشوائية 4GB RAM، مساحة تخزين 64GB، شاشة 8.7 بوصة (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61qFnonfCEL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل جهاز لوحي شامل للمهام اليومية",
+        "شاشة واضحة تماماً 8.7 بوصة تبقي كل شيء مرئياً",
+        "ذاكرة 4GB RAM تتعامل مع المهام المتعددة بسهولة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CX51BPBV",
+      "title_en": "HONOR Pad 9, 8GB RAM, 256GB ROM, Wi-Fi Tablet, 12.1 Inch Size, Space Grey Bundle With Honor Smart Bluetooth Keyboard Case - Middle East Version",
+      "title_ar": "جهاز لوحي HONOR Pad 9، ذاكرة عشوائية 8GB RAM، مساحة تخزين 256GB ROM، جهاز Wi-Fi، شاشة 12.1 بوصة، رمادي فضائي مع حافظة لوحة مفاتيح HONOR Smart Bluetooth - نسخة الشرق الأوسط",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81V++7QXKVL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة ضخمة 12.1 بوصة تجلب السينما للمنزل",
+        "حزمة متميزة تشمل حافظة لوحة مفاتيح ذكية",
+        "ذاكرة قوية 8GB RAM تشغل التطبيقات الصعبة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0DC6JBDFG",
+      "title_en": "HONOR Pad X8a 4GB RAM 128GB ROM 11 Inch Tablet Space Grey Wi-Fi with FREE Flip Cover - Middle East Version",
+      "title_ar": "جهاز لوحي HONOR Pad X8a ذاكرة عشوائية 4GB RAM مساحة تخزين 128GB ROM شاشة 11 بوصة رمادي فضائي Wi-Fi مع غطاء قابل للطي مجاني - نسخة الشرق الأوسط",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ZYyxsnisL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مساحة ممتازة 11 بوصة للعمل الإبداعي",
+        "أداء قوي مع غطاء واقٍ مجاني",
+        "مساحة تخزين 4GB تستوعب مكتبتك بالكامل"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0FKC36CC9",
+      "title_en": "HONOR Pad X7 8.7\" Wi-Fi Tablet, 4GB RAM 128GB Storage, 90Hz Display, Snapdragon 680, Android 15, Gray with Cover Case (UAE Version)",
+      "title_ar": "جهاز لوحي HONOR Pad X7 شاشة 8.7 بوصة Wi-Fi، ذاكرة عشوائية 4GB RAM مساحة تخزين 128GB، شاشة 90Hz، معالج Snapdragon 680، نظام Android 15، رمادي مع حافظة (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71fbm1grMLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة ممتازة 90Hz تعمل بسلاسة فائقة",
+        "معالج Snapdragon 680 قوي يتعامل مع الأحمال الثقيلة",
+        "حجم 8.7 بوصة يناسب اليد الواحدة بارتياح"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0FZD6WXGW",
+      "title_en": "S25 Ultra PLus Smart Tab | Android 15| Stylish Tab | 10.1Inch AMOLED Display | 16GB+1TB | 5G + WiFi | Dual SIM | Great for Movies, Gaming & Multitasking | Pink",
+      "title_ar": "جهاز لوحي ذكي S25 Ultra PLus | نظام Android 15 | تصميم أنيق | شاشة 10.1 بوصة AMOLED | ذاكرة 16GB+1TB | شبكة 5G + Wi-Fi | شريحتين Dual SIM | رائع للأفلام والألعاب والمهام المتعددة | وردي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41gep4x30CL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة استثنائية 10.1 بوصة AMOLED تأسر المشاهدين",
+        "ذاكرة 16GB RAM وتخزين 1TB يسيطران على الألعاب",
+        "شبكة 5G مع Wi-Fi تضمن سرعة فائقة",
+        "مرونة Dual SIM تنتقل معك بلا قلق"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0D6Z7P3LG",
+      "title_en": "HUAWEI MatePad SE Tablet, 11-inch Eye Comfort Display, Large Capacity Battery, 6GB+128GB, Wifi, Nebula Gray",
+      "title_ar": "جهاز لوحي HUAWEI MatePad SE، شاشة 11 بوصة مريحة للعين، بطارية بسعة كبيرة، ذاكرة 6GB+128GB، Wi-Fi، رمادي سديمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51BRmZHZRaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة ممتازة 11 بوصة مريحة للعين تقلل الإجهاد",
+        "بطارية موثوقة بسعة كبيرة تدوم طوال الأسبوع",
+        "مثالي للقراءة واستهلاك المحتوى"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FZBCTC22",
+      "title_en": "Samsung Galaxy Tab A11+, WiFi, Android Tablet, Gray, 6GB RAM, 128GB Storage, 11\" Screen (UAE Version)",
+      "title_ar": "جهاز لوحي Samsung Galaxy Tab A11+، Wi-Fi، Android، رمادي، ذاكرة عشوائية 6GB RAM، مساحة تخزين 128GB، شاشة 11 بوصة (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61CUazyp4SL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة 11 بوصة تتفوق في العمل واللعب",
+        "مساحة تخزين 128GB تستوعب مكتبتك الرقمية بالكامل",
+        "ذاكرة 6GB RAM تعمل بسلاسة مع التطبيقات الصعبة",
+        "معدل تحديث Hz يجعل التمرير سلساً للغاية"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FQF3TMD9",
+      "title_en": "Samsung Galaxy Tab A11+, Android Tablet, AI Features, Sleek and Modern Design, 11 Inch 90Hz Display, 128GB Storage, 6GB Memory, With Dolby Quad Speakers, Grey - International Version",
+      "title_ar": "جهاز لوحي Samsung Galaxy Tab A11+، Android، ميزات AI، تصميم أنيق وعصري، شاشة 11 بوصة 90Hz، مساحة تخزين 128GB، ذاكرة 6GB، مع مكبرات صوت Dolby Quad Speakers، رمادي - نسخة دولية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/6107Su8PCfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم عصري يناسب أي أسلوب حياة بسهولة",
+        "مكبرات Dolby Quad Speakers تقدم تجربة صوتية غامرة",
+        "شاشة 90Hz تحول التمرير اليومي إلى حرير",
+        "ميزات AI تتوقع ما تحتاجه بعد ذلك"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0GJG65CKW",
+      "title_en": "7.0 Inch Smart Tablet with SIM Card Slot, Android 13, Octa Core Processor, 8MP Camera, 3500 mAh Battery, 2GB RAM, 8GB Storage, WiFi, Bluetooth (Rose Gold)",
+      "title_ar": "جهاز لوحي ذكي 7.0 بوصة مع فتحة بطاقة SIM، نظام Android 13، معالج ثماني النواة Octa Core، كاميرا 8MP، بطارية 3500 mAh، ذاكرة عشوائية 2GB RAM، مساحة تخزين 8GB، Wi-Fi، Bluetooth (ذهبي وردي)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ogJXXhn6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي مع فتحة بطاقة SIM",
+        "قابلية حمل رائعة في إطار مدمج 7 بوصة",
+        "إعداد كاميرا مزدوجة للصور والمكالمات"
+      ],
+      "rank": 10
+    }
+  ]
+}

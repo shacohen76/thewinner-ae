@@ -1,0 +1,171 @@
+{
+  "_meta": {
+    "slug": "jbl-speakers",
+    "keyword_text_en": "JBL speakers",
+    "translated_at": "2026-04-18T20:34:14.250595",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "سماعات JBL",
+  "page_title_ar": "أفضل 10 سماعات JBL في الإمارات",
+  "category_name_en": "Speakers & Audio",
+  "category_name_ar": "السماعات والصوتيات",
+  "category_slug": "speakers-audio",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين سماعات JBL المحمولة والمنزلية؟",
+      "a": "السماعات المحمولة مثل Flip وCharge صغيرة الحجم وتعمل بالبطارية ومصممة للسفر أو الاستخدام الخارجي، بينما السماعات المنزلية مثل PartyBox تركز على ملء الغرفة بالصوت للإعدادات الثابتة. السماعات المنزلية توفر عادة طاقة وباص أكثر لكنها تحتاج للتوصيل بالكهرباء، بينما الموديلات المحمولة تضحي ببعض جودة الصوت مقابل الراحة والحرية اللاسلكية."
+    },
+    {
+      "q": "كيف أعرف إذا كانت سماعة JBL قوية بما يكفي لمساحتي؟",
+      "a": "تحقق من تصنيف الطاقة بالواط - الغرف الصغيرة (10-15 متر مربع) تحتاج 10-20W، الغرف المتوسطة (20-30 متر مربع) تحتاج 30-50W، والمساحات الكبيرة تستفيد من 100W فما فوق. انظر أيضاً إلى خرج الديسيبل (dB) بدلاً من الواط فقط، لأن dB الأعلى يعني صوتاً أعلى عند نفس مستوى الطاقة."
+    },
+    {
+      "q": "هل يستحق دفع المزيد مقابل خاصية العزل المائي أم أنها رفاهية فقط؟",
+      "a": "إذا كنت تستخدم السماعات بالقرب من حمامات السباحة أو الشواطئ أو الحمامات الرطبة، فإن العزل المائي (تصنيف IP67 أو أعلى) ضروري ويستحق التكلفة الإضافية. للاستخدام الداخلي فقط، العزل العادي كافٍ ويمكنك توفير المال."
+    },
+    {
+      "q": "ما الفرق الحقيقي بين إصدارات Bluetooth في سماعات JBL؟",
+      "a": "Bluetooth 5.0 و5.2 يوفران اتصالات أسرع وأكثر استقراراً مع مدى أطول واستهلاك أقل للبطارية مقارنة بـ 4.2، لكن الفرق ملحوظ فقط إذا كنت تتنقل بين الأجهزة بشكل متكرر أو في بيئات مليئة بالتشويش. لمعظم المستخدمين، 4.2 أو 5.0 يعمل بشكل ممتاز."
+    },
+    {
+      "q": "هل أحتاج لشراء موديلات JBL الأغلى أم أن الموديل الأساسي سيفي بالغرض؟",
+      "a": "السماعات الأساسية (مثل Go أو Clip) ممتازة للاستخدام المحمول بميزانية محدودة، لكن الانتقال للخيارات المتوسطة يمنحك باص أفضل بشكل ملحوظ ونقاء أعلى وعمر بطارية أطول. ادفع أكثر فقط إذا كنت تقدر جودة صوت متميزة أو ميزات محددة مثل التحكم عبر التطبيق وإعدادات EQ المتقدمة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CX5B4N1N",
+      "title_en": "JBL GO 4 – Ultra-Portable Bluetooth Speaker with AURACAST, Powerful Sound, 15H Playtime & Sleek Design, JBLGO4BLU, Blue",
+      "title_ar": "JBL GO 4 – سماعة Bluetooth محمولة فائقة الصغر مع AURACAST وصوت قوي ومدة تشغيل 15H وتصميم أنيق، JBLGO4BLU، أزرق",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/711IzMtlmkL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى سماعة محمولة في فئتها",
+        "بطارية تدوم طوال عطلة نهاية الأسبوع",
+        "هندسة صوت JBL الموثوقة في حجم راحة اليد"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CX588NB9",
+      "title_en": "JBL GO 4 – Ultra-Portable Bluetooth Speaker with AURACAST, Powerful Sound, 15H Playtime & Sleek Design, JBLGO4PINK, Pink",
+      "title_ar": "JBL GO 4 – سماعة Bluetooth محمولة فائقة الصغر مع AURACAST وصوت قوي ومدة تشغيل 15H وتصميم أنيق، JBLGO4PINK، وردي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Z+uZjKMVL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "نفس الأداء الأسطوري بتصميم وردي نابض",
+        "مدة تشغيل تناسب أيامك الأكثر انشغالاً",
+        "رفيق محمول فائق الخفة بوزن شبه معدوم"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DXKMXPXW",
+      "title_en": "JBL Flip 7 - JBL Pro Sound with AI Sound Boost, up to 16 hours of playtime, multi-speaker connection via Auracast, and waterproof, dustproof, drop-proof design for all adventures – Black.",
+      "title_ar": "JBL Flip 7 - صوت JBL Pro مع AI Sound Boost ومدة تشغيل تصل إلى 16 ساعة وتوصيل متعدد السماعات عبر Auracast وتصميم مقاوم للماء والغبار والسقوط لجميع المغامرات – أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61gXxMtOFpL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل سماعة صغيرة للمغامرات اللامتناهية",
+        "ساعات من صوت JBL Pro المتواصل",
+        "تصميم لا يُقهر يتحمل السقوط والغبار والماء"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0CX5C6WP3",
+      "title_en": "JBL GO 4 – Ultra-Portable Bluetooth Speaker with AURACAST, Powerful Sound, 15H Playtime & Sleek Design, JBLGO4BLK, Black",
+      "title_ar": "JBL GO 4 – سماعة Bluetooth محمولة فائقة الصغر مع AURACAST وصوت قوي ومدة تشغيل 15H وتصميم أنيق، JBLGO4BLK، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71HdLDJEEUL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل سماعة فائقة الصغر على الإطلاق",
+        "بطارية تدوم طوال عطلة نهاية الأسبوع",
+        "هندسة صوت JBL الموثوقة في حجم الجيب"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0F2B122XW",
+      "title_en": "JBL PartyBox Encore 2 Portable Bluetooth Speaker with Wireless Mic and AI Boost, 15H Battery, Dynamic Lights, Auracast, Karaoke & Guitar Input, IPX4 Splashproof - JBLPBENCORE2UK",
+      "title_ar": "JBL PartyBox Encore 2 سماعة Bluetooth محمولة مع ميكروفون لاسلكي وAI Boost وبطارية 15H وإضاءة ديناميكية وAuracast وكاريوكي ومدخل جيتار ومقاومة للرذاذ IPX4 - JBLPBENCORE2UK",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71jj+82xRvL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "هندسة JBL الموثوقة تقدم صوتاً نقياً يملأ الغرفة",
+        "بطارية تشغل جلسات الحفلات الماراثونية",
+        "تقنية AI Boost تضخم الصوت الغنائي تلقائياً",
+        "تصميم IPX4 مقاوم للرذاذ يتحمل حفلات المسبح"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B09HGRXXTM",
+      "title_en": "JBL Flip 6 Portable IP67 Waterproof Speaker with Bold JBL Original Pro Sound, 2-Way Speaker, Powerful Sound and Deep Bass, 12 Hours Battery, Safe USB-C Charging Protection - Black, JBLFLIP6BLK",
+      "title_ar": "JBL Flip 6 سماعة محمولة IP67 مقاومة للماء مع صوت JBL Original Pro الجريء ونظام سماعة ثنائي الاتجاه وصوت قوي وباص عميق وبطارية 12 ساعة وحماية شحن USB-C آمنة - أسود، JBLFLIP6BLK",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/615ETYxQJWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بصوت JBL Pro الأسطوري",
+        "بطارية تشغلك طوال يومك",
+        "نظام سماعة ثنائي الاتجاه يقدم باص عميق"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0D9R32JLR",
+      "title_en": "JBL Partybox Encore Essential, 100W Sound, Built-in Dynamic Light Show and Splashproof Design (JBLPBENCOREESSAM) + Wireless Two-Microphone System with Receiver +",
+      "title_ar": "JBL Partybox Encore Essential، صوت 100W، عرض إضاءة ديناميكي مدمج وتصميم مقاوم للرذاذ (JBLPBENCOREESSAM) + نظام ميكروفون لاسلكي مزدوج مع مستقبل +",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81lNUMPf-kL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "نظام JBL عملي بصوت 100W ديناميكي",
+        "عرض إضاءة مدمج لا يحتاج إعداد",
+        "تصميم مقاوم للرذاذ يتحمل الانسكابات غير المتوقعة",
+        "نظام ميكروفون لاسلكي مضمن للغناء الفوري"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FGBR94GV",
+      "title_en": "JBL Charge 6 Portable Bluetooth Speaker, IP68 Waterproof, Dustproof, Drop-Proof, AI Sound Boost, Built-in Powerbank, Carrying Strap, 28H Battery – Black – Boom h's Ultimate Performance Cloth Solution",
+      "title_ar": "JBL Charge 6 سماعة Bluetooth محمولة، IP68 مقاومة للماء والغبار والسقوط، AI Sound Boost، بنك طاقة مدمج، حزام حمل، بطارية 28H – أسود – مع حل قماش الأداء الأقصى من Boom",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71a8hrkvB8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قدرة تحمل موثوقة 28 ساعة تتفوق على السماعات الأصغر",
+        "بنك طاقة متكامل يشحن الأجهزة عند الطلب",
+        "AI Sound Boost يتكيف مع أي بيئة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B09WVXZT3S",
+      "title_en": "JBL Partybox Encore Portable Party Speaker with Digital Wireless Mic, 100W Powerful Sound, Dynamic Light Show, IPX Splash Proof, 10 Hours of Playtime, Multisource Playback Black -(JBLPBENCORE1MICUK)",
+      "title_ar": "JBL Partybox Encore سماعة حفلات محمولة مع ميكروفون لاسلكي رقمي وصوت قوي 100W وعرض إضاءة ديناميكي ومقاومة للرذاذ IPX ومدة تشغيل 10 ساعات وتشغيل متعدد المصادر أسود -(JBLPBENCORE1MICUK)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ODeZa8adL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تجربة حفلات 100W رائعة للمبتدئين",
+        "ميكروفون لاسلكي يبقي اليدين حرتين",
+        "تصميم مقاوم للرذاذ يتعامل مع الطقس غير المتوقع"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0CLH546S8",
+      "title_en": "JBL PARTYBOX ON-THE-GO ESSENTIAL Portable party speaker with built-in lights and Wireless Mic",
+      "title_ar": "JBL PARTYBOX ON-THE-GO ESSENTIAL سماعة حفلات محمولة مع إضاءة مدمجة وميكروفون لاسلكي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81nUaZdVlfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سماعة حفلات محمولة عملية مع إضاءة مدمجة",
+        "ميكروفون لاسلكي مضمن للترفيه الفوري",
+        "حجم صغير يناسب أي مساحة فعالية"
+      ],
+      "rank": 10
+    }
+  ]
+}

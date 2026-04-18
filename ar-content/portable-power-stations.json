@@ -1,0 +1,144 @@
+{
+  "_meta": {
+    "slug": "portable-power-stations",
+    "keyword_text_en": "portable power stations",
+    "translated_at": "2026-04-18T20:34:14.347783",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "محطات الطاقة المحمولة",
+  "page_title_ar": "أفضل 10 محطات الطاقة المحمولة في الإمارات",
+  "category_name_en": "Furniture",
+  "category_name_ar": "الأثاث",
+  "category_slug": "furniture",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "كيف أعرف السعة التي أحتاجها فعلياً؟",
+      "a": "حدد الأجهزة التي ستشغلها غالباً (لابتوب، هاتف، ثلاجة، أضواء) وتحقق من متطلبات الواط الخاصة بها، ثم اضربها بساعات الاستخدام - محطة 500Wh تشغل جهاز 100W لمدة 5 ساعات. إذا كنت تخيم لعطلة نهاية الأسبوع، فإن 500-1000Wh عادة تكفي للهواتف والأجهزة الصغيرة؛ للاستخدام الجاد خارج الشبكة، اختر 2000Wh أو أعلى."
+    },
+    {
+      "q": "ما الفرق بين بطاريات الليثيوم وبطاريات LiFePO4؟",
+      "a": "بطاريات LiFePO4 تدوم 3-5 مرات أطول (أكثر من 5000 دورة شحن مقابل 1000) وأكثر أماناً، لكن تكلفتها أعلى مقدماً. إذا كنت تخطط لاستخدام محطة الطاقة بانتظام لسنوات، فإن LiFePO4 تقدم قيمة أفضل على المدى الطويل رغم التكلفة الأولية الأعلى."
+    },
+    {
+      "q": "هل يجب أن أقلق بشأن الواط مقابل السعة؟",
+      "a": "السعة (Wh) تخبرك كم من الوقت يمكنك تشغيل الأشياء؛ الواط (W) يخبرك بالأجهزة التي يمكنك تشغيلها فعلياً في نفس الوقت. محطة 1000Wh بقدرة 500W فقط لا تستطيع تشغيل ميكروويف (عادة 1000W)، لذا تحقق من كلا المواصفات مقابل جهازك الأثقل."
+    },
+    {
+      "q": "هل يستحق دفع مبلغ إضافي للشحن السريع؟",
+      "a": "الشحن السريع (طاقة شمسية أو مقبس كهربائي) مهم إذا كنت بحاجة لجاهزية المحطة سريعاً بين الاستخدامات، لكن إذا كنت تشحنها مرة واحدة وتستخدمها لأيام، فالشحن العادي يكفي. ضع في اعتبارك استخدامك الفعلي - المخيمون في نهاية الأسبوع يستفيدون أقل من الأشخاص الذين يقومون برحلات قصيرة متكررة."
+    },
+    {
+      "q": "ما الميزات المهمة فعلياً وأيها إضافية فقط؟",
+      "a": "الأساسيات هي عدد كافٍ من منافذ AC لأجهزتك، سعة بطارية جيدة، وسرعة شحن موثوقة؛ الإضافات مثل الشحن اللاسلكي أو الأضواء المدمجة تضيف قيمة قليلة. ركز على مواصفات الأداء ومدى سهولة حمل الوحدة، لأن قابلية النقل تفقد معناها إذا كانت المحطة صعبة الحركة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0FM82K13N",
+      "title_en": "Green Lion Volt Mate Power Bank 27,000mAh, 24W USB-A, 150W AC Outputs Power Station, PD 60W USB-C Cable, 2-Mode Flashlight, 75lm Brightness, Digital Display, Cooling Fan, Carry Strap - Black",
+      "title_ar": "Green Lion Volt Mate بنك طاقة 27,000mAh، 24W USB-A، مخارج AC 150W محطة طاقة، كابل PD 60W USB-C، كشاف بوضعين، سطوع 75lm، شاشة رقمية، مروحة تبريد، حزام حمل - أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61c1mWFxdWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار مبتدئ رائع مع طاقة منفذ AC",
+        "كشاف مدمج للطوارئ والتخييم",
+        "27,000 mAh مع مروحة تبريد تمنع الحرارة الزائدة",
+        "وضعان للسطوع يتكيفان مع أي موقف"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CND4BRVR",
+      "title_en": "Anker SOLIX C800 Plus Portable Power Station, 1200W (Peak 1600W) Solar Generator with Camping Lights, 768Wh LiFePO4 Battery for Outdoor Camping, RVs, Road Trip, Power Outages (Optional Solar Panel)",
+      "title_ar": "Anker SOLIX C800 Plus محطة طاقة محمولة، 1200W (ذروة 1600W) مولد شمسي مع أضواء تخييم، بطارية LiFePO4 768Wh للتخييم الخارجي، المقطورات، الرحلات البرية، انقطاع الكهرباء (لوحة شمسية اختيارية)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61iSCRwDzGL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لاستقلالية الطاقة الخارجية الجادة",
+        "أداء قوي مع توصيل طاقة نقية 1200W",
+        "تقنية بطارية LiFePO4 تدوم سنوات أطول"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DDD6G6QN",
+      "title_en": "Blue Ocean 97Wh Portable Power Station, 120W Solar Generator, 220V AC Outlet, 26400mAh Battery Backup with LED Light, 5 Output Ports Power Supply for Camping & Emergency (97, Watt Hours)",
+      "title_ar": "Blue Ocean محطة طاقة محمولة 97Wh، مولد شمسي 120W، منفذ AC 220V، بطارية احتياطية 26400mAh مع ضوء LED، 5 منافذ إخراج مصدر طاقة للتخييم والطوارئ (97، واط ساعة)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71NewcrGMIL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مولد شمسي 120W يناسب أي معدات مغامرات",
+        "خمسة منافذ إخراج تشغل الهواتف واللابتوب والكاميرات",
+        "ضوء LED مدمج يعمل ككشاف طوارئ"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0FFNF8Y1J",
+      "title_en": "EF ECOFLOW Portable Power Station RIVER 3 Plus – 286Wh LFP Battery, 1200W Output, 16 Hr Runtime for <100W Devices, Expandable to 858Wh, <10 ms UPS, Solar Generator for Camping & RV",
+      "title_ar": "EF ECOFLOW محطة طاقة محمولة RIVER 3 Plus - بطارية LFP 286Wh، إخراج 1200W، وقت تشغيل 16 ساعة للأجهزة <100W، قابلة للتوسع إلى 858Wh، UPS <10 ms، مولد شمسي للتخييم والمقطورات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51Je0rB3ToL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع 16 ساعة تشغيل للأحمال الصغيرة",
+        "نظام بطارية قابل للتوسع ينمو مع احتياجاتك",
+        "UPS رائد بالصناعة 10ms يحمي الإلكترونيات الحساسة فوراً"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0GDP5W4NT",
+      "title_en": "Blue Ocean Portable Power Station Solar Generator 228Wh 300W, 220V Pure Sine Wave AC Outlet, Wireless Charging, USB-C, DC Output, Rechargeable Backup Battery for Camping Travel and Home Emergency",
+      "title_ar": "Blue Ocean محطة طاقة محمولة مولد شمسي 228Wh 300W، منفذ AC موجة جيبية نقية 220V، شحن لاسلكي، USB-C، إخراج DC، بطارية احتياطية قابلة للشحن للتخييم والسفر وطوارئ المنزل",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61qLj1p5FDL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "طاقة عملية 228Wh مع شحن لاسلكي مدمج",
+        "موجة جيبية نقية تحمي جميع الأجهزة الحساسة",
+        "تصميم مدمج يناسب حقائب السفر تماماً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CFF3PFV1",
+      "title_en": "EF ECOFLOW Solar Generator RIVER 2, 256Wh Portable Power Station with 110W Solar Panel, Power Multiple Devices, Recharge 0-80% Within 1 Hour, for Camping, RV, Outdoors, Off-Grid",
+      "title_ar": "EF ECOFLOW مولد شمسي RIVER 2، محطة طاقة محمولة 256Wh مع لوحة شمسية 110W، تشغيل أجهزة متعددة، إعادة شحن 0-80% خلال ساعة واحدة، للتخييم والمقطورات والنشاطات الخارجية وخارج الشبكة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71GcfUF4-zL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "إعادة شحن إلى 80% في ساعة واحدة فقط",
+        "لوحة شمسية 110W تعني حرية خارجية لا نهائية",
+        "قوة مدمجة تشغل أجهزة متعددة بآن واحد"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FDQGHXP8",
+      "title_en": "EF ECOFLOW Trail 300 DC Portable Power Station with 30W USB C Charger, 288Wh LiFePO4 Power Bank, Solar Generator, for Camping, Travel, and Emergency Power",
+      "title_ar": "EF ECOFLOW Trail 300 DC محطة طاقة محمولة مع شاحن USB C 30W، بنك طاقة LiFePO4 288Wh، مولد شمسي، للتخييم والسفر وطاقة الطوارئ",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/813LwI9Z7ML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أكثر محطة طاقة 288Wh قابلية للنقل لمغامرات السفر",
+        "شاحن USB-C 30W مدمج يشحن الأجهزة بسرعة",
+        "رفيق مثالي لرحلات التخييم العفوية"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FFND8LG5",
+      "title_en": "EF ECOFLOW RIVER 3 Max (RIVER 3 Plus&EB300) Portable Power Station – 572Wh LFP Battery, 1200W Output, <10 ms UPS, Wireless Connection, Solar Generator for Camping & RV",
+      "title_ar": "EF ECOFLOW RIVER 3 Max (RIVER 3 Plus&EB300) محطة طاقة محمولة - بطارية LFP 572Wh، إخراج 1200W، UPS <10 ms، اتصال لاسلكي، مولد شمسي للتخييم والمقطورات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61-2tbd2-AL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع UPS سريع البرق 10ms",
+        "سعة ممتازة 572Wh تشغل رحلات المقطورات",
+        "الاتصال اللاسلكي يجعل المراقبة سلسة"
+      ],
+      "rank": 10
+    }
+  ]
+}

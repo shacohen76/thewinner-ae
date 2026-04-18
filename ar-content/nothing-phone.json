@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "slug": "nothing-phone",
+    "keyword_text_en": "Nothing phone",
+    "translated_at": "2026-04-18T20:34:14.395244",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "هواتف Nothing",
+  "page_title_ar": "أفضل 10 هواتف Nothing في الإمارات",
+  "category_name_en": "Phones & Accessories",
+  "category_name_ar": "الهواتف والإكسسوارات",
+  "category_slug": "phones-accessories",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين Nothing Phone (1) و Phone (2)؟",
+      "a": "يحتوي Phone (2) على معالج أسرع وأداء أفضل للكاميرا وعمر بطارية محسّن مقارنة بالإصدار الأصلي. إذا كنت تريد أداء أسرع بشكل ملحوظ للتطبيقات وصور أوضح، فإن Phone (2) يستحق الترقية؛ وإلا فإن Phone (1) لا يزال يتعامل جيداً مع المهام اليومية."
+    },
+    {
+      "q": "هل واجهة Glyph مفيدة فعلاً أم مجرد ميزة تسويقية؟",
+      "a": "أضواء Glyph مفيدة حقاً للإشعارات وتنبيهات المكالمات دون فتح الهاتف، رغم أن بعض المستخدمين يجدون أن الجدة تتلاشى بسرعة. إنها ميزة جيدة الحصول عليها وليست ضرورية، لذلك لا تشتر الهاتف من أجلها فقط."
+    },
+    {
+      "q": "كيف يقارن Nothing Phone بهواتف الفئة المتوسطة من Samsung أو Xiaomi؟",
+      "a": "يقدم Nothing Phone تصميماً فريداً وتجربة برمجية نظيفة، لكن Samsung و Xiaomi غالباً ما يمتلكان أنظمة كاميرا أفضل ودعماً طويل الأمد أكثر موثوقية. اختر Nothing إذا كنت تقدر التصميم والبساطة؛ اختر Samsung أو Xiaomi إذا كانت أولويتك جودة الكاميرا والميزات."
+    },
+    {
+      "q": "هل يجب أن أحصل على سعة تخزين 128GB أو 256GB؟",
+      "a": "احصل على 256GB إذا كنت تلتقط الكثير من الصور أو تصور الفيديو أو تثبت العديد من التطبيقات؛ 128GB كافية إذا كنت مستخدماً خفيفاً أو تعتمد على التخزين السحابي. تذكر أن هواتف Nothing لا تحتوي على فتحة بطاقة microSD، لذلك لا يمكنك التوسع لاحقاً."
+    },
+    {
+      "q": "هل تجربة البرمجيات في Nothing Phone أفضل من Android على الهواتف الأخرى؟",
+      "a": "نظام Android في Nothing نظيف جداً وخالٍ من البرامج غير المرغوبة، مع تحديثات سريعة مباشرة من Nothing، مما يجعله يبدو أسرع من الإصدارات المخصصة بشكل كبير من العلامات الأخرى. إذا كنت تفضل تجربة Android أصلية دون تطبيقات مثبتة مسبقاً إضافية، فإن Nothing يفي بهذا الوعد."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0DYCXGDQF",
+      "title_en": "Nothing Phone (3a) 128 GB - mobile phone with 32 MP front camera, 30x ultra zoom, 50W fast charging and 6.77\" FHD+ flexible AMOLED display - Black",
+      "title_ar": "Nothing Phone (3a) 128 GB - هاتف محمول مع كاميرا أمامية 32 MP، تقريب فائق 30x، شحن سريع 50W وشاشة 6.77\" FHD+ flexible AMOLED - أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61QWVJBjFqL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الرائد في قوة التصوير بالتقريب الفائق",
+        "التقريب يلتقط اللحظات البعيدة بوضوح مذهل",
+        "الشحن السريع 50W يمنحك الطاقة فوراً",
+        "شاشة 6.77\" flexible AMOLED تنحني بشكل مثالي"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DZX9KCRS",
+      "title_en": "Nothing Phone A059P (3a Pro) 5G Black, (12 GB RAM, 256 GB Storage) 50 MP Camera,6.77\" FHD+ flexible AMOLED display,5000 mAh",
+      "title_ar": "Nothing Phone A059P (3a Pro) 5G أسود، (12 GB RAM، 256 GB تخزين) كاميرا 50 MP، شاشة 6.77\" FHD+ flexible AMOLED، 5000 mAh",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61YgdWv6I0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز للمحترفين الذين يطلبون الأفضل",
+        "12GB RAM تتعامل مع كل شيء بسلاسة",
+        "بطارية 5000 mAh تصمد طوال أطول أيامك",
+        "كاميرا 50MP تكشف تفاصيل استثنائية في كل لقطة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DZX9VB6Y",
+      "title_en": "Nothing Phone A059 (3a) 5G Black, (12 GB RAM, 256 GB Storage),50 MP Camera,6.77\" FHD+ flexible AMOLED display,5000 mAh",
+      "title_ar": "Nothing Phone A059 (3a) 5G أسود، (12 GB RAM، 256 GB تخزين)، كاميرا 50 MP، شاشة 6.77\" FHD+ flexible AMOLED، 5000 mAh",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31xIC6fJ3ZL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي يقدم ميزات رائدة بسعر معقول",
+        "تخزين 12GB يحفظ حياتك الرقمية كاملة",
+        "شاشة 6.77\" FHD+ تجعل المحتوى ينبض بالحياة",
+        "اتصال 5G يطلق سرعات تحميل ستشعر بها"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0FH35QT1F",
+      "title_en": "Nothing Phone (3) A024 5G White Bundle, (16 GB RAM, 512 GB Storage) 50 MP Camera,6.67\" FHD+ flexible AMOLED LTPS display,5,150 mAh",
+      "title_ar": "Nothing Phone (3) A024 5G أبيض باقة، (16 GB RAM، 512 GB تخزين) كاميرا 50 MP، شاشة 6.67\" FHD+ flexible AMOLED LTPS، 5,150 mAh",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61uJ9E65ssL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز مع إعداد كاميرا رباعية 50MP",
+        "16GB RAM تسحق تعدد المهام بسهولة",
+        "تخزين 512GB يلغي الاعتماد على السحابة للأبد",
+        "5,150 mAh تتحمل الأيام والليالي المجهدة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0F9XZ9KDM",
+      "title_en": "Nothing Phone (3) Cell Phone, 5G Unlocked Phones 512GB, Android 15, Snapdragon 8s Gen4, AI Mobile Phones with Four 50MP Cameras & AMOLED Display, 5150mAh, Glyph Interface, Smartphone Black",
+      "title_ar": "Nothing Phone (3) هاتف محمول، هواتف 5G مفتوحة 512GB، Android 15، Snapdragon 8s Gen4، هواتف محمولة AI مع أربع كاميرات 50MP وشاشة AMOLED، 5150mAh، واجهة Glyph، هاتف ذكي أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61YbN9tT88L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي للابتكار المحمول المدعوم بـ AI",
+        "Snapdragon 8s Gen4 يتعامل مع أي تطبيق فوراً",
+        "واجهة Glyph المميزة تجعل الإشعارات حية",
+        "أربع كاميرات 50MP تلتقط صور احترافية"
+      ],
+      "rank": 10
+    }
+  ]
+}

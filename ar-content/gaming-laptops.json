@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "slug": "gaming-laptops",
+    "keyword_text_en": "gaming laptops",
+    "translated_at": "2026-04-18T22:20:44.180879",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "لابتوبات الألعاب",
+  "page_title_ar": "أفضل 10 لابتوبات الألعاب في الإمارات",
+  "category_name_en": "Laptops",
+  "category_name_ar": "أجهزة الكمبيوتر المحمولة",
+  "category_slug": "laptops",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما هي بطاقة الرسومات والمعالج الذي أحتاجه فعلياً للألعاب؟",
+      "a": "للألعاب بدقة 1080p على الإعدادات العالية، بطاقة رسومات متوسطة مثل RTX 4050 مع معالج حديث تتعامل مع معظم الألعاب بسلاسة؛ للألعاب بدقة 1440p أو الألعاب التنافسية، اختر RTX 4060 أو أفضل مع معالج أقوى. تحقق من الألعاب التي تلعبها بالتحديد—الألعاب المتطلبة مثل Cyberpunk 2077 تحتاج قوة أكبر من ألعاب الرياضات الإلكترونية مثل CS:GO."
+    },
+    {
+      "q": "كم من الذاكرة العشوائية والتخزين يجب أن أحصل عليه؟",
+      "a": "16GB RAM هو الحد الأدنى للألعاب السلسة في 2024، بينما 32GB تساعد إذا كنت تعمل على مهام متعددة بكثافة أو تبث مباشرة. للتخزين، احصل على 512GB SSD على الأقل لنظام التشغيل والألعاب الرئيسية، لكن 1TB أكثر راحة لأن الألعاب الحديثة تأخذ 100-150GB لكل لعبة."
+    },
+    {
+      "q": "هل معدل تحديث الشاشة مهم حقاً للألعاب؟",
+      "a": "نعم—شاشة 144Hz أو 165Hz تحدث فرقاً ملحوظاً في الألعاب السريعة، خاصة إذا كانت بطاقة الرسومات قادرة على تقديم معدلات الإطارات تلك باستمرار. شاشة 60Hz ستبدو بطيئة إذا كنت معتاداً على معدلات التحديث الأعلى، لذا وفق شاشتك مع ما يمكن لجهازك تقديمه."
+    },
+    {
+      "q": "هل يجب أن أعطي الأولوية لقابلية الحمل أم الأداء؟",
+      "a": "لابتوبات الألعاب الرقيقة والخفيفة (حوالي 2kg) تضحي بالتبريد وخيارات الترقية مقابل سهولة الحمل، بينما الأجهزة الأسمك (2.5-3kg) توفر تبريد أفضل ومكونات أقوى. اختر بناءً على مدى تنقلك بين المواقع—المسافرون المتكررون قد يقبلون أداء أقل قليلاً مقابل الراحة."
+    },
+    {
+      "q": "متى يستحق إنفاق المزيد على التبريد وجودة البناء؟",
+      "a": "استثمر أكثر في التبريد إذا كنت تخطط لجلسات ألعاب طويلة، أو تبث، أو تعيش في مكان حار—التبريد الضعيف يسبب الاختناق ويقصر العمر الافتراضي. جودة البناء الأفضل مهمة إذا كنت تسافر كثيراً أو تريد أن يدوم اللابتوب أكثر من 4 سنوات، حيث النماذج الأرخص تطور مشاكل في المفصلات ولوحة المفاتيح بشكل أسرع."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0GCMDKZTW",
+      "title_en": "Lenovo LOQ Gaming Laptop, 2025, 15.6\" 1920x1080 144Hz, AMD 8-Core Ryzen 7 250, NVIDIA GeForce RTX 5050, 16GB DDR5, 1TB SSD, Win11 Home, Backlit KB, Wi-Fi 6, BT 5.3, 5.0MP, Luna Grey",
+      "title_ar": "لابتوب الألعاب Lenovo LOQ، 2025، شاشة 15.6\" 1920x1080 144Hz، معالج AMD 8-Core Ryzen 7 250، بطاقة رسومات NVIDIA GeForce RTX 5050، ذاكرة 16GB DDR5، تخزين 1TB SSD، نظام Win11 Home، لوحة مفاتيح مضيئة، Wi-Fi 6، BT 5.3، كاميرا 5.0MP، لون Luna Grey",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/7180wRdlw4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "وحش الألعاب الأقوى في السوق",
+        "بطاقة RTX 5050 تسحق أحدث ألعاب AAA بسلاسة",
+        "شاشة 144Hz توفر تجربة لعب تنافسية سلسة",
+        "ذاكرة DDR5 تجعل جهازك جاهزاً للمستقبل"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DN5RWNNC",
+      "title_en": "HP (Upgraded) Victus 15 FA2701WM Gaming Laptop 15.6\", Intel Core i5-13420H Processor, 16GB DDR4 RAM, 512GB SSD, 15.6\" FHD IPS 144Hz, NVIDIA RTX 4050 6GB Graphics, Eng Backlit KB, Win 11, Mica Silver",
+      "title_ar": "لابتوب الألعاب HP (Upgraded) Victus 15 FA2701WM شاشة 15.6\"، معالج Intel Core i5-13420H، ذاكرة 16GB DDR4 RAM، تخزين 512GB SSD، شاشة 15.6\" FHD IPS 144Hz، بطاقة رسومات NVIDIA RTX 4050 6GB، لوحة مفاتيح إنجليزية مضيئة، نظام Win 11، لون Mica Silver",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81obPsMhewL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء ألعاب متميز مع بطاقة RTX 4050",
+        "شاشة 144Hz توفر مرئيات لعب سلسة",
+        "معالج Intel Core i5-13420H يسحق متطلبات تعدد المهام",
+        "لوحة مفاتيح مضيئة فاخرة لجلسات الألعاب الليلية"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0FVPDG2Z2",
+      "title_en": "Acer Nitro V15 ANV15 Gaming Laptop With 15.6-Inch FHD IPS 165Hz Display, Core i5-13420H Processor,16GB DDR4 RAM,512GB SSD, 8GB Nvidia RTX 5050 Graphics, Windows 11, English KB, Obsidian Black",
+      "title_ar": "لابتوب الألعاب Acer Nitro V15 ANV15 بشاشة 15.6-Inch FHD IPS 165Hz، معالج Core i5-13420H، ذاكرة 16GB DDR4 RAM، تخزين 512GB SSD، بطاقة رسومات 8GB Nvidia RTX 5050، نظام Windows 11، لوحة مفاتيح إنجليزية، لون Obsidian Black",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51i90tNU09L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ألعاب قوي مع بطاقة RTX 5050",
+        "شاشة 165Hz IPS توفر ميزة تنافسية",
+        "معالج Core i5-13420H يحافظ على الأداء الأقصى",
+        "ذاكرة 16GB DDR4 RAM تشغل الألعاب المتطلبة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0FMFPJW9B",
+      "title_en": "Lenovo LOQ 15IAX9E Gaming Laptop, 15.6\" FHD 144Hz IPS Display, Intel Core i5-12450HX, 16GB DDR5 RAM, 512GB SSD, NVIDIA GeForce RTX 3050 6GB, ENG Keyboard, Luna Grey",
+      "title_ar": "لابتوب الألعاب Lenovo LOQ 15IAX9E، شاشة 15.6\" FHD 144Hz IPS، معالج Intel Core i5-12450HX، ذاكرة 16GB DDR5 RAM، تخزين 512GB SSD، بطاقة رسومات NVIDIA GeForce RTX 3050 6GB، لوحة مفاتيح إنجليزية، لون Luna Grey",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41p3Q714JTL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ألعاب ذكية بميزانية معقولة مع RTX 3050",
+        "شاشة 144Hz IPS توفر ألعاب تنافسية سلسة",
+        "معالج Core i5-12450HX يقدم قوة مفاجئة",
+        "ذاكرة DDR5 RAM تجعل جهازك جاهزاً للمستقبل"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0GQNN5LDK",
+      "title_en": "ASUS TUF Gaming A15 Gaming Laptop, 15.6\" FHD 144Hz Display, AMD Ryzen 7 7445HS, 16GB DDR5 RAM, 512GB PCIe 4.0 SSD, NVIDIA GeForce RTX 3050 4GB, 1-Zone RGB ENG/ARB Keyboard, Graphite Black",
+      "title_ar": "لابتوب الألعاب ASUS TUF Gaming A15، شاشة 15.6\" FHD 144Hz، معالج AMD Ryzen 7 7445HS، ذاكرة 16GB DDR5 RAM، تخزين 512GB PCIe 4.0 SSD، بطاقة رسومات NVIDIA GeForce RTX 3050 4GB، لوحة مفاتيح 1-Zone RGB إنجليزي/عربي، لون Graphite Black",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71zaOni2ejL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "معالج AMD قوي يسحق تعدد المهام والبث",
+        "لوحة مفاتيح RGB تحول جهازك لجنة ألعاب",
+        "متانة TUF تعني أن اللابتوب يتحمل كل شيء",
+        "ألعاب 144Hz توفر الميزة التنافسية المستحقة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0GF9HWWNS",
+      "title_en": "MSI Cyborg 15 Gaming Laptop Intel Core i7-13620H, 16GB DDR5 RAM, 512GB SSD, 15.6 FHD 144Hz Display, NVIDIA GeForce RTX5050 8GB, Windows 11, Black",
+      "title_ar": "لابتوب الألعاب MSI Cyborg 15 معالج Intel Core i7-13620H، ذاكرة 16GB DDR5 RAM، تخزين 512GB SSD، شاشة 15.6 FHD 144Hz، بطاقة رسومات NVIDIA GeForce RTX5050 8GB، نظام Windows 11، لون أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61FplgdSb4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قوة Intel i7 موثوقة لجلسات ألعاب مكثفة",
+        "بطاقة RTX 5050 8GB VRAM تدفع الرسومات للحد الأقصى",
+        "ذاكرة DDR5 RAM تضمن صفر تأخير أثناء المعارك",
+        "هندسة MSI قوية موثوقة من المحترفين"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0FDSCTCNF",
+      "title_en": "HP Victus 15-fa2013dx Gaming Laptop, 15.6\" FHD 144Hz Display, Intel Core i5-13420H, 8GB RAM, 512GB SSD, GeForce RTX 3050 6GB GPU, English Keyboard, Windows 11 Home, Mica Silver | B95WHUA#ABA",
+      "title_ar": "لابتوب الألعاب HP Victus 15-fa2013dx، شاشة 15.6\" FHD 144Hz، معالج Intel Core i5-13420H، ذاكرة 8GB RAM، تخزين 512GB SSD، بطاقة رسومات GeForce RTX 3050 6GB، لوحة مفاتيح إنجليزية، نظام Windows 11 Home، لون Mica Silver | B95WHUA#ABA",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71JG1tqxGAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ألعاب ذكي مع RTX 3050",
+        "تحديث 144Hz رائع يدمر التأخير",
+        "أداء ألعاب Intel i5 قوي",
+        "تشطيب Mica Silver يبدو مذهلاً تماماً"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0DZZWMB2L",
+      "title_en": "ASUS ROG Strix G16 (2025) Gaming Laptop, 16-Inch FHD+ 16:10 165 Hz/3ms Display, NVIDIA® GeForce RTX™ 5060 Laptop GPU, Intel® Core™ i7 14650HX Processor, 16 GB DDR5, 1 TB Gen 4 SSD, Wi-Fi 7, Windows 11",
+      "title_ar": "لابتوب الألعاب ASUS ROG Strix G16 (2025)، شاشة 16-Inch FHD+ 16:10 165 Hz/3ms، بطاقة رسومات NVIDIA® GeForce RTX™ 5060 Laptop GPU، معالج Intel® Core™ i7 14650HX، ذاكرة 16 GB DDR5، تخزين 1 TB Gen 4 SSD، Wi-Fi 7، نظام Windows 11",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81n1T4CYfmL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة 16 بوصة FHD+ تغمرك بالكامل",
+        "ترقية ذكية مع أداء بطاقة RTX 5060",
+        "استجابة 165Hz 3ms تسحق تأخير الألعاب التنافسية",
+        "اتصال WiFi 7 يتفوق على جميع المعايير"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0F14SGHXN",
+      "title_en": "Lenovo LOQ 15\" - NVIDIA GeForce RTX 5050 Graphics - 15.6\" IPS LCD FHD 144hz Display - Intel Core i7-13650HX - 24GB DDR5-1 TB SSD - Windows 11 Home - Luna Grey",
+      "title_ar": "لابتوب Lenovo LOQ 15\" - بطاقة رسومات NVIDIA GeForce RTX 5050 - شاشة 15.6\" IPS LCD FHD 144hz - معالج Intel Core i7-13650HX - ذاكرة 24GB DDR5 - تخزين 1 TB SSD - نظام Windows 11 Home - لون Luna Grey",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71WTJ8WjS9L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ذكي مع ذاكرة 24GB DDR5 RAM مثبتة",
+        "معالج i7 مع بطاقة RTX 5050 للتميز",
+        "تخزين 1TB SSD يحمل الألعاب في ثوانٍ",
+        "شاشة 144Hz IPS توازن بين السرعة والوضوح"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0FVFQ2WVQ",
+      "title_en": "acer Nitro V 16 AI Gaming Laptop, 16\" WUXGA IPS180Hz Display, AMD Ryzen 7 260(>Intel i7-14700), NVIDIA GeForce RTX 5050 8GB GDDR7,16GB DDR5, 512GB SSD, WiFi 6E, RGB Backlit KB, Win11 PRO, W/256GB PSD",
+      "title_ar": "لابتوب الألعاب acer Nitro V 16 AI، شاشة 16\" WUXGA IPS180Hz، معالج AMD Ryzen 7 260(>Intel i7-14700)، بطاقة رسومات NVIDIA GeForce RTX 5050 8GB GDDR7، ذاكرة 16GB DDR5، تخزين 512GB SSD، WiFi 6E، لوحة مفاتيح RGB مضيئة، نظام Win11 PRO، مع 256GB PSD",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71cK2wk7EfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار مبتدئ رائع مع معدل تحديث 180Hz",
+        "شاشة 16 بوصة WUXGA توسع عالم ألعابك",
+        "معالج AMD Ryzen 7 260 يتفوق على Intel السابق",
+        "بطاقة RTX 5050 8GB تتعامل مع الألعاب المتطلبة"
+      ],
+      "rank": 10
+    }
+  ]
+}

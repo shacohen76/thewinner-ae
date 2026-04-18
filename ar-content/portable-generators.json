@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "portable-generators",
+    "keyword_text_en": "portable generators",
+    "translated_at": "2026-04-18T20:34:14.352924",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "المولدات الكهربائية المحمولة",
+  "page_title_ar": "أفضل 10 مولدات كهربائية محمولة في الإمارات",
+  "category_name_en": "Large Appliances",
+  "category_name_ar": "الأجهزة الكبيرة",
+  "category_slug": "large-appliances",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "كيف أعرف القدرة الكهربائية المناسبة للمولد الذي أحتاجه؟",
+      "a": "احسب مجموع واط البدء لجميع الأجهزة التي تريد تشغيلها معاً - معظم الأجهزة تحتاج 2-3 أضعاف واط التشغيل العادي عند البدء. إذا كنت تشغل مكيف صغير وثلاجة معاً، ستحتاج 5000-7000 واط على الأقل؛ للتخييم أو الإضاءة الاحتياطية، عادة 2000-3000 واط تكفي."
+    },
+    {
+      "q": "ما الفرق بين مولدات Inverter والمولدات التقليدية؟",
+      "a": "مولدات Inverter تنتج طاقة مستقرة ونظيفة آمنة للابتوب والهواتف، بينما المولدات التقليدية لديها تقلبات في الجهد قد تضر الإلكترونيات. مولدات Inverter أهدأ وأكثر كفاءة في استهلاك الوقود، لكن تكلفتها الأولية أعلى - اختر Inverter إذا كنت تشغل أجهزة حساسة."
+    },
+    {
+      "q": "كم ساعة يمكن أن يعمل المولد المحمول بخزان وقود واحد؟",
+      "a": "مدة التشغيل تعتمد على حجم خزان الوقود ومستوى الحمل؛ معظم المولدات تعمل 8-12 ساعة بنصف الحمل، لكن فقط 4-6 ساعات بالطاقة الكاملة. تحقق من المواصفات لكل من ربع الحمل والحمل الكامل، لأن الشركات المصنعة غالباً تعلن الرقم الأطول."
+    },
+    {
+      "q": "هل أشتري مولد بنزين أم ديزل أم ثنائي الوقود؟",
+      "a": "مولدات البنزين أخف وأرخص لكن أقل كفاءة للاستخدام طويل الأمد؛ الديزل يعمل فترة أطول بوقود أقل لكنه أغلى وأثقل؛ ثنائي الوقود يوفر مرونة إذا أصبح أحد أنواع الوقود غير متوفر. للاستخدام العرضي، البنزين جيد - للطاقة الاحتياطية المتكررة أو الممتدة، الديزل أو ثنائي الوقود يوفر على المدى الطويل."
+    },
+    {
+      "q": "ما الذي يجب فحصه قبل شراء مولد محمول مستعمل؟",
+      "a": "اختبره أثناء العمل تحت الحمل للاستماع لأصوات غير عادية وتأكد من عمل جميع المنافذ بشكل صحيح، ثم اطلب سجلات الصيانة وتحقق من ساعات عمل المحرك. تجنب الوحدات التي عليها صدأ أو تسرب زيت أو حبل سحب ضعيف، لأن الإصلاحات قد تكلف بسرعة أكثر من موديل جديد أساسي."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0C534RZW6",
+      "title_en": "MTX BS-4000E Gasoline Generator – 3.5 kW Power Station, 4 kVA Max Output, 230 V, 15 L Tank, Manual Start",
+      "title_ar": "مولد بنزين MTX BS-4000E – محطة طاقة 3.5 kW، خرج أقصى 4 kVA، 230 V، خزان 15 L، تشغيل يدوي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71tr7lfYX4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى مولد بنزين في فئته",
+        "أداء استثنائي للمهام الصعبة",
+        "خزان 15 L يعمل طوال اليوم دون تزويد"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DDD6G6QN",
+      "title_en": "Blue Ocean 97Wh Portable Power Station, 120W Solar Generator, 220V AC Outlet, 26400mAh Battery Backup with LED Light, 5 Output Ports Power Supply for Camping & Emergency (97, Watt Hours)",
+      "title_ar": "محطة طاقة محمولة Blue Ocean 97Wh، مولد شمسي 120W، مخرج AC 220V، بطارية احتياطية 26400mAh مع ضوء LED، 5 منافذ خرج لإمداد الطاقة للتخييم والطوارئ (97 Watt Hours)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71NewcrGMIL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مولد شمسي 120W مناسب لأي معدات مغامرة",
+        "خمسة منافذ تشغل الهواتف واللابتوب والكاميرات",
+        "ضوء LED مدمج يعمل ككشاف طوارئ"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CFF3PFV1",
+      "title_en": "EF ECOFLOW Solar Generator RIVER 2, 256Wh Portable Power Station with 110W Solar Panel, Power Multiple Devices, Recharge 0-80% Within 1 Hour, for Camping, RV, Outdoors, Off-Grid",
+      "title_ar": "مولد شمسي EF ECOFLOW RIVER 2، محطة طاقة محمولة 256Wh مع لوح شمسي 110W، تشغيل أجهزة متعددة، إعادة شحن 0-80% خلال ساعة واحدة، للتخييم والرحلات والخارج",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71GcfUF4-zL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "إعادة شحن حتى 80% في ساعة واحدة فقط",
+        "لوح شمسي 110W يعني حرية لا محدودة بالخارج",
+        "قوة مدمجة تشغل عدة أجهزة في وقت واحد"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B08R2X766C",
+      "title_en": "iPower A Gasoline Silent Inverter Generator, 50/60HZ, 2000-Watt",
+      "title_ar": "مولد Inverter صامت بنزين iPower A، 50/60HZ، 2000 واط",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81JRW2NHYDL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "Inverter صامت 2000W يعمل كالهمس",
+        "محمول للتخييم وقوي للطاقة الاحتياطية",
+        "طاقة نظيفة تحمي الإلكترونيات الحساسة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0GLYL1PHT",
+      "title_en": "Gasoline Generator, Bison Power Peak 700W Mini Power Station, Portable Camping Power Station, Ultra Lightweight, 2 Stroke, AC/DC",
+      "title_ar": "مولد بنزين Bison، قدرة قصوى 700W، محطة طاقة صغيرة محمولة للتخييم، خفيف الوزن جداً، شوطين، AC/DC",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31Tv3jVbvEL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خفيف الوزن جداً بقوة قصوى 700W للنقل السهل",
+        "خيار ممتاز لاحتياجات الطاقة البسيطة بالتخييم",
+        "بساطة الشوطين تعني صيانة أقل"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0D44TLL8F",
+      "title_en": "ECOFLOW Portable Power Station RIVER 2, 256Wh LiFeP04 Battery/ 1 Hour Fast Charging, Up To 600W Output, Solar Generator for Outdoor Camping/RVs/Home Use",
+      "title_ar": "محطة طاقة محمولة ECOFLOW RIVER 2، بطارية LiFeP04 256Wh، شحن سريع ساعة واحدة، خرج حتى 600W، مولد شمسي للتخييم والرحلات والمنزل",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61P4OaJ765L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شحن سريع يصل للبطارية الكاملة بساعة",
+        "خرج 600W يشغل كامل معدات تخييمك",
+        "دخول ذكي بميزانية معقولة لمحطات الطاقة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0C538FBVW",
+      "title_en": "MTX BS-2500 Gasoline Generator – 2.2 kW Power Station, 2.5 kVA Max Output, 230 V, 15 L Tank, Manual Start",
+      "title_ar": "مولد بنزين MTX BS-2500 – محطة طاقة 2.2 kW، خرج أقصى 2.5 kVA، 230 V، خزان 15 L، تشغيل يدوي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71oKIx9jchL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محرك بنزين قوي 2.2 kW لا يتوقف",
+        "خزان وقود 15L يفوق المنافسين لساعات",
+        "تقنية تشغيل يدوي موثوقة ومجربة لعقود"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0CVS3WLGY",
+      "title_en": "VTOOLS 1100W Recoil High-Performance Portable Gasoline Generator,50/60Hz, 56cc 4-Stroke Engine,USB, DC Output, Compact Carrying Case, Parallel Outlet, Fuel-Efficient, blue, VG1200iS",
+      "title_ar": "مولد بنزين محمول عالي الأداء VTOOLS 1100W، 50/60Hz، محرك 56cc رباعي الأشواط، USB، خرج DC، حقيبة حمل مدمجة، منفذ متوازي، موفر للوقود، أزرق، VG1200iS",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/717+uD+JhBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مولد محمول 1100W يناسب أي حقيبة حمل",
+        "محرك رباعي الأشواط 56cc يوفر الوقود",
+        "تقنية المنفذ المتوازي تشغل جهازين معاً"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FFNF8Y1J",
+      "title_en": "EF ECOFLOW Portable Power Station RIVER 3 Plus – 286Wh LFP Battery, 1200W Output, 16 Hr Runtime for <100W Devices, Expandable to 858Wh, <10 ms UPS, Solar Generator for Camping & RV",
+      "title_ar": "محطة طاقة محمولة EF ECOFLOW RIVER 3 Plus – بطارية LFP 286Wh، خرج 1200W، تشغيل 16 ساعة للأجهزة أقل من 100W، قابلة للتوسع حتى 858Wh، UPS أقل من 10ms، مولد شمسي للتخييم والرحلات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51Je0rB3ToL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي بتشغيل 16 ساعة للأحمال الصغيرة",
+        "نظام بطارية قابل للتوسع ينمو مع احتياجاتك",
+        "UPS رائد بالصناعة 10ms يحمي الإلكترونيات فوراً"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B08R2Z9T8H",
+      "title_en": "AiPower SM4500i 4000-Watt Remote Control Silent Inverter Generator",
+      "title_ar": "مولد Inverter صامت AiPower SM4500i 4000 واط مع جهاز تحكم عن بعد",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71V4nxNr0HL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تحكم ممتاز عن بعد من أي مكان",
+        "تقنية Inverter 4000W هادئة جداً للأحياء",
+        "موثوقية استثنائية للطاقة الاحتياطية المستمرة"
+      ],
+      "rank": 10
+    }
+  ]
+}

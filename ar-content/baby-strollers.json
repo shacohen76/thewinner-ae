@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "slug": "baby-strollers",
+    "keyword_text_en": "baby strollers",
+    "translated_at": "2026-04-18T20:34:14.356544",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "عربات الأطفال",
+  "page_title_ar": "أفضل 10 عربات الأطفال في الإمارات",
+  "category_name_en": "Baby & Kids",
+  "category_name_ar": "الأطفال والرضع",
+  "category_slug": "baby-kids",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "هل أشتري عربة خفيفة الوزن أم عربة كاملة المواصفات؟",
+      "a": "العربات خفيفة الوزن مثالية إذا كنت تستخدم وسائل النقل العام أو تسافر بشكل متكرر أو لديك مساحة تخزين محدودة، لكنها عادة تفتقر إلى ميزات مثل السلال الكبيرة وخيارات الاستلقاء. العربات كاملة المواصفات توفر المزيد من الراحة والتخزين لكنها أثقل وأكبر حجماً، مما يجعلها أفضل للآباء الذين لديهم سيارات ومساحة في المنزل."
+    },
+    {
+      "q": "ما نوع العجلات الأفضل لظروف الإمارات؟",
+      "a": "ابحث عن العربات ذات العجلات الكبيرة المملوءة بالهواء إذا كنت ستتنقل على تضاريس رملية أو غير مستوية، حيث تمتص الصدمات وتتدحرج بسلاسة. العجلات الصغيرة الثابتة تعمل بشكل جيد في المراكز التجارية والشوارع المرصوفة لكنها قد تواجه صعوبة على الشواطئ أو الأرض الوعرة."
+    },
+    {
+      "q": "كيف أعرف إذا كانت العربة ستتسع في سيارتي؟",
+      "a": "تحقق من الأبعاد المطوية المدرجة في المواصفات وقارنها بمساحة صندوق سيارتك - معظم العربات المدمجة تطوى إلى حوالي 25-30 سم عرض. خذ قياسات صندوقك قبل الشراء، خاصة إذا كان لديك سيارة سيدان أو تخطط لطيها بينما مقعد السيارة مثبت."
+    },
+    {
+      "q": "هل المقعد القابل للعكس يستحق التكلفة الإضافية؟",
+      "a": "المقعد القابل للعكس أو المواجه للوالدين مفيد إذا كنت ترغب في إبقاء طفلك قريباً ومراقبته أثناء المشي، لكنه يضيف وزناً وتعقيداً. إنه اختياري ما لم تفضل التفاعل على الراحة أثناء النزهات."
+    },
+    {
+      "q": "ما الميزات الأكثر أهمية للطقس الحار في الإمارات؟",
+      "a": "أعط الأولوية لمظلة كبيرة قابلة للتمديد تحجب الأشعة فوق البنفسجية وتهوية جيدة للحفاظ على برودة طفلك - ابحث عن نوافذ شبكية وأقمشة مقاعد قابلة للتنفس. العربة ذات الحجم المدمج تساعدك على التنقل في المناطق المظللة بسهولة أكبر وتتسع في الأماكن المكيفة بسرعة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CKXXY4RN",
+      "title_en": "The Moon Brand Aria Baby Stroller Travel Gear -Convertible Reclining Transport- Swirl 360 Wheels- 3 Stage Reclining - 5 Point Harness - Storage Basket- Food Tray -0m+ – Dark Grey",
+      "title_ar": "عربة أطفال The Moon Brand Aria للسفر قابلة للتحويل والاستلقاء بعجلات دوارة 360 درجة و3 مستويات استلقاء وحزام 5 نقاط وسلة تخزين وصينية طعام من 0 شهر فأكثر - رمادي غامق",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71v9RxghqWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل نظام استلقاء قابل للتحويل المتوفر",
+        "عجلات دوارة 360 درجة للمناورة بسهولة",
+        "حزام 5 نقاط يحافظ على أمان الطفل",
+        "ثلاثة أوضاع استلقاء تنمو مع طفلك"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DFGM39RS",
+      "title_en": "Baby Trolley, Multi-Functional Baby Stroller Can Sit or Lie, Lightweight Travel Stroller Comfortable and Foldable Bidirectional Push-and-Pull Cabin Stroller with a Large Storage Basket, Shock (Brown)",
+      "title_ar": "عربة أطفال متعددة الوظائف يمكن الجلوس أو الاستلقاء فيها، عربة سفر خفيفة الوزن مريحة وقابلة للطي بدفع ثنائي الاتجاه مع سلة تخزين كبيرة وامتصاص صدمات (بني)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71306oglwSL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم ثنائي الاتجاه رائع لمواجهة الطفل دائماً",
+        "تتحول من الجلوس إلى الاستلقاء الكامل فوراً",
+        "سلة تخزين كبيرة جداً تغنيك عن حقيبة منفصلة",
+        "امتصاص الصدمات يسهل كل تنقل وهزة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0BMLTKP4F",
+      "title_en": "Munchkin Sparrow Ultra Compact Lightweight Travel Stroller for Babies & Toddlers, Grey",
+      "title_ar": "عربة سفر Munchkin Sparrow فائقة الصغر وخفيفة الوزن للأطفال والرضع، رمادي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/91Jun37aj4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم فائق الصغر يتسع في صناديق الطائرة",
+        "هيكل خفيف جداً يسهل الدفع بيد واحدة",
+        "أداء قوي رغم حجمها الصغير المذهل",
+        "مثالية للآباء المسافرين كثيراً"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B08BZQQFFV",
+      "title_en": "Nania LILI Lightweight Baby Stroller, Compact Fold Travel Stroller, Grey, 6kg Aluminum Frame, 0–3 Years (0–15kg), 360° Swivel Wheels, Reclining Seat, 5-Point Harness, Sun Canopy & Storage Basket",
+      "title_ar": "عربة أطفال Nania LILI خفيفة الوزن قابلة للطي المدمج للسفر، رمادي، هيكل ألومنيوم 6 كجم، من 0-3 سنوات (0-15 كجم)، عجلات دوارة 360 درجة، مقعد قابل للاستلقاء، حزام 5 نقاط، مظلة شمسية وسلة تخزين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71SRPm3fJKL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "هيكل ألومنيوم 6 كجم فقط يرفع بيد واحدة",
+        "عجلات دوارة 360 درجة للمناورة في الأسواق",
+        "تنمو من الرضيع إلى الطفل الصغير بسلاسة",
+        "مظلة شمسية تحجب أشعة UVA و UVB الضارة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0G5YLQH79",
+      "title_en": "Two-Way Push Baby Stroller, Lightweight Travel Stroller with Adjustable Canopy Folding High Landscape Infant Carriage, with Large UPF 50+ Canopy Compact & Easy to Fold Anti-Shock Toddler Pushchair",
+      "title_ar": "عربة أطفال بدفع ثنائي الاتجاه، عربة سفر خفيفة الوزن بمظلة قابلة للتعديل قابلة للطي عالية المشهد، مع مظلة كبيرة UPF 50+ مدمجة وسهلة الطي ومضادة للصدمات للأطفال الصغار",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61YMLJmO5HL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الدفع ثنائي الاتجاه يتيح التواصل المباشر",
+        "مظلة ضخمة UPF 50+ تحمي من الشمس الحارقة",
+        "تقنية مضادة للصدمات تمتص كل نتوء بسلاسة",
+        "مظلة قابلة للتعديل تتكيف مع أي ظروف"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0FR4L28VF",
+      "title_en": "Baby Trolley, Multi-Functional Baby Stroller Can Sit or Lie, Lightweight Travel Stroller Comfortable and Foldable Bidirectional Push-and-Pull Cabin Stroller with a Large Storage Basket, Shock (Grey)",
+      "title_ar": "عربة أطفال متعددة الوظائف يمكن الجلوس أو الاستلقاء فيها، عربة سفر خفيفة الوزن مريحة وقابلة للطي بدفع ثنائي الاتجاه مع سلة تخزين كبيرة وامتصاص صدمات (رمادي)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Oa8Cvf0+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الدفع ثنائي الاتجاه الموثوق يبقيك متصلاً دائماً",
+        "تتحول من وضعية الجلوس إلى الاستلقاء فوراً",
+        "هيكل ممتص للصدمات يسهل كل رصيف وعر",
+        "سلة تخزين واسعة تحمل كل ما تحتاجه"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0BF6X9TFN",
+      "title_en": "Munchkin® Sparrow™ Ultra Compact Lightweight Travel Stroller for Babies & Toddlers, Black",
+      "title_ar": "عربة سفر Munchkin Sparrow فائقة الصغر وخفيفة الوزن للأطفال والرضع، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/91UjWVSeNpL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "عربة فائقة الصغر موثوقة للمساحات الضيقة",
+        "هيكل خفيف يطوى بيد واحدة بسهولة",
+        "تصميم أسود أنيق يبدو فاخراً لا اقتصادياً",
+        "أبعاد معتمدة للمطارات للسفر بلا قلق"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0G644XKZL",
+      "title_en": "Baby Stroller for toddlers 0-3 years,One-click Foldable Lightweight Infant Travel Stroller With Storage Basket,Multi-Postion Reclining Seat,Comfortable and Shock Absorbent",
+      "title_ar": "عربة أطفال للأطفال الصغار من 0-3 سنوات، قابلة للطي بنقرة واحدة خفيفة الوزن للسفر مع سلة تخزين، مقعد قابل للاستلقاء بأوضاع متعددة، مريحة وماصة للصدمات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71itXcXiguL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الطي بنقرة واحدة يوفر ثوانٍ ثمينة يومياً",
+        "مقعد متعدد الأوضاع ينمو من الرضيع للأعلى",
+        "خيار رائع للمبتدئين بميزات فاخرة",
+        "امتصاص الصدمات يخفف كل شارع ورصيف"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0F6XY2XQG",
+      "title_en": "LITEX Lightweight Cabin Stroller,Cabin Approved Travel Stroller,Compact&Foldable Baby Stroller,Trolley Handle,Pushchair,Toddler Baby Trolley,Waterproof UPF 50+Canopy,0-3yrs,15kg,3yrs Warranty",
+      "title_ar": "عربة LITEX خفيفة الوزن معتمدة للطائرة، عربة سفر مدمجة وقابلة للطي، بمقبض عربة، عربة دفع للأطفال الصغار، مظلة مقاومة للماء UPF 50+، من 0-3 سنوات، 15 كجم، ضمان 3 سنوات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/718c2j81g0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أبعاد معتمدة للطائرة تتسع في أي صندوق علوي",
+        "مظلة مقاومة للماء UPF 50+ تحمي طوال العام",
+        "الطي المدمج ينزلق في صناديق السيارات الضيقة",
+        "ضمان 3 سنوات يظهر ثقة الشركة المصنعة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0BT7YBJ5T",
+      "title_en": "The Moon Brand Safari Baby Stroller – AnimalThemed Umbrella Stroller with Hood – Compact Lightest Stroller for Travel – Reclining, Storage Basket, Shoulder Strap – 0m+ (Up to 18 kg) - Lion",
+      "title_ar": "عربة أطفال The Moon Brand Safari بتصميم حيوانات مع غطاء، عربة مظلة مدمجة وخفيفة للسفر، قابلة للاستلقاء مع سلة تخزين وحزام كتف، من 0 شهر فأكثر (حتى 18 كجم) - أسد",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71F-X9h0oNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم حيوانات رائع يجعل النزهات ممتعة",
+        "عربة أولى مثالية للعائلات المقتصدة",
+        "حزام الكتف يحرر يديك تماماً"
+      ],
+      "rank": 10
+    }
+  ]
+}

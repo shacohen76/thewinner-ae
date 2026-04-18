@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "slug": "eyeliner",
+    "keyword_text_en": "eyeliner",
+    "translated_at": "2026-04-18T20:34:14.342245",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "محدد العيون",
+  "page_title_ar": "أفضل 10 محدد عيون في الإمارات",
+  "category_name_en": "Makeup",
+  "category_name_ar": "مستحضرات التجميل",
+  "category_slug": "makeup",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين محدد العيون السائل والجل والقلم؟",
+      "a": "محدد العيون السائل يوفر دقة وخطوطاً جريئة لكنه يتطلب مهارة في الاستخدام، بينما الجل يوفر تطبيقاً سلساً مع ثبات متوسط، والقلم الأسهل في التطبيق لكنه قد يتلطخ بسهولة أكبر. اختيارك يعتمد على مستوى مهارتك ومدى الدقة المطلوبة - المبتدئات غالباً ينجحن أكثر مع القلم أو الجل."
+    },
+    {
+      "q": "كيف أعرف إذا كان محدد العيون سيبقى ثابتاً طوال اليوم؟",
+      "a": "ابحثي عن تركيبات مقاومة للماء أو طويلة الأمد، والتي تدوم عادة أكثر من 12 ساعة حتى في المناخات الرطبة مثل الإمارات. تحققي من وصف المنتج عن مصطلحات مثل 'مقاوم للتلطخ' و 'مقاوم للعرق' بدلاً من الاعتماد على التركيبات العادية التي تتحلل مع الحرارة والرطوبة."
+    },
+    {
+      "q": "ما الفرق بين الكحل وقلم محدد العيون؟",
+      "a": "الكحل أنعم وأسهل في الدمج لإطلالة سموكي، بينما قلم محدد العيون أكثر صلابة وأفضل للخطوط المحددة. الكحل يعمل بشكل أفضل للإطلالة الناعمة أو تحديد خط الماء، بينما القلم مثالي إذا كنتِ تريدين تحديداً واضحاً ودائماً."
+    },
+    {
+      "q": "هل يجب أن أشتري محدد عيون برأس لباد أم فرشاة؟",
+      "a": "محددات العيون ذات الرأس اللباد تمنحك أدق الخطوط وأكثرها تحكماً وسهلة للمبتدئات، بينما محددات الفرشاة توفر مرونة أكبر للخطوط السميكة والتأثيرات الفنية. إذا كنتِ تريدين دقة دون جهد، فالرأس اللباد هو أفضل خيار."
+    },
+    {
+      "q": "هل يستحق دفع المزيد مقابل علامة تجارية فاخرة لمحدد العيون؟",
+      "a": "محددات العيون الراقية عادة تتميز بصبغة أفضل ومدة ثبات أطول وتهيج أقل، وهذا مهم إذا كنتِ تستخدمين محدد العيون يومياً أو لديكِ عيون حساسة. الخيارات الاقتصادية تعمل بشكل جيد للاستخدام العرضي، لكن إذا كنتِ تطبقينه بانتظام في الحر والرطوبة، فالاستثمار في تركيبة موثوقة يوفر عليكِ الإحباط."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B07S141T2R",
+      "title_en": "Maybelline New York Colossal Bold Eyeliner, Black, 3g",
+      "title_ar": "Maybelline New York Colossal Bold محدد عيون، أسود، 3g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51SgpFfD9GL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى تحديد جريء متوفر في السوق",
+        "الاختيار الأمثل لعيون دراماتيكية لافتة",
+        "الرائد في كثافة اللون والتأثير القوي"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0093MG0LE",
+      "title_en": "Essence liquid ink waterproof eyeliner, Black",
+      "title_ar": "Essence محدد عيون سائل مقاوم للماء، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/518Szfo7msL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة سائلة مقاومة للماء تبقى مثالية",
+        "دقة استثنائية مع انسياب حبر ناعم",
+        "منافس متميز لتحديد العيون طوال اليوم"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B00SFUYIZK",
+      "title_en": "Essence Eyeliner Pen Waterproof - 01 Black, 77217, 0.03 Fluid Ounce",
+      "title_ar": "Essence قلم محدد عيون مقاوم للماء - 01 أسود، 77217، 0.03 Fluid Ounce",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51wcNEeVF1L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداة قلم ممتازة تضمن تحكماً مثالياً",
+        "أداء قوي مع ثبات مقاوم للماء",
+        "خطوط دقيقة لا تتلطخ أو تتلاشى"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0C78F5HT3",
+      "title_en": "essence eyeliner pen extra long-lasting 010",
+      "title_ar": "essence قلم محدد عيون طويل الأمد جداً 010",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51GNVLWyGPL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لثبات احترافي 24 ساعة",
+        "قلم خطي موثوق للفنانات",
+        "لون مطفي مكثف يرفض التحرك"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0816PC5JB",
+      "title_en": "Maybelline New York Liquid Eyeliner, Brush Tip, Long-Lasting and Waterproof, Matte Finish, Hyper Easy Liner, Black",
+      "title_ar": "Maybelline New York محدد عيون سائل، برأس فرشاة، طويل الأمد ومقاوم للماء، لمسة نهائية مطفية، Hyper Easy Liner، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61qTGDtbdNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "رأس فرشاة ممتاز ينشئ خطوطاً دقيقة بسهولة",
+        "أداء قوي مع تطبيق فائق السهولة",
+        "لمسة نهائية مطفية مقاومة للماء تدوم"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B07YN8N8MS",
+      "title_en": "Catrice Calligraph Pro Precise 24H Matt Liner Waterproof, 010 Intense Black, 1.2 Ml",
+      "title_ar": "Catrice Calligraph Pro Precise 24H محدد مطفي مقاوم للماء، 010 أسود مكثف، 1.2 Ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31TM5RHuQCL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ثبات 24 ساعة يحافظ على خطك حاداً",
+        "تركيبة مقاومة للماء تصمد أمام الرطوبة والعرق",
+        "أداة دقيقة 1.2ml توفر تحديداً مثالياً بالأسود",
+        "لمسة مطفية تلغي اللمعان لنتائج احترافية"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B01D8BUHN2",
+      "title_en": "Wet n Wild MegaLiner Liquid Eyeliner, Black",
+      "title_ar": "Wet n Wild MegaLiner محدد عيون سائل، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61nv9Pj2sbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محدد ضخم يوفر تأثيراً جريئاً للعيون",
+        "تركيبة سائلة موثوقة تنزلق بسلاسة",
+        "دراما احترافية في كل ضربة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B00EAM6WA6",
+      "title_en": "Rimmel London, Exaggerate Waterproof Liquid Eyeliner, Black, 2.5 ml",
+      "title_ar": "Rimmel London، Exaggerate محدد عيون سائل مقاوم للماء، أسود، 2.5 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51XxN3GBkyL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ذكي مقاوم للماء لأنماط الحياة النشطة",
+        "محدد سائل رائع للمبتدئات مع دقة",
+        "دراما مبالغ فيها تدوم طوال اليوم"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B07L7RDCHT",
+      "title_en": "Maybelline New York Colossal Eyeliner with Argan Oil, Matte, Black, Pencil",
+      "title_ar": "Maybelline New York Colossal محدد عيون قلم بزيت الأرغان، مطفي، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/412TixQQ4tL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قلم اقتصادي ذكي غني بزيت الأرغان",
+        "خيار رائع للمبتدئات بلمسة مطفية",
+        "تركيبة مغذية تحافظ على نعومة المنطقة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0058CP4ZQ",
+      "title_en": "Rimmel London, Glameyes Professional Liquid Liner, 01 Black Glamour, 3.5 ml",
+      "title_ar": "Rimmel London، Glameyes محدد سائل احترافي، 01 أسود ساحر، 3.5 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31imXvBLJuL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محدد سائل احترافي ذكي للباحثات عن السحر",
+        "تركيبة احترافية رائعة للمبتدئات",
+        "حجم سخي 3.5ml يدوم أطول من المنافسين"
+      ],
+      "rank": 10
+    }
+  ]
+}

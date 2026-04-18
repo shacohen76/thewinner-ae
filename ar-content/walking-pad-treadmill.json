@@ -1,0 +1,171 @@
+{
+  "_meta": {
+    "slug": "walking-pad-treadmill",
+    "keyword_text_en": "Walking Pad treadmill",
+    "translated_at": "2026-04-18T20:34:14.369307",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة المشي المدمجة",
+  "page_title_ar": "أفضل 10 أجهزة المشي المدمجة في الإمارات",
+  "category_name_en": "Fitness & Sports",
+  "category_name_ar": "اللياقة البدنية والرياضة",
+  "category_slug": "fitness-sports",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين جهاز المشي المدمج وجهاز الجري العادي؟",
+      "a": "أجهزة المشي المدمجة خفيفة ومصممة للمشي فقط (عادة حتى 5-6 كم/ساعة)، بينما أجهزة الجري العادية تدعم الركض ولها أسطح أكبر مع مزيد من التبطين. إذا كنت تريد المشي أثناء العمل أو مشاهدة التلفاز، فالجهاز المدمج يوفر المساحة والتكلفة؛ للركض تحتاج جهاز جري كامل."
+    },
+    {
+      "q": "ما سعة الوزن المناسبة التي يجب البحث عنها؟",
+      "a": "معظم أجهزة المشي المدمجة تتحمل 100-120 كجم، وهو مناسب للمستخدمين العاديين، لكن تحقق من المواصفات لوزنك مع هامش أمان. إذا كان وزنك فوق 120 كجم، ابحث عن موديلات بسعة 140+ كجم لضمان المتانة والتشغيل المستقر."
+    },
+    {
+      "q": "هل قوة المحرك مهمة لجهاز المشي المدمج؟",
+      "a": "لأجهزة المشي المدمجة، محركات بقوة 1.5-2.5 HP كافية لأنها لا تتعامل مع الجري عالي التأثير. محرك أقوى (2+ HP) يعمل بهدوء أكثر ويتحمل الاستخدام اليومي المستمر بشكل أفضل، لذا يستحق دفع المزيد إذا كنت تخطط للاستخدام المنتظم."
+    },
+    {
+      "q": "كم مساحة أحتاج فعلياً لجهاز المشي المدمج؟",
+      "a": "معظم أجهزة المشي المدمجة تطوى إلى حوالي 1.5 متر طول و0.8 متر عرض عند الطي، وتناسب خلف الباب أو تحت السرير. تحقق من الأبعاد عند الفتح (عادة 1.5-2 متر طول، 0.8-1 متر عرض) مقارنة بمساحة أرضيتك الفعلية قبل الشراء."
+    },
+    {
+      "q": "ما الميزات التي تستحق دفع المزيد من أجلها؟",
+      "a": "شاشة مدمجة تعرض السرعة والمسافة، والاتصال بالتطبيقات، وتعديل الميل (2-3 درجات) تحسن التجربة للمستخدمين المنتظمين. التحكم عن بعد أو التحكم بالهاتف الذكي مريح لكنه غير ضروري؛ ركز على جودة البناء وموثوقية المحرك أولاً."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0F1FY4N1C",
+      "title_en": "Sperax Walking Vibration Pad with APP,Under Desk Treadmill for Home,4 in 1 Portable Vibration Machine",
+      "title_ar": "جهاز مشي Sperax بتقنية الاهتزاز مع التطبيق، جهاز مشي تحت المكتب للمنزل، آلة اهتزاز محمولة 4 في 1",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61+KBQwZulL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل تنوع 4 في 1 في السوق",
+        "التكامل مع التطبيق يحول تجربة التمرين بالكامل",
+        "تقنية الاهتزاز تضاعف النتائج في مساحة صغيرة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B07QWLLXKV",
+      "title_en": "SKY LAND Walking Pad Treadmill for Home & Office – Slim Under Desk Walking Treadmill with LED Display, Remote Control, Quiet Motor, Space-Saving Design",
+      "title_ar": "جهاز مشي SKY LAND للمنزل والمكتب – جهاز مشي نحيف تحت المكتب مع شاشة LED، تحكم عن بعد، محرك هادئ، تصميم موفر للمساحة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61SgYqVpYWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز للموظفين المكتبيين",
+        "محرك هامس يتيح لك العمل دون إزعاج",
+        "التحكم عن بعد يعني عدم مغادرة مكتبك",
+        "نحيف بما يكفي للإخفاء تحت الأثاث"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0FWK77SV7",
+      "title_en": "3-in-1 Walking Pad Treadmill with Handle Bar 2.5HP Walking Pad with 15% Incline 1-10km/h Foldable Treadmill for Home 136KG Weight Capacity with Remote Control & LED Display",
+      "title_ar": "جهاز مشي 3 في 1 مع مقبض 2.5HP وميل 15% سرعة 1-10 كم/ساعة قابل للطي للمنزل سعة 136 كجم مع تحكم عن بعد وشاشة LED",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71SRnQckOyL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ميل قوي 15% يحاكي تدريب التلال الحقيقي",
+        "دعم المقبض يجعل تمارين القلب المكثفة طبيعية",
+        "سعة 136 كجم تتحمل التدريبات الجادة المستمرة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0DWMXQVR6",
+      "title_en": "Sparnod Fitness Walking Pad & Treadmill for Home Use | Ultra-Slim Design | LED Display | Manual Incline | 2.5 HP Motor | 1–6 km/h Speed | Up to 100 kg Capacity (STH-3001 / STH-3002)",
+      "title_ar": "جهاز مشي Sparnod Fitness للاستخدام المنزلي | تصميم نحيف جداً | شاشة LED | ميل يدوي | محرك 2.5 HP | سرعة 1–6 كم/ساعة | سعة حتى 100 كجم (STH-3001 / STH-3002)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51NOAi8dkSL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى جهاز مشي مدمج متاح",
+        "التصميم النحيف جداً يناسب أي مساحة معيشة",
+        "امتصاص الصدمات يحمي مفاصلك في كل خطوة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0G246X4YL",
+      "title_en": "Walking Pad Treadmill with Incline Treadmills for Home, FOUSAE 10 KM/H Under Desk Treadmill with 150KG Weight Capacity, 2.5 HP Brushless Motor, 12 HIIT Programs, Full Screen LED Display",
+      "title_ar": "جهاز مشي FOUSAE بميل للمنزل، 10 كم/ساعة تحت المكتب سعة 150 كجم، محرك 2.5 HP بدون فرش، 12 برنامج HIIT، شاشة LED كاملة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71+30cJ030L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "12 برنامج HIIT ممتاز يوجه تدريبك",
+        "محرك 2.5HP بدون فرش يعمل بصمت تام",
+        "سرعة 10 كم/ساعة تتحدى حتى العدائين الخبراء"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0G5X8KP71",
+      "title_en": "Walking Pad Treadmill For Home & Office, Protable Compact Under Desk Slim Treadmill With Remote, Home Walking Machine For Exercise, LED Display, 265lbs, Installation Free",
+      "title_ar": "جهاز مشي محمول للمنزل والمكتب، نحيف تحت المكتب مع تحكم عن بعد، آلة مشي منزلية للتمارين، شاشة LED، 265 رطل، بدون تركيب",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61MBC-2nMkL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي بإعداد جاهز بدون تركيب",
+        "راحة التحكم عن بعد من كرسي مكتبك",
+        "تصميم مدمج يناسب تماماً تحت أي مساحة عمل"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0F5WS6RR3",
+      "title_en": "Sperax Walking Pad Treadmill with APP,Under Desk Treadmill,Vibration Walking Pad 150KG Capacity",
+      "title_ar": "جهاز مشي Sperax مع التطبيق، جهاز مشي تحت المكتب، جهاز مشي بالاهتزاز سعة 150 كجم",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61e1V1E+3ZL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية اهتزاز ممتازة تعزز كل خطوة",
+        "الاتصال بالتطبيق يحول هاتفك إلى مركز تحكم",
+        "سعة 150 كجم تلغي قيود الوزن",
+        "محرك قوي يوفر تمارين سلسة تحت المكتب"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0F1FWK69R",
+      "title_en": "Sperax Walking Vibration Pad Treadmill with 6% Manual Incline,5 in 1 Folding Under Desk Treadmill for Home Office with Handle Bar",
+      "title_ar": "جهاز مشي Sperax بالاهتزاز مع ميل يدوي 6%، قابل للطي 5 في 1 تحت المكتب للمنزل والمكتب مع مقبض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71xXrRRPw7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "دعم مقبض صلب يثبت رحلة لياقتك",
+        "تخزين طي موثوق يناسب المساحات المنزلية الضيقة",
+        "وظائف 5 في 1 تعظم خيارات تدريبك"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0CN6S89TS",
+      "title_en": "Incline Treadmill with Handle for Home and Office, Foldable Treadmills with 265 Lbs Weight Capacity, 2.5HP Quiet Walking Pad Treadmill, Three LED Screen Display",
+      "title_ar": "جهاز جري بميل مع مقبض للمنزل والمكتب، قابل للطي سعة 265 رطل، جهاز مشي هادئ 2.5HP، ثلاث شاشات LED",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EXeXKvcpL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ميزانية ذكي يوفر ثلاث شاشات LED",
+        "جهاز جري بميل رائع للمبتدئين بتقنية الطي",
+        "محرك 2.5HP يتحمل جلسات القلب المكثفة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0G8CTL38R",
+      "title_en": "Treadmill with Incline, 3.0HP Small Treadmills for Home, 300LBS Capacity,Portable Electric Treadmill with Handles,Lightweight Walking Pad,Compact Running Treadmills,LED Dispay",
+      "title_ar": "جهاز جري بميل، 3.0HP أجهزة جري صغيرة للمنزل، سعة 300 رطل، جهاز جري كهربائي محمول مع مقابض، جهاز مشي خفيف، مدمج، شاشة LED",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/7111DcJq0BL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سعة عملية 300 رطل تدعم المشاة الجادين",
+        "محرك 3.0HP يتعامل مع المشي المائل بسهولة",
+        "تصميم خفيف ينتقل بين الغرف بسلاسة"
+      ],
+      "rank": 10
+    }
+  ]
+}

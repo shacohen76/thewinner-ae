@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "slug": "action-cameras",
+    "keyword_text_en": "action cameras",
+    "translated_at": "2026-04-18T20:34:14.366539",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "كاميرات الأكشن",
+  "page_title_ar": "أفضل 10 كاميرات الأكشن في الإمارات",
+  "category_name_en": "Cameras & Photography",
+  "category_name_ar": "الكاميرات والتصوير",
+  "category_slug": "cameras-photography",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما دقة الفيديو ومعدل الإطارات الذي يجب أن أبحث عنه؟",
+      "a": "لمعظم الأنشطة، 4K بمعدل 30fps كافية تماماً، لكن إذا كنت تخطط لتصوير مشاهد بطيئة أو حركة سريعة مثل ركوب الدراجات الجبلية، اختر 4K بمعدل 60fps أو أعلى. أي شيء أعلى من ذلك مفيد بشكل أساسي للمحترفين وسيستهلك البطارية بشكل أسرع."
+    },
+    {
+      "q": "ما مدى أهمية تصنيف عمق مقاومة الماء؟",
+      "a": "تحقق من تصنيف العمق مقابل استخدامك الفعلي - الغطس يحتاج 10m كحد أدنى، والغوص يذهب لأعمق، بينما ركوب الأمواج والرياضات المائية تعمل جيداً عند 5-10m. مقاومة الماء المدمجة مريحة، لكن حافظات الحماية الخارجية توفر حماية أفضل وعادة أرخص للاستبدال إذا تضررت."
+    },
+    {
+      "q": "هل تثبيت الصورة يحدث فرقاً حقيقياً؟",
+      "a": "نعم، يستحق الاستثمار إذا كنت تصور بيدك أو على المركبات - فهو يحسن المقاطع المهتزة بشكل كبير. التثبيت الإلكتروني يعمل جيداً لمعظم الحالات، بينما التثبيت البصري أكثر تطوراً لكن بتكلفة أعلى."
+    },
+    {
+      "q": "ما سعة التخزين وسرعة البطاقة التي أحتاجها فعلياً؟",
+      "a": "لتسجيل 4K، استخدم بطاقة microSD سريعة UHS-II (V60 أو أعلى) بسعة 64GB على الأقل - هذا يمنحك حوالي ساعة واحدة من التصوير. إذا كنت تصور جلسات متعددة دون تفريغ، احصل على 128GB أو 256GB لتجنب نفاد المساحة أثناء المغامرة."
+    },
+    {
+      "q": "متى يستحق دفع المزيد مقابل كاميرا أكشن متميزة؟",
+      "a": "أنفق المزيد إذا كنت بحاجة إلى ميزات متقدمة مثل أداء أفضل في الإضاءة المنخفضة، عمر بطارية أطول، أو تسجيل صوت متفوق - وليس فقط لاسم العلامة التجارية. الموديلات الاقتصادية تتعامل مع معظم الأنشطة الترفيهية بشكل جيد، لذا قم بالترقية فقط إذا كنت جاداً بشأن الجودة وتخطط لاستخدامها بانتظام."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CG19QXWD",
+      "title_en": "DJI Osmo Pocket 3, Vlogging Camera with 1'' CMOS & 4K/120fps Video, 3-Axis Stabilization, Face/Object Tracking, Fast Focusing, 2\" Rotatable Touchscreen, UAE Version with Official Warranty Support",
+      "title_ar": "DJI Osmo Pocket 3، كاميرا فلوج مع مستشعر 1 بوصة CMOS وفيديو 4K/120fps، تثبيت 3 محاور، تتبع الوجه والأجسام، تركيز سريع، شاشة لمس دوارة 2 بوصة، نسخة الإمارات مع ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61tukvVUMiL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل تثبيت لمقاطع فلوج سلسة للغاية",
+        "مستشعر 2 بوصة يلتقط تفاصيل سينمائية في كل مكان",
+        "شاشة دوارة تتيح تأطير سيلفي مثالي"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DDSH1W1N",
+      "title_en": "i3 4K Thumb Action Camera, Tiny Size, Mount Anywhere, Small Body Camera with Spring Clip, Portable Vlogging, Hands-Free POV Recording, Helmet Cam for Cycling, Motorcycle (64G-Card, Black)",
+      "title_ar": "i3 كاميرا أكشن 4K بحجم الإبهام، حجم صغير، تثبت في أي مكان، كاميرا جسم صغيرة بمشبك زنبركي، فلوج محمول، تسجيل POV بدون استخدام اليدين، كاميرا خوذة للدراجات والدراجات النارية (بطاقة 64G، أسود)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61yZsXqWoLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم ممتاز بحجم الإبهام يناسب جيبك",
+        "قوية بما يكفي للخوذة والدراجة والرياضات الشديدة",
+        "مشبك زنبركي يثبت في أي مكان دون أدوات",
+        "جودة 4K من كاميرا أصغر من ولاعة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B07FW4CZZL",
+      "title_en": "DJI Osmo Action 5 Pro Adventure Combo, Action Camera, Bursting With 40MP of Action, 4K/120fps, 1/1.3″Sensor, Dual OLED Touchscreens,47GB Built-in Storage, UAE Version, Official Warranty Support",
+      "title_ar": "DJI Osmo Action 5 Pro Adventure Combo، كاميرا أكشن، مليئة بـ 40MP من الحركة، 4K/120fps، مستشعر 1/1.3 بوصة، شاشات لمس OLED مزدوجة، تخزين مدمج 47GB، نسخة الإمارات، ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71FdBD3y0rL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "التقاط ذكي 40MP يجمد اللحظات الخاطفة",
+        "شاشات لمس OLED مزدوجة رائعة للتحكم السهل",
+        "حركة بطيئة 4K/120fps تكشف تفاصيل الحركة الخفية",
+        "تخزين 47GB يلغي الحاجة لتبديل البطاقات باستمرار"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0D1YH4B2R",
+      "title_en": "DJI Osmo Action 5 Pro Standard Combo, UAE Version, Official Warranty Support",
+      "title_ar": "DJI Osmo Action 5 Pro Standard Combo، نسخة الإمارات، ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71pg9H7KEuL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بميزات احترافية وسعر أخف",
+        "4K/120fps يتعامل مع الرياضات السريعة بسهولة",
+        "بناء متين يصمد أمام ظروف المغامرات الشديدة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0G1LP9Y1X",
+      "title_en": "Poat Action Camera, Mini Pov Camera for vlogging, IPX7 Waterproof, Body Camera with 120° Wide Angle, POV Recording for Diving, 10+ Accessories – Helmet Cam for Motorcycle, Cycling (64G-Card)",
+      "title_ar": "Poat كاميرا أكشن، كاميرا POV صغيرة للفلوج، مقاومة ماء IPX7، كاميرا جسم بزاوية واسعة 120 درجة، تسجيل POV للغوص، أكثر من 10 إكسسوارات - كاميرا خوذة للدراجات النارية والدراجات (بطاقة 64G)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/712eci+-FoL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مقاومة للماء حتى أعماق الغوص بدون قلق",
+        "أكثر من 10 إكسسوارات تحولها لطقم كامل",
+        "تسجيل POV خفيف للمغامرات بدون استخدام اليدين"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B01HGM33HG",
+      "title_en": "AKASO EK7000 4K Action Camera Ultra HD WiFi Sports Waterproof Underwater Camera Video Recorder with 170 Degree Wide Angle and Accessories Kit,Black",
+      "title_ar": "AKASO EK7000 كاميرا أكشن 4K Ultra HD WiFi رياضية مقاومة للماء تحت الماء مسجل فيديو بزاوية واسعة 170 درجة مع مجموعة إكسسوارات، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71LwiZU3oZL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق بمنظور فائق العرض 170 درجة",
+        "تسجيل 4K يلتقط تفاصيل مذهلة في كل لحظة",
+        "مجموعة إكسسوارات كاملة جاهزة للتثبيت فوراً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0D3X3WS5C",
+      "title_en": "Insta360 GO 3S 128GB 4K Mini Portable Vlogging Camera, Hands-Free, Mount Anywhere, Stabilization, 140-Minute Battery life, 10m Waterproof, Apple Find My, Pet POV, White",
+      "title_ar": "Insta360 GO 3S 128GB كاميرا فلوج صغيرة محمولة 4K، بدون استخدام اليدين، تثبت في أي مكان، تثبيت، عمر بطارية 140 دقيقة، مقاومة للماء 10m، Apple Find My، POV للحيوانات الأليفة، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ti3cYFEwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار رائع لـ POV الحيوانات الأليفة والسفر",
+        "مقاومة للماء حتى 10m لأي بيئة",
+        "Apple Find My يحافظ على أمان كاميرتك"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0DYD56G2Y",
+      "title_en": "DJI Osmo Nano Standard Combo (128GB), Small 4K/60fps Vlogging Camera with a 1/1.3″ Sensor, 143° Wide FOV Video, 200-Min Recording, Magnetic POV Cam 4K for Sports, Vlog, UAE Version, Official Warranty",
+      "title_ar": "DJI Osmo Nano Standard Combo (128GB)، كاميرا فلوج صغيرة 4K/60fps بمستشعر 1/1.3 بوصة، فيديو بمجال رؤية واسع 143 درجة، تسجيل 200 دقيقة، كاميرا POV مغناطيسية 4K للرياضة والفلوج، نسخة الإمارات، ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61GIVmeZGzL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قابلية حمل ممتازة بنظام تثبيت POV مغناطيسي",
+        "مجال رؤية واسع قوي 143 درجة يلتقط كل شيء",
+        "200 دقيقة من التسجيل المستمر دون توقف",
+        "مستشعر 1/1.3 بوصة يتفوق على حجمه المدمج"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0B9H572LC",
+      "title_en": "Insta360 CINSAAQ/B X3 360 Degree Action Camera- Black",
+      "title_ar": "Insta360 CINSAAQ/B X3 كاميرا أكشن 360 درجة - أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61JIsqTNFPL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي لمحتوى أكشن 360 درجة",
+        "تقنية كاميرا 360 مثبتة في الأساس",
+        "تلتقط كل شيء حولك في وقت واحد"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0F5WJ6TXW",
+      "title_en": "Insta360 X5 - Waterproof 8K 360° Action Camera, Leading Low Light, Invisible Selfie Stick Effect, Rugged and Replaceable Lens, 3-Hour Battery, Triple AI Chip Design, UAE Version",
+      "title_ar": "Insta360 X5 - كاميرا أكشن 360 درجة مقاومة للماء 8K، رائدة في الإضاءة المنخفضة، تأثير عصا السيلفي الخفية، عدسة متينة وقابلة للاستبدال، بطارية 3 ساعات، تصميم شريحة AI ثلاثية، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71vyCvRg0qL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "التقاط رائع 360 درجة بدقة 8K لسرد القصص الغامر",
+        "أداء استثنائي في الإضاءة المنخفضة في الظروف الصعبة",
+        "تأثير عصا السيلفي الخفية يبدو سينمائياً طبيعياً",
+        "عدسة متينة قابلة للاستبدال تحمي استثمارك"
+      ],
+      "rank": 10
+    }
+  ]
+}

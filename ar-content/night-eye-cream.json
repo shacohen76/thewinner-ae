@@ -1,0 +1,168 @@
+{
+  "_meta": {
+    "slug": "night-eye-cream",
+    "keyword_text_en": "night eye cream",
+    "translated_at": "2026-04-18T20:34:14.375206",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "كريم العين الليلي",
+  "page_title_ar": "أفضل 10 كريم عين ليلي في الإمارات",
+  "category_name_en": "Skincare",
+  "category_name_ar": "العناية بالبشرة",
+  "category_slug": "skincare",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين كريم العين الليلي والمرطب العادي؟",
+      "a": "كريمات العين الليلية مصممة خصيصاً لمنطقة العين الحساسة بتركيزات أعلى من المكونات النشطة مثل Retinol وPeptides وHyaluronic Acid، بينما المرطبات العادية أخف وزناً ومصممة لمناطق أكبر من الوجه. منطقة العين تمتلك بشرة أرق واحتياجات مختلفة، لذا المنتج المخصص يقدم نتائج أفضل للخطوط الدقيقة والهالات السوداء."
+    },
+    {
+      "q": "ما الكمية الفعلية التي أحتاجها من كريم العين؟",
+      "a": "كمية بحجم حبة البازلاء (حوالي نصف حبة أرز) كافية لكلتا العينين - فالبشرة حول عينيك رقيقة وحساسة، لذا استخدام كمية أكبر لن يعطي نتائج أفضل. ضعيه بلطف عبر الطرق بإصبع البنصر بدلاً من الفرك، لأن هذه المنطقة معرضة للتلف من الاحتكاك."
+    },
+    {
+      "q": "ما المكونات التي يجب أن أبحث عنها في كريم العين الليلي؟",
+      "a": "Retinol وPeptides وCaffeine وHyaluronic Acid مكونات مثبتة الفعالية لمشاكل الشيخوخة، بينما Niacinamide يعمل بشكل جيد للبشرة الحساسة وVitamin C يعالج الهالات السوداء. حددي مشكلتك الرئيسية - الخطوط الدقيقة أو الانتفاخ أو تغير اللون - واختاري قائمة المكونات وفقاً لذلك."
+    },
+    {
+      "q": "هل يستحق إنفاق المزيد على الماركات الفاخرة لكريم العين الليلي؟",
+      "a": "السعر الأعلى غالباً يعني جودة أفضل للمكونات والأبحاث، لكن الخيارات متوسطة السعر ذات التركيبات الجيدة يمكن أن تعمل بنفس الفعالية لمعظم الأشخاص. الأهم هو الاستمرارية وما إذا كانت التركيبة تعالج مشكلتك المحددة فعلياً، وليس اسم الماركة."
+    },
+    {
+      "q": "هل يمكنني استخدام نفس كريم العين نهاراً وليلاً، أم أحتاج منتجات منفصلة؟",
+      "a": "يمكنك استخدام نفس الكريم في الوقتين، لكن التركيبات الليلية المخصصة عادة أغنى وتحتوي على مكونات نشطة أقوى مثل Retinol التي تعمل بشكل أفضل عندما لا تتعرضين للشمس. إذا كانت ميزانيتك محدودة، كريم عين واحد جيد يكفي - فقط تأكدي من استخدام SPF نهاراً لأن منطقة العين تحتاج حماية."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B09ZB7GDJL",
+      "title_en": "Haruharu Wonder Black Rice Bakuchiol Eye Cream 20 ml",
+      "title_ar": "كريم العين Haruharu Wonder Black Rice Bakuchiol 20 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41sU2gxMQeL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى علاج للعين يحتوي على Bakuchiol",
+        "يستخدم علم نخالة الأرز القديم للتجديد الليلي",
+        "الخيار الأفضل لتحويل العيون المتعبة والمتقدمة بالعمر"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DWMSM6Y9",
+      "title_en": "medicube Salmon DNA PDRN Pink Peptide Eye Serum, Niacinamide and 99% Pure Retinol Eye Cream for Fine Lines, Dark Circles, Korean Skin Care 1.01fl.oz",
+      "title_ar": "سيروم العين medicube Salmon DNA PDRN Pink Peptide مع Niacinamide و99% Pure Retinol لعلاج الخطوط الدقيقة والهالات السوداء 1.01fl.oz",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61g9IyjgR0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز يجمع Salmon DNA مع Retinol النقي",
+        "تركيبة كورية استثنائية تستهدف الخطوط الدقيقة فوراً",
+        "تركيز Retinol 99% يحارب الهالات السوداء بقوة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0869BG87H",
+      "title_en": "Olay Night Eye Cream: Regenerist Retinol 24 Eye Cream Moisturizer, 15G",
+      "title_ar": "كريم العين الليلي Olay Regenerist Retinol 24 15G",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61r-ZHoTcYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بتقنية Retinol 24 المثبتة سريرياً",
+        "أداء قوي يجدد منطقة العين الحساسة ليلاً",
+        "تركيبة Olay الموثوقة بـ Retinol تنعّم التجاعيد بشكل واضح"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0CGT5F8KL",
+      "title_en": "Estée Lauder Advanced Night Repair Eye Supercharged Gel-Cream Synchronized Multi-Recovery | Under Eye Cream for Dark Circles, Travel Size, 0.17 Fl Oz",
+      "title_ar": "كريم جل العين Estée Lauder Advanced Night Repair Eye Supercharged للهالات السوداء 0.17 Fl Oz",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41ExTb-WcjL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز من عملاق التجميل الفاخر Estée Lauder",
+        "أداء قوي بتقنية الترميم الليلي المتقدم",
+        "تركيبة Gel-Cream متعددة الاستعادة تعمل أثناء النوم"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0BMTSNW7V",
+      "title_en": "Some By Mi Retinol Intense Advanced Triple Action Eye Cream | 30ml | Mild Overnight Korean Anti-Aging Eye Cream | for Dark Circles & Fine Lines",
+      "title_ar": "كريم العين Some By Mi Retinol Intense Advanced Triple Action 30ml كوري مضاد للشيخوخة للهالات السوداء والخطوط الدقيقة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ZdWTukF0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بتركيبة كورية ثلاثية الفعل مضادة للشيخوخة",
+        "أداء قوي لطيف على منطقة تحت العين الحساسة",
+        "حجم 30ml يوفر رحلة علاج ليلي ممتدة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B07ZRF416W",
+      "title_en": "COSRX Advanced Snail Peptide Eye Cream 25ml",
+      "title_ar": "كريم العين COSRX Advanced Snail Peptide 25ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61lca3tLALL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد يحتوي على مركب Snail Peptide المتقدم",
+        "اختيار موثوق بـ 25ml من سيروم التجديد المركز",
+        "خبرة COSRX تقدم الابتكار الكوري للمناطق الحساسة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B09N9ZV34Z",
+      "title_en": "The Inkey List Caffeine Eye Cream 15ml | Improves Dark Circles | Brightens Under Eye | Fragrance-free | Suitable For All Skin Types",
+      "title_ar": "كريم العين The Inkey List Caffeine 15ml يحسن الهالات السوداء ويفتح منطقة تحت العين خالٍ من العطور",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61myFuZze-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد بتعزيز Caffeine يستهدف السواد",
+        "اختيار موثوق يفتح منطقة تحت العين فوراً",
+        "تركيبة خالية من العطور تناسب البشرة الحساسة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0B45LL4DD",
+      "title_en": "Beauty of Joseon Revive Eye Serum with Ginseng Retinal Niacinamide Korean Eye Cream for Fine Lines, Dark Spots Correcting Puffy Eyes for Face Korean Skincare For Men and Women 30ml",
+      "title_ar": "سيروم العين Beauty of Joseon Revive مع Ginseng Retinal Niacinamide كريم كوري للخطوط الدقيقة والبقع الداكنة 30ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61APiicYDsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي بمزيج Ginseng Retinal الفاخر",
+        "خيار مبتدئ رائع يجمع فعالية Niacinamide"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0987DJDSG",
+      "title_en": "Mary&May Tranexamic Acid + Glutathione Eye Cream - Powerful Antioxidant, Reduces Dark Circles in the Eye, Improve Uneven Skin Tone with Vitamin C - Suitable for Morning and Night Use, 30ml",
+      "title_ar": "كريم العين Mary&May Tranexamic Acid + Glutathione مضاد أكسدة قوي يقلل الهالات السوداء مع Vitamin C 30ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51xNwZGGFjL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي محمل بمضادات أكسدة قوية",
+        "خيار مبتدئ رائع يقلل الهالات السوداء بوضوح",
+        "Tranexamic Acid مع Glutathione يعالج اللون غير المتساوي"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B000KOLXKM",
+      "title_en": "LOreal Professional Revitalift Anti-Wrinkle and Firming Eye Cream for Unisex 0.5 oz Cream",
+      "title_ar": "كريم العين L'Oreal Professional Revitalift مضاد للتجاعيد ومشد 0.5 oz",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61DHd-BxjUL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي من L'Oreal Professional الموثوقة",
+        "علاج مبتدئ رائع مضاد للتجاعيد لجميع أنواع البشرة",
+        "يشد وينعش العيون المتعبة كل ليلة"
+      ],
+      "rank": 10
+    }
+  ]
+}

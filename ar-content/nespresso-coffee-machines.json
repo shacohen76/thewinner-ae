@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "slug": "nespresso-coffee-machines",
+    "keyword_text_en": "Nespresso coffee machines",
+    "translated_at": "2026-04-18T20:34:14.363776",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "ماكينات قهوة Nespresso",
+  "page_title_ar": "أفضل 10 ماكينات قهوة Nespresso في الإمارات",
+  "category_name_en": "Coffee & Tea",
+  "category_name_ar": "القهوة والشاي",
+  "category_slug": "coffee-tea",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين ماكينات Nespresso من خط Original وخط VertuoLine؟",
+      "a": "يستخدم خط Original كبسولات الإسبريسو التقليدية ويحضر مشروبات أصغر حجماً وأقوى نكهة، بينما يستخدم خط VertuoLine كبسولات أكبر ويعتمد على قوة الطرد المركزي للتحضير، مما ينتج أكواباً أكبر تشبه القهوة المفلترة. اختر Original إذا كنت تفضل مشروبات الإسبريسو، واختر Vertuo إذا كنت تفضل الأحجام الأكبر والتنوع في أحجام الأكواب."
+    },
+    {
+      "q": "كم مرة أحتاج لتعبئة خزان الماء، وما السعة المناسبة؟",
+      "a": "معظم ماكينات Nespresso تحتوي على خزانات ماء بسعة 0.7-1.2 لتر، وهي تكفي عادةً لتحضير 4-8 أكواب قبل إعادة التعبئة حسب حجم المشروب. إذا كنت تشرب عدة أكواب يومياً أو تستخدم الماكينة لاستقبال الضيوف، فإن الخزان الأكبر يقلل من متاعب التعبئة المتكررة."
+    },
+    {
+      "q": "هل يستحق دفع المزيد لماكينة Nespresso مع محضر رغوة حليب مدمج؟",
+      "a": "إذا كنت تشرب بانتظام الكابتشينو أو اللاتيه أو الفلات وايت، فإن محضر الرغوة المدمج يوفر مساحة على الطاولة ويكون أكثر راحة من الجهاز المنفصل. أما لمن يشربون الإسبريسو الأسود فقط، فستدفع مبلغاً إضافياً لميزة لن تستخدمها."
+    },
+    {
+      "q": "ما الصيانة المطلوبة، وكم تكلفتها؟",
+      "a": "ماكينات Nespresso تحتاج إلى إزالة الترسبات بانتظام (كل 300-600 كبسولة) باستخدام مجموعة إزالة الترسبات، وتفريغ حاوية الكبسولات المستعملة من حين لآخر - وكلاهما بسيط وغير مكلف. التكلفة الأساسية المستمرة هي شراء الكبسولات، وليس صيانة الماكينة."
+    },
+    {
+      "q": "هل أحتاج إلى طراز معين للمطابخ الصغيرة أو المساحات المحدودة؟",
+      "a": "تقدم Nespresso طرازات مدمجة مثل Pixie و U التي تشغل أقل مساحة ممكنة مع الحفاظ على كامل الوظائف. إذا كان مطبخك ضيقاً، فإن هذه الماكينات الأصغر تعمل بنفس كفاءة الطرازات الأكبر وتتسع بسهولة بجانب الحوض أو داخل الخزانة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0759S98L8",
+      "title_en": "Nespresso Essenza Mini Coffee Machine by Nespresso - Sleek Piano Black Finish, Fast Brewing, UAE Version",
+      "title_ar": "ماكينة قهوة Nespresso Essenza Mini من Nespresso - تشطيب بيانو أسود أنيق، تحضير سريع، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ZlmkdhXNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ماكينة Nespresso مثالية للمبتدئين والشقق",
+        "تشطيب بيانو أسود يناسب أي ديكور",
+        "تحضير سريع يقدم الإسبريسو في أقل من دقيقة",
+        "حجم مدمج يوفر مساحة الطاولة المحدودة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B019AW2OY8",
+      "title_en": "Nespresso Inissia Coffee Machine by Nespresso - Compact Design, 7 free capsules included,Automatic Capsule System, Black - UAE Version",
+      "title_ar": "ماكينة قهوة Nespresso Inissia من Nespresso - تصميم مدمج، 7 كبسولات مجانية، نظام كبسولات تلقائي، أسود - نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ScwHTyJkL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "هندسة Nespresso الموثوقة تضمن جودة متسقة",
+        "تصميم مدمج يناسب المطابخ البسيطة بشكل رائع",
+        "سبع كبسولات مجانية للبدء فوراً",
+        "نظام كبسولات تلقائي يلغي التنظيف الفوضوي"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B011IY4MVY",
+      "title_en": "Nespresso Inissia Coffee Machine by Nespresso - Classic White Design, Automatic Capsule System, UAE Version",
+      "title_ar": "ماكينة قهوة Nespresso Inissia من Nespresso - تصميم أبيض كلاسيكي، نظام كبسولات تلقائي، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61XEaz-x0cL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم أبيض كلاسيكي عملي يناسب أي مطبخ",
+        "نظام كبسولات تلقائي يقدم إسبريسو المقهى في البيت",
+        "موثوقية Nespresso التي يثق بها الملايين عالمياً",
+        "أزرار سهلة لا تحتاج أي تعلم"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B00G5YOVZA",
+      "title_en": "Nespresso Inissia Black Coffee Machine – International Version",
+      "title_ar": "ماكينة قهوة Nespresso Inissia أسود - نسخة دولية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Tyf5-bNfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل تجربة إسبريسو مدمجة متاحة",
+        "تسخين سريع للغاية للاستمتاع الفوري",
+        "هندسة Nespresso الموثوقة بتصميم أسود أنيق"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B07V33YK5D",
+      "title_en": "Nespresso Essenza Mini Coffee Machine by Nespresso - Modern Grey Design, Compact Automatic Brewing, UAE Version",
+      "title_ar": "ماكينة قهوة Nespresso Essenza Mini من Nespresso - تصميم رمادي عصري، تحضير تلقائي مدمج، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61N9SJnOs1L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بأناقة رمادية عصرية",
+        "أصغر طراز Essenza Mini متاح",
+        "تحضير سريع يلبي رغبتك الصباحية بالكافيين"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B00J5W985W",
+      "title_en": "Nespresso Inissia Coffee Capsule Machine, Ruby Red by Krups - International Version - No Nespresso Warranty",
+      "title_ar": "ماكينة كبسولات قهوة Nespresso Inissia، أحمر ياقوتي من Krups - نسخة دولية - بدون ضمان Nespresso",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/719gH9GUz+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار رائع بلون أحمر ياقوتي نابض",
+        "دقة هندسية استثنائية من Krups",
+        "مدمجة تماماً لأي طاولة مطبخ"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B07TZK839M",
+      "title_en": "Nespresso Essenza Mini Coffee Machine by Nespresso - Elegant White Finish, Fast Brewing Technology, UAE Version",
+      "title_ar": "ماكينة قهوة Nespresso Essenza Mini من Nespresso - تشطيب أبيض أنيق، تقنية تحضير سريع، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61zQbECX2FL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سرعة Nespresso العملية - إسبريسو طازج في ثوانٍ",
+        "تشطيب أبيض أنيق يكمل المطابخ العصرية",
+        "تقنية تحضير سريع لصباحك المزدحم",
+        "نسخة الإمارات مع دعم ضمان محلي"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07FM9ZQ4B",
+      "title_en": "Nespresso Delonghi Nespresso en85.b Built-in Coffee Machine/11 cm",
+      "title_ar": "ماكينة قهوة Nespresso Delonghi Nespresso en85.b مدمجة / 11 cm",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51rubdhbtdL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بميزة الماكينة المدمجة",
+        "أداء قوي مدمج في مطبخك",
+        "موثوقية DeLonghi تلتقي بسهولة Nespresso"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B074ZFF31Y",
+      "title_en": "Nespresso Silky White : De'Longhi 0132193272 Latissima One Single Serve Coffee Machine, 1400 W, 1 Liter, Silky White",
+      "title_ar": "Nespresso أبيض حريري: De'Longhi 0132193272 Latissima One ماكينة قهوة فردية، 1400 W، 1 لتر، أبيض حريري",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71WStHquxBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي لمحبي القهوة بالحليب",
+        "De'Longhi Latissima تدمج تحضير رغوة الحليب",
+        "قوة 1400W تقدم كابتشينو بجودة المقاهي",
+        "سعة لتر واحد تخدم العائلة بأكملها"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B01N6RT3HI",
+      "title_en": "Krups Nespresso Essenza XN110840 Mini Coffee Machine by, Piano Black",
+      "title_ar": "ماكينة قهوة Krups Nespresso Essenza XN110840 Mini من، بيانو أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Hv2q9BmwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لمحبي القهوة البسيطة",
+        "أداء قوي بأناقة البيانو الأسود",
+        "تصميم موفر للمساحة دون التضحية بالجودة"
+      ],
+      "rank": 10
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "_meta": {
+    "slug": "eye-cream",
+    "keyword_text_en": "eye cream",
+    "translated_at": "2026-04-18T20:34:14.350793",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "كريم العين",
+  "page_title_ar": "أفضل 10 كريم العين في الإمارات",
+  "category_name_en": "Skincare",
+  "category_name_ar": "العناية بالبشرة",
+  "category_slug": "skincare",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين كريم العين والمرطب العادي؟",
+      "a": "كريم العين مصمم بمكونات جزيئية أصغر يمكنها اختراق البشرة الرقيقة والحساسة حول عينيك، بينما المرطب العادي ثقيل جداً لهذه المنطقة. إذا استخدمت المرطب العادي حول عينيك، فلن يُمتص بشكل صحيح وقد يسبب انتفاخاً أو تهيجاً."
+    },
+    {
+      "q": "كيف أعرف أي المكونات تعمل فعلياً لمشاكل عيني؟",
+      "a": "ابحث عن retinol أو peptides للخطوط الدقيقة، caffeine أو niacinamide للانتفاخ، وhyaluronic acid للترطيب، واختر المكون الأساسي وفقاً لمشكلتك الرئيسية بدلاً من الشراء بناءً على العلامة التجارية فقط. تحقق من قائمة المكونات لمعرفة ما إذا كان المكون النشط ضمن الخمسة الأولى، مما يعني أنه بتركيز فعال."
+    },
+    {
+      "q": "هل كريم العين الأغلى أفضل فعلياً من الخيار الاقتصادي؟",
+      "a": "السعر المرتفع غالباً يعكس التغليف وسمعة العلامة التجارية أكثر من النتائج الأفضل، فالكريم الاقتصادي الذي يحتوي على retinol أو caffeine يمكن أن يعمل بنفس كفاءة الخيار الفاخر بنفس المكونات النشطة. أنفق أكثر فقط إذا كانت بشرتك حساسة وتحتاج تركيبات ألطف أو مشاكل محددة كالهالات الداكنة الشديدة التي تحتاج مكونات احترافية."
+    },
+    {
+      "q": "ما الحجم الذي يجب أن أشتريه، وكم يدوم الأنبوب الواحد؟",
+      "a": "الأنبوب القياسي 15-20ml يدوم من شهرين إلى ثلاثة أشهر مع الاستخدام اليومي لأنك تحتاج فقط كمية بحجم حبة البازلاء لكل استخدام. إذا كنت جديداً على كريم العين، ابدأ بحجم أصغر لاختبار ملاءمته لبشرتك قبل الالتزام بعبوة أكبر."
+    },
+    {
+      "q": "هل يجب أن أستخدم كريم العين إذا كانت بشرتي دهنية أو معرضة لحب الشباب؟",
+      "a": "نعم، لكن اختر تركيبة خفيفة على شكل جل بدلاً من الكريمات الثقيلة، فحتى البشرة الدهنية تحتاج ترطيباً حول العينين لأن تلك المنطقة تفرز زيوتاً أقل بشكل طبيعي. ابحث عن خيارات خالية من الزيوت مع مكونات مثل niacinamide التي لا تسد المسام أو تسبب البثور."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0DWMSM6Y9",
+      "title_en": "medicube Salmon DNA PDRN Pink Peptide Eye Serum, Niacinamide and 99% Pure Retinol Eye Cream for Fine Lines, Dark Circles, Korean Skin Care 1.01fl.oz",
+      "title_ar": "medicube سيروم العين بـ Salmon DNA PDRN Pink Peptide، مع Niacinamide وRetinol النقي بنسبة 99% لعلاج الخطوط الدقيقة والهالات الداكنة، عناية كورية بالبشرة 1.01fl.oz",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61g9IyjgR0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز يجمع Salmon DNA مع Retinol النقي",
+        "تركيبة كورية استثنائية تستهدف الخطوط الدقيقة فوراً",
+        "تركيز Retinol يحارب الهالات الداكنة بقوة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0F4R939KD",
+      "title_en": "numbuzin No.9 Eye Cream | NAD+ Retinol Volume Eye Cream | Firming, Wrinkles, Fine Lines, Dark Circles, Puffy | Retinol, Peptides, Niacinamide | Undereye Treatment Serum | 0.33 fl. oz.",
+      "title_ar": "numbuzin No.9 كريم العين | NAD+ Retinol Volume لشد البشرة والتجاعيد والخطوط الدقيقة والهالات الداكنة والانتفاخ | يحتوي على Retinol وPeptides وNiacinamide | سيروم علاج ما تحت العين | 0.33 fl. oz.",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51k+sdWB2TL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة NAD+ Retinol متميزة لشد ظاهر",
+        "مزيج Peptides استثنائي يزيل التجاعيد والانتفاخ",
+        "قوة شد فاخرة في 0.33 oz فاخر",
+        "سيروم متعدد الاستخدامات يعالج خمس مشاكل شيخوخة معاً"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B07ZRF416W",
+      "title_en": "COSRX Advanced Snail Peptide Eye Cream 25ml",
+      "title_ar": "COSRX كريم العين المتقدم بـ Snail Peptide 25ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61lca3tLALL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار قوي يحتوي على مركب Snail Peptide المتقدم",
+        "اختيار موثوق مع 25ml من سيروم التجديد المركز",
+        "خبرة COSRX تجلب الابتكار الكوري للمناطق الحساسة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B09ZB7GDJL",
+      "title_en": "Haruharu Wonder Black Rice Bakuchiol Eye Cream 20 ml",
+      "title_ar": "Haruharu Wonder كريم العين بـ Black Rice Bakuchiol 20 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41sU2gxMQeL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "علاج Bakuchiol الأقوى للعين المتاح",
+        "يسخر علم نخالة الأرز القديم للتجديد الليلي",
+        "الخيار الأفضل لتحويل العيون المتعبة والمتقدمة بالسن"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0B45LL4DD",
+      "title_en": "Beauty of Joseon Revive Eye Serum with Ginseng Retinal Niacinamide Korean Eye Cream for Fine Lines, Dark Spots Correcting Puffy Eyes for Face Korean Skincare For Men and Women 30ml",
+      "title_ar": "Beauty of Joseon سيروم العين المنعش مع Ginseng Retinal Niacinamide كريم عين كوري للخطوط الدقيقة، تصحيح البقع الداكنة وعلاج انتفاخ العين للوجه، عناية كورية للرجال والنساء 30ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61APiicYDsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي مع مزيج Ginseng Retinal الفاخر",
+        "خيار مبتدئ رائع يجمع فعالية Niacinamide"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B07798MG7Q",
+      "title_en": "Cetaphil Hydrating Eye Gel Cream, 0.5 Oz, Packaging may Vary",
+      "title_ar": "Cetaphil كريم جل العين المرطب، 0.5 Oz، قد تختلف العبوة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61iL-lBmofL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "جل كريم مرطب قوي يذوب على البشرة الرقيقة",
+        "تركيبة موثوقة موصى بها من أطباء الجلد للمناطق الحساسة",
+        "ملمس خفيف يزيل الانتفاخ دون ثقل",
+        "0.5 Oz يوفر أسابيع من الترطيب المستمر"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B008CT12G2",
+      "title_en": "L’Oréal Paris Revitalift Triple Power Anti-Aging Eye Cream, Pro Retinol, Hyaluronic Acid & Vitamin C, Reduce Wrinkles & Puffiness 0.5 fl. oz.",
+      "title_ar": "L'Oréal Paris Revitalift Triple Power كريم العين المضاد للشيخوخة، مع Pro Retinol وHyaluronic Acid وVitamin C، يقلل التجاعيد والانتفاخ 0.5 fl. oz.",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61pG4lTSWML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي مع مزيج Triple Power المضاد للشيخوخة",
+        "Pro Retinol وHyaluronic Acid وVitamin C مجتمعة",
+        "يقلل التجاعيد والانتفاخ بتركيبة مثبتة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B009SYVTRC",
+      "title_en": "Eucerin Hyaluron Filler Anti-Aging Eye Cream with Hyaluronic Acid, Reduces Eye Wrinkles, UVA & UVB Protection, SPF 15, Moisturizer for All Skin Types, 15ml",
+      "title_ar": "Eucerin Hyaluron Filler كريم العين المضاد للشيخوخة مع Hyaluronic Acid، يقلل تجاعيد العين، حماية UVA وUVB، SPF 15، مرطب لجميع أنواع البشرة، 15ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51KXG6VE6ML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة ذكية تجمع حماية SPF 15 من الشمس",
+        "نفاذية Hyaluronic Acid رائعة لترطيب دائم",
+        "موثوقية Eucerin مع دفاع UVA وUVB",
+        "جميع أنواع البشرة تستفيد من تقليل التجاعيد"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B07MV2D26F",
+      "title_en": "Sebamed Anti-Ageing 10 Lifting Eye Cream, 15 ml",
+      "title_ar": "Sebamed كريم العين المضاد للشيخوخة بتقنية 10 Lifting، 15 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51aYqDw9L6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار مبتدئ رائع مضاد للشيخوخة للمستهلكين المهتمين بالميزانية",
+        "أنبوب 15 ml يدوم لفترة طويلة بشكل مفاجئ",
+        "تركيبة Sebamed المتوازنة pH تناسب العيون الحساسة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0D4VX2BLM",
+      "title_en": "VT COSMETICS REEDLE SHOT LIFTING EYE CREAM 15ml",
+      "title_ar": "VT COSMETICS REEDLE SHOT LIFTING EYE CREAM 15ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/615HL9TmgAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية مستوحاة من الإبر الدقيقة ذكية تشد دون تدخل جراحي",
+        "ابتكار Reedle Shot رائع للمبتدئين",
+        "نهج VT Cosmetics الكوري المتطور في التجميل",
+        "15 ml يركز فوائد شد قوية"
+      ],
+      "rank": 10
+    }
+  ]
+}

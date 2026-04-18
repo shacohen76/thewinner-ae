@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "slug": "instant-coffee",
+    "keyword_text_en": "instant coffee",
+    "translated_at": "2026-04-18T20:34:14.357390",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "القهوة الفورية",
+  "page_title_ar": "أفضل 10 قهوة فورية في الإمارات",
+  "category_name_en": "Coffee & Tea",
+  "category_name_ar": "القهوة والشاي",
+  "category_slug": "coffee-tea",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين القهوة الفورية والقهوة المجففة بالتجميد؟",
+      "a": "القهوة المجففة بالتجميد تحافظ على نكهة وعطر أفضل لأن الحبوب تُجمد ثم تُجفف تحت الفراغ، بينما القهوة الفورية المجففة بالرش تُرش في هواء ساخن مما قد يفقدها بعض الطعم. القهوة المجففة بالتجميد تكلف أكثر لكن طعمها أقرب للقهوة المحضرة العادية. اختر المجففة بالتجميد إذا كنت تريد الجودة، أما المجففة بالرش فتناسب من يهتم بالميزانية أكثر."
+    },
+    {
+      "q": "كيف أعرف إذا كانت القهوة الفورية نقية أم تحتوي على إضافات؟",
+      "a": "تحقق من قائمة المكونات على العبوة - القهوة الفورية النقية يجب أن تحتوي على القهوة فقط دون أي شيء آخر. بعض العلامات التجارية تضيف سكر أو حليب بودرة أو نكهات، وهذا جيد إن كنت تفضلها مخلوطة مسبقاً لكنه يقلل المرونة. اقرأ الملصق بعناية إن كنت تريد قهوة سوداء بدون إضافات."
+    },
+    {
+      "q": "ما حجم العبوة المناسب لشرائها للأسرة؟",
+      "a": "العبوة 50-100 جرام تناسب شخص أو شخصين يشربان بشكل متقطع، بينما العبوات 200 جرام فأكثر تناسب من يشرب يومياً أو الأسر الصغيرة. القهوة الفورية تبقى طازجة 12-18 شهراً في عبوة محكمة الغلق بعيداً عن الضوء والرطوبة، لذا اشتر ما ستستهلكه خلال تلك المدة. العبوات الكبيرة عادة توفر قيمة أفضل للجرام."
+    },
+    {
+      "q": "هل العلامة التجارية للقهوة الفورية مهمة حقاً؟",
+      "a": "العلامات التجارية المتوسطة والممتازة عادة تستخدم حبوب وطرق معالجة أفضل، مما ينتج نكهة أغنى بوضوح ومرارة أقل. الخيارات الاقتصادية صالحة للشرب لكنها غالباً تكون خفيفة أو مرة خاصة إن كنت تشربها سادة. أنفق أكثر فقط إن كنت تهتم بالطعم؛ القهوة الفورية مريحة وليست بديلاً عن الجودة."
+    },
+    {
+      "q": "كيف أحفظ القهوة الفورية لتبقى طازجة؟",
+      "a": "انقلها لوعاء محكم الغلق أو احتفظ بالعبوة مغلقة بإحكام في خزانة باردة ومظلمة بعيداً عن الرطوبة والحرارة والضوء المباشر. لا تحفظها أبداً في الثلاجة أو الفريزر - التكثف سيضر القهوة ويسبب التكتل. التخزين السليم يطيل العمر الافتراضي ويمنع امتصاص القهوة لروائح الأطعمة المجاورة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0FNWZ3YVV",
+      "title_en": "Davidoff Rich Aroma Instant Coffee - 10/12 Intensity - 90 g",
+      "title_ar": "قهوة Davidoff Rich Aroma فورية - كثافة 10/12 - 90 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61z2qY1xO3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بكثافة قصوى 10",
+        "حرفية Davidoff في كل ملعقة",
+        "عطر غني ينتشر فوراً بالماء الساخن",
+        "تجربة قهوة فورية راقية مبسطة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B01MDOVYQ3",
+      "title_en": "Tchibo Gold Selection Instant Coffee 200 g",
+      "title_ar": "قهوة Tchibo Gold Selection فورية 200 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61AmvnW0SHL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "عبوة 200 جرام رائعة تكفي أسابيع من الصباحات",
+        "خبرة التحميص الألمانية الراقية بكل رشفة",
+        "اختيار استثنائي لعشاق القهوة الراقية"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0BLVX8HV7",
+      "title_en": "Nescafe Classic Instant Coffee Jar 190g",
+      "title_ar": "قهوة Nescafe Classic فورية عبوة 190 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81vNR3KV7-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي موثوق من ملايين عالمياً",
+        "نكهة كلاسيكية ناعمة جاهزة بثوانٍ",
+        "خيار ممتاز لعشاق القهوة اليومية"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B09HTYT2HG",
+      "title_en": "Maxwell House Rich Blend - Instant Coffee - Jar of 190 g",
+      "title_ar": "قهوة Maxwell House Rich Blend فورية - عبوة 190 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/91dvCU46yVL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تعقيد المزيج الغني دون عناء التحضير",
+        "أداء قوي بطعم متسق يومياً",
+        "خيار ممتاز لطقوس صباح موثوقة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0B1581PJR",
+      "title_en": "illy Intenso Instant Coffee, 95 g",
+      "title_ar": "قهوة illy Intenso فورية، 95 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71kps9d9XTL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قوة Intenso بإتقان إيطالي راقي",
+        "أداء قوي من إرث illy الأسطوري",
+        "خيار ممتاز لعشاق الإسبريسو الباحثين عن راحة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0CTY988X5",
+      "title_en": "Grandos Espresso Instant Coffee 100 g",
+      "title_ar": "قهوة Grandos Espresso فورية 100 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71AhBTSwIqL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد بكثافة إسبريسو فورية",
+        "حجم 100 جرام مدمج يسافر بسهولة",
+        "اختيار موثوق للكافيين الصباحي السريع"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0BYDSX3YM",
+      "title_en": "Maxwell House Instant Coffee - Smooth and Rich Blend - P95g (Pack of 2)",
+      "title_ar": "قهوة Maxwell House فورية - مزيج ناعم وغني - 95 جرام (عبوتان)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71qi9pjzmaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد معبأ مرتين لإمداد ممتد",
+        "نعومة المزيج الغني بعبوات مزدوجة مريحة",
+        "اختيار موثوق لقهوة عائلية متسقة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B09S8R6QLD",
+      "title_en": "Maxwell House Instant Coffee - Smooth Blend - Pure Instant - 95g (Pack of 2)",
+      "title_ar": "قهوة Maxwell House فورية - مزيج ناعم - فورية نقية - 95 جرام (عبوتان)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/910k2I0oFdL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي بعبوتين مشمولتين",
+        "فورية نقية تذوب بسهولة بالماء الساخن",
+        "بداية رائعة لاستكشاف المزيج الناعم"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FNWY477N",
+      "title_en": "Davidoff Fine Aroma Instant Coffee - 7/12 Intensity - 90 g",
+      "title_ar": "قهوة Davidoff Fine Aroma فورية - كثافة 7/12 - 90 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51qLowghHEL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي بكثافة لطيفة 7/12",
+        "ملمح عطر رقيق مثالي لهدوء الصباح",
+        "بداية رائعة للتعرف على جودة Davidoff"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B089T5WRDN",
+      "title_en": "Melitta Instant Coffee Original, 200gm",
+      "title_ar": "قهوة Melitta فورية أصلية، 200 جرام",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61NPqkWZG3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي بعبوة 200 جرام سخية",
+        "دقة ألمانية تلتقي ببساطة القهوة اليومية",
+        "بداية رائعة لاستكشاف القهوة الفورية"
+      ],
+      "rank": 10
+    }
+  ]
+}

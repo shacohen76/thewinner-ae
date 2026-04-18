@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "slug": "night-cream",
+    "keyword_text_en": "night cream",
+    "translated_at": "2026-04-18T20:34:14.344371",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "كريم الليل",
+  "page_title_ar": "أفضل 10 كريم الليل في الإمارات",
+  "category_name_en": "Skincare",
+  "category_name_ar": "العناية بالبشرة",
+  "category_slug": "skincare",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين كريم الليل والمرطب العادي؟",
+      "a": "كريمات الليل عادةً ما تكون أكثر كثافة وتركيزًا بالمكونات النشطة لأن بشرتك تصلح نفسها أثناء النوم، بينما تركز المرطبات العادية على الترطيب طوال اليوم. غالبًا ما تحتوي كريمات الليل على retinol أو peptides أو أحماض أقوى قد تكون مزعجة في ضوء الشمس، مما يجعلها مناسبة للاستخدام المسائي فقط."
+    },
+    {
+      "q": "ما كمية كريم الليل التي يجب أن أستخدمها فعليًا في كل مرة؟",
+      "a": "كمية بحجم حبة البازلاء عادة ما تكون كافية لوجهك بالكامل — كريمات الليل مركزة، لذا الكمية الأكثر لا تعني نتائج أفضل. استخدام الكثير قد يترك بشرتك دهنية ويسد المسام، خاصة إذا كنت تنام ووجهك يضغط على الوسادة."
+    },
+    {
+      "q": "هل يجب أن أختار كريم الليل بناءً على نوع بشرتي؟",
+      "a": "نعم، نوع بشرتك مهم للغاية: البشرة الدهنية تحتاج إلى تركيبات خفيفة غير مسدودة للمسام، البشرة الجافة تستفيد من الزبدة والزيوت الغنية، والبشرة الحساسة تتطلب خيارات لطيفة خالية من العطور. البشرة المختلطة عادة ما تعمل بشكل أفضل مع تركيبة متوازنة ترطب دون أن تكون ثقيلة جدًا."
+    },
+    {
+      "q": "هل يستحق شراء كريم ليل باهظ الثمن بدلاً من خيار اقتصادي؟",
+      "a": "الكريمات الراقية غالبًا ما تكون لديها استقرار أفضل للمكونات وتركيزات أعلى من المواد النشطة مثل retinol أو hyaluronic acid، لكن الخيارات الاقتصادية يمكن أن تعمل بشكل جيد إذا كانت تناسب نوع بشرتك وتحتوي على مكونات فعالة. الفرق الحقيقي يظهر خلال 8-12 أسبوعًا من الاستخدام المنتظم، لذا التزم باختبار منتج واحد قبل أن تقرر أنه لا يستحق التكلفة."
+    },
+    {
+      "q": "ما حجم العبوة الذي يجب أن أشتريه للاستخدام الليلي؟",
+      "a": "عبوة 30-50ml عادة ما تكفي لمدة 2-3 أشهر مع الاستخدام الليلي، وهو مثالي لأن معظم المكونات النشطة تتحلل بعد الفتح. تجنب شراء عبوات 100ml أو أكثر ما لم تكن متأكدًا من أنك ستستخدمها خلال 6 أشهر، حيث يمكن للأكسدة والتلوث أن يقللا من الفعالية مع الوقت."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B07C5XYT19",
+      "title_en": "Cerave PM Facial Moisturizing Lotion Night Cream with Hyaluronic Acid 52ml",
+      "title_ar": "لوشن مرطب للوجه ليلي CeraVe PM مع Hyaluronic Acid 52ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51I-PaeOhdL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "كريم ليلي عملي مع تعزيز Hyaluronic Acid",
+        "مركب السيراميد من CeraVe يصلح أثناء النوم",
+        "تركيبة 52ml مركزة تعظم الفوائد الليلية",
+        "تقنية استعادة الحاجز الواقي لطيفة وقوية"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B003VJTRFQ",
+      "title_en": "SUKin Moisture Restoring Night Cream, 120 Ml",
+      "title_ar": "كريم ليلي مرطب من SUKin 120 Ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61zHVX81f9L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز لاستعادة الترطيب المكثف",
+        "اختيار استثنائي بزجاجة 120ml فاخرة",
+        "يستعيد حاجز البشرة أثناء نومك العميق"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B002JDUMFO",
+      "title_en": "L'Oreal Paris Collagen Moisture Filler Day/Night Cream, 1.7-Fluid Ounce",
+      "title_ar": "كريم نهاري وليلي بالكولاجين المرطب L'Oreal Paris 1.7-Fluid Ounce",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71jTuSY+xSL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "كولاجين مرطب يملأ البشرة بشكل واضح",
+        "تقنية الكولاجين من L'Oreal في الكريمين",
+        "خيار عملي للترطيب المكثف"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B08WLSGJFC",
+      "title_en": "PILGRIM Korean Retinol Anti Aging Night Cream with Hyaluronic Acid & Vitamin C |Discover young, wrinkle-free & radiant skin| Anti aging cream for oily & dry skin| For Men & Women|Korean Skin Care|50gm",
+      "title_ar": "كريم ليلي كوري PILGRIM بـ Retinol مضاد للشيخوخة مع Hyaluronic Acid و Vitamin C للبشرة الشابة الخالية من التجاعيد والمشرقة للبشرة الدهنية والجافة للرجال والنساء 50gm",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61HiBUps-8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "Retinol كوري مع إشراقة Vitamin C",
+        "يعمل للبشرة الدهنية والجافة معًا",
+        "أداء قوي للرجال والنساء"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0DKJQZ22R",
+      "title_en": "GLOW & LOVELY Hydraglow Night Cream, Hydrating Rose Serum Cream, Lightweight 72H Hydration, 50g",
+      "title_ar": "كريم ليلي GLOW & LOVELY Hydraglow مرطب بسيروم الورد خفيف ترطيب 72H 50g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71a-9a-OwJL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز للترطيب الخفيف لمدة 72 ساعة",
+        "أداء قوي مع فوائد سيروم الورد",
+        "روتين جمال سهل مع نتائج متألقة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B091C6BTHX",
+      "title_en": "L'Oreal Paris Wrinkle Expert Anti Wrinkle 65+ Night Cream, Moisturiser Specifically Formulated to Nourish & Restore Mature Skin Overnight, Reducing appearance of wrinkles & Enhancing Firmness, 50ml",
+      "title_ar": "كريم ليلي مضاد للتجاعيد L'Oreal Paris Wrinkle Expert 65+ مرطب مصمم لتغذية واستعادة البشرة الناضجة يقلل التجاعيد ويعزز الشد 50ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71AzPZTKJ5L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق بتركيبة احترافية",
+        "خيار قوي لنتائج شد واضحة",
+        "ابتكار L'Oreal المضاد للتجاعيد في 48gm"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B000KONYPY",
+      "title_en": "L’Oréal Paris Professional Revitalift Night Anti-Wrinkle And Firming Moisturizer For Unisex, 48 gm",
+      "title_ar": "مرطب ليلي L'Oréal Paris Professional Revitalift مضاد للتجاعيد وشد للجنسين 48 gm",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EI7Xf7CLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "48 gm من قوة مضادة للتجاعيد تعمل أثناء النوم",
+        "تقنية الشد المثبتة من L'Oréal توقظ البشرة منتعشة",
+        "تركيبة Revitalift تستهدف الخطوط وتستعيد مرونة البشرة ليليًا"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07NSCCTTR",
+      "title_en": "Plum Bright Years Restorative Overnight Creme",
+      "title_ar": "كريم ليلي ترميمي Plum Bright Years",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51bYYKQPZaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي للعناية الليلية الترميمية",
+        "خيار مبتدئ رائع بنتائج حقيقية",
+        "تركيبة Plum المشرقة لصباحات متألقة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0B9BKJQCB",
+      "title_en": "L’Oréal Paris Elvive Hyaluron Moisture Filling Night Cream 200ml",
+      "title_ar": "كريم ليلي L'Oréal Paris Elvive Hyaluron Moisture Filling 200ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/713RSC5T4xL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي بحجم 200ml سخي",
+        "مرطب مبتدئ رائع بـ hyaluronic acid",
+        "ابتكار L'Oreal يناسب كل ميزانية"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B010VP5OGI",
+      "title_en": "L’Oréal Paris Hyaluron Expert Day Cream+Night Cream, 100 ml",
+      "title_ar": "كريم نهاري وليلي L'Oréal Paris Hyaluron Expert 100 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71D58BbpKSL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة نهارية وليلية ثنائية مضمنة",
+        "خبرة L'Oréal العريقة في زجاجة واحدة",
+        "اختيار موثوق لنتائج متسقة"
+      ],
+      "rank": 10
+    }
+  ]
+}

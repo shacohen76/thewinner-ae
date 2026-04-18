@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "slug": "smart-tvs",
+    "keyword_text_en": "smart TVs",
+    "translated_at": "2026-04-18T20:34:14.255401",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة التلفزيون الذكية",
+  "page_title_ar": "أفضل 10 أجهزة تلفزيون ذكية في الإمارات",
+  "category_name_en": "TV & Projectors",
+  "category_name_ar": "أجهزة التلفزيون وأجهزة العرض",
+  "category_slug": "tv-projectors",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين 4K و Full HD، وهل أحتاج فعلاً إلى 4K؟",
+      "a": "تقنية 4K توفر كثافة بكسل أعلى بأربع مرات من Full HD، مما يمنحك صوراً أكثر وضوحاً وتفاصيل أفضل، خاصة على الشاشات الكبيرة (55 بوصة وأكثر). إذا كنت تشاهد محتوى البث أو التلفزيون العادي، فإن Full HD لا يزال جيداً، لكن 4K يستحق الاستثمار إذا كنت تخطط للاحتفاظ بالتلفزيون لسنوات أو تشاهد أفلام 4K والألعاب."
+    },
+    {
+      "q": "ما حجم الشاشة المناسب لغرفة معيشتي؟",
+      "a": "القاعدة الجيدة هي الجلوس على مسافة تتراوح بين 1.5 إلى 2.5 ضعف عرض الشاشة من التلفزيون—لذا في مسافة نموذجية 3 أمتار، يعمل تلفزيون 55 إلى 65 بوصة بشكل جيد. قس المساحة ومسافة المشاهدة أولاً، ثم جرّب الحجم في المتجر إن أمكن."
+    },
+    {
+      "q": "أيهما أفضل لجودة الصورة: LED أم QLED أم OLED؟",
+      "a": "تقنية OLED تقدم أفضل جودة صورة مع ألوان سوداء مثالية وبدون إضاءة خلفية، لكنها أغلى وقد تعاني من مشكلة ثبات الصورة. QLED خيار وسط ممتاز مع ألوان زاهية نابضة بالحياة وأداء جيد بأسعار أقل، بينما LED العادي هو الخيار الاقتصادي لكنه يملك تبايناً أقل."
+    },
+    {
+      "q": "هل يجب أن أدفع أكثر للحصول على تلفزيون بمعدل تحديث أعلى 120Hz؟",
+      "a": "إذا كنت لاعباً جاداً أو تشاهد الرياضة، فإن 120Hz يجعل الحركة أكثر سلاسة واستجابة، خاصة على PS5 أو Xbox Series X. للمشاهدة العادية والأفلام، 60Hz ممتاز تماماً ويوفر عليك المال."
+    },
+    {
+      "q": "ما أفضل نظام تشغيل للتلفزيون الذكي—Google TV أم Samsung Tizen أم LG WebOS؟",
+      "a": "الثلاثة ممتازة مع إمكانية الوصول إلى التطبيقات الرئيسية مثل Netflix و YouTube؛ الفرق الحقيقي في طريقة تنظيم المحتوى والتطبيقات التي تستخدمها بالفعل. اختر حسب تفضيلاتك—Google TV أشبه بـ Android، Samsung Tizen سريع ونظيف، و LG WebOS سهل الاستخدام جداً."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0FWKMSK5M",
+      "title_en": "Hisense 32 inch Smart TV FHD 4K E4Q-Natural Colour Enhancer,High Contrast,Share to TV,Dual Band Wi-Fi, Game Mode, Eye Care Mode,Youtube,Netflix,Shahid 32E4Q (2025 UAE Version)",
+      "title_ar": "تلفزيون ذكي Hisense مقاس 32 بوصة FHD 4K E4Q مع محسن الألوان الطبيعية، تباين عالي، مشاركة على التلفزيون، Dual Band Wi-Fi، Game Mode، Eye Care Mode، Youtube، Netflix، Shahid 32E4Q (إصدار الإمارات 2025)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71foMT+0qVL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي بحجم 32 بوصة فقط للمساحات الضيقة",
+        "محسن الألوان الطبيعية يحيي كل مشهد",
+        "Eye Care Mode يقلل الإجهاد أثناء المشاهدة الطويلة",
+        "Dual Band WiFi يضمن بثاً سلساً بدون انقطاع"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B09ZPVZDQF",
+      "title_en": "Hisense 32 Inch TV FHD Smart TV With Netflix Youtube Prime Video Dolyby Audio & Bezelless Design Model - 32A4HAE (2022-23)",
+      "title_ar": "تلفزيون ذكي Hisense مقاس 32 بوصة FHD مع Netflix Youtube Prime Video Dolby Audio وتصميم بلا إطار - موديل 32A4HAE (2022-23)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71UDHju8a8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم بلا إطار بحجم 32 بوصة يزيد مساحة الشاشة",
+        "وضوح FHD موثوق للمشاهدة الترفيهية اليومية",
+        "Dolby Audio يوفر صوتاً مذهلاً من إطار نحيف",
+        "تكامل Netflix يحمّل المفضلات فوراً"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0D73K8YMH",
+      "title_en": "Hisense 50 inch Smart TV UHD 4K E6N-Dolby Vision,Game Mode Plus,Smooth Motion with MEMC,AI Sports Mode,Voice Control,Share to TV,Youtube,Netflix,Disney+,Shahid and Anghami,50E6N (2024 UAE Version)",
+      "title_ar": "تلفزيون ذكي Hisense مقاس 50 بوصة UHD 4K E6N مع Dolby Vision، Game Mode Plus، حركة سلسة مع MEMC، AI Sports Mode، تحكم صوتي، مشاركة على التلفزيون، Youtube، Netflix، Disney+، Shahid و Anghami، 50E6N (إصدار الإمارات 2024)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71GUS0S2M5L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل قوة ترفيه 4K بحجم 50 بوصة",
+        "AI Sports Mode يرفع مستوى كل لحظة رياضية",
+        "Dolby Vision يحول البث إلى جودة سينمائية"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0GH7XKPNX",
+      "title_en": "Samsung 55 Inch QLED TV, Q6F, 4K, Q4 Lite Processor, 100% Color Volume with Quantum Dot, Samsung Knox Security, Endless Free Content, Smart TV, QA55Q6FAAUXZN (2025 - UAE Version)",
+      "title_ar": "تلفزيون Samsung QLED مقاس 55 بوصة، Q6F، 4K، معالج Q4 Lite، حجم لون 100% مع Quantum Dot، Samsung Knox Security، محتوى مجاني لا نهائي، تلفزيون ذكي، QA55Q6FAAUXZN (إصدار الإمارات 2025)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81f9aqvxD3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "Quantum Dot يوفر حجم لون 100% بامتياز",
+        "معالج Q4 Lite يتعامل مع أي محتوى بسهولة",
+        "خيار QLED متميز لجودة صورة نابضة بالحياة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B09R7TSVPJ",
+      "title_en": "Star Track LED Smart TV, HD, 43 Inch, Android 14.0, T2S2, A+ Screen, WiFi, MIRACAST, Netflix, YouTube, Prime Video, HDMI, USB Comes with Edgeless frame(43)",
+      "title_ar": "تلفزيون ذكي Star Track LED، HD، 43 بوصة، Android 14.0، T2S2، شاشة A+، WiFi، MIRACAST، Netflix، YouTube، Prime Video، HDMI، USB مع إطار بلا حواف (43)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81ZYMoNONDL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين بحجم 43 بوصة مع تصميم بلا حواف",
+        "Android 14.0 يوفر أحدث المزايا الذكية",
+        "MIRACAST يتيح عرض الشاشة من الموبايل بسلاسة",
+        "تقنية شاشة A+ توفر زوايا مشاهدة استثنائية"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0F636M2HY",
+      "title_en": "Samsung 55 Inch Crystal UHD TV, U8000F, 4K, Crystal Processor 4K, MetalStream Design, Samsung Knox Security, Endless Free Content, Smart TV, UA55U8000FUXZN (2025 - UAE Version)",
+      "title_ar": "تلفزيون Samsung Crystal UHD مقاس 55 بوصة، U8000F، 4K، معالج Crystal Processor 4K، تصميم MetalStream، Samsung Knox Security، محتوى مجاني لا نهائي، تلفزيون ذكي، UA55U8000FUXZN (إصدار الإمارات 2025)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81fxrXQuSLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل أداء معالج Crystal Processor 4K متاح",
+        "تصميم MetalStream يرتقي بغرفة معيشتك فوراً",
+        "Samsung Knox Security يحمي منزلك الذكي"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0FWKNRX7G",
+      "title_en": "Hisense 43 inch Smart TV FHD 4K E4Q-Natural Colour Enhancer,High Contrast,Share to TV,Dual Band Wi-Fi, Game Mode, Eye Care Mode,Youtube, Netflix, Shahid 43E4Q (2025 UAE Version)",
+      "title_ar": "تلفزيون ذكي Hisense مقاس 43 بوصة FHD 4K E4Q مع محسن الألوان الطبيعية، تباين عالي، مشاركة على التلفزيون، Dual Band Wi-Fi، Game Mode، Eye Care Mode، Youtube، Netflix، Shahid 43E4Q (إصدار الإمارات 2025)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71mKvyOdcwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل تحسين للألوان الطبيعية في فئته",
+        "Dual-band Wi-Fi يلغي انقطاع البث نهائياً",
+        "Eye Care Mode يحمي بصرك ليلياً",
+        "Game Mode يوفر أوقات استجابة فائقة السرعة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0D73GYG7W",
+      "title_en": "Hisense 55 inch Smart TV UHD 4K E6N-Dolby Vision,Game Mode Plus,Smooth Motion with MEMC,AI Sports Mode,Voice Control,Share to TV,Youtube,Netflix,Disney+,Shahid and Anghami,55E6N(2024 UAE Version)",
+      "title_ar": "تلفزيون ذكي Hisense مقاس 55 بوصة UHD 4K E6N مع Dolby Vision، Game Mode Plus، حركة سلسة مع MEMC، AI Sports Mode، تحكم صوتي، مشاركة على التلفزيون، Youtube، Netflix، Disney+، Shahid و Anghami، 55E6N (إصدار الإمارات 2024)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71vFWwTPT6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي بحجم 55 بوصة يسيطر على أي مساحة معيشة",
+        "حركة سلسة MEMC تلغي ضبابية الحركة تماماً",
+        "التحكم الصوتي يضع الترفيه في متناول يدك",
+        "تطبيقات بث مزدوجة تحمّل بدون تأخير"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0F63CGXY4",
+      "title_en": "Samsung 65 Inch QLED TV, Q7F, 4K, Q4 AI Processor, 100% Color Volume with Quantum Dot, Samsung Knox Security, Endless Free Content, Samsung Vision AI Smart TV, QA65Q7FAAUXZN (2025 - UAE Version)",
+      "title_ar": "تلفزيون Samsung QLED مقاس 65 بوصة، Q7F، 4K، معالج Q4 AI، حجم لون 100% مع Quantum Dot، Samsung Knox Security، محتوى مجاني لا نهائي، Samsung Vision AI تلفزيون ذكي، QA65Q7FAAUXZN (إصدار الإمارات 2025)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81L8p+hbggL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع ذكاء Samsung Vision AI",
+        "خيار ممتاز يتميز بتطور معالج Q4 AI",
+        "حجم لون 100% يجلب عمقاً سينمائياً للمنزل",
+        "تقنية QLED تخلق صوراً واقعية بنقاط كمية"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B07MCR4CQ4",
+      "title_en": "Videocon 32 Inch Edgeless Android 14 HD Ready Smart TV With Google Assistant, Google Play, & WiFi - E32EL1100",
+      "title_ar": "تلفزيون ذكي Videocon مقاس 32 بوصة بلا حواف Android 14 HD Ready مع Google Assistant، Google Play، و WiFi - E32EL1100",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/714zaDGJv8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "Videocon عملي 32 بوصة مع Google Assistant مدمج",
+        "Android 14 يوفر وصولاً لنظام تطبيقات لا نهائي",
+        "تصميم بلا حواف يخلق جاذبية جمالية عصرية فوراً",
+        "Google Play Store يجلب خيارات ترفيه غير محدودة"
+      ],
+      "rank": 10
+    }
+  ]
+}

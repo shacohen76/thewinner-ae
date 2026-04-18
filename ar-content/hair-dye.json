@@ -1,0 +1,168 @@
+{
+  "_meta": {
+    "slug": "hair-dye",
+    "keyword_text_en": "hair dye",
+    "translated_at": "2026-04-18T20:34:14.342975",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "صبغات الشعر",
+  "page_title_ar": "أفضل 10 صبغات الشعر في الإمارات",
+  "category_name_en": "Other",
+  "category_name_ar": "أخرى",
+  "category_slug": "other",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين صبغة الشعر الدائمة وشبه الدائمة؟",
+      "a": "الصبغة الدائمة تستخدم الأمونيا لفتح بشرة الشعر وإيداع اللون في العمق، وتدوم حتى ينمو الشعر، بينما الصبغة شبه الدائمة تبقى على السطح وتتلاشى تدريجياً بعد 4-6 أسابيع. اختاري الدائمة إذا أردت تغطية طويلة الأمد أو تفتيح أو تغميق كبير، واختاري شبه الدائمة إذا أردت تجربة اللون أو تفضلين ضرراً أقل."
+    },
+    {
+      "q": "كيف أعرف إذا كانت الصبغة ستناسب لون شعري الحالي؟",
+      "a": "تحققي من دليل الدرجات على العبوة—معظم العلامات التجارية تعرض النتائج على الشعر الفاتح والمتوسط والداكن، حتى تعرفي ما تتوقعينه. إذا كان شعرك داكناً جداً أو مصبوغاً سابقاً، قد تحتاجين إلى درجة أفتح أو مطور بحجم أعلى لتحقيق النتيجة المطلوبة."
+    },
+    {
+      "q": "ما الفرق بين أحجام المطور (10، 20، 30، 40)؟",
+      "a": "المطورات ذات الحجم الأعلى تعالج اللون بشكل أسرع وترفع الشعر الداكن بشكل أكبر، لكنها أيضاً تسبب مزيداً من الضرر والجفاف. استخدمي حجم 10-20 لتغطية الجذور أو تثبيت اللون، واستخدمي 30-40 فقط إذا كنت تقومين بتفتيح جذري على شعر صحي."
+    },
+    {
+      "q": "هل أشتري صبغة بجودة الصالون أم علامات الصيدليات؟",
+      "a": "صبغات الصيدليات تعمل جيداً للصيانة البسيطة، لكن علامات الصالون توفر مكونات أفضل لتحسين حالة الشعر ودرجات أكثر دقة إذا كنت تقومين بعمل لون معقد. أنفقي أكثر إذا كان شعرك تالفاً أو تريدين نتائج دقيقة أو تقومين بتغيير جذري."
+    },
+    {
+      "q": "كم أحتاج من الصبغة لطول شعري؟",
+      "a": "علبة واحدة قياسية تغطي الشعر بطول الكتف؛ إذا كان شعرك طويلاً جداً أو كثيفاً، قد تحتاجين إلى 1.5 أو 2 علبة لضمان التغطية الكاملة. تحققي من حجم الزجاجة وكثافة شعرك قبل الشراء—من الأفضل أن يكون لديك فائض بدلاً من أن تنفد الصبغة أثناء التطبيق."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B07M7XJ3XZ",
+      "title_en": "Garnier Hair Colour, With 3 Nourishing Oils, Grey Covereage, Long-lasting Shiny Colour, Natural-looking Result, For All Hair Types, Color Naturals Crème, 4 Brown",
+      "title_ar": "صبغة شعر Garnier مع 3 زيوت مغذية، تغطية الشيب، لون لامع طويل الأمد، نتيجة طبيعية، لجميع أنواع الشعر، Color Naturals Crème، 4 بني",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Ri-E82a5L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل تغطية للشيب في فئتها",
+        "زيوت مغذية لنتائج حريرية ولامعة",
+        "أقوى لون طبيعي لجميع أنواع الشعر"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B07MG8DZ9N",
+      "title_en": "Garnier Color Naturals 6.34 Chocolate Haircolor,100 gm",
+      "title_ar": "Garnier Color Naturals 6.34 صبغة شعر شوكولاتة، 100 جم",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61USLb4SjLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "غنى الشوكولاتة الاستثنائي في كل خصلة",
+        "كثافة لون مذهلة مع تركيبة 100 جم",
+        "قوام كريمي فاخر ينساب بسهولة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B07MW2ZDSM",
+      "title_en": "L’Oréal Paris Prodigy 3.0 Hair Color Dark Brown 1pkt",
+      "title_ar": "صبغة شعر L'Oréal Paris Prodigy 3.0 بني داكن، عبوة واحدة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/613FeJXhfJL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية الزيوت الدقيقة الممتازة تنعم أثناء الصبغ",
+        "تركيبة L'Oréal Prodigy المتقدمة تعمل بشكل أسرع",
+        "أداء قوي للحصول على بني داكن مثالي"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B07MQP4SSS",
+      "title_en": "Garnier Hair Colour, With 3 Nourishing Oils, Grey Covereage, Long-lasting Shiny Colour, Natural-looking Result, For All Hair Types, Color Naturals Crème, 1 Black",
+      "title_ar": "صبغة شعر Garnier مع 3 زيوت مغذية، تغطية الشيب، لون لامع طويل الأمد، نتيجة طبيعية، لجميع أنواع الشعر، Color Naturals Crème، 1 أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61FrXlNTa4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تغطية أسود فاحم ممتازة تدوم أسابيع",
+        "زيوت مغذية تمنع جفاف الشعر",
+        "أداء قوي لجميع أنواع الشعر"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B07KFDDHBX",
+      "title_en": "KOLESTON INTENSE SEMIKIT 304/6 BURGUNDY",
+      "title_ar": "KOLESTON INTENSE SEMIKIT 304/6 BURGUNDY",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71iWStqfGNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "كثافة عنابية ممتازة مع ثبات شبه دائم",
+        "ترسيب لون قوي بدون مواد كيميائية قاسية",
+        "مثالي لتجربة الألوان الجريئة أولاً"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B003KXJF14",
+      "title_en": "L’Oréal Paris Casting Crème Gloss 300 Dark Brown",
+      "title_ar": "L'Oréal Paris Casting Crème Gloss 300 بني داكن",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61qJGx52mNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة كريم لامع موثوقة للمعان",
+        "بني داكن ثابت يقاوم التلاشي",
+        "L'Oréal Casting موثوق من المحترفين"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B07N6TKKN6",
+      "title_en": "L’Oréal Paris Excellence, 4.0 Brown",
+      "title_ar": "L'Oréal Paris Excellence، 4.0 بني",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61i4r-+y2-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "L'Oréal Excellence تمنح نتائج بنية بجودة صالون",
+        "خيار موثوق بأداء لوني مثبت",
+        "تركيبة قوية موثوقة من الملايين عالمياً"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B00P7K98RE",
+      "title_en": "KOLESTON INTENSE SEMIKIT 302/0 BLACK",
+      "title_ar": "KOLESTON INTENSE SEMIKIT 302/0 BLACK",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81zLnpc3a9L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "طقم شبه دائم رائع للتجربة الآمنة",
+        "اختيار اقتصادي ذكي بعمق أسود نقي",
+        "كثافة Koleston بسعر في متناول اليد"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B07MW596PF",
+      "title_en": "Biomagic Hair Color, 60 ml - 3/00 Dark Brown",
+      "title_ar": "صبغة شعر Biomagic، 60 مل - 3/00 بني داكن",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61lwwRjLzwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي للمبتدئين في الصبغ",
+        "بني داكن من Biomagic يغطي بشكل مذهل",
+        "ثقة رائعة بدون التزام كبير"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B07G2DNXND",
+      "title_en": "L’Oréal Paris Prodigy Hair Color/Dye, Micro-oil Technology for Smooth Natural Hair, Grey Hair Coverage_ 4.0 Brown",
+      "title_ar": "صبغة شعر L'Oréal Paris Prodigy، تقنية الزيوت الدقيقة للشعر الطبيعي الناعم، تغطية الشيب، 4.0 بني",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61v+7GEyoCL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار اقتصادي ذكي بابتكار الزيوت الدقيقة",
+        "وصول رائع لتقنية Prodigy للمبتدئين"
+      ],
+      "rank": 10
+    }
+  ]
+}

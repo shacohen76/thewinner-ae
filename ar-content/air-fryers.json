@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "air-fryers",
+    "keyword_text_en": "air fryers",
+    "translated_at": "2026-04-18T20:34:14.330921",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "المقالي الهوائية",
+  "page_title_ar": "أفضل 10 مقالي هوائية في الإمارات",
+  "category_name_en": "Kitchen Appliances",
+  "category_name_ar": "أجهزة المطبخ",
+  "category_slug": "kitchen-appliances",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما هي السعة المناسبة من المقلاة الهوائية لأسرتي؟",
+      "a": "للشخص أو الشخصين، تكفي سلة بسعة 2-3 لتر، لكن إذا كنت تطبخ لعائلة أو ترغب في الطهي بكميات كبيرة، اختر 4-5 لتر أو أكبر. ضع في اعتبارك أن الموديلات الأكبر تحتاج مساحة أكثر على طاولة المطبخ، لذا قس مطبخك أولاً."
+    },
+    {
+      "q": "ما الفرق بين المقالي الهوائية بالسلة وتلك بنمط الفرن؟",
+      "a": "موديلات السلة مدمجة وتسخن بسرعة، مما يجعلها مثالية للمطابخ الصغيرة والوجبات السريعة. المقالي الهوائية بنمط الفرن لها سعة أكبر ورفوف متعددة، لذا يمكنك طهي أطعمة مختلفة في وقت واحد، رغم أنها تحتاج مساحة أكثر."
+    },
+    {
+      "q": "هل القوة الكهربائية مهمة حقاً عند اختيار المقلاة الهوائية؟",
+      "a": "القوة الأعلى (1400-1700W) تعني طهياً أسرع ونتائج أكثر تناسقاً، بينما الموديلات بقوة أقل (أقل من 1200W) تستغرق وقتاً أطول وقد تطهو بشكل غير متساوٍ. للحصول على أفضل أداء، اختر 1300W على الأقل."
+    },
+    {
+      "q": "هل يجب أن أدفع أكثر مقابل مقلاة هوائية بمزايا ذكية أو برامج مسبقة؟",
+      "a": "المزايا الذكية والبرامج المسبقة مريحة لكنها ليست ضرورية، فستحصل على نتائج رائعة مع موديل أساسي وإعدادات يدوية. قم بالترقية فقط إذا كنت تقدر الراحة والتحكم عبر التطبيق بما يكفي لتبرير التكلفة الإضافية."
+    },
+    {
+      "q": "ما الذي يجب أن أتحقق منه قبل شراء مقلاة هوائية؟",
+      "a": "ابحث عن سلة قابلة للإزالة وآمنة للغسالة، وإعدادات درجة حرارة ومؤقت قابلة للتعديل، وتقييمات عملاء جيدة بشأن جودة البناء. تحقق أيضاً من وجود طلاء غير لاصق وما إذا كانت قطع الغيار متوفرة بسهولة في الإمارات."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0DW996VGV",
+      "title_en": "Nutricook Air Fryer Slim, 5L, 1KGs, Large Basket, Space-Saving Slim Design, Air Fry, Bake, Reheat, with 5 Presets, Clear Window & Light, AFS100, Black, 1500 Watts, 2 Years Warranty",
+      "title_ar": "مقلاة هوائية Nutricook Air Fryer Slim، 5L، 1KGs، سلة كبيرة، تصميم نحيف لتوفير المساحة، قلي هوائي، خبز، إعادة تسخين، مع 5 برامج مسبقة، نافذة شفافة وإضاءة، AFS100، أسود، 1500 Watts، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51O7ZDzG+kL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم نحيف يناسب المساحات الضيقة تماماً",
+        "سعة 5L تقدم نتائج بجودة المطاعم يومياً",
+        "نافذة شفافة تتيح مراقبة السحر يحدث"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DC68KYSS",
+      "title_en": "BLACK+DECKER Digital Air Fryer, 1700W, 8L Family-Sized Capacity, 7 Preset Functions, Rapid Air Convection for Healthy Frying, Adjustable Temperature 80-200°C, Easy Clean, Black - SAF80-B5",
+      "title_ar": "مقلاة هوائية رقمية BLACK+DECKER، 1700W، سعة 8L للعائلة، 7 وظائف مسبقة، حمل هواء سريع للقلي الصحي، درجة حرارة قابلة للتعديل 80-200°C، سهلة التنظيف، أسود - SAF80-B5",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41SiO7b7RqL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سعة 8L للعائلة تطعم الجميع دفعة واحدة",
+        "حمل الهواء السريع يقلل وقت الطهي بشكل كبير",
+        "سبع وظائف مسبقة تلغي التخمين تماماً"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B08CN3G4N9",
+      "title_en": "NINJA Foodi Dual Zone Digital Air Fryer, 2 Drawers, 7.6L, 6-in-1, Air Fry, Max Crisp, Roast, Bake, Dehydrate, Cooks 4-6 Portions, Non-Stick, Dishwasher Safe Baskets, Black, AF300ME, 2 Years Warranty",
+      "title_ar": "مقلاة هوائية رقمية NINJA Foodi Dual Zone، درجين، 7.6L، 6 في 1، قلي هوائي، Max Crisp، شواء، خبز، تجفيف، تطهو 4-6 حصص، سلال غير لاصقة وآمنة للغسالة، أسود، AF300ME، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71lLLGyzpBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم عملي بمنطقتين يطهو وجبتين",
+        "سعة 7.6 لتر تطعم أربعة إلى ستة أشخاص",
+        "تقنية Max Crisp تمنح قواماً لا يقاوم"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0CWNXKY9B",
+      "title_en": "Philips Airfryer 2000 Series 4.2L - 1500W power, RapidAir technology, digital touch screen, 13 cooking options, 9 preset functions, Up to 90% less fat, Black - NA229/09[Amazon Exclusive]",
+      "title_ar": "مقلاة هوائية Philips Airfryer 2000 Series 4.2L - قوة 1500W، تقنية RapidAir، شاشة لمس رقمية، 13 خيار طهي، 9 وظائف مسبقة، دهون أقل بنسبة 90%، أسود - NA229/09 [حصرياً على Amazon]",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51Od+5UH3mL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية RapidAir تقلل الدهون بنسبة 90%",
+        "13 خيار طهي تقدم حلولاً متنوعة للوجبات",
+        "حجم 4.2L مدمج يناسب الشقق السكنية"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B09NKZVQZ6",
+      "title_en": "evvoli Air Fryer 5.5 Liters With Digital Control Panel Display, 8 Preset Programs and Built-In Preheat Function, 1700W, EVKA-AF5508D",
+      "title_ar": "مقلاة هوائية evvoli 5.5 لتر مع شاشة لوحة تحكم رقمية، 8 برامج مسبقة ووظيفة تسخين مسبق مدمجة، 1700W، EVKA-AF5508D",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/515sYPRTBbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "وظيفة التسخين المسبق تبدأ الطهي فوراً",
+        "8 برامج مسبقة تتعامل مع عشاء الأيام العادية بسهولة",
+        "1700W توفر قوة طهي احترافية"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0CSND4CYX",
+      "title_en": "Nutricook Air Fryer Slim XL,7.6L, 2.4KG, Extra-Large Basket, Space-Saving Slim Design, Air Fry, Bake, Reheat, with 5 Presets, Clear Window & Internal Light, AFS200, Black, 1700 Watts, 2 Yr Warranty",
+      "title_ar": "مقلاة هوائية Nutricook Air Fryer Slim XL، 7.6L، 2.4KG، سلة كبيرة جداً، تصميم نحيف لتوفير المساحة، قلي هوائي، خبز، إعادة تسخين، مع 5 برامج مسبقة، نافذة شفافة وإضاءة داخلية، AFS200، أسود، 1700 Watts، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/710o1KMA14L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سلة 7.6L كبيرة جداً تزيد الطهي بكميات كبيرة",
+        "تصميم نحيف يوفر المساحة دون تنازل عن السعة",
+        "إضاءة داخلية تكشف نتائج مقرمشة مثالية دائماً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B08KQHCCDK",
+      "title_en": "Philips Airfryer XL - 2000W, LED Touch Screen Display, 6.2L, 1.2KGs, 7 Presets, Rapid Air Technology, Black - HD9270/91",
+      "title_ar": "مقلاة هوائية Philips Airfryer XL - 2000W، شاشة لمس LED، 6.2L، 1.2KGs، 7 برامج مسبقة، تقنية Rapid Air، أسود - HD9270/91",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/5160yBTxjJL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية Philips Rapid Air رائدة في الكمال المقرمش",
+        "قوة 2000W تقدم نتائج يستحيل حرقها",
+        "شاشة اللمس تشعرك بالفخامة والاستجابة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0DH56DD6C",
+      "title_en": "Philips Airfryer 1000 Series - 3.2L, 1300W, Rapid Air Technology, Analog, Black - NA110/09",
+      "title_ar": "مقلاة هوائية Philips Airfryer 1000 Series - 3.2L، 1300W، تقنية Rapid Air، تناظرية، أسود - NA110/09",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51Z98YiPq3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ذكي بميزانية محدودة للمستخدمين الجدد",
+        "حجم 3.2L مدمج يناسب المطابخ الصغيرة بجمال",
+        "تقنية Rapid Air تمنح نتائج مقرمشة فوراً"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0DFYRKZTZ",
+      "title_en": "Ninja Double Stack XL Air Fryer, Vertical Dual Drawer Air Fryer with 4 cooking levels, 2 Drawers and 2 Racks, 9.5L Capacity, 6 Cooking Functions, 8 Portions, Grey, SL400ME, 2 Years Warranty",
+      "title_ar": "مقلاة هوائية Ninja Double Stack XL، مقلاة هوائية عمودية بدرجين مع 4 مستويات طهي، درجين ورفّين، سعة 9.5L، 6 وظائف طهي، 8 حصص، رمادي، SL400ME، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71GTPUFlAnL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم درج عمودي مزدوج يضاعف مساحة الطهي",
+        "سعة 9.5 لتر تطهو ثماني حصص في وقت واحد",
+        "أربعة مستويات طهي مع رفين مضمّنين"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0DQLM3KFX",
+      "title_en": "Philips 5000 series Dual Basket Airfryer with Steaming function,9L capacity,12 presets and 19 different ways to cook,Shake reminder for better cooking,steam cleaning-NA555/09",
+      "title_ar": "مقلاة هوائية Philips 5000 series بسلتين مع وظيفة البخار، سعة 9L، 12 برنامج مسبق و19 طريقة مختلفة للطهي، تذكير بالرج لطهي أفضل، تنظيف بالبخار - NA555/09",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61+vXubhA5L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم السلة المزدوجة يطهو عدة وجبات في وقت واحد",
+        "19 طريقة طهي مختلفة تفتح إمكانيات لا حصر لها",
+        "تذكير بالرج يضمن طعاماً مطهواً بشكل مثالي دائماً"
+      ],
+      "rank": 10
+    }
+  ]
+}

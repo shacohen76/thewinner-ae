@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "slug": "powerful-laptop",
+    "keyword_text_en": "powerful laptop",
+    "translated_at": "2026-04-18T22:23:32.864449",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة اللابتوب القوية",
+  "page_title_ar": "أفضل 10 أجهزة لابتوب قوية في الإمارات",
+  "category_name_en": "Laptops",
+  "category_name_ar": "أجهزة اللابتوب",
+  "category_slug": "laptops",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما هي المواصفات الأهم للحصول على لابتوب قوي؟",
+      "a": "المعالج والذاكرة العشوائية وكرت الشاشة هي أولوياتك الثلاث. معالج حديث متعدد الأنوية يتعامل مع المهام اليومية، والحد الأدنى 16GB RAM يتيح لك القيام بمهام متعددة بسلاسة، وكرت الشاشة المخصص مهم إذا كنت تعمل على تحرير الفيديو أو الأعمال ثلاثية الأبعاد أو الألعاب."
+    },
+    {
+      "q": "هل أختار Intel أم AMD للحصول على لابتوب قوي؟",
+      "a": "كلاهما ممتاز الآن — معالجات AMD Ryzen توفر قيمة أفضل وأنوية أكثر، بينما تتفوق شرائح Intel الأحدث في أداء المهام الفردية. بالنسبة لمعظم الأشخاص، يمنحك Ryzen قوة أكبر مقابل السعر، لكن تحقق من نتائج الأداء حسب احتياجاتك الخاصة."
+    },
+    {
+      "q": "كم أحتاج فعلياً من الذاكرة العشوائية والتخزين؟",
+      "a": "16GB RAM هي النقطة المثالية لمعظم المستخدمين؛ انتقل إلى 32GB إذا كنت تشغل تطبيقات ثقيلة متعددة أو تحرير فيديو. للتخزين، 512GB SSD هو الحد الأدنى (سريع وموثوق)، لكن 1TB أفضل إذا كنت تعمل مع ملفات كبيرة أو ألعاب."
+    },
+    {
+      "q": "متى يستحق إنفاق المزيد على لابتوب قوي؟",
+      "a": "استثمر أكثر إذا كنت تقوم بأعمال احترافية مثل تصيير الفيديو أو النمذجة ثلاثية الأبعاد أو البرمجة حيث توفر السرعة الوقت والمال بشكل مباشر. إذا كنت تستخدمه غالباً للتصفح وأعمال المكتب، فإن خياراً متوسط المدى سيخدمك بشكل جيد."
+    },
+    {
+      "q": "ما حجم الشاشة الذي يجب أن أحصل عليه للابتوب قوي؟",
+      "a": "لأعمال المكتب أو إنشاء المحتوى، تمنحك شاشة 15-17 بوصة مساحة واسعة ولا تضحي كثيراً بسهولة الحمل. إذا كنت بحاجة لنقله كثيراً، التزم بـ 13-14 بوصة، رغم أنك ستضحي ببعض مساحة العمل."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CCD6QN5M",
+      "title_en": "Lenovo IdeaPad Slim 3 15IRU8, 15.6\"FHD Display, Intel I3-1315U, 8GB RAM, 256GB SSD, Integrated Intel UHD Graphics, Win11, Arctic Grey [82X70047AX] (UAE Version)",
+      "title_ar": "لابتوب Lenovo IdeaPad Slim 3 15IRU8، شاشة FHD مقاس 15.6 بوصة، معالج Intel I3-1315U، ذاكرة 8GB RAM، تخزين 256GB SSD، كرت Intel UHD Graphics، نظام Win11، لون Arctic Grey [82X70047AX] (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51uBRbj7APL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اللابتوب الأقوى مقاس 15 بوصة بهذا السعر",
+        "معالج Intel Core i3 يتعامل مع المهام اليومية بسهولة",
+        "يبدأ التشغيل خلال ثوان بفضل 256GB SSD",
+        "تصميم Arctic Grey يبدو احترافياً وفاخراً"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DN5RWNNC",
+      "title_en": "HP (Upgraded) Victus 15 FA2701WM Gaming Laptop 15.6\", Intel Core i5-13420H Processor, 16GB DDR4 RAM, 512GB SSD, 15.6\" FHD IPS 144Hz, NVIDIA RTX 4050 6GB Graphics, Eng Backlit KB, Win 11, Mica Silver",
+      "title_ar": "لابتوب HP (Upgraded) Victus 15 FA2701WM للألعاب مقاس 15.6 بوصة، معالج Intel Core i5-13420H، ذاكرة 16GB DDR4 RAM، تخزين 512GB SSD، شاشة FHD IPS 144Hz مقاس 15.6 بوصة، كرت NVIDIA RTX 4050 6GB، لوحة مفاتيح مضيئة إنجليزية، نظام Win 11، لون Mica Silver",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81obPsMhewL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء ألعاب استثنائي مع كرت RTX 4050",
+        "شاشة 144Hz توفر تجربة لعب سلسة للغاية",
+        "معالج Intel Core i5-13420H يسحق متطلبات المهام المتعددة",
+        "لوحة مفاتيح مضيئة فاخرة لجلسات الألعاب الليلية"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DHSMZ8GS",
+      "title_en": "HP Laptop 15-fd0111ne, 15.6\" Full HD Display, Intel Core i7-1255U, 16GB RAM, 512GB SSD, Intel Iris Xe Graphics, Windows 11 Home, Keyboard English/Arabic, Natural silver [B21RHEA] (US Version)",
+      "title_ar": "لابتوب HP 15-fd0111ne، شاشة Full HD مقاس 15.6 بوصة، معالج Intel Core i7-1255U، ذاكرة 16GB RAM، تخزين 512GB SSD، كرت Intel Iris Xe Graphics، نظام Windows 11 Home، لوحة مفاتيح إنجليزي/عربي، لون Natural silver [B21RHEA] (نسخة أمريكية)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ng0eaEe0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "معالج Intel Core i7 استثنائي للأعمال الإبداعية",
+        "ذاكرة 16GB RAM تدعم سير عمل تحرير الفيديو بسلاسة",
+        "كرت Iris Xe يتجاوز قدراته المتوقعة",
+        "تخزين 512GB SSD لمكتبتك الإبداعية الكاملة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0CNKL6N6M",
+      "title_en": "HP 15.6\" Laptop, 13th Gen Intel Core i5-1335U, 16GB RAM, 512GB SSD, FHD Anti-Glare Display, Webcam, Numeric Keypad, Wi-Fi, Bluetooth, HDMI, 32GB USB Card, Windows 11 – Silver (US Version)",
+      "title_ar": "لابتوب HP مقاس 15.6 بوصة، معالج الجيل الثالث عشر Intel Core i5-1335U، ذاكرة 16GB RAM، تخزين 512GB SSD، شاشة FHD مضادة للتوهج، كاميرا ويب، لوحة أرقام، Wi-Fi، Bluetooth، HDMI، كارت USB سعة 32GB، نظام Windows 11 – لون Silver (نسخة أمريكية)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71+FS-vcsNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع معالج الجيل الثالث عشر Intel Core i5",
+        "شاشة FHD مضادة للتوهج تقلل إجهاد العين فوراً",
+        "لوحة أرقام مدمجة للمحاسبين والمحللين",
+        "تخزين 512GB SSD يلغي قلق المساحة لسنوات"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0F9X5DSBS",
+      "title_en": "ASUS TUF F16 14th Gen Intel Core i7 14650HX Gaming Laptop Nvidia RTX 5060-8GB, WUXGA 165Hz,32GB RAM GDDR5-1TB SSD, Windows 11 Office Home 2024/Jaeger Gray FX608JMR",
+      "title_ar": "لابتوب ASUS TUF F16 للألعاب بمعالج الجيل الرابع عشر Intel Core i7 14650HX، كرت Nvidia RTX 5060-8GB، شاشة WUXGA 165Hz، ذاكرة 32GB RAM GDDR5، تخزين 1TB SSD، نظام Windows 11، Office Home 2024، لون Jaeger Gray FX608JMR",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81uhoF43yAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محطة العمل المحمولة الأقوى للمبدعين هنا",
+        "كرت RTX 5060 يتعامل مع تحرير 4K بشكل أصلي",
+        "معالج الجيل الرابع عشر Intel Core i7 14650HX يسيطر",
+        "شاشة WUXGA 165Hz توفر وضوحاً للتفاصيل"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0FVPDG2Z2",
+      "title_en": "Acer Nitro V15 ANV15 Gaming Laptop With 15.6-Inch FHD IPS 165Hz Display, Core i5-13420H Processor,16GB DDR4 RAM,512GB SSD, 8GB Nvidia RTX 5050 Graphics, Windows 11, English KB, Obsidian Black",
+      "title_ar": "لابتوب Acer Nitro V15 ANV15 للألعاب بشاشة FHD IPS 165Hz مقاس 15.6 بوصة، معالج Core i5-13420H، ذاكرة 16GB DDR4 RAM، تخزين 512GB SSD، كرت 8GB Nvidia RTX 5050، نظام Windows 11، لوحة مفاتيح إنجليزية، لون Obsidian Black",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51i90tNU09L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ألعاب قوي مع كرت RTX 5050",
+        "شاشة IPS 165Hz توفر ميزة تنافسية في الألعاب",
+        "معالج Core i5-13420H يحافظ على الأداء المستمر",
+        "ذاكرة 16GB DDR4 RAM تشغل الألعاب الثقيلة بسلاسة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0D9Y2X64F",
+      "title_en": "ASUS Zenbook S 16 OLED AI Laptop UM5606WA-RK233W /AMD Ryzen AI R9-HX370 Upto 5.1GHz/32GB RAM/2TB SSD/16 Inch 3K(2880x1800) OLED 120Hz/Windows 11 Home with Copilot Key -Scandinavian White",
+      "title_ar": "لابتوب ASUS Zenbook S 16 OLED AI UM5606WA-RK233W، معالج AMD Ryzen AI R9-HX370 حتى 5.1GHz، ذاكرة 32GB RAM، تخزين 2TB SSD، شاشة 16 بوصة 3K(2880x1800) OLED 120Hz، نظام Windows 11 Home مع مفتاح Copilot، لون Scandinavian White",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/719dFAv+kCL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "لابتوب موثوق مدعوم بالذكاء الاصطناعي مع Ryzen AI R9",
+        "شاشة OLED 3K تعرض الألوان كما لم ترها من قبل",
+        "ذاكرة 32GB RAM تتعامل مع التطبيقات الإبداعية الثقيلة بسهولة",
+        "تخزين 2TB SSD لأرشيف مشاريعك الكامل فوراً"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FMFPJW9B",
+      "title_en": "Lenovo LOQ 15IAX9E Gaming Laptop, 15.6\" FHD 144Hz IPS Display, Intel Core i5-12450HX, 16GB DDR5 RAM, 512GB SSD, NVIDIA GeForce RTX 3050 6GB, ENG Keyboard, Luna Grey",
+      "title_ar": "لابتوب Lenovo LOQ 15IAX9E للألعاب، شاشة FHD 144Hz IPS مقاس 15.6 بوصة، معالج Intel Core i5-12450HX، ذاكرة 16GB DDR5 RAM، تخزين 512GB SSD، كرت NVIDIA GeForce RTX 3050 6GB، لوحة مفاتيح إنجليزية، لون Luna Grey",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41p3Q714JTL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ألعاب ذكية بميزانية محدودة مع كرت RTX 3050",
+        "شاشة IPS 144Hz توفر ألعاباً تنافسية سلسة",
+        "معالج Core i5-12450HX يحمل قوة مفاجئة هنا",
+        "ذاكرة DDR5 RAM تضمن مستقبل إعداد الألعاب"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FFB6KMP2",
+      "title_en": "HP OmniBook 5 Flip 2-in-1 Laptop, 14\" 2K Touch-Screen Display, Intel Core 7 150U, 16GB RAM, 512GB SSD, Backlit Keyboard, 21.5hr Battery, Windows 11, Glacier Silver",
+      "title_ar": "لابتوب HP OmniBook 5 Flip 2-in-1، شاشة لمس 2K مقاس 14 بوصة، معالج Intel Core 7 150U، ذاكرة 16GB RAM، تخزين 512GB SSD، لوحة مفاتيح مضيئة، بطارية 21.5 ساعة، نظام Windows 11، لون Glacier Silver",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61w46DxXXBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بطارية قوية 21.5 ساعة تدوم طوال يوم العمل",
+        "شاشة لمس 2K تحيي العمل الإبداعي",
+        "لون Glacier Silver يبدو فاخراً في أي مكان"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0FG3HHCS8",
+      "title_en": "Lenovo IdeaPad Slim 3 15AMN8 (Arctic Grey) Slim Laptop | AMD Ryzen™ 5 7520U | AMD Redeon graphics | 8GB RAM | 512GB SSD | 15.6\" FHD Display | Win11[82XQ00CGAX]",
+      "title_ar": "لابتوب Lenovo IdeaPad Slim 3 15AMN8 (Arctic Grey) النحيف، معالج AMD Ryzen 5 7520U، كرت AMD Redeon، ذاكرة 8GB RAM، تخزين 512GB SSD، شاشة FHD مقاس 15.6 بوصة، نظام Win11[82XQ00CGAX]",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61LB9TKQhYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ذكي بميزانية محدودة مع AMD Ryzen 5 7520U",
+        "تخزين 512GB SSD مفاجئ بهذا السعر",
+        "تصميم نحيف يتسع بسهولة في حقائب اللابتوب",
+        "ذاكرة 8GB RAM تتعامل مع أعمال المكتب بدون تقطيع"
+      ],
+      "rank": 10
+    }
+  ]
+}

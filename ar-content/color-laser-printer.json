@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "slug": "color-laser-printer",
+    "keyword_text_en": "color laser printer",
+    "translated_at": "2026-04-18T20:34:14.377972",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "طابعات الليزر الملونة",
+  "page_title_ar": "أفضل 10 طابعات الليزر الملونة في الإمارات",
+  "category_name_en": "Printers",
+  "category_name_ar": "الطابعات",
+  "category_slug": "printers",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق الحقيقي بين طابعة الليزر الملونة وطابعة نفث الحبر؟",
+      "a": "تستخدم طابعات الليزر الملونة خراطيش الحبر والحرارة لدمج الألوان على الورق، مما يمنحك طباعة أسرع وأكثر وضوحاً وتكلفة أقل لكل صفحة للطباعة عالية الحجم. طابعات نفث الحبر أرخص مقدماً ولكنها تكلف أكثر في التشغيل وهي أنسب للطباعة العرضية للصور بدلاً من العمل المنتظم على المستندات."
+    },
+    {
+      "q": "كيف أعرف سرعة الطباعة التي أحتاجها فعلاً؟",
+      "a": "إذا كنت تطبع أقل من 50 صفحة أسبوعياً، فإن 18-20 صفحة في الدقيقة جيد. للاستخدام المكتبي أو الأعمال المنزلية التي تطبع بانتظام، ابحث عن 25+ ppm لتجنب الإحباط من أوقات الانتظار."
+    },
+    {
+      "q": "هل جودة الطباعة مهمة كثيراً لطابعة الليزر الملونة؟",
+      "a": "بالنسبة للمستندات التجارية والاستخدام العام، فإن معظم طابعات الليزر الملونة تنتج جودة مقبولة تماماً. أنفق أكثر على الموديلات المتميزة فقط إذا كنت بحاجة إلى جودة صور فوتوغرافية أو تطبع مواد تسويقية."
+    },
+    {
+      "q": "ما حجم الصفحات الشهري الذي يجب أن أفكر فيه قبل الشراء؟",
+      "a": "تحقق من الحجم الشهري الموصى به من الشركة المصنعة (عادة 2,000-5,000 صفحة) - البقاء ضمن هذا النطاق يحافظ على موثوقية طابعتك وتكاليف الحبر متوقعة. تجاوزه بانتظام يؤدي إلى تآكل أسرع وتكاليف صيانة طويلة الأمد أعلى."
+    },
+    {
+      "q": "هل يجب أن أشتري طابعة بنظام حبر عالي السعة؟",
+      "a": "إذا كنت تطبع أكثر من 500 صفحة شهرياً، فإن خراطيش الحبر عالية السعة توفر لك المال رغم التكاليف المقدمة الأعلى لأنها تدوم أطول. بالنسبة للمستخدمين الخفيفين، الخراطيش القياسية جيدة ولن تهدر الحبر إذا تغيرت احتياجاتك."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CVXSPV5H",
+      "title_en": "Brother Wireless All in One Printer, MFC-L3720CDW, with Advanced LED Color Laser Print, ADF, Duplex & Mobile Printing, High Yield Ink Toner",
+      "title_ar": "طابعة Brother لاسلكية متعددة الوظائف، MFC-L3720CDW، مع طباعة LED ليزر ملونة متقدمة، ADF، طباعة على الوجهين وطباعة محمولة، حبر عالي السعة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Bw9rXydAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "جودة طباعة LED ليزر ملونة استثنائية",
+        "مغذي المستندات الآلي يعالج المجموعات بسرعة",
+        "الحبر عالي السعة يستمر لفترة أطول"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CVXHFP9N",
+      "title_en": "Brother Wireless All in One Printer, DCP-L3520CDW, with Advanced LED Color Laser Print, Duplex & Mobile Printing, High Yield Ink Toner",
+      "title_ar": "طابعة Brother لاسلكية متعددة الوظائف، DCP-L3520CDW، مع طباعة LED ليزر ملونة متقدمة، طباعة على الوجهين وطباعة محمولة، حبر عالي السعة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61UloDilCAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء LED ليزر ملون قوي بتصميم مدمج",
+        "الطباعة على الوجهين توفر الورق تلقائياً",
+        "الطباعة المحمولة من جيبك فوراً"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0B34WJ81C",
+      "title_en": "HP | Color LaserJet MFP | Wireless | Print, Scan, Copy | Manual Duplex | Print Speed: Up to 20ppm | Duty Cycle (monthly, A4): Up to 8000 pages | M141A | UAE Version",
+      "title_ar": "HP | Color LaserJet MFP | لاسلكية | طباعة، مسح، نسخ | طباعة على الوجهين يدوياً | سرعة الطباعة: حتى 20ppm | دورة العمل (شهرياً، A4): حتى 8000 صفحة | M141A | نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51YzBo9U5eL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "جهاز ليزر ملون متعدد الوظائف مثالي للمبتدئين",
+        "حتى 20ppm يتعامل مع عبء العمل اليومي",
+        "الطباعة اللاسلكية تلغي الحاجة للكابلات تماماً"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0DBV3G15H",
+      "title_en": "Brother Wireless All in One Printer, HL-L3220CW, with Advanced LED Color Laser Print, Mobile Printing, High Yield Ink Toner",
+      "title_ar": "طابعة Brother لاسلكية متعددة الوظائف، HL-L3220CW، مع طباعة LED ليزر ملونة متقدمة، طباعة محمولة، حبر عالي السعة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61KpgaImy8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي في المساحات المكتبية المدمجة",
+        "LED ليزر ملون بتصميم انسيابي",
+        "الطباعة المحمولة تضع التحكم بين يديك",
+        "الحبر عالي السعة يقلل تكرار الاستبدال"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B07RMJV1LT",
+      "title_en": "HP | Color Laser | Wireless | Print, Scan, Copy, Fax | Manual Duplex | Print Speed: 19ppm(black) / 4ppm(color) | 40-page ADF | Laser 179fnw | UAE Version",
+      "title_ar": "HP | Color Laser | لاسلكية | طباعة، مسح، نسخ، فاكس | طباعة على الوجهين يدوياً | سرعة الطباعة: 19ppm (أسود) / 4ppm (ملون) | ADF بسعة 40 صفحة | Laser 179fnw | نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61CfyssX93L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ليزر ملون احترافي مع إمكانية الفاكس",
+        "مغذي آلي بسعة 40 صفحة يتعامل مع المجموعات الكبيرة",
+        "طباعة على الوجهين يدوياً للتحكم الدقيق"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0CJV67NSL",
+      "title_en": "Brother HL-L3220CW Colour Wireless LED Printer | Single Function |USB 2.0 | A4|UK Plug",
+      "title_ar": "طابعة Brother HL-L3220CW LED لاسلكية ملونة | وظيفة واحدة | USB 2.0 | A4 | قابس المملكة المتحدة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61sbyybY4FL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "طابعة وظيفة واحدة موثوقة بأداء مثبت",
+        "تصميم لاسلكي مدمج يناسب المساحات الضيقة",
+        "LED ليزر ملون ينتج مخرجات واضحة ونابضة بالحياة",
+        "خيارات اتصال USB لإعداد مرن"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CJT1GLY5",
+      "title_en": "Brother HL-L3280CDW Wireless Compact Digital Color Printer",
+      "title_ar": "طابعة Brother HL-L3280CDW رقمية ملونة مدمجة لاسلكية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71QdOLkG5cL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء مدمج موثوق للبيئات المزدحمة",
+        "الطباعة اللاسلكية تبقي الكابلات بعيدة عن مكتبك",
+        "جودة الليزر الملون تنافس أجهزة المكاتب الباهظة",
+        "الطباعة التلقائية على الوجهين توفر استخدام الورق"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0CFD1G1VT",
+      "title_en": "Brother HL-L3280CDW Wireless Compact Digital Color Printer with Laser Quality Output, Duplex, Mobile Printing & Ethernet | Includes 4 Month Refresh Subscription Trial¹, Amazon Dash Replenishment Ready",
+      "title_ar": "طابعة Brother HL-L3280CDW رقمية ملونة مدمجة لاسلكية مع جودة ليزر، طباعة على الوجهين، طباعة محمولة و Ethernet | تشمل اشتراك تجريبي لمدة 4 أشهر، جاهزة لـ Amazon Dash Replenishment",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81JIkmIhdwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "دخول ذكي بميزانية مناسبة لطباعة الليزر الملون",
+        "التصميم المدمج يعزز كفاءة مساحة العمل فوراً",
+        "Amazon Dash Replenishment يبقيك مزوداً دائماً",
+        "جودة ليزر بدون السعر المرتفع"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0B61RNKH4",
+      "title_en": "HP 4303DW Colour LaserJet Pro A4 Colour Laser Multifunction Printer, 5HH65A, Multicolour",
+      "title_ar": "طابعة HP 4303DW Colour LaserJet Pro A4 ليزر ملونة متعددة الوظائف، 5HH65A، متعددة الألوان",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71JhmkJbRhL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "جهاز متعدد الوظائف مثالي للمبتدئين للفرق المتنامية",
+        "وظائف المسح والنسخ والطباعة والفاكس الكاملة في جهاز واحد",
+        "موثوقية HP مصممة للاستخدام اليومي المكثف"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0FXNC7CNR",
+      "title_en": "Canon i-SENSYS MF664Cdw Multi-Function Colour Laser Printer - Print, Copy, Scan, Fax in A4-25ppm, LCD Touch Screen - Wi-Fi Connection, Scan to Cloud - Office Printer",
+      "title_ar": "طابعة Canon i-SENSYS MF664Cdw ليزر ملونة متعددة الوظائف - طباعة، نسخ، مسح، فاكس في A4-25ppm، شاشة لمس LCD - اتصال Wi-Fi، مسح إلى السحابة - طابعة مكتبية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61QylFjkjYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ليزر ملون مثالي للمبتدئين بميزات احترافية",
+        "سرعة 25ppm تتعامل مع احتياجات المستندات الكبيرة",
+        "واجهة الشاشة اللمسية تجعل التشغيل سهلاً",
+        "المسح إلى السحابة يحول سير عمل إدارة المستندات"
+      ],
+      "rank": 10
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "setting-powder",
+    "keyword_text_en": "setting powder",
+    "translated_at": "2026-04-18T20:34:14.345072",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "بودرة التثبيت",
+  "page_title_ar": "أفضل 10 بودرة تثبيت في الإمارات",
+  "category_name_en": "Other",
+  "category_name_ar": "أخرى",
+  "category_slug": "other",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين بودرة التثبيت السائبة والمضغوطة؟",
+      "a": "البودرة السائبة توفر تغطية أكمل وأفضل للتحكم في اللمعان، بينما البودرة المضغوطة أسهل في الحمل والتطبيق أثناء التنقل. البودرة السائبة تدوم لفترة أطول في كل استخدام، لكن البودرة المضغوطة أسهل في الحمل والتطبيق دون فوضى."
+    },
+    {
+      "q": "كيف أعرف إذا كانت بودرة التثبيت مناسبة لنوع بشرتي؟",
+      "a": "راجعي وصف المنتج حسب نوع بشرتك - التركيبات المطفية تناسب البشرة الدهنية، بينما البودرة المرطبة أو المضيئة أفضل للبشرة الجافة. ابحثي عن آراء أشخاص لديهم مشاكل بشرة مماثلة للحصول على فكرة حقيقية عن أدائها."
+    },
+    {
+      "q": "هل بودرة التثبيت الأغلى حقاً أفضل أداء من الخيارات الاقتصادية؟",
+      "a": "البودرة متوسطة وعالية السعر غالباً لها ملمس وقابلية دمج أفضل، لكن البودرة الاقتصادية يمكن أن تعمل بنفس الكفاءة لتثبيت المكياج إذا لم تكن بشرتك حساسة. الفرق عادة في مدى نعومة طحن البودرة وما إذا كانت تحتوي على مكونات مفيدة للبشرة."
+    },
+    {
+      "q": "ما الحجم المناسب من بودرة التثبيت إذا كنت أستخدمها يومياً؟",
+      "a": "البودرة السائبة أو المضغوطة بحجم 10-15g تكفي معظم الأشخاص لمدة 2-3 أشهر مع الاستخدام اليومي، بينما الأحجام الأكبر 20g+ أفضل إذا كنت تستخدمينها بكثافة أو تريدين تجنب الشراء المتكرر. الأحجام الصغيرة للسفر (5-8g) مفيدة فقط إذا كنت تحتاجين حقاً للحمل أثناء التنقل."
+    },
+    {
+      "q": "ماذا أبحث عنه لتجنب البودرة التي تبدو ثقيلة على البشرة؟",
+      "a": "اختاري البودرة المطحونة بشكل ناعم (ملمسها حريري وليس خشن) وضعيها بلطف باستخدام فرشاة ناعمة وليست كثيفة. تجنبي التركيبات المحتوية على التلك إذا كانت بشرتك حساسة، واختاري البودرة الشفافة أو المطابقة للون البشرة بدلاً من النسخ عالية التغطية."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0B1DQ3D8W",
+      "title_en": "Fix & Last 14H Polvos Sueltos Fijadores: 9,5 Gr",
+      "title_ar": "بودرة تثبيت سائبة Fix & Last 14H: 9.5 Gr",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51U4r1MYT+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قوة تثبيت 14 ساعة الأقوى المتاحة",
+        "تركيبة سائبة تمسك المكياج بقوة لا مثيل لها",
+        "تثبيت من الدرجة الأولى يحافظ على المظهر المثالي"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B004DIXYUI",
+      "title_en": "e.l.f. 83331 Studio High Definition Powder - Sheer, 0.28 oz (8G)",
+      "title_ar": "بودرة e.l.f. 83331 Studio High Definition - Sheer، 0.28 oz (8G)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61l9+UHKV0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تغطية شفافة ممتازة دون تراكم ثقيل",
+        "تركيبة HD احترافية مصقولة للكمال",
+        "ملمس خفيف استثنائي طوال اليوم"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DQYTN86X",
+      "title_en": "wet n wild Photo Focus Loose Setting Powder - Soft Pink",
+      "title_ar": "بودرة تثبيت سائبة wet n wild Photo Focus - Soft Pink",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81U360Cd-GL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي بلون وردي ناعم",
+        "تقنية التصوير تطمس العيوب فوراً",
+        "ملمس سائب ممتاز يمتزج بسلاسة في أي مكان"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B07ZR111LV",
+      "title_en": "e.l.f., Halo Glow Setting Powder, Silky, Weightless, Blurring, Smooths, Minimizes Pores and Fine Lines, Creates Soft Focus Effect, Light, Semi-Matte Finish, 0.24 Oz",
+      "title_ar": "بودرة تثبيت e.l.f. Halo Glow، حريرية، خفيفة، تطمس، تنعم، تقلل المسام والخطوط الدقيقة، تخلق تأثير soft focus، Light، لمسة نهائية نصف مطفية، 0.24 Oz",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61fyFY-L2zL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "توهج هالو يخلق تأثير soft focus المرغوب",
+        "تركيبة خفيفة تقلل المسام والخطوط الدقيقة",
+        "أداء قوي ينعم البشرة كالحرير"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0F38QBPTN",
+      "title_en": "L'Oreal Paris Infallible Blur-fection Longwear Loose Setting Powder, Blurring Face Powder With Up to 24HRs of Wear, Brightening Light Pink, 1 Kit",
+      "title_ar": "بودرة تثبيت سائبة L'Oreal Paris Infallible Blur-fection Longwear، بودرة وجه مطمسة مع 24 ساعة ثبات، Light Pink مشرقة، 1 Kit",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71hgZZR8TRL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قوة تثبيت blur-fection لمدة 24 ساعة",
+        "خبرة L'Oreal توفر دقة ثبات طويل الأمد",
+        "تأثير إشراق ممتاز ينعش البشرة المتعبة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B004M9L0WW",
+      "title_en": "Rimmel London, Stay Matte Pressed Powder, 01 Transparent, 14 g",
+      "title_ar": "بودرة مضغوطة Rimmel London Stay Matte، 01 Transparent، 14 g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61hu9Sau82L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بودرة مضغوطة موثوقة تبقى مطفية طوال اليوم",
+        "خيار ممتاز لتغطية شفافة بمظهر طبيعي",
+        "تصميم مضغوط 14g يناسب أي حقيبة مكياج"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B09V346X7F",
+      "title_en": "Essence Baa Loose Powder, Yellow",
+      "title_ar": "بودرة سائبة Essence Baa، Yellow",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71a95nPdC7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بودرة سائبة موثوقة بلون أصفر",
+        "خيار ممتاز للتحكم بالطبقات القابلة للتخصيص",
+        "جودة Essence في أفضل حالاتها هنا"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B08B36528M",
+      "title_en": "Revolution Beauty London Makeup Loose Baking Powder, Make Up Setting Powder, Provides Long-lasting Coverage, Reduces Shine, For Light Skin Tones, Banana Light, 32g",
+      "title_ar": "بودرة Revolution Beauty London Makeup Loose Baking، بودرة تثبيت مكياج، توفر تغطية طويلة الأمد، تقلل اللمعان، لدرجات البشرة الفاتحة، Banana Light، 32g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61a72JAVNoL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بودرة baking مبسطة للمبتدئين بشكل رائع",
+        "درجة Banana Light تناسب البشرة الفاتحة",
+        "خيار ذكي يقلل اللمعان بتغطية 32g"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0B2BLSDHY",
+      "title_en": "SHEGLAM Insta-Ready Face Powder Loose Under Eye Setting Powder - Translucent",
+      "title_ar": "بودرة تثبيت سائبة تحت العين SHEGLAM Insta-Ready Face Powder - Translucent",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51okNrKY5NL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تركيبة شفافة تعمل عالمياً تحت العينين",
+        "بودرة سائبة Insta-ready للمسات سريعة",
+        "خيار ممتاز للمبتدئين بتحكم دقيق بالتثبيت"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0CJB35DQ4",
+      "title_en": "SHEGLAM INSTA-READY FACE & UNDER EYES SETTING POWDER DUO- BUBBLEGUM",
+      "title_ar": "مجموعة بودرة تثبيت SHEGLAM INSTA-READY للوجه وتحت العينين - BUBBLEGUM",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41FkKB4PmcL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم مزدوج يعالج الوجه وتحت العينين",
+        "لون Bubblegum يضيف بعداً مرحاً",
+        "خيار ميزانية ذكي يتضمن درجتي بودرة"
+      ],
+      "rank": 10
+    }
+  ]
+}

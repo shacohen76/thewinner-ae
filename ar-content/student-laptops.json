@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "slug": "student-laptops",
+    "keyword_text_en": "student laptops",
+    "translated_at": "2026-04-18T20:34:14.311757",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة اللابتوب للطلاب",
+  "page_title_ar": "أفضل 10 أجهزة لابتوب للطلاب في الإمارات",
+  "category_name_en": "Laptops",
+  "category_name_ar": "أجهزة اللابتوب",
+  "category_slug": "laptops",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما المعالج وسعة الذاكرة التي أحتاجها فعلياً للدراسة الجامعية؟",
+      "a": "بالنسبة لمعظم الطلاب، يتعامل معالج Intel i5 أو AMD Ryzen 5 مع 8GB RAM بسلاسة مع المستندات والتصفح ومكالمات الفيديو. إذا كنت تعمل على تحرير الفيديو أو البرمجة أو التصميم، انتقل إلى i7/Ryzen 7 مع 16GB RAM لتجنب الإحباط لاحقاً."
+    },
+    {
+      "q": "هل يجب أن أختار لابتوب 13 بوصة أو 15 بوصة أو 17 بوصة؟",
+      "a": "لابتوب 13-15 بوصة مثالي إذا كنت تتنقل بين القاعات والمكتبة - أخف للحمل ويناسب معظم الحقائب. اختر 17 بوصة فقط إذا كنت تبقى غالباً على المكتب، لأن المساحة الإضافية للشاشة لا تستحق حملها يومياً في الحرم الجامعي."
+    },
+    {
+      "q": "ما سعة التخزين التي أحتاجها - 256GB أو 512GB أو 1TB؟",
+      "a": "256GB ضيقة إذا كنت تحتفظ بالأفلام أو ملفات المشاريع الكبيرة محلياً؛ 512GB توفر مساحة مريحة للمهام والتطبيقات. اختر 1TB فقط إذا كنت تحرر الفيديو أو تعمل على الجرافيكس بانتظام - وإلا ستدفع مقابل مساحة لن تستخدمها."
+    },
+    {
+      "q": "هل عمر البطارية مهم حقاً في لابتوب الطلاب؟",
+      "a": "نعم - تحتاج على الأقل 6-8 ساعات لتجتاز يوماً كاملاً من المحاضرات دون البحث عن شاحن. تحقق من اختبارات البطارية الواقعية، وليس ادعاءات الشركة المصنعة، لأنها غالباً ما تكون مبالغاً فيها."
+    },
+    {
+      "q": "متى يستحق إنفاق المزيد على لابتوب طلابي متميز؟",
+      "a": "أنفق أكثر إذا كنت بحاجة إلى المتانة (جودة بناء أفضل تدوم 4+ سنوات)، أو قابلية النقل (هيكل ألومنيوم خفيف)، أو أداء لبرامج معينة مثل CAD أو إنتاج الفيديو. للكتابة الأساسية والمقالات، يقوم الخيار الاقتصادي بالمهمة بشكل جيد."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CCD6QN5M",
+      "title_en": "Lenovo IdeaPad Slim 3 15IRU8, 15.6\"FHD Display, Intel I3-1315U, 8GB RAM, 256GB SSD, Integrated Intel UHD Graphics, Win11, Arctic Grey [82X70047AX] (UAE Version)",
+      "title_ar": "Lenovo IdeaPad Slim 3 15IRU8، شاشة 15.6\" FHD، Intel I3-1315U، 8GB RAM، 256GB SSD، Intel UHD Graphics، Win11، Arctic Grey [82X70047AX] (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51uBRbj7APL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الأقوى بين أجهزة 15 بوصة بهذا السعر",
+        "Intel Core i3 يتعامل مع المهام اليومية بسهولة",
+        "256GB SSD يعمل في ثوانٍ معدودة",
+        "تصميم Arctic Grey يبدو احترافياً وأنيقاً"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CNYDKC43",
+      "title_en": "HP 15 Laptop for Business & Student, 15.6\" FHD Micro-Edge Display, Intel Core i3-1215U up to 4.40GHz, 16GB RAM, 512GB NVMe SSD, 720p Webcam, Numpad, USB-C, Wi-Fi, FP Reader, PDG HDMI, Win 11 Pro",
+      "title_ar": "HP 15 لابتوب للأعمال والطلاب، شاشة 15.6\" FHD Micro-Edge، Intel Core i3-1215U حتى 4.40GHz، 16GB RAM، 512GB NVMe SSD، كاميرا 720p، لوحة أرقام، USB-C، Wi-Fi، قارئ بصمة، PDG HDMI، Win 11 Pro",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61hCpLvGrgL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لمحترفي الأعمال",
+        "أمان قوي مع قارئ بصمة مدمج",
+        "16GB RAM يتعامل مع الجداول الضخمة فوراً",
+        "لوحة أرقام تسرع إدخال البيانات"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CXGPS24D",
+      "title_en": "HP 15.6 inch Laptop, HD Display, 13th Generation Intel Core i5-1334U, 8 GB RAM, 512 GB SSD, Intel Iris Xe Graphics, Windows 11 Home, 15-fd (2024)(Upgraded)",
+      "title_ar": "HP لابتوب 15.6 بوصة، شاشة HD، الجيل الثالث عشر Intel Core i5-1334U، 8GB RAM، 512GB SSD، Intel Iris Xe Graphics، Windows 11 Home، 15-fd (2024)(محدث)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71lxRGhPMVL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شاشة 15 بوصة عملية لمشاهدة مريحة",
+        "Intel Core i5-1334U يتعامل مع الإنتاجية اليومية",
+        "512GB SSD يزيل مخاوف التخزين فوراً",
+        "شاشة HD كافية لمهام الحوسبة العامة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0DQH6S4ZX",
+      "title_en": "Lenovo Ideapad 1 15IJL7 Laptop With 15.6\" FHD Display - Intel Celeron N4500 Processor - Intel UHD Graphics - 8GB DDR4 Ram - 256GB NVMe SSD - Windows 11 -Silver(Upgraded)",
+      "title_ar": "Lenovo Ideapad 1 15IJL7 لابتوب مع شاشة 15.6\" FHD - معالج Intel Celeron N4500 - Intel UHD Graphics - 8GB DDR4 Ram - 256GB NVMe SSD - Windows 11 - Silver (محدث)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71SBZjKcwsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قيمة استثنائية دون التنازل عن الأساسيات",
+        "خفيف بما يكفي للتنقل المستمر",
+        "وضوح FHD يتجاوز التوقعات"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0D9NHYR82",
+      "title_en": "HP Chromebook 14\" HD Laptop for Business & Students, Intel Celeron N4120, 4GB LPDDR4, 224GB Storage(64GB eMMC+160GB Docking Station), UHD Graphics, Webcam, Long Battery Life, Chrome OS, Modern Gray",
+      "title_ar": "HP Chromebook لابتوب 14\" HD للأعمال والطلاب، Intel Celeron N4120، 4GB LPDDR4، 224GB تخزين (64GB eMMC+160GB محطة إرساء)، UHD Graphics، كاميرا، عمر بطارية طويل، Chrome OS، Modern Gray",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81Wg83785AL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سرعة Chromebook ممتازة للتصفح الفوري",
+        "عمر بطارية قوي يدوم طوال اليوم الدراسي",
+        "محطة الإرساء تضيف 160GB مساحة إضافية"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0FHHJN6DD",
+      "title_en": "ASUS 2025 Laptop | Vivobook 14 | 14\" 1920 x 1080 | Intel-10 Core i5-1334U | Intel Iris Xe Graphics | 12GB DDR4 | 512GB SSD | Windows 11 Home | Wi-Fi 5 - Bluetooth 5-720p HD Camera - Quiet Blue",
+      "title_ar": "ASUS 2025 لابتوب | Vivobook 14 | 14\" 1920 x 1080 | Intel-10 Core i5-1334U | Intel Iris Xe Graphics | 12GB DDR4 | 512GB SSD | Windows 11 Home | Wi-Fi 5 - Bluetooth 5 - كاميرا 720p HD - Quiet Blue",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/514F-bCZpLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع Intel 10 أنوية موثوق",
+        "512GB تخزين ممتاز للمشاريع والملفات",
+        "Iris Xe Graphics يتعامل مع العمل الإبداعي بسلاسة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0F1XCVS3X",
+      "title_en": "HP (Upgraded) 250 255 G10 Business Laptop 15.6\" FHD Display, Intel Core i5-1334U (Beats AMD Ryzen 5 7530U) 16GB RAM, 512GB PCIe SSD for Home, Student, Webcam, Numeric Keypad, Windows 11 Pro",
+      "title_ar": "HP (محدث) 250 255 G10 لابتوب أعمال شاشة 15.6\" FHD، Intel Core i5-1334U (يتفوق على AMD Ryzen 5 7530U) 16GB RAM، 512GB PCIe SSD للمنزل، الطلاب، كاميرا، لوحة أرقام، Windows 11 Pro",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71YWN-1f0xL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "لابتوب أعمال ذكي يتفوق على المنافسين",
+        "16GB RAM رائعة تتعامل مع الأحمال الثقيلة",
+        "Windows 11 Pro يفتح ميزات متقدمة",
+        "لوحة أرقام تسرع الإدخال بشكل ملحوظ"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B09S3HNMHF",
+      "title_en": "Samsung 14\" Galaxy Chromebook Go Laptop PC Computer, Intel Celeron N4500 Processor, 4GB RAM, 64GB Storage, ChromeOS, XE340XDA-KA2US, Student Laptop, Back to School Ready, Silver",
+      "title_ar": "Samsung 14\" Galaxy Chromebook Go لابتوب، معالج Intel Celeron N4500، 4GB RAM، 64GB تخزين، ChromeOS، XE340XDA-KA2US، لابتوب طلابي، جاهز للعودة للمدرسة، Silver",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71pJuxRFm3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "معالج Intel Celeron N4500 يتعامل مع الدراسة دون بطء",
+        "64GB تخزين يحتفظ بفصل دراسي كامل من الملاحظات",
+        "شاشة 14 بوصة توازن مثالي بين التنقل والمساحة",
+        "ChromeOS يعمل فوراً لتبدأ العمل مباشرة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0FPG82WLT",
+      "title_en": "ASUS Vivobook S14 Flip Intel Core i5-13420H 16GB RAM 512GB SSD Intel UHD Graphics 14 inch WUXGA Windows 11 Home Convertible Laptop - Cool Silver (TP3402VA-LZ669W) (US Version)",
+      "title_ar": "ASUS Vivobook S14 Flip Intel Core i5-13420H 16GB RAM 512GB SSD Intel UHD Graphics 14 بوصة WUXGA Windows 11 Home لابتوب قابل للتحويل - Cool Silver (TP3402VA-LZ669W) (نسخة أمريكية)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71muvpsM3QL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مرونة 2×1 ممتازة مع شاشة لمس 360°",
+        "Intel Core i5 قوي يدعم التحويل الإبداعي",
+        "16GB RAM تحول طريقة عملك يومياً"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0FG3HHCS8",
+      "title_en": "Lenovo IdeaPad Slim 3 15AMN8 (Arctic Grey) Slim Laptop | AMD Ryzen™ 5 7520U | AMD Redeon graphics | 8GB RAM | 512GB SSD | 15.6\" FHD Display | Win11[82XQ00CGAX]",
+      "title_ar": "Lenovo IdeaPad Slim 3 15AMN8 (Arctic Grey) لابتوب نحيف | AMD Ryzen™ 5 7520U | AMD Radeon graphics | 8GB RAM | 512GB SSD | شاشة 15.6\" FHD | Win11[82XQ00CGAX]",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61LB9TKQhYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي مع AMD Ryzen 5 7520U",
+        "512GB SSD توفر تخزين مفاجئ بهذا السعر",
+        "تصميم نحيف يناسب حقائب اللابتوب بسهولة",
+        "8GB RAM تتعامل مع العمل المكتبي بسلاسة"
+      ],
+      "rank": 10
+    }
+  ]
+}

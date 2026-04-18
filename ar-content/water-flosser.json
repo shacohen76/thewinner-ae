@@ -1,0 +1,168 @@
+{
+  "_meta": {
+    "slug": "water-flosser",
+    "keyword_text_en": "water flosser",
+    "translated_at": "2026-04-18T20:34:14.388814",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "خيط الماء",
+  "page_title_ar": "أفضل 10 خيط ماء في الإمارات",
+  "category_name_en": "Personal Care",
+  "category_name_ar": "العناية الشخصية",
+  "category_slug": "personal-care",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين خيط الماء المكتبي والمحمول؟",
+      "a": "الأجهزة المكتبية أكبر حجماً وأكثر قوة وتحتوي على خزان ماء أكبر - مثالية للاستخدام اليومي في المنزل. أما الأجهزة المحمولة فهي مدمجة وتعمل بالبطارية، مناسبة للسفر أو إذا كانت مساحة الحمام محدودة، لكنها تحتاج إلى إعادة ملء متكررة."
+    },
+    {
+      "q": "ما ضغط الماء الذي أحتاجه فعلياً؟",
+      "a": "ابحث عن ضغط قابل للتعديل بين 40-100 PSI؛ يتيح لك البدء بلطف إذا كانت لثتك حساسة والزيادة تدريجياً. الضغط الأعلى ليس دائماً الأفضل - التقنية الصحيحة عند الإعدادات المتوسطة فعالة لمعظم الأشخاص."
+    },
+    {
+      "q": "هل سعة الخزان مهمة حقاً؟",
+      "a": "للأجهزة المكتبية، 500ml أو أكثر أفضل حتى لا تحتاج لإعادة ملء أثناء الاستخدام. للأجهزة المحمولة، 150-300ml قياسي ويكفي عادة لاستخدام واحد، لكن تحقق إذا كنت تحتاج لجلسات أطول."
+    },
+    {
+      "q": "متى يجب أن أنفق أكثر على خيط ماء متطور؟",
+      "a": "استثمر في جهاز أفضل إذا كان لديك زراعة أسنان أو تقويم أو أمراض لثة - هذه الحالات تحتاج تنظيفاً منتظماً وموثوقاً وجودة بناء أفضل. الأجهزة العادية جيدة للعناية الأساسية إذا كانت لثتك صحية وعاداتك في تنظيف الأسنان جيدة."
+    },
+    {
+      "q": "ما الميزات المهمة فعلاً مقابل الحيل التسويقية؟",
+      "a": "أعط الأولوية للضغط القابل للتعديل والتشغيل الهادئ وسهولة استبدال الرؤوس - تجاهل الألوان المتعددة أو الاتصال بالتطبيقات. تحقق من الضمان وما إذا كانت الرؤوس البديلة معقولة السعر وسهلة الحصول عليها محلياً."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0FZCJ7HDX",
+      "title_en": "COSLUS Professional C20 Water Flosser For Teeth Braces Gums Care, Cordless Oral Irrigator, Deep Cleaning, Rechargeable, Waterproof, BPA-Free, Portable, Home and Travel, Black",
+      "title_ar": "COSLUS Professional C20 خيط ماء للأسنان والتقويم والعناية باللثة، جهاز تنظيف فموي لاسلكي، تنظيف عميق، قابل للشحن، مقاوم للماء، خالٍ من BPA، محمول، للمنزل والسفر، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71saqGYZEwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى ضغط ماء في فئته",
+        "تنظيف احترافي يزيل الترسبات العنيدة بفعالية",
+        "يصل بعمق للتقويم والزراعة واللثة الحساسة بسهولة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DY1RDPV8",
+      "title_en": "COSLUS E40 Water Flosser for Teeth, Braces, Gums Care - Advanced 10 Pressure Settings for Multiple Users, 300ML, BPA-Free, IPX7 Waterproof, Rechargeable Portable for Home & Travel, White",
+      "title_ar": "COSLUS E40 خيط ماء للأسنان والتقويم والعناية باللثة - 10 إعدادات ضغط متقدمة لعدة مستخدمين، 300ML، خالٍ من BPA، IPX7 مقاوم للماء، قابل للشحن محمول للمنزل والسفر، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ifJ0Jv4GL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي مع عشرة إعدادات قابلة للتخصيص",
+        "سعة 300ML تكفي لجلسات تنظيف ممتدة",
+        "عدة مستخدمين يستمتعون بضغط مخصص لكل منهم"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DSVQG83W",
+      "title_en": "COSLUS C30 Water Flosser for Teeth Braces Gums Care - Portable Oral Irrigator with 3 Modes & 8 DIY Levels for Multiple Users, Cordless for Travel, 300ML, BPA-Free, Home Use, White",
+      "title_ar": "COSLUS C30 خيط ماء للأسنان والتقويم والعناية باللثة - جهاز تنظيف فموي محمول مع 3 أوضاع و8 مستويات قابلة للتعديل لعدة مستخدمين، لاسلكي للسفر، 300ML، خالٍ من BPA، للاستخدام المنزلي، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61GlGjx32yL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "8 مستويات شدة قابلة للتخصيص للعناية الشخصية",
+        "ثلاثة أوضاع متخصصة تستهدف احتياجات التنظيف المختلفة",
+        "سعة 300ML تكفي عدة أفراد طوال الأسبوع"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0FG8MZSL1",
+      "title_en": "Portable Water Flosser, 220ml Tank, 3 Modes, 4 Jet Tips, Waterproof Dental Oral Irrigator",
+      "title_ar": "خيط ماء محمول، خزان 220ml، 3 أوضاع، 4 رؤوس نفث، جهاز تنظيف أسنان فموي مقاوم للماء",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61C93kiX85L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أربعة رؤوس نفث متعددة الاستخدامات تناسب أي شكل فم",
+        "تصميم فائق الصغر 220ml يناسب أدراج الحمام بسهولة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0DQV5QV4Q",
+      "title_en": "XIAOMI Water Flosser 2",
+      "title_ar": "XIAOMI Water Flosser 2",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31EIq13Ox+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز من ابتكارات XIAOMI الهندسية الموثوقة",
+        "ضغط الماء الذكي يتكيف مع حساسية اللثة تلقائياً",
+        "تصميم أنيق بسيط يناسب أي ديكور حمام"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0D1TRFJL2",
+      "title_en": "H2ofloss Water Dental Flosser Teeth Pick -Portable Oral Irrigator with 5 Modes, Rechargeable IPX7 Waterproof Orthodontic Teeth Cleaner Pick Cordless for Home Travel-300ml Water Tank",
+      "title_ar": "H2ofloss خيط ماء للأسنان - جهاز تنظيف فموي محمول مع 5 أوضاع، قابل للشحن IPX7 مقاوم للماء لتنظيف أسنان التقويم لاسلكي للمنزل والسفر - خزان ماء 300ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61QuLI3BssL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "5 أوضاع تخصص التنظيف حسب تفضيلاتك",
+        "IPX7 مقاوم للماء يتحمل الاستحمام والسفر بسهولة",
+        "خيار متين للعناية بأسنان التقويم"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0DLNNB3S5",
+      "title_en": "Electric Water Flosser Pick - 320ML Larger Tank 4 Modes Cordless Portable Oral Irrigator,IPX7 Waterproof Dental Flosser,Professional Water Teeth Cleaner Picks for Home Travel (Black)",
+      "title_ar": "خيط ماء كهربائي - خزان أكبر 320ML مع 4 أوضاع لاسلكي محمول جهاز تنظيف فموي، IPX7 مقاوم للماء، جهاز تنظيف أسنان احترافي بالماء للمنزل والسفر (أسود)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61eL6BwuhbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي مع خزان سخي 320ML",
+        "أربعة أوضاع تتكيف مع احتياجات التنظيف",
+        "حماية IPX7 مقاومة للماء للبيئات الرطبة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0DKMWRY9M",
+      "title_en": "Water flosser Cordless, Dental Flossers USB Rechargable Teeth Flosser, Professional Electric Portable Oral Irrigator with 4 Modes For Teeth Cleaning 300ML",
+      "title_ar": "خيط ماء لاسلكي، خيط أسنان قابل للشحن USB، جهاز تنظيف فموي كهربائي محمول احترافي مع 4 أوضاع لتنظيف الأسنان 300ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61vlFqILQ-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين مع أربعة أوضاع تنظيف متميزة",
+        "تصميم قابل للشحن USB يعمل بأي مكان فيه كهرباء",
+        "نتائج جهاز تنظيف فموي احترافي باستثمار معتدل"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0DX7B6GW9",
+      "title_en": "COSLUS Mini T40 Portable Water Flosser for Travel, Cordless Compact Oral Irrigator for Teeth, Braces, Gums Care with 4 Jet Tips & Storable, Rechargeable, Waterproof On-the-Go Use, BPA-Free, White",
+      "title_ar": "COSLUS Mini T40 خيط ماء محمول للسفر، جهاز تنظيف فموي لاسلكي مدمج للأسنان والتقويم والعناية باللثة مع 4 رؤوس نفث وقابل للتخزين، قابل للشحن، مقاوم للماء للاستخدام أثناء التنقل، خالٍ من BPA، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71-vYZuMMlL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق مصمم خصيصاً للمسافرين الدائمين",
+        "تصميم مدمج قابل للتخزين ينزلق بحقيبة السفر بسهولة",
+        "أربعة رؤوس نفث توفر تنظيفاً احترافياً أثناء التنقل"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0D2LFN4FT",
+      "title_en": "Philips Sonicare Cordless Power Flosser White HX3822/11",
+      "title_ar": "Philips Sonicare خيط ماء لاسلكي أبيض HX3822/11",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71jRUIJFUfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية Oxyjet تنشئ فعل تنظيف بالفقاعات الدقيقة",
+        "أوضاع تنظيف متعددة تعالج كل احتياج فموي",
+        "خيار عملي يجمع بين القوة والدقة"
+      ],
+      "rank": 10
+    }
+  ]
+}

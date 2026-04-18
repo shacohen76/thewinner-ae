@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "slug": "bluetooth-speakers",
+    "keyword_text_en": "bluetooth speakers",
+    "translated_at": "2026-04-18T20:34:14.333706",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "مكبرات الصوت Bluetooth",
+  "page_title_ar": "أفضل 10 مكبرات صوت Bluetooth في الإمارات",
+  "category_name_en": "Speakers & Audio",
+  "category_name_ar": "مكبرات الصوت والصوتيات",
+  "category_slug": "speakers-audio",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما عمر البطارية المناسب في مكبر الصوت Bluetooth؟",
+      "a": "إذا كنت تستخدمه بشكل عادي في المنزل، فإن 8-12 ساعة كافية. للسفر أو الاستخدام الخارجي، استهدف 15 ساعة أو أكثر حتى لا تحتاج للشحن يومياً. تحقق من قوة الواط - الطاقة الأعلى تستنزف البطارية أسرع، لذا وازن بين وقت التشغيل واحتياجات الصوت."
+    },
+    {
+      "q": "هل المكبر الأكبر حجماً يعطي صوتاً أفضل دائماً؟",
+      "a": "ليس دائماً. المكبر الصغير بسماعات جيدة وتصميم محكم قد يكون أفضل من مكبر كبير رخيص. الحجم مهم للباس وملء الغرفة بالصوت، لكن المكبر الصغير الجيد يتفوق على الكبير الرديء في الوضوح."
+    },
+    {
+      "q": "ما الفرق بين المكبرات المقاومة للماء والمضادة للماء؟",
+      "a": "المكبرات المضادة للماء يمكن غمرها بالكامل وتنجو من السقوط في الماء، بينما المقاومة للماء تتحمل الرذاذ والرطوبة فقط. اختر المضاد للماء إن كنت تستخدمه قرب المسبح أو الشاطئ؛ المقاوم للماء مناسب للمطابخ والاستخدام الخارجي الخفيف."
+    },
+    {
+      "q": "هل يستحق دفع المزيد للعلامات الفاخرة مثل Bose أو Sony؟",
+      "a": "العلامات الفاخرة تقدم عادة توازن صوتي أفضل ومتانة أطول واتصال Bluetooth أسرع، لكنك تدفع مقابل الاسم. مكبر متوسط من علامة موثوقة يعطي 80% من الجودة بنصف السعر - قرر بناءً على تفضيل الصوت ومدة استخدامك له."
+    },
+    {
+      "q": "كيف أعرف أن المكبر قوي كفاية للاستخدام الخارجي؟",
+      "a": "ابحث عن قوة 20W على الأقل للأماكن المفتوحة؛ التجمعات الصغيرة تحتاج 10-15W. تحقق أيضاً من الحد الأقصى SPL بالديسيبل - أي شيء فوق 85dB يناسب المجموعات الصغيرة، بينما 90+ dB يغطي مساحات أكبر أو بيئات صاخبة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CX5C6WP3",
+      "title_en": "JBL GO 4 – Ultra-Portable Bluetooth Speaker with AURACAST, Powerful Sound, 15H Playtime & Sleek Design, JBLGO4BLK, Black",
+      "title_ar": "مكبر صوت JBL GO 4 محمول مع AURACAST وصوت قوي و15H تشغيل وتصميم أنيق، JBLGO4BLK، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71HdLDJEEUL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل مكبر محمول على الإطلاق",
+        "بطارية 15 ساعة تدوم طوال عطلتك",
+        "هندسة صوت JBL الموثوقة بحجم الجيب"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0DB1753RZ",
+      "title_en": "soundcore Select 4 Go Ultra Portable Bluetooth Speaker by Anker, 20H Playtime, IP67 Waterproof and Dustproof, Floatable, Customisable Pro EQ, Wireless Stereo Pairing, Ideal for Home, Outdoors, Hiking",
+      "title_ar": "مكبر صوت soundcore Select 4 Go محمول من Anker مع 20H تشغيل وIP67 مضاد للماء والغبار وطافي وEQ احترافي قابل للتخصيص وإقران Stereo لاسلكي، مثالي للمنزل والخارج والرحلات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51StnCAiFlL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي بأداء فاخر",
+        "تشغيل 20 ساعة يتفوق على عمر بطاريات المنافسين",
+        "IP67 مضاد للماء وطافي للمغامرات"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0FKC2TN6C",
+      "title_en": "XIAOMI Sound Party Bluetooth Speaker, 50W (35W Woofer + 15W Tweeter), Black, MDZ-39-DB, IP67 Waterproof, 60Hz-20KHz, Stereo",
+      "title_ar": "مكبر صوت XIAOMI Sound Party، 50W (35W Woofer + 15W Tweeter)، أسود، MDZ-39-DB، IP67 مضاد للماء، 60Hz-20KHz، Stereo",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/617d-AVZYEL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى نظام 50W مزدوج السماعات المتوفر",
+        "Woofer وTweeter منفصلان يقدمان دقة Stereo لا مثيل لها",
+        "حماية IP67 تتحمل أي مغامرة دون تردد",
+        "نطاق تردد 60Hz-20KHz بجودة الاستوديو يتفوق على المنافسين"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0D6WD2QSQ",
+      "title_en": "Bose SoundLink Flex Portable Bluetooth Speaker (2nd Gen), Portable Outdoor Speaker with Hi-Fi Audio, Up to 12 Hours Battery Life, Waterproof and Dustproof, Black",
+      "title_ar": "مكبر صوت Bose SoundLink Flex محمول (الجيل الثاني) مع صوت Hi-Fi وبطارية حتى 12 ساعة ومضاد للماء والغبار، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/7192Qca-fUL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "صوت Bose Hi-Fi الفاخر أعاد تعريف المكبرات المحمولة",
+        "متين ومضاد للماء والغبار لمحاربي الطبيعة الحقيقيين",
+        "بطارية 12 ساعة تتفوق على معظم المنافسين",
+        "أداء قوي في البيئات الصوتية الصعبة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0CX5B4N1N",
+      "title_en": "JBL GO 4 – Ultra-Portable Bluetooth Speaker with AURACAST, Powerful Sound, 15H Playtime & Sleek Design, JBLGO4BLU, Blue",
+      "title_ar": "مكبر صوت JBL GO 4 محمول مع AURACAST وصوت قوي و15H تشغيل وتصميم أنيق، JBLGO4BLU، أزرق",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/711IzMtlmkL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أكثر محطة طاقة محمولة في فئته",
+        "بطارية 15 ساعة تدوم طوال عطلتك",
+        "هندسة صوت JBL الموثوقة بحجم الكف"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B07594HZ6Y",
+      "title_en": "Tribit[Upgraded Version] XSound Go 16W 5.0 Bluetooth Speaker with Loud Sound & Rich Bass, 24H Playtime, IPX7 Waterproof, Wireless Stereo Pairing, Type-C, Portable Speaker for Home/Outdoor/Travel Black",
+      "title_ar": "مكبر صوت Tribit [نسخة محدثة] XSound Go 16W 5.0 مع صوت عالٍ وباس غني و24H تشغيل وIPX7 مضاد للماء وإقران Stereo لاسلكي وType-C، محمول للمنزل والخارج والسفر، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61hHuYV3vML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "16W يقدم باس غني مذهل للحجم المحمول",
+        "بطارية 24 ساعة تنجو من الرحلات والتخييم",
+        "IPX7 مضاد للماء يتحمل الشواطئ والحمامات",
+        "إقران Stereo لاسلكي يربط مكبرين فوراً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0C29CL98P",
+      "title_en": "Sony SRS-XB100 Wireless Bluetooth Portable Lightweight Super-Compact Travel Speaker, Extra-Durable IP67 Waterproof & Dustproof, 16 Hour Battery, Versatile Strap, and Hands-Free Calling, Black New",
+      "title_ar": "مكبر صوت Sony SRS-XB100 لاسلكي محمول خفيف صغير للسفر، IP67 مضاد للماء والغبار، بطارية 16 ساعة، حزام متعدد الاستخدامات، ومكالمات بدون استخدام اليدين، أسود جديد",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/716FMuWpp4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "صغير جداً لكن صوت قوي من هندسة Sony الموثوقة",
+        "بطارية 16 ساعة تبقيك مستمعاً طوال العطلة",
+        "IP67 مضاد للماء والغبار متين للسفر",
+        "حزام متعدد الاستخدامات يحول المكبر لإكسسوار قابل للارتداء"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B09VKZPST7",
+      "title_en": "soundcore Anker Motion Boom Plus Outdoor Speaker with 80W Booming Sound, 20H Playtime, IP67 Waterproof and Dustproof, Type-C, Custom EQ, Bluetooth 5.3, Portable Bluetooth Speaker For Outdoors, Camping",
+      "title_ar": "مكبر صوت soundcore Anker Motion Boom Plus خارجي مع صوت 80W قوي و20H تشغيل وIP67 مضاد للماء والغبار وType-C وEQ مخصص وBluetooth 5.3، محمول للخارج والتخييم",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EHUWt25fL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي لعشاق الترفيه الخارجي",
+        "صوت 80W قوي يسيطر على أي مساحة",
+        "بطارية 20 ساعة تدعم رحلات التخييم الطويلة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B09HGRXXTM",
+      "title_en": "JBL Flip 6 Portable IP67 Waterproof Speaker with Bold JBL Original Pro Sound, 2-Way Speaker, Powerful Sound and Deep Bass, 12 Hours Battery, Safe USB-C Charging Protection - Black, JBLFLIP6BLK",
+      "title_ar": "مكبر صوت JBL Flip 6 محمول IP67 مضاد للماء مع صوت JBL Original Pro الجريء ومكبر ثنائي الاتجاه وصوت قوي وباس عميق وبطارية 12 ساعة وحماية شحن USB-C آمنة - أسود، JBLFLIP6BLK",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/615ETYxQJWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز مع صوت JBL Pro الأسطوري",
+        "بطارية 12 ساعة تعمل طوال يومك",
+        "نظام مكبر ثنائي الاتجاه يقدم باس عميق"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B01N4V4X5M",
+      "title_en": "Upgraded, Anker Soundcore Boost Bluetooth Speaker with Well-Balanced Sound, BassUp, 12H Playtime, USB-C, IPX7 Waterproof, Wireless Speaker with Customizable EQ via App, Wireless Stereo Pairing",
+      "title_ar": "محدث، مكبر صوت Anker Soundcore Boost بصوت متوازن وBassUp و12H تشغيل وUSB-C وIPX7 مضاد للماء مع EQ قابل للتخصيص عبر التطبيق وإقران Stereo لاسلكي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ZVrRZLTcL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى أداء صوتي لاسلكي لمدة 12 ساعة",
+        "تطبيق EQ قابل للتخصيص يحول الصوت حسب ذوقك",
+        "شحن USB-C يبقيك تستمع لفترة أطول",
+        "IPX7 مضاد للماء ينجو من المسابح والشواطئ"
+      ],
+      "rank": 10
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "slug": "portable-blenders",
+    "keyword_text_en": "portable blenders",
+    "translated_at": "2026-04-18T20:34:14.364461",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "الخلاطات المحمولة",
+  "page_title_ar": "أفضل 10 خلاطات محمولة في الإمارات",
+  "category_name_en": "Kitchen Appliances",
+  "category_name_ar": "أجهزة المطبخ",
+  "category_slug": "kitchen-appliances",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما قوة المحرك التي أحتاجها فعلياً في الخلاط المحمول؟",
+      "a": "ابحث عن قوة 300-500W على الأقل للعصائر والفواكه الطرية، لكن اختر 800W فما فوق إذا كنت تخطط لخلط الثلج أو المكسرات أو المكونات المجمدة بانتظام. الخلاطات ضعيفة القوة تواجه صعوبة مع القوام الصلب وتحترق أسرع، لذا من المفيد فحص مواصفات المحرك قبل الشراء."
+    },
+    {
+      "q": "ما السعة المناسبة - هل الأكبر دائماً أفضل؟",
+      "a": "سعة 500-600ml تعمل بشكل جيد للحصص الفردية وتتسع بسهولة في الحقائب، بينما الموديلات بسعة لتر واحد أفضل إذا كنت تخلط لشخصين أو تحضر وجبات مسبقة. اختر بناءً على استخدامك المعتاد بدلاً من افتراض أن الأكبر أفضل، لأن الموديلات الأكبر أثقل وزناً للحمل."
+    },
+    {
+      "q": "ما الفرق بين الخلاطات المحمولة التي تشحن عبر USB والبطارية القابلة للإزالة؟",
+      "a": "الخلاطات التي تشحن عبر USB أخف وزناً وتستغرق ساعة إلى ساعتين للشحن، بينما موديلات البطارية القابلة للإزالة توفر طاقة احتياطية لكنها تزيد الوزن. أنواع USB أفضل للمسافرين اليوميين، بينما موديلات البطارية تناسب الرحلات الطويلة أو الأيام بعيداً عن مصادر الطاقة."
+    },
+    {
+      "q": "هل تخلط الخلاطات المحمولة الثلج بسلاسة فعلاً أم هذا مبالغ فيه؟",
+      "a": "الخلاطات المحمولة متوسطة السعر يمكنها التعامل مع الثلج إذا كان محركها 600W فما فوق، لكنها ستكون أعلى صوتاً وأبطأ في الخلط مقارنة بالموديلات عالية القوة. إذا كانت عصائر الثلج غير قابلة للتفاوض بالنسبة لك، تحقق من تقييمات المستخدمين التي تذكر أداء الثلج تحديداً بدلاً من الاعتماد على ادعاءات التسويق."
+    },
+    {
+      "q": "هل يستحق دفع المزيد مقابل خلاط محمول بإعدادات سرعة متعددة؟",
+      "a": "السرعات المتعددة تساعدك على التحكم في القوام بشكل أفضل وتقلل الرذاذ، لكن الموديلات أحادية السرعة تعمل بشكل جيد إذا كنت تصنع العصائر فقط. ستوفر المال مع السرعة الواحدة، رغم أن التحكم المتغير مفيد إذا كنت تخلط قوامات مختلفة بانتظام."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0C2FF4JD1",
+      "title_en": "Ninja Blast Portable Blender, 530ml, Leakproof Lid & Sip Spout, Rechargeable, Portable Smoothies, Protein Shakes, Blends Ice & Frozen Fruit, Black, BC151MEBK, 2 Years Warranty",
+      "title_ar": "خلاط محمول Ninja Blast، 530ml، غطاء مانع للتسرب وفوهة للرشف، قابل لإعادة الشحن، عصائر محمولة، مخفوقات البروتين، يخلط الثلج والفواكه المجمدة، أسود، BC151MEBK، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71eZOQgGXbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الخلاط المحمول الأقوى في فئته",
+        "سعة 530ml تسحق الثلج والفواكه المجمدة بسهولة",
+        "فوهة رشف مانعة للتسرب للاستمتاع في أي مكان",
+        "ضمان سنتين يحمي استثمارك بالكامل"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B08B8XL6JX",
+      "title_en": "Black & Decker Sports Blender/Smoothie Maker, 300W, 6 Piece with 500ml & 300ml Sports Bottle, 21500 RPM with Turbo Speed, SS Blades to Pulverize Ice & Frozen Fruits, 2 years warranty, SBX300-B5",
+      "title_ar": "خلاط رياضي Black & Decker لصنع العصائر، 300W، 6 قطع مع زجاجة رياضية 500ml و 300ml، 21500 RPM مع سرعة Turbo، شفرات SS لسحق الثلج والفواكه المجمدة، ضمان سنتين، SBX300-B5",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71kfPZFTLCL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز مع زجاجتين 500ml و 300ml",
+        "سرعة Turbo بـ 21500 RPM تسحق الثلج فوراً",
+        "شفرات ستانلس ستيل تبقى حادة لمئات الاستخدامات",
+        "زجاجتان رياضيتان مضمنتان للراحة في الصالة الرياضية"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CQKD6LTW",
+      "title_en": "Nutribullet Portable 475ml cordless Blender for Shakes & Smoothies, BPA Free, Leakproof Flip and sip, USB-C type, PB475W, 1 Yr manufacturer warranty, Navy Blue",
+      "title_ar": "خلاط محمول Nutribullet 475ml لاسلكي للمخفوقات والعصائر، خالي من BPA، مانع للتسرب بنظام الطي والرشف، USB-C، PB475W، ضمان سنة من الشركة المصنعة، أزرق داكن",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61EMK2R8z0L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بتصميم الطي والرشف المانع للتسرب",
+        "خلط لاسلكي بسعة 475ml يناسب حقائب الصالة الرياضية",
+        "شحن USB-C يعني جاهز للخلط في دقائق",
+        "مواد خالية من BPA تحمي صحتك يومياً"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0FQJFG8WZ",
+      "title_en": "700ml Electric Blender, Juicer Electric for Shakes and Smoothies Motor Smoothie Blender USB C Rechargeable Juice Mixer with Extra Lid for Travel, Office, Gym, Home",
+      "title_ar": "خلاط كهربائي 700ml، عصارة كهربائية للمخفوقات والعصائر، خلاط عصائر بمحرك قابل لإعادة الشحن USB-C مع غطاء إضافي للسفر، المكتب، الصالة الرياضية، المنزل",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51X-Fmnw5vL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز يوفر سعة خلط قوية 700ml",
+        "قابل لإعادة الشحن USB-C يبقيك تخلط طوال اليوم",
+        "غطاء سفر إضافي يحوله إلى كوب محمول",
+        "مثالي لعصائر المكتب أو الصالة الرياضية أو المنزل"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0DY7PGFTM",
+      "title_en": "Portable Smoothie Blender, 450ML Cordless Juicer Blender For Shakes and Smoothies,12 Blades, USB-C Rechargeable, BPA Free, Leakproof Flip and sip, Travel Blender",
+      "title_ar": "خلاط عصائر محمول، خلاط عصير لاسلكي 450ML للمخفوقات والعصائر، 12 شفرة، قابل لإعادة الشحن USB-C، خالي من BPA، مانع للتسرب بنظام الطي والرشف، خلاط سفر",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51PAoVi-veL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "12 شفرة تمزق الفواكه المجمدة بسهولة",
+        "قابل لإعادة الشحن USB-C لعصائر صباحية يومية",
+        "تصميم مانع للتسرب 450ml يناسب أي حقيبة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0C2FF74J6",
+      "title_en": "Ninja BC151NV Blast Portable Blender, Cordless, 18oz. Vessel, Personal Blender-for Shakes & Smoothies, BPA Free, Leakproof-Lid & Sip Spout, USB-C Rechargeable, Dishwasher Safe Parts, Denim Blue",
+      "title_ar": "خلاط محمول Ninja BC151NV Blast، لاسلكي، وعاء 18oz، خلاط شخصي للمخفوقات والعصائر، خالي من BPA، غطاء مانع للتسرب وفوهة للرشف، قابل لإعادة الشحن USB-C، أجزاء آمنة لغسالة الصحون، أزرق دينيم",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71mq2bihOPL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين من تميز هندسة Ninja الموثوقة",
+        "وعاء 18oz يخلط العصائر الشخصية بإتقان",
+        "قابل لإعادة الشحن USB-C مع أجزاء آمنة للغسالة",
+        "غطاء مانع للتسرب يبقي حقائب الصالة جافة تماماً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CQKF9HTN",
+      "title_en": "Nutribullet Portable 475ml cordless Blender for Shakes & Smoothies, BPA Free, Leakproof Flip and sip, USB-C type, PB475W, Black",
+      "title_ar": "خلاط محمول Nutribullet 475ml لاسلكي للمخفوقات والعصائر، خالي من BPA، مانع للتسرب بنظام الطي والرشف، USB-C، PB475W، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61e0VzSXAbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق بتقنية Nutribullet المجربة للخلط",
+        "تصميم غطاء الطي والرشف يمنع الانسكاب تماماً",
+        "سعة 475ml تتعامل مع مخفوقات البروتين والعصائر",
+        "شحن USB-C يجهزك للخلط في دقائق"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0DB8ZN253",
+      "title_en": "Ninja Blast Max, Portable Blender + Twist & Go, Personal Smoothie, Blend, Ice Crush, 3 Programs, Cordless, 22 oz removable Vessel, Dishwasher Safe, Leakproof, Navy, BC251NV",
+      "title_ar": "Ninja Blast Max، خلاط محمول + نظام Twist & Go، عصائر شخصية، خلط، سحق ثلج، 3 برامج، لاسلكي، وعاء قابل للإزالة 22oz، آمن لغسالة الصحون، مانع للتسرب، أزرق داكن، BC251NV",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71lJNuwnCcL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ترقية ذكية مع ثلاثة برامج خلط متخصصة",
+        "وعاء قابل للإزالة 22oz للعصائر مضاعفة الحجم",
+        "راحة Twist & Go تعني وقت تنظيف أقل",
+        "وضع سحق الثلج يتعامل مع المكونات المجمدة فوراً"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0DWFTMNWH",
+      "title_en": "Magic Bullet 400W Blender, 7-Piece Set, High Speed, Multi-Functional – Perfect for Smoothies, Shakes, Dips, Sauces & More, Portable To-Go Cups, Easy Clean, Silver, MB4-0712, 2-Year Warranty",
+      "title_ar": "خلاط Magic Bullet 400W، طقم 7 قطع، سرعة عالية، متعدد الوظائف - مثالي للعصائر، المخفوقات، الصلصات والمزيد، أكواب محمولة للتنقل، سهل التنظيف، فضي، MB4-0712، ضمان سنتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51v60UUbiZL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار رائع للمبتدئين مع طقم كامل 7 قطع",
+        "محرك 400W يتعامل مع العصائر والصلصات والغموسات",
+        "أكواب محمولة للتنقل تجعل الخلط محمولاً حقاً",
+        "تصميم سهل التنظيف يوفر دقائق صباحية ثمينة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B078HFLPW7",
+      "title_en": "Arzum Personal/Smoothie Blender, 300 Watts, 570ml and 400ml Tritan Bottles, One-Touch Operation, Stainless Steel Serrated Blades, Crush Ice,1 Year Manufacturing Warranty (Jet Black)",
+      "title_ar": "خلاط شخصي Arzum للعصائر، 300W، زجاجات Tritan بسعة 570ml و 400ml، تشغيل بلمسة واحدة، شفرات مسننة ستانلس ستيل، سحق الثلج، ضمان سنة من الشركة المصنعة، أسود نفاث",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61TwBY-nVYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار رائع للمبتدئين بنظام زجاجتين",
+        "محرك 300W يسحق الثلج والفواكه المجمدة",
+        "زجاجات Tritan بسعة 570ml و 400ml مضمنة معاً",
+        "تشغيل بلمسة واحدة يبسط روتين العصائر الصباحية"
+      ],
+      "rank": 10
+    }
+  ]
+}

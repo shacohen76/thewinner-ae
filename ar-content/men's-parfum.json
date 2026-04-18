@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "men's-parfum",
+    "keyword_text_en": "men's parfum",
+    "translated_at": "2026-04-18T20:34:14.367917",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "عطور رجالية",
+  "page_title_ar": "أفضل 10 عطور رجالية في الإمارات",
+  "category_name_en": "Other",
+  "category_name_ar": "أخرى",
+  "category_slug": "other",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين Eau de Parfum وEau de Toilette وEau de Cologne؟",
+      "a": "يحتوي Eau de Parfum على أعلى تركيز عطري (15-20%) ويدوم من 6 إلى 8 ساعات، بينما Eau de Toilette أخف (5-15%) ويدوم من 3 إلى 5 ساعات. أما Eau de Cologne فهو الأكثر تخفيفاً (2-5%) ويتلاشى بسرعة، لذا يناسب الانتعاش اليومي أكثر من الاستخدام طوال اليوم."
+    },
+    {
+      "q": "كيف أعرف أي عطر يناسبني قبل الشراء؟",
+      "a": "اختبره دائماً على بشرتك أولاً، فالعطر يتفاعل بشكل مختلف مع كيمياء جسم كل شخص. قم بزيارة متجر لرش عينة على معصمك، وانتظر 10-15 دقيقة لترى كيف يتطور؛ تجنب اختبار أكثر من 3-4 روائح دفعة واحدة لأن حاسة الشم لديك تتعب."
+    },
+    {
+      "q": "ما حجم الزجاجة الذي يجب شراؤه للعطر الأول؟",
+      "a": "ابدأ بزجاجة 50ml إذا لم تكن متأكداً من الالتزام برائحة معينة، فهي كافية للاستخدام اليومي لمدة 2-3 أشهر لترى إن كنت ستستخدمه فعلاً. انتقل إلى 100ml فقط إذا كنت واثقاً من حبك للعطر أو تستخدم العطور بكثرة."
+    },
+    {
+      "q": "هل يستحق دفع المزيد للعلامات الفاخرة مقابل العطور بأسعار معقولة؟",
+      "a": "العطور الفاخرة غالباً ما تتمتع بثبات أفضل وانتشار أقوى وتعقيد يتطور مع الوقت، لكن العطر الجيد بسعر معقول يمكن أن يكون رائحته جيدة في معظم المناسبات. الفرق الحقيقي يظهر بعد أكثر من 6 ساعات من الاستخدام، لذا اختر حسب ميزانيتك ومدة الثبات التي تحتاجها."
+    },
+    {
+      "q": "ما الذي يجب أن أتحقق منه بخصوص مكونات العطر قبل الشراء؟",
+      "a": "انظر إلى المكونات العليا والوسطى والقاعدية، فالمكونات العليا هي ما تشمه أولاً (حمضيات، توابل)، والمكونات الوسطى تتطور بعد 5-10 دقائق (أزهار، فواكه)، والمكونات القاعدية تدوم أطول (أخشاب، مسك). اختر تركيبة تستمتع بها حقاً بدلاً من اتباع الصيحات، لأنك ستستخدمها بانتظام."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B01LDT51ZU",
+      "title_en": "RASASI - HAWAS MEN 100 ML - EAU DE PARFUM",
+      "title_ar": "RASASI - HAWAS عطر رجالي 100 ML - Eau de Parfum",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51h+3KRCLiL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "العطر الأقوى في فئته للحضور المميز",
+        "100 ML Eau de Parfum يمنح ثباتاً لا يضاهى",
+        "الخيار الأول للرجال الباحثين عن تأثير جريء"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0B8TQ7YRW",
+      "title_en": "Lattafa Asad Eau de Parfum for Men 100 ml",
+      "title_ar": "Lattafa Asad Eau de Parfum للرجال 100 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/415tTA0HfOL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز للباحثين عن كثافة نقية قوية",
+        "تركيز استثنائي 100ml يضمن تأثيراً طوال اليوم",
+        "منافس فاخر يجذب الانتباه دون جهد"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B084D1N7JJ",
+      "title_en": "ARMAF Perfume Club De Nuit Intense Eau De Parfum For Men 200ml Long Lasting Fragrance For Him, Black",
+      "title_ar": "ARMAF عطر Club De Nuit Intense Eau De Parfum للرجال 200ml عطر طويل الأمد، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/519Xzhfah6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي بسعة كبيرة 200ml مميزة",
+        "كثافة طويلة الأمد تضمن حضوراً طوال اليوم",
+        "كثافة Club de Nuit تتحدث عن نفسها"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B000VOLKEA",
+      "title_en": "Calvin Klein CK IN2U Perfume for Men Eau De Toilette 100ML",
+      "title_ar": "Calvin Klein CK IN2U عطر للرجال Eau De Toilette 100ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/617wbiqg8xL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار رائع للجاذبية العصرية المنعشة",
+        "اختيار استثنائي بطاقة مرحة لا تقاوم",
+        "100ml من حرفية Calvin Klein الفاخرة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0CFVF94SN",
+      "title_en": "Armaf Club De Nuit Urban Man Elixir for Men Eau de Parfum Spray, 3.6 Ounce",
+      "title_ar": "Armaf Club De Nuit Urban Man Elixir للرجال Eau de Parfum بخاخ، 3.6 Ounce",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71YBbNYcr7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء قوي مع عرض فاخر بحجم 3.6oz",
+        "خيار ممتاز لعشاق العطور المميزين",
+        "تعقيد حضري يتراكب بجمال على البشرة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B08BNTVXLN",
+      "title_en": "ARMAF Club De Nuit Intense Man Pure Parfum 150ml Black Bigger, Better & Longer Lasting Fragrance",
+      "title_ar": "ARMAF Club De Nuit Intense Man Pure Parfum 150ml أسود أكبر وأفضل وأطول ثباتاً",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/416YO7W+nsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق بتركيز نقي ضخم 150ml",
+        "خيار متين لعشاق العطور بلا تنازلات",
+        "أفضل وأطول ثباتاً من البدائل العادية"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0C3G9J5Q8",
+      "title_en": "Armaf Odyssey Mandarin Sky Limited Edition Eau De Parfum 100ml, Perfume for Men, Fragrance For Him",
+      "title_ar": "Armaf Odyssey Mandarin Sky إصدار محدود Eau De Parfum 100ml، عطر للرجال",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51ecNhUmgeL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين مع أناقة حمضيات اليوسفي",
+        "اختيار موثوق من مجموعة محدودة الإصدار",
+        "انتعاش مستوحى من السماء على مدار السنة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07K1H9YZY",
+      "title_en": "Montblanc Explorer by Mont Blanc Eau De Parfum Spray 2 oz for Men",
+      "title_ar": "Montblanc Explorer من Mont Blanc Eau De Parfum بخاخ 2 oz للرجال",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51AAfQNPw4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي من خط Montblanc explorer المرموق",
+        "2 oz Eau de Parfum تجسد الروح المغامرة",
+        "حرفية فاخرة للرجال المميزين في كل مكان"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B096V6NQSQ",
+      "title_en": "Davidoff Cool Water Perfume for Men Eau De Parfum 100ML",
+      "title_ar": "Davidoff Cool Water عطر للرجال Eau De Parfum 100ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51G55hwPVvL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مدخل رائع لثقة وإرث Davidoff المعروف",
+        "اختيار ذكي للثقة اليومية بسعر مناسب",
+        "انتعاش Cool water يجدد النشاط من الصباح"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B08HXSFQKK",
+      "title_en": "Lattafa Hayaati Eau De Perfume for Men, 100 ml",
+      "title_ar": "Lattafa Hayaati Eau De Perfume للرجال، 100 ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41+hfEznIsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي بسعر مناسب مع جاذبية شرق أوسطية أصيلة",
+        "مدخل رائع دون التنازل عن جودة الحرفية",
+        "زجاجة 100 ml توفر عمقاً عطرياً استثنائياً"
+      ],
+      "rank": 10
+    }
+  ]
+}

@@ -23,6 +23,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+	arabic: ['var(--font-arabic)', 'Noto Sans Arabic', 'sans-serif'],
       },
     },
   },

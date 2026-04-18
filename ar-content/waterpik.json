@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "slug": "waterpik",
+    "keyword_text_en": "waterpik",
+    "translated_at": "2026-04-18T20:34:14.395825",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة تنظيف الأسنان بالماء Waterpik",
+  "page_title_ar": "أفضل 10 أجهزة تنظيف الأسنان بالماء Waterpik في الإمارات",
+  "category_name_en": "Other",
+  "category_name_ar": "أخرى",
+  "category_slug": "other",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين موديلات Waterpik المكتبية والمحمولة؟",
+      "a": "الموديلات المكتبية تحتوي على خزانات مياه أكبر (660ml فأكثر) وإعدادات ضغط أقوى، مما يجعلها أفضل للاستخدام العائلي اليومي ومعالجة التراكمات الصعبة. أما الموديلات المحمولة فهي مدمجة بخزانات أصغر (150-300ml) وضغط أقل، مصممة للسفر واللمسات السريعة بدلاً من التنظيف العميق."
+    },
+    {
+      "q": "كم عدد إعدادات الضغط التي أحتاجها فعلياً؟",
+      "a": "معظم الأشخاص يكتفون بـ 3-5 إعدادات، وهي كافية للبدء بلطف مع اللثة الحساسة والتعديل تصاعدياً مع تكيف الفم. الإعدادات الأكثر تمنحك تحكماً أدق، لكن الفرق بين أقل وأعلى ضغط أهم من وجود عشرات الخيارات بينهما."
+    },
+    {
+      "q": "ما حجم خزان المياه الذي يجب أن أختاره؟",
+      "a": "خزان بسعة 660ml يتعامل مع جلسة تنظيف كاملة دون إعادة تعبئة، مثالي إذا كنت تنظف عدة مناطق أو لديك جيوب أعمق. إذا كنت تحتاج فقط تنظيفاً سريعاً بين الأسنان، فإن خزان 300-400ml يعمل بشكل جيد ويشغل مساحة أقل على المنضدة."
+    },
+    {
+      "q": "هل يهم نوع رأس النفث الذي أحصل عليه؟",
+      "a": "الرؤوس القياسية تناسب معظم الأشخاص، لكن رؤوس التقويم تستحق الاقتناء إذا كان لديك تقويم أسنان أو زراعة أو تيجان، فهي مصممة خصيصاً للتنظيف حول هذه. رؤوس إزالة الجير تنبض بشكل مختلف لإزالة التراكمات العنيدة، لذا اختر بناءً على احتياجاتك الفعلية بدلاً من شراء كل خيار."
+    },
+    {
+      "q": "متى يستحق إنفاق المزيد على موديل فاخر؟",
+      "a": "أنفق أكثر إذا كان لديك أمراض لثة أو زراعة أو تقويم حيث يحدث التحكم الدقيق بالضغط فرقاً حقيقياً، أو إذا كنت ستستخدمه يومياً وتريد جهازاً أهدأ وأكثر متانة. للتنظيف الأساسي، الموديلات المتوسطة تؤدي تقريباً نفس أداء الفاخرة في إزالة الجير بين الأسنان."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CNZFNH2G",
+      "title_en": "Waterpik Cordless Pulse Rechargeable Portable Water Flosser for Teeth, Gums, Braces Care and Travel with 2 Flossing Tips, Waterproof, ADA Accepted, WF-20 Blue, Packaging May Vary",
+      "title_ar": "جهاز Waterpik Cordless Pulse المحمول القابل لإعادة الشحن لتنظيف الأسنان واللثة والتقويم والسفر مع رأسين للتنظيف، مقاوم للماء، معتمد من ADA، WF-20 أزرق",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71idFcbTR-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز للعناية الشاملة باللثة",
+        "نظام مزدوج الرأس استثنائي يغطي كل المناطق",
+        "أداء فاخر معتمد من ADA في جيبك"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B01GNVF8BK",
+      "title_en": "Waterpik Cordless Advanced Water Flosser, Brilliant Black [US version]",
+      "title_ar": "جهاز Waterpik Cordless Advanced لتنظيف الأسنان بالماء، أسود لامع (نسخة أمريكية)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Eu0B92hrL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز للتنظيف العميق بين الأسنان",
+        "أداء قوي مع تشطيب أسود لامع",
+        "إعدادات ضغط مياه متقدمة للأسنان الحساسة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CQ8GHBRG",
+      "title_en": "Waterpik Pearl Cordless Dental Flosser, Rechargeable Portable Dental Jet, Travel Size, Easy to Carry Removing Plaque, 2 Pressure Levels, White (WF-13)",
+      "title_ar": "جهاز Waterpik Pearl اللاسلكي لتنظيف الأسنان، نفاث مائي محمول قابل للشحن، مقاس السفر، سهل الحمل لإزالة الجير، مستويا ضغط، أبيض (WF-13)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81od-dVM42L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى جهاز لاسلكي متوفر للتنظيف",
+        "الخيار الأمثل للسفر بتصميم مدمج",
+        "إزالة جير رائدة في فئته خلال ثوانٍ"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B07XD2SJPC",
+      "title_en": "Waterpik Ultra Professional Water Flosser - Wp-660, White,",
+      "title_ar": "جهاز Waterpik Ultra Professional لتنظيف الأسنان بالماء - WP-660، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/519LZPDGV6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز للعناية الفموية الاحترافية الشاملة",
+        "أداء قوي بسعة خزان للجلسات الممتدة",
+        "تنظيف فائق القوة يتعامل مع أصعب تراكمات الجير",
+        "قوة مكتبية تحول روتين التنظيف اليومي"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B07X7RP3SZ",
+      "title_en": "Waterpik Cordless Plus Water Flosser, Wp-462Me, Black",
+      "title_ar": "جهاز Waterpik Cordless Plus لتنظيف الأسنان بالماء، WP-462ME، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41MA-taUSgL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز مع قوة تشغيل ممتدة",
+        "أداء قوي للصيانة السنية اليومية",
+        "تصميم مقاوم للماء يتحمل الاستخدام تحت الدش"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B084W3DKVD",
+      "title_en": "Waterpik Cordless Advanced 2.0 Water Flosser For Teeth, Gums, Braces, Dental Care With Travel Bag and 4 Tips, ADA Accepted, Rechargeable, Portable, and Waterproof, Gray WP-587, Packaging May Vary",
+      "title_ar": "جهاز Waterpik Cordless Advanced 2.0 لتنظيف الأسنان واللثة والتقويم والعناية السنية مع حقيبة سفر و4 رؤوس، معتمد من ADA، قابل للشحن ومحمول ومقاوم للماء، رمادي WP-587",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71oG+Z5BL3L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز مزود بأربعة رؤوس متخصصة",
+        "أداء قوي مع حقيبة سفر مرفقة",
+        "أربعة ملحقات تتعامل مع التقويم والزراعة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CNTRVZPW",
+      "title_en": "Waterpik Cordless Pulse Rechargeable Portable Water Flosser for Teeth, Gums, Braces Care and Travel with 2 Flossing Tips, Waterproof, ADA Accepted, WF-20 White, Packaging May Vary",
+      "title_ar": "جهاز Waterpik Cordless Pulse المحمول القابل لإعادة الشحن لتنظيف الأسنان واللثة والتقويم والسفر مع رأسين للتنظيف، مقاوم للماء، معتمد من ADA، WF-20 أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/712lAbKMMnL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد بتشطيب أبيض منعش",
+        "اختيار موثوق للعناية المحمولة باللثة",
+        "جاهز للسفر مع اعتماد ADA لراحة البال"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07X6R7711",
+      "title_en": "Waterpik Cordless Plus Water Flosser, Wp-450Me, White",
+      "title_ar": "جهاز Waterpik Cordless Plus لتنظيف الأسنان بالماء، WP-450ME، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/41afuFhUXvL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار جيد للتنظيف اليومي المستمر",
+        "اختيار موثوق بسجل حافل مثبت",
+        "حرية لاسلكية دون التضحية بجودة الأداء"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0DY83BVXY",
+      "title_en": "Waterpik Pulse Wireless Oral Irrigator, Professional 99.9% Plaque Removal, 2 x Intensity Modes, Interdental Cleaner, 45 Seconds Water Tank Capacity, 2 x Attachments Included, White",
+      "title_ar": "جهاز Waterpik Pulse اللاسلكي للري الفموي، إزالة احترافية للجير بنسبة 99.9%، وضعا كثافة، منظف بين الأسنان، سعة خزان مياه 45 ثانية، يشمل ملحقين، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51+ki58t0sL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي بنتائج احترافية",
+        "خيار رائع للمبتدئين في العناية الفموية",
+        "إزالة جير بنسبة 99.9% مع وضعي كثافة"
+      ],
+      "rank": 10
+    }
+  ]
+}

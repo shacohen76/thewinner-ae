@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "slug": "coffee-beans",
+    "keyword_text_en": "coffee beans",
+    "translated_at": "2026-04-18T20:34:14.368576",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "حبوب القهوة",
+  "page_title_ar": "أفضل 10 حبوب القهوة في الإمارات",
+  "category_name_en": "Coffee & Tea",
+  "category_name_ar": "القهوة والشاي",
+  "category_slug": "coffee-tea",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين التحميص الفاتح والمتوسط والغامق؟",
+      "a": "التحميص الفاتح يحتوي على حموضة أعلى ويحتفظ بنكهات المنشأ، بينما التحميص المتوسط يوفر توازنًا بين الحموضة والقوام، أما التحميص الغامق فهو قوي مع حموضة أقل لكنه قد يصبح مدخنًا أو مرًا إذا تم تحميصه أكثر من اللازم. اختيارك يعتمد على تفضيلك للنكهات المشرقة المعقدة أو القهوة الأعمق والأكثر امتلاءً."
+    },
+    {
+      "q": "هل يجب أن أشتري الحبوب الكاملة أم القهوة المطحونة؟",
+      "a": "الحبوب الكاملة تظل طازجة لفترة أطول ومذاقها أفضل بكثير عند طحنها قبل التحضير مباشرة، لكنها تتطلب مطحنة. القهوة المطحونة مسبقًا مريحة للصباحات السريعة لكنها تفقد نكهتها خلال أيام من الفتح، لذا تستحق الشراء فقط إذا كنت تحضر كميات كبيرة فورًا."
+    },
+    {
+      "q": "كيف أعرف أن حبوب القهوة طازجة؟",
+      "a": "تحقق من تاريخ التحميص على العبوة - الحبوب تكون بأفضل حالاتها خلال 2-4 أسابيع من التحميص. تجنب الأكياس التي لا تحمل تاريخًا أو تاريخها قديم بعدة أشهر، وابحث عن الصمام أحادي الاتجاه الذي يدل على محامص الجودة الذين يعبئون حبوبهم طازجة."
+    },
+    {
+      "q": "ما الفرق بين القهوة أحادية المنشأ والمخلوطة؟",
+      "a": "الحبوب أحادية المنشأ تأتي من بلد واحد أو مزرعة واحدة، وتقدم نكهات مميزة فريدة لتلك المنطقة، بينما المخلوطة تمزج حبوبًا من مصادر مختلفة للحصول على طعم متسق ومتوازن. أحادية المنشأ أفضل إذا كنت تستمتع باستكشاف نكهات مختلفة، بينما المخلوطة تناسب من يريد نتائج موثوقة ومألوفة."
+    },
+    {
+      "q": "ما الكمية التي يجب شراؤها في المرة الواحدة؟",
+      "a": "اشترِ فقط ما ستستهلكه خلال 3-4 أسابيع لأن الحبوب تفقد نضارتها بمرور الوقت حتى في الأكياس المغلقة. إذا كنت تشرب 2-3 أكواب يوميًا، فإن كيس 250g يدوم حوالي أسبوع، لذا شراء كميات شهرية يحافظ على الجودة العالية دون هدر."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B000FWHWGS",
+      "title_en": "Lavazza Crema E Aroma Coffee Beans - 1kg",
+      "title_ar": "حبوب قهوة Lavazza Crema E Aroma - 1kg",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71asmDRgtNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار موثوق من Lavazza الأسطورية",
+        "خيار ممتاز للإسبريسو اليومي المميز",
+        "1kg من إتقان القهوة الإيطالية"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B000SDKDM4",
+      "title_en": "Lavazza Super Crema Whole Bean Espresso Coffee, 2.2 lb. Bag, Vacuum-Packed",
+      "title_ar": "Lavazza Super Crema حبوب إسبريسو كاملة، كيس 2.2 lb، معبأ بالفراغ",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61dSjp-nZvL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ضمان نضارة استثنائي بالتعبئة الفراغية",
+        "خبرة Lavazza الفاخرة في كل حبة",
+        "اختيار متميز لعشاق الإسبريسو المثالي"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0019XNZ4K",
+      "title_en": "Davidoff Espresso 57 Whole Beans- 10/12 Intensity - 500 g",
+      "title_ar": "Davidoff Espresso 57 حبوب كاملة - كثافة 10/12 - 500 g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EVFoOv+BL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي لعشاق الكثافة العالية",
+        "انطلاقة رائعة نحو الإسبريسو القوي",
+        "كثافة 10 تمنحك قوة صباحية استثنائية",
+        "500 g تضمن استكشاف نكهات جريئة لفترة طويلة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0049U0DMC",
+      "title_en": "Lavazza Qualita Oro Coffee Beans 1Kg",
+      "title_ar": "حبوب قهوة Lavazza Qualita Oro 1Kg",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51m5lx9zAXL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لعشاق القهوة الإيطالية المميزة",
+        "أداء قوي يمثل أفضل خلطات Lavazza الذهبية",
+        "Qualita Oro تعني ذهب سائل صافٍ في الفنجان",
+        "1kg مثالي للعائلات المهتمة بالقهوة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0D6NL2RSF",
+      "title_en": "L'OR - Coffee Beans - Crema Classique - Intensity 6 - Whole Coffee Beans 200g (Pack of 1)",
+      "title_ar": "L'OR - حبوب القهوة - Crema Classique - كثافة 6 - حبوب قهوة كاملة 200g (عبوة من 1)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61drbKoAwnL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز لعشاق الإسبريسو الباحثين عن الكثافة",
+        "أداء قوي يتجاوز التوقعات",
+        "كثافة 6 تقدم نكهة جريئة ومتوازنة",
+        "حجم 200g مثالي للتجربة السريعة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B016OW4SWI",
+      "title_en": "illy Classic Beans 250 g",
+      "title_ar": "illy Classic حبوب 250 g",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61+YombvcBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز من تراث القهوة الإيطالية الأسطورية",
+        "اختيار موثوق بخلطة دقيقة من 9 حبوب",
+        "خبرة illy لمدة 80 عامًا في كل فنجان",
+        "250 g من الحبوب الفاخرة تقدم تميزًا متسقًا"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B084YYH9D2",
+      "title_en": "Lavazza Super Crema Coffee Beans, 1 kg",
+      "title_ar": "حبوب قهوة Lavazza Super Crema، 1 kg",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Q+-WDWZiL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي مع إتقان Super Crema",
+        "كيس 1kg يناسب احتياجاتك اليومية",
+        "يوفر رغوة كريمية دون معدات إضافية",
+        "تركيبة Lavazza المجربة تحضر قهوة ممتازة دائمًا"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B002PM23YC",
+      "title_en": "Lavazza Qualita Rossa Coffee Beans, 1 kg",
+      "title_ar": "حبوب قهوة Lavazza Qualita Rossa، 1 kg",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71RcrTpew5L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي يقدم تركيبة Lavazza الموثوقة",
+        "1kg للعائلات الباحثة عن التميز اليومي المتسق",
+        "Qualita Rossa توازن بين الثراء والنعومة",
+        "إرث إيطالي يضمن الكمال الصباحي دائمًا"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B007RM1S14",
+      "title_en": "Lavazza Espresso Crema & Aroma Coffee Beans, Medium Roast, 1 Kg, Gold",
+      "title_ar": "حبوب قهوة Lavazza Espresso Crema & Aroma، تحميص متوسط، 1 Kg، ذهبي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71pP6kWu2tL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي 1kg للروتين اليومي المتسق",
+        "خلطة كريما وأروما موثوقة كل صباح",
+        "التعبئة الذهبية تشير لالتزام Lavazza بالجودة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B073FDKY9G",
+      "title_en": "Lavazza Qualità Rossa Whole Bean Coffee, Medium Roast, 1 Kg",
+      "title_ar": "Lavazza Qualità Rossa حبوب قهوة كاملة، تحميص متوسط، 1 Kg",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61FqUcSemQL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار اقتصادي ذكي من علامة Lavazza الموثوقة",
+        "أساس رائع للتحميص المتوسط للمبتدئين",
+        "كيس 1kg يوفر أسابيع من متعة الكابتشينو",
+        "خلطة Rossa توازن بين القوام والإشراق"
+      ],
+      "rank": 10
+    }
+  ]
+}

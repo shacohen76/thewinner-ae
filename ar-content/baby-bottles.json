@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "baby-bottles",
+    "keyword_text_en": "baby bottles",
+    "translated_at": "2026-04-18T20:34:14.353643",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "زجاجات الرضاعة للأطفال",
+  "page_title_ar": "أفضل 10 زجاجات الرضاعة للأطفال في الإمارات",
+  "category_name_en": "Baby & Kids",
+  "category_name_ar": "الأطفال والرضع",
+  "category_slug": "baby-kids",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين حلمات Silicone وحلمات Latex؟",
+      "a": "حلمات Silicone أكثر متانة وآمنة في غسالة الأطباق ولا تحتفظ بالروائح، بينما حلمات Latex أكثر نعومة وتشبه الرضاعة الطبيعية لكنها تتآكل بشكل أسرع. معظم الآباء يختارون Silicone للعملية، رغم أن بعض الأطفال يفضلون ملمس Latex."
+    },
+    {
+      "q": "كيف أعرف السعة المناسبة من الزجاجة لطفلي؟",
+      "a": "يحتاج الأطفال حديثو الولادة عادة إلى زجاجات بسعة 120-150ml، بينما يحتاج الأطفال من عمر 3 أشهر فما فوق إلى زجاجات بسعة 240-300ml. الاحتفاظ بكلا الحجمين عملي لأن شهية طفلك تنمو بسرعة وستحتاجين إلى زجاجات مختلفة لمواقف مختلفة."
+    },
+    {
+      "q": "ماذا يجب أن أبحث عنه لمنع المغص والغازات؟",
+      "a": "ابحثي عن زجاجات مزودة بأنظمة تهوية مضادة للمغص تقلل من دخول الهواء أثناء الرضاعة. الزجاجات المائلة وتلك ذات البطانات القابلة للطي تساعد أيضاً في تقليل الغازات، لكن النتائج تختلف حسب الطفل - البعض يستجيب جيداً لهذه الميزات بينما لا يلاحظ آخرون فرقاً."
+    },
+    {
+      "q": "هل تستحق الزجاجات واسعة الفتحة التكلفة الإضافية؟",
+      "a": "الزجاجات واسعة الفتحة أسهل في الملء والتنظيف والتعقيم، مما يوفر الوقت إذا كنت تديرين عدة زجاجات يومياً. تستحق الاهتمام إذا كانت الراحة مهمة بالنسبة لك، رغم أن الزجاجات العادية تعمل بشكل جيد إذا كانت الميزانية محدودة."
+    },
+    {
+      "q": "ما هي المواد الأكثر أماناً لزجاجات الأطفال؟",
+      "a": "الزجاج والبلاستيك الخالي من BPA كلاهما خيارات آمنة؛ الزجاج متين ولا يحتفظ بالبقع، بينما البلاستيك الخالي من BPA خفيف الوزن وأقل عرضة للكسر عند السقوط. تأكدي من أن الزجاجة تحمل علامة خالية من BPA وتجنبي الزجاجات البلاستيكية الرخيصة جداً التي قد تستخدم مواد قديمة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0964CHD65",
+      "title_en": "PHILIPS AVENT Natural Baby Bottle with Natural Response, Clear, 9oz, 4pk, SCY903/04, 9 Ounce",
+      "title_ar": "زجاجة رضاعة PHILIPS AVENT Natural Baby مع Natural Response، شفافة، 9oz، عبوة 4 قطع، SCY903/04، 9 Ounce",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71PP49jvjLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية Natural Response الأكثر موثوقية المتاحة",
+        "سعة 9oz تنمو مع شهية طفلك",
+        "عبوة 4 قطع تضمن توفرك الدائم والجاهزية"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B09649R98Q",
+      "title_en": "AVENT Philips Natural Baby Bottle with Natural Response, Clear, 4oz, 4pk, SCY900/04",
+      "title_ar": "زجاجة رضاعة AVENT Philips Natural Baby مع Natural Response، شفافة، 4oz، عبوة 4 قطع، SCY900/04",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71bUDNExewL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "حجم بداية ممتاز 4oz لحديثي الولادة",
+        "حلمة Natural Response استثنائية تحاكي الرضاعة الطبيعية",
+        "عبوة 4 قطع فاخرة لتغطية كاملة للرضاعة"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0CP2WB514",
+      "title_en": "Philips Avent Natural Baby Bottle with Natural Response, with Sea Design, 9oz, 4pk, SCY903/68",
+      "title_ar": "زجاجة رضاعة Philips Avent Natural Baby مع Natural Response، بتصميم بحري، 9oz، عبوة 4 قطع، SCY903/68",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71keZMk8Q+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز بتصميم بحري بهيج",
+        "أداء قوي بحجم عائلي 9oz",
+        "تقنية Natural Response تدعم انتقالات الرضاعة السعيدة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0BWFNJKN4",
+      "title_en": "Philips Avent Natural Response Baby Bottle - 125ml Baby Milk Bottle for Newborns and Up, BPA Free, 0+ Months (Model SCY900/01)",
+      "title_ar": "زجاجة رضاعة Philips Avent Natural Response Baby - 125ml لحليب الأطفال حديثي الولادة وما فوق، خالية من BPA، 0+ شهور (موديل SCY900/01)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61GHSbkx61L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "نقطة انطلاق ممتازة بحجم مدمج 125ml",
+        "أداء قوي من حديثي الولادة خلال الأشهر القادمة",
+        "بناء خالٍ من BPA يحمي صغيرك الثمين"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0964G7D56",
+      "title_en": "PHILIPS AVENT Baby Bottle with Natural Response , 4 Oz, 2 Count",
+      "title_ar": "زجاجة رضاعة PHILIPS AVENT Baby مع Natural Response، 4 Oz، عبوة قطعتين",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71N1LYQiBlL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "حجم ممتاز 4oz لتقديم الرضاعة بالزجاجة",
+        "أداء قوي مع حلمة Natural Response المثبتة",
+        "عبوة قطعتين مثالية للآباء المتنقلين"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B009QXDE3C",
+      "title_en": "Comotomo Natural Feel Baby Bottle, Soft & Squeezy, Easy To Clean, Dual Anti-Colic Vent Bottle For Baby, Infants And Newborn 250Ml, Pink (Pack Of 2)",
+      "title_ar": "زجاجة رضاعة Comotomo Natural Feel Baby، ناعمة وقابلة للعصر، سهلة التنظيف، مع تهوية مزدوجة مضادة للمغص للأطفال والرضع وحديثي الولادة 250Ml، زهري (عبوة قطعتين)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71uw1K9Cz7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين بتصميم ناعم وقابل للعصر طبيعياً",
+        "اختيار موثوق مع نظام تهوية مزدوج مضاد للمغص",
+        "بناء سهل التنظيف يوفر وقت الآباء الثمين يومياً"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B098YVB8BX",
+      "title_en": "Philips AVENT Glass Natural Baby Bottle with Natural Response, Clear, 8oz, 4pk, SCY913/04",
+      "title_ar": "زجاجة رضاعة Philips AVENT Glass Natural Baby مع Natural Response، شفافة، 8oz، عبوة 4 قطع، SCY913/04",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71fx-HfaNYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين مصنوع من مادة زجاجية متينة",
+        "اختيار موثوق يحافظ على الحرارة أطول من البلاستيك",
+        "سعة 8oz تتعامل بسهولة مع رضعات متعددة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07DCTZWBF",
+      "title_en": "Dr. Brown's Options Slow Flow Bottle Set for Breastfed Baby, 4 Ounce, Clear",
+      "title_ar": "طقم زجاجات Dr. Brown's Options بتدفق بطيء للأطفال الرضع طبيعياً، 4 Ounce، شفافة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71PqUpYpRuL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي بميزانية مناسبة للأطفال الرضع طبيعياً",
+        "تدفق بطيء مبتدئ رائع يمنع ارتباك الزجاجة",
+        "حجم 4oz مثالي لرحلات الرضاعة المشتركة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0964CY1SX",
+      "title_en": "Philips Avent Natural Baby Bottles with Natural Response Nipples (Fast Flow, Flow 4), 11oz, 2-Pack, SCY906/02",
+      "title_ar": "زجاجات رضاعة Philips Avent Natural Baby مع حلمات Natural Response (تدفق سريع، Flow 4)، 11oz، عبوة قطعتين، SCY906/02",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71dtMUTVvrL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي بميزانية مناسبة مع حلمات تدفق سريع",
+        "سعة 11oz مبتدئة رائعة للأطفال المتنامين",
+        "عبوة قطعتين تغطي رضعات الصباح والمساء"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B09V5MCB84",
+      "title_en": "Tommee Tippee Natural start Newborn Baby Bottle Starter Kit, Breast-Like Teats with Anti-Colic Valve, Mixed Sizes, Blue",
+      "title_ar": "طقم بداية زجاجة رضاعة Tommee Tippee Natural start للأطفال حديثي الولادة، حلمات تشبه الثدي مع صمام مضاد للمغص، أحجام مختلطة، أزرق",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51scmRKaKBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي بميزانية مناسبة مع حلمات تشبه الثدي",
+        "طقم بداية مبتدئ رائع يصل جاهزاً للاستخدام",
+        "صمام مضاد للمغص يقلل الغازات والانزعاج المزعج"
+      ],
+      "rank": 10
+    }
+  ]
+}

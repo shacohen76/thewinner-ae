@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "womens-perfume",
+    "keyword_text_en": "womens perfume",
+    "translated_at": "2026-04-18T20:34:14.380670",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "عطور نسائية",
+  "page_title_ar": "أفضل 10 عطور نسائية في الإمارات",
+  "category_name_en": "Perfumes & Fragrances",
+  "category_name_ar": "العطور والروائح",
+  "category_slug": "perfumes-fragrances",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين Eau de Parfum و Eau de Toilette و Eau de Cologne؟",
+      "a": "Eau de Parfum يحتوي على أعلى تركيز عطري (15-20%) لذلك يدوم أطول ويكلف أكثر، بينما Eau de Toilette يحتوي على تركيز 5-15% ويتلاشى أسرع. أما Eau de Cologne فهو الخيار الأخف بتركيز 2-5%، مما يجعله أكثر اقتصادية لكنه يتطلب إعادة تطبيق متكررة."
+    },
+    {
+      "q": "كيف أعرف إذا كان العطر مناسباً لنوع بشرتي؟",
+      "a": "العطر يتصرف بشكل مختلف على البشرة الدهنية مقابل الجافة، فالبشرة الدهنية تحتفظ بالرائحة لفترة أطول، بينما قد تحتاج البشرة الجافة إلى مرطب تحتها لمساعدتها على الثبات. جربي العطر على بشرتك لمدة 30 دقيقة على الأقل قبل الشراء، لأن الرائحة تتطور وتتغير مع الوقت بدلاً من أن تظل كما في الزجاجة."
+    },
+    {
+      "q": "ما حجم الزجاجة الذي يجب شراؤه عند تجربة عطر لأول مرة؟",
+      "a": "ابدئي بزجاجة 30-50ml لاختبار مدى إعجابك بالرائحة على مدى عدة أسابيع قبل الالتزام بحجم 100ml الأكبر. العطور قد تختلف رائحتها بعد أيام من الاستخدام، وقد تكتشفين أنها لا تناسب حياتك اليومية أو أنها تتعارض مع منتجات أخرى تستخدمينها."
+    },
+    {
+      "q": "متى يستحق الإنفاق أكثر على عطر من علامة تجارية فاخرة؟",
+      "a": "العلامات التجارية الفاخرة غالباً تستخدم مكونات عالية الجودة تؤدي بشكل أفضل على البشرة وتدوم أطول، بالإضافة إلى أن تعقيد الرائحة يكون أكثر تميزاً. العطور الاقتصادية يمكن أن تكون خياراً احتياطياً جيداً أو للاستخدام العرضي، لكن إذا كنت ستستخدمينه يومياً، فالاستثمار في خيار أفضل يعني إعادة تطبيق أقل وتجربة شاملة أفضل."
+    },
+    {
+      "q": "كيف أتحقق من توافق العطر مع منتجاتي الحالية؟",
+      "a": "العطر قد يتعارض مع المستحضرات أو الصابون أو مزيلات العرق المعطرة التي تستخدمينها بالفعل، لذا جربيه على بشرة نظيفة أو مع منتجات جسم غير معطرة أولاً. إذا أحببت عطراً معيناً لكنه يتعارض مع روتينك الحالي، يمكنك التبديل إلى نسخ غير معطرة من منتجاتك اليومية للسماح للعطر بالتألق."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B000C1UBRO",
+      "title_en": "Calvin Klein Eternity Moment Perfume for Women Eau De Parfum 100ML",
+      "title_ar": "عطر Calvin Klein Eternity Moment للنساء Eau De Parfum 100ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61j4FLDrM4L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "العطر الأقوى في فئته",
+        "زجاجة 100ML توفر قوة تدوم طويلاً",
+        "تركيبة Calvin Klein الأيقونية موثوقة عالمياً"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B00DG791T0",
+      "title_en": "Davidoff Cool Water Sea Rose Perfume for Women Eau De Toilette 100ML",
+      "title_ar": "عطر Davidoff Cool Water Sea Rose للنساء Eau De Toilette 100ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ummM5d3BL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متميز للانتعاش المائي",
+        "اختيار استثنائي يمزج الورد البحري بالأناقة",
+        "منافس فاخر للثقة المستوحاة من الساحل"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B00KXBUN62",
+      "title_en": "Versace Bright Crystal by for Women - Eau de Toilette, 200ml",
+      "title_ar": "عطر Versace Bright Crystal للنساء Eau de Toilette 200ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61k-U4RtRML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي بزجاجة 200ml سخية",
+        "زهور Bright Crystal النقية تعرف الأنوثة",
+        "عطر Versace عالي الجودة لانطباعات تدوم"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B07P5JS79D",
+      "title_en": "Rasasi Secret Perfume EDP For Women 75ml",
+      "title_ar": "عطر Rasasi Secret EDP للنساء 75ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71GHHh4yMNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار استثنائي للمرأة الجريئة الواثقة",
+        "تركيز 75ml يجذب الانتباه طوال اليوم",
+        "جودة فاخرة بقيمة متميزة"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0757ZLMLZ",
+      "title_en": "Gucci Perfume - Bloom by Gucci - perfumes for women - Eau de Parfum, 100ml",
+      "title_ar": "عطر Gucci Bloom by Gucci للنساء Eau de Parfum 100ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/7134Ds7j4dL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز من دار إيطالية أسطورية",
+        "أداء قوي يجسد جوهر الحديقة المزهرة",
+        "Eau de Parfum 100ml للاستخدام من النهار للليل"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B000UUO5VA",
+      "title_en": "Calvin Klein CK IN2U Perfume for Women Eau De Toilette",
+      "title_ar": "عطر Calvin Klein CK IN2U للنساء Eau De Toilette",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51KSqfkA3uL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي من خبرة Calvin Klein",
+        "Eau de Toilette مثالي للاستخدام اليومي",
+        "عطر مبتدئ رائع للمرأة الشابة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B00CLF6K3I",
+      "title_en": "Armaf Club De Nuit Women, Eau Parfum 105ml for Her Pink, by from House of the Sterling",
+      "title_ar": "عطر Armaf Club De Nuit Women Eau Parfum 105ml Pink by House of the Sterling",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Sx3oTiSsL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار متين للمرأة الأنيقة",
+        "اختيار موثوق مع 105ml من الفخامة الصافية",
+        "عطر وردي يجمع الأناقة مع الجرأة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07JRG42D9",
+      "title_en": "VICTORIA'S SECRET Bare Vanilla Fragrance Mist, 250ml",
+      "title_ar": "بخاخ عطر VICTORIA'S SECRET Bare Vanilla Fragrance Mist 250ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61cXiFL0BdL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي بحجم 250ml سخي",
+        "رائع للمبتدئات لراحة الفانيليا اليومية",
+        "بخاخ عطري مثالي للتطبيق المتعدد"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0009OAI2C",
+      "title_en": "Elizabeth Arden Arden Beauty Perfune for Women Eau De Parfum 100ML",
+      "title_ar": "عطر Elizabeth Arden Arden Beauty للنساء Eau De Parfum 100ML",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/517in44ObfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اختيار ذكي اقتصادي من علامة تراثية",
+        "Eau de Parfum مبتدئ رائع التركيز",
+        "100ML يقدم الجمال الأنثوي الكلاسيكي للأبد"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B000GIL1UE",
+      "title_en": "Versace Crystal Noir Eau De Toieltte Spray For Her 90ml",
+      "title_ar": "بخاخ Versace Crystal Noir Eau De Toilette للنساء 90ml",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61DmOOnOp7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار عملي من مجموعة Versace المرموقة",
+        "كثافة Dark Noir 90ml مميزة",
+        "تصميم عطري أبدي يلتقي بالثقة العصرية"
+      ],
+      "rank": 10
+    }
+  ]
+}

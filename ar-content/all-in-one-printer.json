@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "slug": "all-in-one-printer",
+    "keyword_text_en": "all in one printer",
+    "translated_at": "2026-04-18T20:34:14.386747",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "الطابعات متعددة الوظائف",
+  "page_title_ar": "أفضل 10 طابعات متعددة الوظائف في الإمارات",
+  "category_name_en": "Printers",
+  "category_name_ar": "الطابعات",
+  "category_slug": "printers",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين الطابعات متعددة الوظائف بتقنية Inkjet وتقنية Laser؟",
+      "a": "طابعات Inkjet أرخص مقدماً وأفضل لطباعة الصور الملونة، لكن تكلفة التشغيل أعلى لكل صفحة. طابعات Laser تكلف أكثر في البداية لكنها أوفر بكثير في التشغيل إذا كنت تطبع بانتظام، خاصة للمستندات."
+    },
+    {
+      "q": "كيف أعرف سرعة الطباعة التي أحتاجها فعلياً؟",
+      "a": "إذا كنت تطبع أقل من 20 صفحة شهرياً، فالسرعة لا تهم كثيراً. المستخدمون الكثيفون الذين يطبعون أكثر من 100 صفحة يومياً يحتاجون 30 صفحة في الدقيقة أو أكثر، بينما مستخدمو المكاتب العاديون يستفيدون من 15-20 صفحة في الدقيقة."
+    },
+    {
+      "q": "هل يجب أن أشتري طابعة مع مغذي مستندات أوتوماتيكي أم يدوي؟",
+      "a": "المغذي الأوتوماتيكي يستحق الثمن إذا كنت تمسح أو تنسخ مستندات متعددة الصفحات بانتظام، فهو يوفر الوقت والجهد. للطباعة الفردية في الغالب، التغذية اليدوية كافية وستوفر المال."
+    },
+    {
+      "q": "أي نظام خزان أو خرطوشة يجب أن أختار؟",
+      "a": "أنظمة الخزانات القابلة لإعادة التعبئة لديها تكلفة أقل بكثير لكل صفحة لكنها تتطلب استثماراً أكبر مقدماً. الخراطيش التقليدية أرخص في الشراء لكنها مكلفة على المدى الطويل إذا كنت تطبع بانتظام."
+    },
+    {
+      "q": "ما ميزات الاتصال المهمة فعلاً في الطابعة متعددة الوظائف؟",
+      "a": "WiFi ضروري للراحة، فهو يتيح لك الطباعة من الهواتف والأجهزة المحمولة بدون كابلات. USB جيد إذا كنت تطبع من كمبيوتر واحد فقط، لكن فكر في دعم NFC أو تطبيقات الهاتف إذا أردت الطباعة اللاسلكية من الأجهزة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CJLS1XN9",
+      "title_en": "EPSON EcoTank L3252 Home ink tank printer A4, colour, 3-in-1 printer with WiFi and SmartPanel App connectivity",
+      "title_ar": "طابعة EPSON EcoTank L3252 منزلية بخزان حبر A4، ملونة، متعددة الوظائف 3 في 1 مع WiFi وتطبيق SmartPanel",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/81OsUvHpqdL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى نظام خزان حبر متوفر",
+        "اطبع مئات الصفحات قبل إعادة التعبئة",
+        "تحكم WiFi وتطبيق SmartPanel من أي مكان"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CQ7VSCV7",
+      "title_en": "HP | Smart Tank | Wireless | Print, Copy, Scan | Manual Duplex | Print Speed: 12ppm(black) / 5ppm(color) | Up to 18000 black or 6000 color pages included | ST582 | UAE Version",
+      "title_ar": "طابعة HP Smart Tank لاسلكية، طباعة ونسخ ومسح، Duplex يدوي، سرعة طباعة: 12ppm أسود / 5ppm ألوان، حتى 18000 صفحة أسود أو 6000 ألوان مضمنة ST582 نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61utnmY7QzL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "إنتاجية استثنائية توسع ميزانية الطباعة أكثر",
+        "أداء لاسلكي قوي يتعامل مع أجهزة متعددة بسلاسة",
+        "طباعة Duplex يدوية توفر الورق بذكاء"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0C6DKJ4FG",
+      "title_en": "HP OfficeJet Pro 9123 All-in-One Printer - Wireless, Automatic document feeder, Two-sided printing, Two-sided scanning, Scan to PDF/Email, Touchscreen",
+      "title_ar": "طابعة HP OfficeJet Pro 9123 متعددة الوظائف، لاسلكية، مغذي مستندات أوتوماتيكي، طباعة على الوجهين، مسح على الوجهين، مسح إلى PDF/Email، شاشة لمس",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61fG3iI7Y+L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مغذي المستندات الأوتوماتيكي يعالج المسح الدفعي بسهولة",
+        "واجهة شاشة اللمس تجعل الطباعة سريعة وبديهية",
+        "طباعة ومسح على الوجهين مدمجة بالكامل"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0CQ25RKV8",
+      "title_en": "HP | DeskJet Ink Advantage Ultra | Wireless | Print, Copy, Scan | Manual Duplex | Print Speed: 7.5ppm(black) / 5.5ppm(color) | Up to 2600 black, 1400 color pages ink included | DJ4927 | UAE Version",
+      "title_ar": "طابعة HP DeskJet Ink Advantage Ultra لاسلكية، طباعة ونسخ ومسح، Duplex يدوي، سرعة طباعة: 7.5ppm أسود / 5.5ppm ألوان، حتى 2600 صفحة أسود و1400 ألوان مضمنة DJ4927 نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51VHxEUOHfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "اتصال لاسلكي موثوق لطباعة خالية من المشاكل",
+        "حجم مدمج يناسب مساحات المكاتب المنزلية الضيقة",
+        "Duplex يدوي يوفر مخرجات احترافية بميزانية صغيرة"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CQ2BHFND",
+      "title_en": "HP DeskJet Ink Advantage 2875 Wireless Print, Copy, Scan, All-in-One Printer - White [60K47C]",
+      "title_ar": "طابعة HP DeskJet Ink Advantage 2875 لاسلكية، طباعة ونسخ ومسح، متعددة الوظائف، أبيض [60K47C]",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/7151HOqJagL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "طابعة لاسلكية متعددة الوظائف تناسب أي ركن",
+        "إعداد بسيط يعني طباعة في دقائق",
+        "أداء موثوق لاحتياجات الطباعة المنزلية اليومية"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0CVXSPV5H",
+      "title_en": "Brother Wireless All in One Printer, MFC-L3720CDW, with Advanced LED Color Laser Print, ADF, Duplex & Mobile Printing, High Yield Ink Toner",
+      "title_ar": "طابعة Brother لاسلكية متعددة الوظائف، MFC-L3720CDW، مع طباعة LED ليزر ملونة متقدمة، ADF، Duplex وطباعة محمولة، حبر تونر عالي الإنتاجية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71Bw9rXydAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "جودة طباعة LED ليزر ملونة متميزة",
+        "مغذي المستندات الأوتوماتيكي يعالج الأكوام بسرعة",
+        "تونر عالي الإنتاجية يستمر لفترة أطول"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0CVXHFP9N",
+      "title_en": "Brother Wireless All in One Printer, DCP-L3520CDW, with Advanced LED Color Laser Print, Duplex & Mobile Printing, High Yield Ink Toner",
+      "title_ar": "طابعة Brother لاسلكية متعددة الوظائف، DCP-L3520CDW، مع طباعة LED ليزر ملونة متقدمة، Duplex وطباعة محمولة، حبر تونر عالي الإنتاجية",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61UloDilCAL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء LED ليزر ملون قوي بشكل مدمج",
+        "طباعة Duplex توفر الورق أوتوماتيكياً",
+        "طباعة محمولة من جيبك فوراً"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0CQ7TF4H1",
+      "title_en": "HP | Smart Tank | Wireless | Print, Copy, Scan | Automatic Duplex | Print Speed: 12ppm(black) / 7ppm(color) | Up to 18000 black or 8000 color pages included | ST670 | UAE Version",
+      "title_ar": "طابعة HP Smart Tank لاسلكية، طباعة ونسخ ومسح، Duplex أوتوماتيكي، سرعة طباعة: 12ppm أسود / 7ppm ألوان، حتى 18000 صفحة أسود أو 8000 ألوان مضمنة ST670 نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61UzKljgjYL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "طباعة Duplex أوتوماتيكية بدون قلب يدوي",
+        "إنتاجية مذهلة 18000 صفحة أسود تلغي الإعادة المتكررة",
+        "تصميم خزان ذكي يعظم إمكانات الطباعة"
+      ],
+      "rank": 10
+    }
+  ]
+}

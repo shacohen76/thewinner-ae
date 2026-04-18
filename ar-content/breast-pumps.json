@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "slug": "breast-pumps",
+    "keyword_text_en": "breast pumps",
+    "translated_at": "2026-04-18T20:34:14.361704",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "مضخات حليب الثدي",
+  "page_title_ar": "أفضل 10 مضخات حليب الثدي في الإمارات",
+  "category_name_en": "Other",
+  "category_name_ar": "أخرى",
+  "category_slug": "other",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما الفرق بين مضخات الثدي الكهربائية واليدوية؟",
+      "a": "المضخات الكهربائية أسرع وأقل إجهاداً، مما يجعلها أفضل للاستخدام المتكرر أو الضخ الحصري، بينما المضخات اليدوية محمولة وهادئة وأرخص لكنها تتطلب جهداً بدنياً أكبر. اختاري الكهربائية إذا كنتِ تضخين عدة مرات يومياً؛ اليدوية تناسب الاستخدام العرضي أو السفر."
+    },
+    {
+      "q": "هل سعة الزجاجة مهمة عند اختيار مضخة الثدي؟",
+      "a": "الزجاجات الأكبر سعة (5-6 أونصة) تعني تغيير زجاجات أقل خلال الجلسة، وهو مريح للأمهات ذوات الإنتاج الكثيف. الزجاجات القياسية 4-5 أونصة تناسب معظم الأمهات، لذا هذا ليس حاسماً إلا إذا كان لديكِ إنتاج عالٍ."
+    },
+    {
+      "q": "ماذا يجب أن أتحقق من مستوى الضوضاء قبل الشراء؟",
+      "a": "المضخات الأهدأ (أقل من 60 ديسيبل) تتيح لكِ الضخ بتكتم في العمل أو دون إيقاظ طفلكِ، وهو ما تجده كثير من الأمهات ضرورياً. إذا كنتِ تضخين في أماكن مشتركة أو ليلاً، أعطِ الأولوية للموديلات الأهدأ."
+    },
+    {
+      "q": "متى يستحق إنفاق المزيد على مضخة ثدي فاخرة؟",
+      "a": "الموديلات الأغلى توفر أوقات ضخ أسرع وتخصيص أفضل للشفط وتشغيل أهدأ—تستحق إذا كنتِ تضخين حصرياً أو ستعودين للعمل قريباً. المضخات الاقتصادية تعمل بشكل كافٍ للاستخدام العرضي، لكن من يضخن بكثرة يستفدن من ميزات ومتانة أفضل."
+    },
+    {
+      "q": "ما الفرق بين مضخات الثدي المفردة والمزدوجة؟",
+      "a": "المضخات المزدوجة تستخرج من كلا الثديين في آن واحد، مما يقلل وقت الضخ للنصف ويعزز إنتاج الحليب بفعالية أكبر، بينما المضخات المفردة أبطأ لكنها أخف وأرخص. المضخات المزدوجة أفضل للأمهات العاملات أو الضخ الحصري؛ المفردة تناسب الراحة العرضية أو السفر."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0FNM8QZ2L",
+      "title_en": "Bellababy Hands-Free Breast Pump Wearable, Touch Control LED Electric Breast Pump, Comfortable & Low Noise, 4 Modes & 9 Levels Suction, 6 oz, 2 Packs (24mm Flanges, with 21mm/19mm/17mm Inserts)",
+      "title_ar": "مضخة ثدي Bellababy قابلة للارتداء بدون استخدام اليدين، مضخة ثدي كهربائية بتحكم LED باللمس، مريحة وهادئة، 4 أوضاع و9 مستويات شفط، 6 أونصة، عبوتان (حلمات 24mm، مع إدراجات 21mm/19mm/17mm)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/611JQ6m0xhL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مضختان تعنيان راحة وسرعة في آن واحد",
+        "تسعة مستويات شفط تمنح مرونة قصوى",
+        "تحكم LED باللمس يجعل التشغيل سهلاً"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0FG35SN1V",
+      "title_en": "Wearable Pump, Electric Pumps Handsfree Portable, 4 Modes & 9 Levels Strong Suction, Comfortable and BPA Free, with 17mm/19mm/21mm Inserts and 24mm Flanges (1 Pack-Pink)",
+      "title_ar": "مضخة قابلة للارتداء، مضخة كهربائية محمولة بدون استخدام اليدين، 4 أوضاع و9 مستويات شفط قوي، مريحة وخالية من BPA، مع إدراجات 17mm/19mm/21mm وحلمات 24mm (عبوة واحدة - وردي)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/613UNcFUbgL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى شفط في فئتها",
+        "تسعة مستويات كثافة تخصص حسب راحتكِ",
+        "أربعة أوضاع متخصصة تتكيف مع احتياجاتكِ"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B08H9QJVNZ",
+      "title_en": "Medela Harmony Manual Breast Pump, Compact Swiss Design with PersonaFit Flex Shields and Medela's 2-Phase Expression Technology",
+      "title_ar": "مضخة ثدي يدوية Medela Harmony، تصميم سويسري مدمج مع واقيات PersonaFit Flex وتقنية 2-Phase Expression من Medela",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51vtI8-Z6wL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أفضل هندسة سويسرية في الضخ اليدوي",
+        "تقنية Phase Expression تحاكي إيقاع الرضاعة الطبيعية",
+        "واقيات PersonaFit Flex تتكيف مع جسمكِ",
+        "أكثر تصميم مدمج للضخ بتكتم"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0D73PLD6P",
+      "title_en": "Medela Swing Maxi Hands-Free Double Electric Breast Pump, Easy and Intuitive Design for On-the-Go, Compatible with Medela Family App",
+      "title_ar": "مضخة ثدي كهربائية مزدوجة Medela Swing Maxi بدون استخدام اليدين، تصميم سهل وبديهي للتنقل، متوافقة مع تطبيق Medela Family",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/516sFPkij2L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "موثوقية Medela المعتمدة من متخصصي الرضاعة",
+        "التواصل بالتطبيق يتتبع تقدم الضخ لديكِ",
+        "تصميم بديهي لا يحتاج منحنى تعلم"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0FH6FHNJF",
+      "title_en": "Momcozy M6 Breast Pump Hands Free Mobile Style, Wearable Breastfeeding Pump Ideal Rhythm for More Milk, DoubleFit Flange More Fit & Discreet with 3 Modes & 9 Levels, 24mm(2 Count, Cozy Red)",
+      "title_ar": "مضخة ثدي Momcozy M6 بدون استخدام اليدين نمط متنقل، مضخة رضاعة قابلة للارتداء بإيقاع مثالي لمزيد من الحليب، حلمة DoubleFit أكثر ملاءمة وتكتماً مع 3 أوضاع و9 مستويات، 24mm (عبوتان، أحمر مريح)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Ki++kjwnL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "وضع الإيقاع المثالي يزيد إنتاج الحليب",
+        "حلمة DoubleFit تتكيف مع أشكال الجسم الفريدة",
+        "تصميم متكتم بعبوتين للأمهات العصريات"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B000P9XJ5E",
+      "title_en": "Lansinoh SignaturePro Double Electric Breast Pump for Breastfeeding, Portable Breast Pump, 3 Power Options, LCD Display, Includes Breast Pump Bag, 25mm Flanges and 2 Lansinoh Bottles",
+      "title_ar": "مضخة ثدي كهربائية مزدوجة Lansinoh SignaturePro للرضاعة الطبيعية، مضخة ثدي محمولة، 3 خيارات طاقة، شاشة LCD، تتضمن حقيبة مضخة ثدي، حلمات 25mm وزجاجتين Lansinoh",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ChA1wdCaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ثلاثة أوضاع طاقة تتكيف مع وتيرتكِ",
+        "شاشة LCD تتتبع كل جلسة ضخ",
+        "جودة Lansinoh الاحترافية التي يمكنكِ الوثوق بها"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0GFMR5TG3",
+      "title_en": "Wearable Electric Breast Pump for Mothers | Hands-Free In-Bra Milk Expression | Natural Suction with Massage, Multitronic & Express Modes | USB Rechargeable, Portable & Quiet (2)",
+      "title_ar": "مضخة ثدي كهربائية قابلة للارتداء للأمهات | استخراج حليب داخل حمالة الصدر بدون استخدام اليدين | شفط طبيعي مع تدليك، أوضاع Multitronic و Express | قابلة للشحن عبر USB، محمولة وهادئة (2)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31Vw6DstFDL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "حرية الشحن عبر USB دون الاعتماد على سلك",
+        "وضع التدليك يوفر تجربة راحة طبيعية",
+        "تشغيل هامس للضخ في أي مكان أي وقت"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0D9MKNL8N",
+      "title_en": "Paruu Hands Free Breast Pump P16, Wearable Breast Pump Electirc Portable with 4 Modes & 12 Levels, Max 309mmHg Strong Suction 19/21/24mm Flange Inserts Wearable Breastfeeding Pump, 2 Pack（Nude",
+      "title_ar": "مضخة ثدي Paruu P16 بدون استخدام اليدين، مضخة ثدي كهربائية قابلة للارتداء محمولة مع 4 أوضاع و12 مستوى، شفط قوي بحد أقصى 309mmHg، إدراجات حلمات 19/21/24mm، مضخة رضاعة قابلة للارتداء، عبوتان (بيج)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61yPNxBLxEL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "شفط أقصى 309mmHg يتفوق على المنافسين",
+        "خيار اقتصادي ذكي بأربعة أوضاع استخراج",
+        "أربعة خيارات مقاس حلمة تضمن إحكاماً مثالياً"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0CCQFCY96",
+      "title_en": "Momcozy Hands-Free Breast Pump S12 Pro (White, 2 Count)",
+      "title_ar": "مضخة ثدي Momcozy S12 Pro بدون استخدام اليدين (أبيض، عبوتان)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/613tQGZb7eL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "حل ضخ ممتاز بدون يدين للمبتدئات",
+        "تصميم عبوتين يضاعف حرية الضخ لديكِ"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0CTQV49Z5",
+      "title_en": "Momcozy M6 Electric Breast Pump Portable, Suitable for New Mothers, Chocolate",
+      "title_ar": "مضخة ثدي كهربائية Momcozy M6 محمولة، مناسبة للأمهات الجدد، شوكولاتة",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61U3MODajaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم محمول يناسب نمط حياتكِ النشط",
+        "مضخة مثالية للبدء للأمهات الجدد",
+        "تحكم بسيط يجعل الضخ خالياً من التوتر"
+      ],
+      "rank": 10
+    }
+  ]
+}

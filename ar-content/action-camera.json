@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "slug": "action-camera",
+    "keyword_text_en": "action camera",
+    "translated_at": "2026-04-18T20:34:14.386050",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "كاميرات الأكشن",
+  "page_title_ar": "أفضل 10 كاميرات الأكشن في الإمارات",
+  "category_name_en": "Cameras & Photography",
+  "category_name_ar": "الكاميرات والتصوير",
+  "category_slug": "cameras-photography",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما دقة الفيديو ومعدل الإطارات الذي أحتاجه فعلياً؟",
+      "a": "دقة 4K بمعدل 30fps مناسبة لمعظم المستخدمين، لكن إذا كنت تصور رياضات سريعة أو تريد تأثيرات الحركة البطيئة، ابحث عن 1080p أو 1440p بمعدل 60fps أو أعلى. معدلات الإطارات الأعلى أهم من الدقة للحصول على لقطات سلسة واحترافية عندما تتحرك الأشياء بسرعة."
+    },
+    {
+      "q": "ما مدى أهمية تصنيف مقاومة الماء عند اختيار كاميرا أكشن؟",
+      "a": "تحقق من تصنيف العمق حسب استخدامك الفعلي—10 أمتار مناسب للرذاذ والمطر، لكن الغوص أو الرياضات المائية تحتاج 30 متر أو أكثر. أي شيء أقل من 10 أمتار سيتطلب غطاء حماية إضافي، مما يزيد الحجم والتكلفة."
+    },
+    {
+      "q": "ما الفرق بين التثبيت البصري والرقمي؟",
+      "a": "التثبيت البصري يستخدم عناصر عدسة فعلية لتقليل الاهتزاز وأفضل للفيديو السلس، بينما التثبيت الرقمي يقص ويعدل الصورة بالبرمجيات. التثبيت البصري يستحق التكلفة الإضافية إذا كنت تصور محمولاً بدون gimbal."
+    },
+    {
+      "q": "ما سعة التخزين التي يجب أن أحصل عليها لكاميرا أكشن؟",
+      "a": "بطاقة 64GB تتسع لـ 2-3 ساعات من لقطات 4K، لذا اختر 128GB أو 256GB إذا كنت تصور طوال اليوم أو تسافر دون وصول سهل لجهاز كمبيوتر. السعة الأعلى تتيح لك التصوير لفترة أطول دون التوقف لإدارة الملفات."
+    },
+    {
+      "q": "هل يجب أن أنفق أكثر على موديل متميز أم أكتفي بموديل أساسي؟",
+      "a": "الموديلات المتميزة توفر تثبيتاً أفضل ومعدلات إطارات أعلى وعمر بطارية أطول—تستحق ذلك إذا كنت تعمل احترافياً أو تصور مشاهد معقدة. للمستخدمين العاديين الذين يسجلون التزلج أو المشي، خيار متوسط مع مقاومة ماء جيدة وتسجيل 4K أساسي كافٍ."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CG19FGQ5",
+      "title_en": "DJI Osmo Pocket 3 Creator Combo, Vlogging Camera with 1'' CMOS & 4K/120fps Video, 3-Axis Stabilization, Face/Object Tracking, Mic Included for Clear Sound, UAE Version with Official Warranty Support",
+      "title_ar": "DJI Osmo Pocket 3 Creator Combo، كاميرا فلوقينق مع مستشعر 1 بوصة CMOS وفيديو 4K/120fps، تثبيت ثلاثي المحاور، تتبع الوجه والأشياء، ميكروفون مدمج لصوت واضح، نسخة الإمارات مع دعم الضمان الرسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51d4Esi79-L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى تثبيت للحصول على لقطات سلسة",
+        "مستشعر 1 بوصة يلتقط تفاصيل مذهلة بأي إضاءة",
+        "تتبع الوجه والأشياء يتابع كل حركاتك",
+        "صوت احترافي مدمج مباشرة في الكاميرا"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0F5WJ6TXW",
+      "title_en": "Insta360 X5 - Waterproof 8K 360° Action Camera, Leading Low Light, Invisible Selfie Stick Effect, Rugged and Replaceable Lens, 3-Hour Battery, Triple AI Chip Design, UAE Version",
+      "title_ar": "Insta360 X5 - كاميرا أكشن 360 درجة 8K مقاومة للماء، أداء رائد في الإضاءة المنخفضة، تأثير عصا السيلفي الخفية، عدسة متينة وقابلة للاستبدال، بطارية 3 ساعات، تصميم رقاقة AI ثلاثية، نسخة الإمارات",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71vyCvRg0qL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "التقاط استثنائي 360 درجة بدقة 8K لسرد قصص غامرة",
+        "أداء متميز في الإضاءة المنخفضة بالظروف الصعبة",
+        "تأثير عصا السيلفي الخفية يبدو سينمائياً طبيعياً",
+        "عدسة متينة قابلة للاستبدال تحمي استثمارك"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0DYD56G2Y",
+      "title_en": "DJI Osmo Nano Standard Combo (128GB), Small 4K/60fps Vlogging Camera with a 1/1.3″ Sensor, 143° Wide FOV Video, 200-Min Recording, Magnetic POV Cam 4K for Sports, Vlog, UAE Version, Official Warranty",
+      "title_ar": "DJI Osmo Nano Standard Combo (128GB)، كاميرا فلوقينق صغيرة 4K/60fps مع مستشعر 1/1.3 بوصة، فيديو بزاوية عريضة 143 درجة، تسجيل 200 دقيقة، كاميرا POV مغناطيسية 4K للرياضة والفلوق، نسخة الإمارات، ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61GIVmeZGzL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "قابلية نقل ممتازة مع نظام تثبيت POV مغناطيسي",
+        "مجال رؤية عريض قوي 143 درجة يلتقط كل شيء",
+        "200 دقيقة من التسجيل المستمر دون توقف",
+        "مستشعر 1/1.3 بوصة أداؤه يفوق حجمه المدمج"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0DPB4JTXX",
+      "title_en": "DJI Osmo Pocket 3 Creator Combo Kit: 4K/120fps Gimbal Camera with 1-Inch Sensor, ActiveTrack 6.0, DJI Mic 2, and Enhanced Stabilization",
+      "title_ar": "DJI Osmo Pocket 3 Creator Combo Kit: كاميرا gimbal 4K/120fps مع مستشعر 1 بوصة، ActiveTrack 6.0، DJI Mic 2، وتثبيت محسّن",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51UQyJWKo9L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "ActiveTrack 6.0 ممتاز يبقي الأشياء مؤطرة تماماً",
+        "أداء قوي 4K/120fps لدراما الحركة البطيئة",
+        "DJI Mic 2 احترافي يقدم صوتاً بجودة البث",
+        "مستشعر 1 بوصة ينافس كاميرات السينما كاملة الحجم"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0DDSH1W1N",
+      "title_en": "i3 4K Thumb Action Camera, Tiny Size, Mount Anywhere, Small Body Camera with Spring Clip, Portable Vlogging, Hands-Free POV Recording, Helmet Cam for Cycling, Motorcycle (64G-Card, Black)",
+      "title_ar": "i3 كاميرا أكشن 4K بحجم الإبهام، حجم صغير، تثبيت في أي مكان، كاميرا جسم صغيرة مع مشبك زنبركي، فلوقينق محمولة، تسجيل POV بدون استخدام اليدين، كاميرا خوذة للدراجات والدراجات النارية (بطاقة 64GB، أسود)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61yZsXqWoLL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم ممتاز بحجم الإبهام يناسب جيبك",
+        "قوي كفاية للخوذة والدراجة والرياضات الخطرة",
+        "مشبك زنبركي يثبت في أي مكان دون أدوات",
+        "جودة 4K من كاميرا أصغر من ولاعة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0DZNTD3HH",
+      "title_en": "4k Action Camera,Mini Vlogging Camera,Small Body Camera with IPX7 Waterproof,Underwater Camcorder,Hands-Free POV Recording, Helmet Cam for Cycling, Motorcycle(32G Card)",
+      "title_ar": "كاميرا أكشن 4K، كاميرا فلوقينق صغيرة، كاميرا جسم صغيرة مع مقاومة ماء IPX7، كاميرا فيديو تحت الماء، تسجيل POV بدون استخدام اليدين، كاميرا خوذة للدراجات والدراجات النارية (بطاقة 32GB)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71aCcAkvHWL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تصميم موثوق مقاوم للماء IPX7 يتحمل الرذاذ يومياً",
+        "فيديو 4K قوي من جسم فائق الصغر",
+        "تسجيل POV بدون استخدام اليدين يلتقط لحظات أصيلة",
+        "بطاقة 32GB مرفقة للعمل الفوري"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0DTTYLFJL",
+      "title_en": "DJI Osmo 360 Adventure Combo, 360 Camera With 1-Inch 360° Imaging, Extended Battery Life With 3 Batteries, Native 8K 360° Video, 4K/120fps & 170° Boost Video, UAE version with Official Warranty",
+      "title_ar": "DJI Osmo 360 Adventure Combo، كاميرا 360 درجة مع تصوير 360 درجة 1 بوصة، عمر بطارية ممتد مع 3 بطاريات، فيديو 360 درجة أصلي 8K، فيديو 4K/120fps و170 درجة Boost، نسخة الإمارات مع ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61cyDS5YSbL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "فيديو 360 درجة أصلي موثوق 8K يلتقط عوالم كاملة",
+        "عمر بطارية ممتد قوي مع ثلاث بطاريات مرفقة",
+        "أوضاع 4K/120fps و170 درجة boost توفر مرونة إبداعية",
+        "مستشعر 360 درجة 1 بوصة ابتكار رائد بالمجال"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FNMPZ1RS",
+      "title_en": "DJI Osmo Action 6 Enhanced Combo, Action Camera with 1/1.1″ Square Sensor, Variable Aperture of f/2.0–f/4.0, Extended Battery Life with 2 Batteries, Action Camera 8K for Extended Outdoor Filming",
+      "title_ar": "DJI Osmo Action 6 Enhanced Combo، كاميرا أكشن مع مستشعر مربع 1/1.1 بوصة، فتحة عدسة متغيرة f/2.0–f/4.0، عمر بطارية ممتد مع بطاريتين، كاميرا أكشن 8K للتصوير الخارجي الممتد",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ezZy16ZML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "فيديو 8K رائع للمبتدئين بنتائج احترافية",
+        "فتحة عدسة متغيرة ذكية تتكيف مع أي إضاءة",
+        "عمر بطارية ممتد مع بطاريتين مرفقتين",
+        "مستشعر مربع 1/1.1 بوصة محسّن للأكشن"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B07FW4CZZL",
+      "title_en": "DJI Osmo Action 5 Pro Adventure Combo, Action Camera, Bursting With 40MP of Action, 4K/120fps, 1/1.3″Sensor, Dual OLED Touchscreens,47GB Built-in Storage, UAE Version, Official Warranty Support",
+      "title_ar": "DJI Osmo Action 5 Pro Adventure Combo، كاميرا أكشن، مليئة بـ 40MP من الأكشن، 4K/120fps، مستشعر 1/1.3 بوصة، شاشتان OLED لمسيتان مزدوجتان، تخزين مدمج 47GB، نسخة الإمارات، دعم ضمان رسمي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71FdBD3y0rL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "التقاط انفجاري ذكي 40MP يجمد لحظات من جزء من الثانية",
+        "شاشتان OLED لمسيتان مزدوجتان رائعتان للتحكم البديهي",
+        "حركة بطيئة 4K/120fps تكشف تفاصيل الأكشن الخفية",
+        "تخزين 47GB يلغي تبديل بطاقات الذاكرة المستمر"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0DFY1SYNJ",
+      "title_en": "GoPro HERO13 Black",
+      "title_ar": "GoPro HERO13 Black",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51JwcRWiefL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تثبيت رائع يحافظ على لقطات سلسة واحترافية",
+        "تصميم مقاوم للماء يتعامل مع الماء والطقس",
+        "جودة فيديو 4K تفوق فئتها"
+      ],
+      "rank": 10
+    }
+  ]
+}

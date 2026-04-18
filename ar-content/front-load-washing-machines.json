@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "slug": "front-load-washing-machines",
+    "keyword_text_en": "front load washing machines",
+    "translated_at": "2026-04-18T20:34:14.319855",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "غسالات تحميل أمامي",
+  "page_title_ar": "أفضل 10 غسالات تحميل أمامي في الإمارات",
+  "category_name_en": "Laundry",
+  "category_name_ar": "غسيل الملابس",
+  "category_slug": "laundry",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما السعة المناسبة لمنزلي؟",
+      "a": "لشخص أو شخصين، تكفي سعة 6-7 كجم؛ أما للعائلات المكونة من 4 أفراد أو أكثر، اختر سعة 8-10 كجم لتجنب دورات الغسيل المتعددة. ضع في اعتبارك عدد مرات الغسيل وما إذا كنت بحاجة لغسل الأغراض الكبيرة مثل المفروشات بانتظام."
+    },
+    {
+      "q": "ما الفرق بين محركات Inverter والمحركات العادية؟",
+      "a": "محركات Inverter أكثر كفاءة في استهلاك الطاقة وأكثر هدوءاً وألطف على الملابس، لكنها أغلى ثمناً. النماذج العادية أرخص لكنها تستهلك كهرباء أكثر وقد تكون أعلى صوتاً مع الوقت."
+    },
+    {
+      "q": "هل أحتاج للقلق بشأن استهلاك الماء مع الغسالات الأمامية؟",
+      "a": "الغسالات الأمامية تستهلك ماء أقل بكثير من الغسالات العلوية - حوالي 40% أقل لكل دورة - مما يوفر في فواتير المياه ويحافظ على البيئة. هذه الكفاءة من أهم مميزاتها، خاصة في مناخ الإمارات."
+    },
+    {
+      "q": "ماذا يجب أن أتحقق منه بخصوص الاهتزاز ومستوى الضجيج؟",
+      "a": "ابحث عن غسالات بتقنية مضادة للاهتزاز وتحقق من تصنيف الديسيبل - أي شيء تحت 75dB أثناء دورة العصر يعتبر هادئاً. التركيب الصحيح على سطح مستوٍ مهم أيضاً؛ الغسالة غير المتوازنة ستهتز أكثر بغض النظر عن المواصفات."
+    },
+    {
+      "q": "متى يستحق دفع المزيد مقابل المزايا المتقدمة؟",
+      "a": "مزايا مثل الغسيل بالبخار أو التحكم الذكي أو برامج الغسيل المتعددة تضيف قيمة إذا كان لديك أقمشة حساسة أو ملابس شديدة الاتساخ. لكن النماذج الأساسية ببرامج قياسية وجودة بناء جيدة خيار موثوق إذا كنت تغسل أغراضاً يومية في الغالب."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0CGDH3DDV",
+      "title_en": "Samsung 9 kg Front Load Washing Machine, WW90CGC04DABGU, Black, EcoBubble and Hygiene Steam, 20 Year Warranty on Digital Inverter Motor (UAE version)",
+      "title_ar": "غسالة Samsung تحميل أمامي 9 كجم، WW90CGC04DABGU، أسود، EcoBubble و Hygiene Steam، ضمان 20 سنة على المحرك Digital Inverter (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61TBcga5OGL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى سعة 9 كجم متوفرة في السوق",
+        "تقنية EcoBubble تذيب المسحوق بسرعة فائقة",
+        "ضمان 20 سنة على المحرك يتفوق على المنافسين",
+        "Hygiene Steam يقضي على البكتيريا بدون كيماويات"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0CSPMPVNH",
+      "title_en": "Super General 6 Kg Front Load Washing Machine SGW6250NLED, 1000 RPM, 15 Wash Programs, Quick Wash, Drum Clean, Delay Start, Child Lock, LED Display, 59.5 W x 40 D x 85 H cm, White",
+      "title_ar": "غسالة Super General تحميل أمامي 6 كجم SGW6250NLED، 1000 RPM، 15 برنامج غسيل، غسيل سريع، تنظيف الحوض، بدء مؤجل، قفل أطفال، شاشة LED، 59.5 عرض × 40 عمق × 85 ارتفاع سم، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71hJ+h1yuKL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "دورات الغسيل السريع تنتهي في دقائق معدودة",
+        "15 برنامج تناسب الأقمشة الحريرية الرقيقة",
+        "قفل الأطفال يحمي الأيدي الفضولية بأمان",
+        "البدء المؤجل يتيح لك الغسيل في أي وقت"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B0D2R14G24",
+      "title_en": "Super General 8 Kg Front Load Washing Machine SGW8250NLEDS, Inverter Motor, 1400 RPM, 15 Programs, Energy Saving, LED Display, 85x47.5x59.5 cm (WxDxH), Silver, 10 Year Motor Warranty",
+      "title_ar": "غسالة Super General تحميل أمامي 8 كجم SGW8250NLEDS، محرك Inverter، 1400 RPM، 15 برنامج، توفير الطاقة، شاشة LED، 85×47.5×59.5 سم (عرض×عمق×ارتفاع)، فضي، ضمان 10 سنوات على المحرك",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71K8fKAsWtL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سرعة عصر قوية 1400 RPM تجفف الملابس أسرع",
+        "15 برنامج غسيل تتعامل مع أي نوع قماش",
+        "أداء ممتاز في توفير الطاقة يخفض الفواتير",
+        "شاشة LED تعرض كل خطوة من الدورة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0F3JNXKXV",
+      "title_en": "Beko 8 kg Front Load Washing Machine, 1400 RPM, 15 Programmes, Low Noise, Quick wash 14/28 Minutes, SteamCure Wash,StainExpert,DrumClean,10 Years Warranty on ProSmart Inverter Motor, WTV814UNXA(Grey)",
+      "title_ar": "غسالة Beko تحميل أمامي 8 كجم، 1400 RPM، 15 برنامج، ضجيج منخفض، غسيل سريع 14/28 دقيقة، SteamCure Wash، StainExpert، DrumClean، ضمان 10 سنوات على محرك ProSmart Inverter، WTV814UNXA (رمادي)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EsE6bgVTL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "عصر ذكي 1400 RPM يزيل الماء بسرعة",
+        "StainExpert يعالج البقع الصعبة فوراً",
+        "ضمان 10 سنوات على المحرك يمنحك راحة البال",
+        "تشغيل منخفض الضجيج يحترم راحة الجيران"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0FMFTSR23",
+      "title_en": "Samsung Front-load Washer 8kg with Grade A Energy Efficiency with Hygiene Steam WW80FG3M05AWGU (UAE version)",
+      "title_ar": "غسالة Samsung تحميل أمامي 8 كجم بكفاءة طاقة Grade A مع Hygiene Steam WW80FG3M05AWGU (نسخة الإمارات)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61NnXz-u6vL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "كفاءة طاقة Grade A موثوقة توفر شهرياً",
+        "سعة 8 كجم تحميل أمامي تناسب المنازل العصرية",
+        "Hygiene Steam يقضي على المسببات الحساسية طبيعياً",
+        "تقنية Samsung المجربة في الغسيل"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B09LYY4BJW",
+      "title_en": "Midea 6KG Front Load Washing Machine with Lunar Dial, 1000 RPM, 15 Programs, Fully Automatic Washer, Digital LED Display, Child Lock, Mute Function, 90° Hygiene, MF100W60WGCC",
+      "title_ar": "غسالة Midea تحميل أمامي 6 كجم مع Lunar Dial، 1000 RPM، 15 برنامج، غسالة أوتوماتيكية بالكامل، شاشة LED رقمية، قفل أطفال، وظيفة الصامت، تعقيم 90°، MF100W60WGCC",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71KgM3M0P2L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سعة عملية 6 كجم تناسب الشقق السكنية",
+        "تصميم Lunar Dial يضيف أناقة عصرية",
+        "سرعة عصر 1000 RPM توازن بين الكفاءة والأداء",
+        "وظيفة الصامت تتيح تشغيل الغسالة بهدوء"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CSD558LL",
+      "title_en": "Super General 7 Kg Front Load Washing Machine SGW7250NLED, 1200 RPM Spin Speed, 15 Wash Programs, Quick Wash, LED Display, Delay Start, Drum Clean, Child Lock, 59.5 W x 40 D x 85 H cm, White",
+      "title_ar": "غسالة Super General تحميل أمامي 7 كجم SGW7250NLED، سرعة عصر 1200 RPM، 15 برنامج غسيل، غسيل سريع، شاشة LED، بدء مؤجل، تنظيف الحوض، قفل أطفال، 59.5 عرض × 40 عمق × 85 ارتفاع سم، أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/617Nx79y+8L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "عصر عملي 1200 RPM يزيل الرطوبة بكفاءة",
+        "سعة 7 كجم تناسب الأزواج والعائلات الصغيرة",
+        "15 برنامج تغطي احتياجات الغسيل اليومية",
+        "الغسيل السريع ينهي الأحمال الصغيرة بسرعة"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0FG7THMP4",
+      "title_en": "Midea 8KG Front Load Washing Machine With BLDC Inverter Motor, 1400 RPM, 15 Programs, Fully Automatic Washer With Lunar Dial, Integrated Digital Control-LED Display, Water Cube Drum - MF110W80B/T-GCC",
+      "title_ar": "غسالة Midea تحميل أمامي 8 كجم مع محرك BLDC Inverter، 1400 RPM، 15 برنامج، غسالة أوتوماتيكية بالكامل مع Lunar Dial، تحكم رقمي متكامل - شاشة LED، حوض Water Cube - MF110W80B/T-GCC",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71EhB05yoBL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "خيار ممتاز للمبتدئين مع محرك BLDC Inverter",
+        "حوض Water Cube يحمي الأقمشة الرقيقة بذكاء",
+        "تصميم Lunar Dial يجعل التشغيل سهلاً وبديهياً"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0GL8MNVN2",
+      "title_en": "WESTPOINT 6 Kg Front Load Washing Machine, Inverter Motor, 5 STAR ESMA RATED, 1200 RPM, 16 Easy to Wash Program, LED Control Panel, 85x43x60cm (WxDxH) CONTROL PANEL WITH ARABIC WMZ-612A25",
+      "title_ar": "غسالة WESTPOINT تحميل أمامي 6 كجم، محرك Inverter، تصنيف 5 نجوم ESMA، 1200 RPM، 16 برنامج غسيل سهل، لوحة تحكم LED، 85×43×60 سم (عرض×عمق×ارتفاع) لوحة تحكم بالعربي WMZ-612A25",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61yvox68KIL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محرك Inverter ممتاز يعمل بهدوء تام دائماً",
+        "تصنيف 5 نجوم ESMA قوي يثبت الكفاءة",
+        "16 برنامج غسيل تتعامل مع الأقمشة الرقيقة والثقيلة"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0CB1NWKHR",
+      "title_en": "Nikai 7KG 16 Programs Front Load Washer, Steam Wash, 1000 RPM, 4 Star Energy Saving Fully Automatic Washing Machine, Digital LCD Display, Child Lock, Best for Home & Small Family - NWM701FN9 (White)",
+      "title_ar": "غسالة Nikai تحميل أمامي 7 كجم 16 برنامج، غسيل بالبخار، 1000 RPM، توفير طاقة 4 نجوم، غسالة أوتوماتيكية بالكامل، شاشة LCD رقمية، قفل أطفال، مثالية للمنزل والعائلات الصغيرة - NWM701FN9 (أبيض)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71ZXzsnunCL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "16 برنامج ممتاز يتعامل مع الأقمشة الرقيقة والثقيلة",
+        "تقنية Steam Wash تخترق عمق الألياف",
+        "تصنيف 4 نجوم للطاقة يبقي فواتير الكهرباء منخفضة"
+      ],
+      "rank": 10
+    }
+  ]
+}

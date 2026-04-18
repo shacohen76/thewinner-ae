@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "slug": "tv-streaming-device",
+    "keyword_text_en": "TV streaming device",
+    "translated_at": "2026-04-18T20:34:14.380014",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "أجهزة البث التلفزيوني",
+  "page_title_ar": "أفضل 10 أجهزة بث تلفزيوني في الإمارات",
+  "category_name_en": "TV & Projectors",
+  "category_name_ar": "أجهزة التلفاز والعرض",
+  "category_slug": "tv-projectors",
+  "cta_text_ar": "عرض السعر",
+  "qa_guide_ar": [
+    {
+      "q": "ما التطبيقات وخدمات البث التي يدعمها الجهاز؟",
+      "a": "تحقق من أن الجهاز يدعم المنصات التي تستخدمها فعلياً مثل Netflix وYouTube وPrime Video وDisney+ والتطبيقات المحلية مثل Shahid أو OSN+. بعض الأجهزة لديها نظام تطبيقات أفضل من غيرها، لذا تأكد من التوافق قبل الشراء، خاصة للخدمات الإقليمية الشائعة في الإمارات."
+    },
+    {
+      "q": "ما الفرق بين عصا البث وصندوق البث؟",
+      "a": "العصا مدمجة وتوصل مباشرة بمنفذ HDMI في التلفاز، بينما الصناديق منفصلة وتوفر عادة قوة معالجة وخيارات اتصال أكثر. العصا أفضل للبساطة وسهولة الحمل، لكن الصناديق تتعامل مع محتوى 4K والتطبيقات الثقيلة بسلاسة أكبر."
+    },
+    {
+      "q": "هل أحتاج دعم 4K أم يكفي Full HD؟",
+      "a": "إذا كان تلفازك 4K وتشاهد محتوى 4K، فجهاز بقدرة 4K يستحق الاستثمار والفرق ملحوظ. أما لأجهزة التلفاز القديمة بدقة Full HD أو إذا كنت تشاهد محتوى عادي فقط، فأجهزة البث Full HD تؤدي الغرض وتكلف أقل."
+    },
+    {
+      "q": "ما حجم التخزين الذي أحتاجه للتطبيقات؟",
+      "a": "معظم أجهزة البث لديها مساحة تخزين داخلية من 8GB إلى 32GB، وهي كافية لـ 20-30 تطبيقاً لأنها تعتمد بشكل أساسي على السحابة. إلا إذا كنت تخطط لتنزيل المحتوى أو تثبيت تطبيقات خارجية، فالتخزين ليس مصدر قلق كبير، اختر ما يناسب ميزانيتك."
+    },
+    {
+      "q": "ما سرعة الإنترنت التي أحتاجها؟",
+      "a": "للبث السلس بدقة 4K، استهدف 25 Mbps على الأقل؛ أما Full HD فيحتاج حوالي 10 Mbps كحد أدنى. دعم WiFi ثنائي النطاق (2.4GHz و5GHz) مهم إذا كنت بعيداً عن الراوتر، أو فكر في جهاز بمنفذ Ethernet لاتصال أكثر استقراراً."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B0F3JWFL56",
+      "title_en": "Xiaomi TV Box S 3rd Gen - 4K UHD, Google TV, 32GB Memory, Dolby Vision & Atmos, WiFi 6, HDMI 2.1, Fast Streaming, Compact and Powerful",
+      "title_ar": "Xiaomi TV Box S 3rd Gen - 4K UHD، Google TV، ذاكرة 32GB، Dolby Vision وAtmos، WiFi 6، HDMI 2.1، بث سريع، مدمج وقوي",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/519hH6oU4OL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أقوى جهاز بث متوفر في السوق اليوم",
+        "WiFi 6 يوفر بثاً فائق السرعة دون تقطع",
+        "Dolby Vision وAtmos يحولان غرفة معيشتك",
+        "ذاكرة 32GB تتسع لكامل مكتبتك الترفيهية"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B0D8WJYSF9",
+      "title_en": "Google TV Streamer 4K - Fast Streaming Entertainment With Voice Search Remote - Watch Movies, Shows, Live TV, and Netflix in 4K HDR - Smart Home Control - 32 GB Storage - Porcelain",
+      "title_ar": "Google TV Streamer 4K - ترفيه بث سريع مع ريموت البحث الصوتي - شاهد الأفلام والمسلسلات والتلفاز المباشر وNetflix بدقة 4K HDR - تحكم بالمنزل الذكي - تخزين 32GB - Porcelain",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/510wm50VDHL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تكامل ممتاز مع نظام Google للتحكم السلس",
+        "أداء 4K HDR قوي ينافس المنافسين الفاخرين",
+        "ريموت البحث الصوتي يجد برامجك المفضلة فوراً",
+        "التحكم بالمنزل الذكي يضع أجهزتك بين يديك"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B08B8F63XP",
+      "title_en": "Xiaomi Mi Tv Stick Global Version Android Tv 2K Hdr Quad Core Hdmi 1Gb Ram Bluetooth Wi-Fi Netflix Google Assistant , ‎ Mdz-24-Aa",
+      "title_ar": "Xiaomi Mi TV Stick النسخة العالمية Android TV 2K HDR رباعي النواة HDMI ذاكرة 1GB Bluetooth Wi-Fi Netflix Google Assistant، MDZ-24-AA",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51QlmXNlo6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "نقطة انطلاق ممتازة لبث 2K بجودة عالية",
+        "معالج رباعي النواة قوي يتعامل مع التطبيقات الثقيلة بسلاسة",
+        "التحكم الصوتي عبر Google Assistant يبسط تجربتك",
+        "تصميم مدمج يناسب أي تلفاز بسهولة"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0F58Q4CM9",
+      "title_en": "Xiaomi Mi TV Box S 3nd Gen, 2GB RAM + 32GB ROM, 4K Ultra HD Streaming Reproductive, Bluetooth, Wi-Fi, 3rd Generation, Black",
+      "title_ar": "Xiaomi Mi TV Box S 3nd Gen، ذاكرة 2GB RAM + 32GB ROM، بث 4K Ultra HD، Bluetooth، Wi-Fi، الجيل الثالث، أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51hUABcqFML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء ممتاز مع موثوقية Xiaomi المعروفة",
+        "قدرة بث 4K قوية مع تخزين 32GB",
+        "اتصال Bluetooth يوسع خيارات الترفيه فوراً",
+        "تحسينات الجيل الثالث توفر أداء بث مصقول"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B0B6894XGM",
+      "title_en": "Xiaomi Mi TV Stick 4K Ultra HD Streaming Device Android TV 11 with Google Assistant Voice Remote Control Streaming Media Player Chromecast Built-in 2GB 8GB HDR/AV1/2.4G/5G WiFi/BT 5.2 (2022 Model)",
+      "title_ar": "Xiaomi Mi TV Stick 4K Ultra HD جهاز بث Android TV 11 مع ريموت Google Assistant للتحكم الصوتي مشغل وسائط Chromecast مدمج 2GB 8GB HDR/AV1/2.4G/5G WiFi/BT 5.2 (موديل 2022)",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51Gt-6qKMKL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بث 4K موثوق بحجم الجيب فعلياً",
+        "WiFi ثنائي النطاق قوي يحافظ على استقرار البث",
+        "ريموت Google Assistant الصوتي يلغي البحث عن الريموت",
+        "دعم AV1 يجعل استثمارك مستقبلياً"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B0FFN6NRTZ",
+      "title_en": "Xiaomi TV Stick 4K 2nd Gen MDZ-33-AA",
+      "title_ar": "Xiaomi TV Stick 4K 2nd Gen MDZ-33-AA",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51GJVLDQZ7L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء 4K متميز بحجم عصا صغيرة",
+        "قابلية حمل استثنائية دون التضحية بقوة البث",
+        "جودة بناء فاخرة تتفوق على المنافسين الأكبر",
+        "تحسينات الجيل الثاني تكمل معادلة عصا البث"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0GNP4WVN8",
+      "title_en": "Pro 4K 5G Android 10 TV Box | Smart WiFi Streaming Set Top Box | Internet Media Playe",
+      "title_ar": "Pro 4K 5G Android 10 TV Box - صندوق بث WiFi ذكي - مشغل وسائط إنترنت",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51XLLXhUA6L._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بث 4K للمبتدئين بقيمة استثنائية",
+        "WiFi 5G ذكي يضمن اتصالاً خالياً من التشويش",
+        "Android 10 يوفر واجهة مألوفة وبديهية",
+        "تصميم صندوق علوي يعمل مع أي إعداد"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B0GJLQP5GG",
+      "title_en": "Fiire TV Stick 4K, Streaming Media Player with Voice Remote, HDMI, Wi-Fi 6",
+      "title_ar": "Fiire TV Stick 4K، مشغل وسائط بث مع ريموت صوتي، HDMI، Wi-Fi 6",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31FiJixJ7mL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "أداء 4K للمبتدئين ممتاز من Amazon",
+        "تقنية WiFi 6 الذكية تعظم جودة البث",
+        "ريموت التحكم الصوتي يبسط تجربة المشاهدة",
+        "تصميم عصا مدمج يختفي خلف معظم الأجهزة"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0CT94BKDQ",
+      "title_en": "Thomson Streaming Box 240UK, 4K UHD, Google TV, Google Voice Control,Wifi, Googlecast built-in",
+      "title_ar": "Thomson Streaming Box 240UK، 4K UHD، Google TV، Google Voice Control، Wifi، Googlecast مدمج",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61Lb4Z1nujL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بث 4K بقيمة ممتازة مع تكامل Google TV",
+        "Google Voice Control الذكي يفهم اللغة الطبيعية",
+        "Googlecast المدمج يوسع خيارات مشاركة المحتوى",
+        "موثوقية Thomson تدعم كل جلسة بث"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B0GHNZWRKZ",
+      "title_en": "Fiire TV Stick HD, 8GB, Wi-Fi 5, Streaming Media Player with Voice Remote for TV/Soundbar Control with HDR.",
+      "title_ar": "Fiire TV Stick HD، 8GB، Wi-Fi 5، مشغل وسائط بث مع ريموت صوتي للتحكم بالتلفاز ومكبر الصوت مع HDR",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/31iyuJ-yMML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "بث HD عملي للمشاهدين ذوي الميزانية المحدودة",
+        "اتصال WiFi 5 موثوق يمنع التقطع",
+        "ريموت صوتي يتحكم بتلفازك ومكبر الصوت",
+        "شكل مدمج يختفي خلف أي تلفاز"
+      ],
+      "rank": 10
+    }
+  ]
+}

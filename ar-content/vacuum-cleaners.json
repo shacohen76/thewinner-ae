@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "slug": "vacuum-cleaners",
+    "keyword_text_en": "vacuum cleaners",
+    "translated_at": "2026-04-18T20:34:14.256933",
+    "model": "claude-sonnet-4-5-20250929",
+    "version": "1.3"
+  },
+  "keyword_text_ar": "المكانس الكهربائية",
+  "page_title_ar": "أفضل 10 مكانس كهربائية في الإمارات",
+  "category_name_en": "Vacuum Cleaners",
+  "category_name_ar": "المكانس الكهربائية",
+  "category_slug": "vacuum-cleaners",
+  "cta_text_ar": "تسوق الآن",
+  "qa_guide_ar": [
+    {
+      "q": "هل يجب أن أشتري مكنسة عمودية أم أسطوانية؟",
+      "a": "المكانس العمودية أفضل للأرضيات المفروشة بالسجاد وأسهل في التخزين، بينما توفر الأسطوانية مرونة أكبر للسلالم والمفروشات والأماكن الصعبة الوصول. اختر حسب تصميم منزلك - الأرضيات المغطاة بالسجاد تناسب العمودية، بينما الأرضيات المختلطة تستفيد من مرونة الأسطوانية."
+    },
+    {
+      "q": "ما قوة الشفط التي أحتاجها فعلياً؟",
+      "a": "ابحث عن موديلات بقوة 200+ air watts للتنظيف الفعّال بدلاً من التركيز على القوة القصوى التي غالباً ما تبالغ بها الشركات المصنعة. للمنازل التي بها حيوانات أليفة أو سجاد سميك، استهدف شفطاً أقوى؛ التنظيف اليومي الخفيف على الأرضيات الصلبة يحتاج قوة أقل."
+    },
+    {
+      "q": "هل المكنسة بدون كيس أم بكيس أفضل؟",
+      "a": "المكنسة بدون كيس أرخص في الصيانة طويلة الأجل، لكن المكانس بأكياس تحبس الغبار بشكل أفضل وأنسب لمن يعانون من الحساسية لأنك تتجنب التعامل المباشر مع الأوساخ. المكانس بدون أكياس تتطلب تنظيف الفلتر بانتظام للحفاظ على الشفط."
+    },
+    {
+      "q": "ما سعة الخزان أو الكيس التي أحتاجها؟",
+      "a": "المنازل بمساحة أقل من 1500 قدم مربع تكفيها سعة 1.5-2 لتر، بينما المنازل الأكبر تستفيد من 3+ لترات لتجنب التفريغ المتكرر. يجب على أصحاب الحيوانات الأليفة اختيار خزانات أكبر لأن شعر الحيوانات يملأ الأكياس أسرع من الغبار العادي."
+    },
+    {
+      "q": "متى يستحق شراء مكنسة فاخرة بدلاً من الاقتصادية؟",
+      "a": "الموديلات الفاخرة تدوم 7-10 سنوات مقابل 3-4 سنوات للخيارات الاقتصادية، وتشمل ترشيحاً أفضل ومحركات أهدأ وشفطاً أقوى لا يضعف بسرعة. استثمر أكثر إذا كان لديك حيوانات أليفة أو حساسية أو منزل كبير حيث تهم المتانة."
+    }
+  ],
+  "products": [
+    {
+      "asin": "B09YRRV8SS",
+      "title_en": "COMFEE ' Vacuum Cleaner 2 in 1 Handheld Stick Cleaner 5M Long Cord Lightweight Powerful 600W 16000Pa Suction 0.5L Large Capacity Excellent Central Filtration System for Car Home Kitchen Hair- White",
+      "title_ar": "مكنسة COMFEE 2 في 1 محمولة وعصا بسلك طويل 5M خفيفة قوية 600W شفط 16000Pa سعة كبيرة 0.5L نظام ترشيح مركزي ممتاز للسيارة والمنزل والمطبخ والشعر - أبيض",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61JwiEKwBfL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "الأقوى بين المحمولة بشفط 16000Pa",
+        "تتحول فوراً بين وضع العصا والمحمول",
+        "سلك 5M يصل لكل ركن بسهولة"
+      ],
+      "rank": 1
+    },
+    {
+      "asin": "B07VQ82BSQ",
+      "title_en": "Philips 5000 Series Bagless Vacuum Cleaner - 2000W, PowerCyclone 7, Allergy H13 Filter, TriActive Nozzle - FC9570/62",
+      "title_ar": "مكنسة Philips 5000 بدون كيس - 2000W، تقنية PowerCyclone 7، فلتر حساسية H13، فوهة TriActive - FC9570/62",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71kXnq2XQiL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محرك 2000W الأقوى في فئته",
+        "تقنية PowerCyclone 7 تتغلب على كل سطح",
+        "فلتر حساسية H13 يلتقط 99.99% من الجزيئات",
+        "فوهة TriActive تتكيف تماماً مع أي أرضية"
+      ],
+      "rank": 2
+    },
+    {
+      "asin": "B075QJRFFR",
+      "title_en": "Philips Bagless PowerPro Compact Vacuum Cleaner - 1800W, PowerCyclone 5, Allergy H13 filter, 1.5L Dust Capacity, Washable Filter, Deep Black - FC9350/62",
+      "title_ar": "مكنسة Philips PowerPro Compact بدون كيس - 1800W، تقنية PowerCyclone 5، فلتر حساسية H13، سعة غبار 1.5L، فلتر قابل للغسل، أسود داكن - FC9350/62",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61ud5QH6vaL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "المكنسة المدمجة الأقوى المتاحة",
+        "تقنية PowerCyclone 5 تهيمن على الغبار فوراً",
+        "فلتر حساسية H13 يحمي صحة عائلتك",
+        "فلتر قابل للغسل يوفر المال طويلاً"
+      ],
+      "rank": 3
+    },
+    {
+      "asin": "B0BQCN32GS",
+      "title_en": "Dyson V8 Total Clean Cordless Vacuum Cleaner, Portable Lightweight Stick Vacuum Cleaner, Black",
+      "title_ar": "مكنسة Dyson V8 Total Clean لاسلكية محمولة عصا خفيفة الوزن أسود",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71AbED8CVwL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "هندسة Dyson توفر تنظيفاً ممتازاً بلا حلول وسط",
+        "تصميم العصا الخفيف يصل للمساحات الضيقة بسهولة",
+        "محمولة كفاية للسيارة وتنظيف المنزل كاملاً"
+      ],
+      "rank": 4
+    },
+    {
+      "asin": "B07D9WSRFF",
+      "title_en": "BLACK+DECKER Multi-Cyclonic Bagless Vacuum Cleaner, 1480W, 1.8L Capacity, 6-Stage Filtration, Variable Speed, 143 Air Watts, 5m Cable, Includes Brushes, Powerful & Efficient, Black - VM1480-B5",
+      "title_ar": "مكنسة BLACK+DECKER متعددة الأعاصير بدون كيس 1480W سعة 1.8L ترشيح 6 مراحل سرعة متغيرة 143 Air Watts كابل 5m تشمل فرش قوية وفعالة أسود - VM1480-B5",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71eDWcvlwNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "تقنية الأعاصير المتعددة تحافظ على شفط قوي دائماً",
+        "ترشيح 6 مراحل يلتقط جزيئات الغبار الدقيقة",
+        "سرعة متغيرة تتكيف مع أنواع الأرضيات المختلفة",
+        "143 Air Watts يوفر قوة تنظيف مثبتة"
+      ],
+      "rank": 5
+    },
+    {
+      "asin": "B07TBYTWRJ",
+      "title_en": "Hitachi Drum Vacuum Cleaner 2100 Watts, 18 Liters Tank Dust Capacity With 7.8M Extra Long Power Code, Removable & Washable Filter, Rug-Floor Nozzle, Best For Home, Office & Mosque, CV950F24CBSWR",
+      "title_ar": "مكنسة Hitachi أسطوانية 2100 واط سعة خزان غبار 18 لتر مع سلك طاقة طويل جداً 7.8M فلتر قابل للإزالة والغسل فوهة للسجاد والأرضيات مثالية للمنزل والمكتب والمسجد CV950F24CBSWR",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71189KKQHRL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "مكنسة أسطوانية موثوقة 2100W للمساحات الكبيرة",
+        "سعة ضخمة 18 لتر تتحمل جلسات التنظيف الطويلة",
+        "سلك طويل جداً 7.8M يلغي حاجة الوصلات"
+      ],
+      "rank": 6
+    },
+    {
+      "asin": "B0CDXDTQ24",
+      "title_en": "HITACHI Drum Vacuum Cleaner 2100 Watts, 18L Tank Dust Capacity, Aero Power Brush to Clean Efficiently, Metal Pipe, Dusting Brush & Crevice Nozzle, Washable Filter, Best for Home & Office, CV955NBLGCM",
+      "title_ar": "مكنسة HITACHI أسطوانية 2100 واط سعة خزان غبار 18L فرشاة Aero Power للتنظيف الفعال أنبوب معدني فرشاة غبار وفوهة شقوق فلتر قابل للغسل مثالية للمنزل والمكتب CV955NBLGCM",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71KJjPCKwcL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "سعة ممتازة 18L تتعامل مع المهام الجادة",
+        "فرشاة Aero Power تنظف بكفاءة في كل مرة",
+        "أداء قوي مع مكونات معدنية فاخرة",
+        "فوهات متعددة مضمنة لتعدد استخدام كامل"
+      ],
+      "rank": 7
+    },
+    {
+      "asin": "B07FSSKG48",
+      "title_en": "BLACK + DECKER Dustbuster pivot 21.6 wh Pivoting Nozzle, Compact Cordless Vacuum, Ideal for Home & Car, Easy Storage, Champagne/White - PV1420L-B5",
+      "title_ar": "مكنسة BLACK + DECKER Dustbuster Pivot 21.6 wh فوهة متحركة مدمجة لاسلكية مثالية للمنزل والسيارة تخزين سهل شمبانيا أبيض - PV1420L-B5",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/61SpVQPunUL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "فوهة متحركة تصل للزوايا بسهولة",
+        "تصميم مدمج يناسب مساحات التخزين الضيقة",
+        "تنظيف المنزل والسيارة في جهاز واحد"
+      ],
+      "rank": 8
+    },
+    {
+      "asin": "B0D53RSDH7",
+      "title_en": "Tineco iFloor 2 Max Wet and Dry Cordless Vacuum Cleaner and Mop, Self cleaning with Streak-free Drying, Ideal for Hard Floors, All corners, sticky messes and pet Hairs, Portable and Lightweight Design",
+      "title_ar": "مكنسة Tineco iFloor 2 Max لاسلكية رطبة وجافة وممسحة تنظيف ذاتي مع تجفيف بدون خطوط مثالية للأرضيات الصلبة كل الزوايا الفوضى اللزجة وشعر الحيوانات تصميم محمول وخفيف",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/51uU328XuNL._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "نظام تنظيف ذاتي موثوق يلغي الصيانة الفوضوية",
+        "لاسلكية وخفيفة للتنقل السهل بالأرضيات",
+        "خيار قوي للفوضى اللزجة وحطام الحيوانات"
+      ],
+      "rank": 9
+    },
+    {
+      "asin": "B07P8B3T3P",
+      "title_en": "Electrolux 2200W Bagless Canister Vacuum Cleaner, Powerful Suction & Quiet Operation, Silent Motor Technology & Easy Empty, Allergyplus Clean Air Filtration for Pet Hair, Hard Floor & Carpet ZSPC2000",
+      "title_ar": "مكنسة Electrolux أسطوانية بدون كيس 2200W شفط قوي وتشغيل هادئ تقنية محرك صامت وتفريغ سهل ترشيح Allergyplus لهواء نظيف لشعر الحيوانات والأرضيات الصلبة والسجاد ZSPC2000",
+      "brand": null,
+      "image_url": "https://m.media-amazon.com/images/I/71lsKKVvXML._AC_UL320_.jpg",
+      "wwl_points_ar": [
+        "محرك استثنائي 2200W يتعامل مع أي سطح",
+        "تقنية المحرك الصامت تعمل بدون إزعاج",
+        "ترشيح Allergyplus ممتاز لأصحاب الحيوانات",
+        "نظام تفريغ سهل بدون سحب غبار فوضوي"
+      ],
+      "rank": 10
+    }
+  ]
+}
