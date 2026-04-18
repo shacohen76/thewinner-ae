@@ -37,7 +37,7 @@ function getReviewCount(asin: string): number {
 export default function ArProductCard({ product, rank, ctaText }: ArProductCardProps) {
   const score = getScoreLabel(rank)
   const reviewCount = getReviewCount(product.asin)
-  const amazonUrl = `https://www.amazon.ae/dp/${product.asin}?language=ar_AE`
+  const amazonUrl = `https://www.amazon.ae/-/ar/dp/${product.asin}`
 
   const handleClick = () => {
     // sendBeacon for click tracking (same as English ProductCard)
