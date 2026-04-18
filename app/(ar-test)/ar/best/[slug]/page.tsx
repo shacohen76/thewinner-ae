@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import fs from 'fs'
 import path from 'path'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase-server'
 import ArProductCard from '@/components/ArProductCard'
 import ArBuyingGuide from '@/components/ArBuyingGuide'
 
