@@ -73,6 +73,9 @@ export default function Header() {
             <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">
               Contact
             </Link>
+		<Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
+		  Blog
+		</Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -121,7 +124,11 @@ export default function Header() {
               >
                 Contact
               </Link>
-		<Link href="/blog" className="hover:text-blue-600 transition-colors">
+		<Link
+		  href="/blog"
+		  className="px-4 py-2 text-gray-600"
+		  onClick={() => setMobileMenuOpen(false)}
+		>
 		  Blog
 		</Link>
             </nav>

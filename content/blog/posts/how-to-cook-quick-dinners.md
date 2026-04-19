@@ -18,6 +18,8 @@ hero_image: "/blog/images/how-to-cook-quick-dinners/hero.jpg"
 
 ## Table of Contents
 
+Want to level up beyond quick meals? Our [guide to pro-level cooking at home](/blog/guide-to-pro-cooking-at-home) covers techniques anyone can learn.
+
 - [Why Speed Matters More Than Complexity](#why-speed-matters-more-than-complexity)
 - [The One-Pan Philosophy](#the-one-pan-philosophy) 
 - [Essential Equipment for Quick Cooking](#essential-equipment-for-quick-cooking)

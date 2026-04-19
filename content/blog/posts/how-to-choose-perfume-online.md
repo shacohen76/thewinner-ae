@@ -18,6 +18,8 @@ hero_image: "/blog/images/how-to-choose-perfume-online/hero.jpg"
 
 ## Table of Contents
 
+For more beauty advice, see our [guide to makeup tips from real professionals](/blog/guide-to-makeup-tips-from-professionals) — practical techniques that actually work.
+
 - [Understanding Fragrance Families](#understanding-fragrance-families)
 - [Decoding the Note Pyramid](#decoding-the-note-pyramid)
 - [Reading Reviews Like a Detective](#reading-reviews-like-a-detective)

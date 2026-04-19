@@ -18,6 +18,8 @@ hero_image: "/blog/images/guide-to-sustainable-shopping/hero.jpg"
 
 ## Table of Contents
 
+Growing your own herbs is one of the simplest sustainable swaps — see our [guide to home gardening tools](/blog/guide-to-home-gardening-tools) to get started.
+
 - [Why Sustainable Shopping Matters More Than Ever](#why-sustainable-shopping-matters-more-than-ever)
 - [The Real Cost of Our Shopping Habits](#the-real-cost-of-our-shopping-habits)
 - [Building a Sustainable Shopping Mindset](#building-a-sustainable-shopping-mindset)

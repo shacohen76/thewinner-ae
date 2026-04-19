@@ -18,6 +18,8 @@ hero_image: "/blog/images/how-to-start-a-new-hobby/hero.jpg"
 
 ## Table of Contents
 
+Thinking about getting outdoors? Our [guide to camping gear for hot climates](/blog/guide-to-outdoor-camping-gear) covers everything you need without overspending.
+
 - [The Psychology Behind Hobby Gear Addiction](#the-psychology-behind-hobby-gear-addiction)
 - [The 30-Day Commitment Rule](#the-30-day-commitment-rule)
 - [Starting Smart: Borrow Before You Buy](#starting-smart-borrow-before-you-buy)

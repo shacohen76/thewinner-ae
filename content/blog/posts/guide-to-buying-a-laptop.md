@@ -18,6 +18,8 @@ hero_image: "/blog/images/guide-to-buying-a-laptop/hero.jpg"
 
 ## Table of Contents
 
+If you're also upgrading your audio setup, check out our guide on [how to pick the right wireless earbuds](/blog/how-to-pick-wireless-earbuds) for every budget.
+
 - [Understanding Your Actual Needs](#understanding-your-actual-needs)
 - [Processor Power: More Than Just Clock Speed](#processor-power-more-than-just-clock-speed)
 - [Memory Matters: Why RAM is Your Daily Driver](#memory-matters-why-ram-is-your-daily-driver)

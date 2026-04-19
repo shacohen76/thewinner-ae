@@ -1,11 +1,13 @@
 // ============================================
 // Sitemap — thewinner.ae
 // Created: 2026-03-19
+// Updated: 2026-04-20 (CG1: added blog routes)
 // Generates sitemap.xml with all keyword pages
 // ============================================
 
 import { MetadataRoute } from 'next';
 import { getAllKeywords, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -43,6 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
   ];
 
   // Main category pages
@@ -76,5 +84,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching keywords for sitemap:', error);
   }
 
-  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages];
+  // Blog post pages
+  const blogSlugs = getAllSlugs();
+  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages, ...blogPages];
 }
