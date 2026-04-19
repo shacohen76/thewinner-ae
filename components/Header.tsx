@@ -121,6 +121,9 @@ export default function Header() {
               >
                 Contact
               </Link>
+		<Link href="/blog" className="hover:text-blue-600 transition-colors">
+		  Blog
+		</Link>
             </nav>
           </div>
         )}

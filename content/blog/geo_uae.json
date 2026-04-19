@@ -1,0 +1,40 @@
+{
+  "geo_id": "uae",
+  "language": "en",
+  "direction": "ltr",
+  "placeholders": {
+    "COUNTRY": "UAE",
+    "COUNTRY_FULL": "United Arab Emirates",
+    "COUNTRY_ADJ": "Emirati",
+    "CURRENCY": "AED",
+    "CURRENCY_SYMBOL": "د.إ",
+    "MARKETPLACE": "Amazon.ae",
+    "MARKETPLACE_DOMAIN": "amazon.ae",
+    "CLIMATE": "hot and humid",
+    "CLIMATE_CHALLENGE": "extreme summer heat",
+    "POPULAR_CITY": "Dubai",
+    "SECOND_CITY": "Abu Dhabi",
+    "SITE_NAME": "TheWinner",
+    "SITE_DOMAIN": "thewinner.ae"
+  },
+  "authority_links": {
+    "consumer_protection": "https://en.wikipedia.org/wiki/Consumer_protection",
+    "online_safety": "https://en.wikipedia.org/wiki/Internet_safety",
+    "product_safety_standards": "https://en.wikipedia.org/wiki/Product_safety",
+    "e_commerce": "https://en.wikipedia.org/wiki/E-commerce",
+    "smart_home": "https://en.wikipedia.org/wiki/Home_automation",
+    "air_quality": "https://en.wikipedia.org/wiki/Indoor_air_quality",
+    "ergonomics": "https://en.wikipedia.org/wiki/Ergonomics",
+    "nutrition": "https://en.wikipedia.org/wiki/Human_nutrition",
+    "meal_planning": "https://en.wikipedia.org/wiki/Meal_preparation",
+    "running_biomechanics": "https://en.wikipedia.org/wiki/Biomechanics",
+    "hepa_filters": "https://en.wikipedia.org/wiki/HEPA",
+    "screen_resolution": "https://en.wikipedia.org/wiki/Display_resolution",
+    "noise_cancellation": "https://en.wikipedia.org/wiki/Active_noise_control",
+    "sustainability": "https://en.wikipedia.org/wiki/Sustainable_development",
+    "gardening": "https://en.wikipedia.org/wiki/Gardening",
+    "cosmetics_safety": "https://en.wikipedia.org/wiki/Cosmetics",
+    "literature": "https://en.wikipedia.org/wiki/Literature",
+    "film_industry": "https://en.wikipedia.org/wiki/Film_industry"
+  }
+}

@@ -1,0 +1,1215 @@
+{
+  "version": "1.0",
+  "total_posts": 42,
+  "generation_model": "claude-sonnet-4-20250514",
+  "posts": [
+    {
+      "id": 1,
+      "tier": 1,
+      "slug": "how-to-shop-online-safely",
+      "title": "How to Shop Online Safely in the {{COUNTRY}} \u2014 A Complete Guide",
+      "author_id": "sarah-al-rashid",
+      "description": "Everything you need to know about staying safe when shopping online, from recognizing secure websites to protecting your payment information.",
+      "quick_answer": "Shop safely by sticking to trusted marketplaces like {{MARKETPLACE}}, using secure payment methods, checking seller ratings, and never sharing passwords or OTPs with anyone.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-spot-fake-products",
+        "how-to-find-best-deals",
+        "guide-to-returns-and-refunds",
+        "how-our-team-tests-products"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "online_safety",
+        "e_commerce"
+      ],
+      "tags": [
+        "safety",
+        "shopping",
+        "beginners"
+      ],
+      "publish_date": "2026-02-12"
+    },
+    {
+      "id": 2,
+      "tier": 1,
+      "slug": "how-to-spot-fake-products",
+      "title": "A Guide to Spotting Fake Products on Amazon in the {{COUNTRY}}",
+      "author_id": "sarah-al-rashid",
+      "description": "How to identify counterfeit products, check seller authenticity, and avoid knock-offs when buying online.",
+      "quick_answer": "Check the seller name and ratings, compare product photos with the brand's official site, read negative reviews for patterns, and be suspicious of prices that seem too good to be true.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-shop-online-safely",
+        "how-to-choose-unknown-brands",
+        "guide-to-reading-specifications"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "product_safety_standards"
+      ],
+      "tags": [
+        "safety",
+        "authenticity",
+        "amazon"
+      ],
+      "publish_date": "2026-02-15"
+    },
+    {
+      "id": 3,
+      "tier": 1,
+      "slug": "how-to-compare-products",
+      "title": "How to Compare Products Like a Pro Before You Buy",
+      "author_id": "dina-karam",
+      "description": "A systematic approach to comparing products across features, price, reviews, and real-world performance.",
+      "quick_answer": "List your must-have features first, compare no more than 3-4 finalists, weight specs by how you'll actually use the product, and read both positive and negative reviews for patterns.",
+      "target_words": 2000,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "guide-to-understanding-reviews",
+        "guide-to-tech-upgrades",
+        "guide-to-pro-cooking-at-home"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "e_commerce"
+      ],
+      "tags": [
+        "comparison",
+        "methodology",
+        "shopping"
+      ],
+      "publish_date": "2026-02-18"
+    },
+    {
+      "id": 4,
+      "tier": 1,
+      "slug": "guide-to-understanding-reviews",
+      "title": "A Guide to Understanding Product Reviews \u2014 What's Real and What's Not",
+      "author_id": "dina-karam",
+      "description": "How to decode product reviews, spot fake ones, and use review data to make smarter buying decisions.",
+      "quick_answer": "Focus on verified purchase reviews, look for specific details over generic praise, check 3-star reviews for balanced opinions, and be wary of reviews that all appeared on the same date.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-spot-fake-products",
+        "how-to-compare-products",
+        "how-our-team-tests-products"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "e_commerce"
+      ],
+      "tags": [
+        "reviews",
+        "authenticity",
+        "methodology"
+      ],
+      "publish_date": "2026-02-20"
+    },
+    {
+      "id": 5,
+      "tier": 1,
+      "slug": "how-to-find-best-deals",
+      "title": "How to Find the Best Deals Online in the {{COUNTRY}} Without Getting Scammed",
+      "author_id": "tariq-sayed",
+      "description": "Strategies for finding genuine discounts, timing your purchases, and avoiding fake sales tactics.",
+      "quick_answer": "Track prices before sales events, compare across multiple stores, be skeptical of countdown timers and 'only 2 left' warnings, and remember that a deal on something you don't need isn't a deal.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-shop-online-safely",
+        "guide-to-seasonal-sales",
+        "how-to-try-new-categories",
+        "how-to-pick-wireless-earbuds"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "e_commerce"
+      ],
+      "tags": [
+        "deals",
+        "savings",
+        "shopping"
+      ],
+      "publish_date": "2026-02-23"
+    },
+    {
+      "id": 6,
+      "tier": 1,
+      "slug": "guide-to-returns-and-refunds",
+      "title": "A Guide to Returns and Refunds When Shopping Online in the {{COUNTRY}}",
+      "author_id": "dina-karam",
+      "description": "Your rights as an online shopper, how return policies work, and what to do when something goes wrong.",
+      "quick_answer": "Always check the return window before buying, keep original packaging, document any defects with photos immediately, and know that most {{MARKETPLACE}} purchases have a 15-30 day return window.",
+      "target_words": 1800,
+      "internal_links": [
+        "how-to-shop-online-safely",
+        "how-to-find-best-deals",
+        "guide-to-understanding-reviews",
+        "guide-to-sustainable-shopping"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection",
+        "e_commerce"
+      ],
+      "tags": [
+        "returns",
+        "consumer rights",
+        "shopping"
+      ],
+      "publish_date": "2026-02-25"
+    },
+    {
+      "id": 7,
+      "tier": 1,
+      "slug": "how-to-choose-unknown-brands",
+      "title": "How to Choose Between Brands You've Never Heard Of",
+      "author_id": "tariq-sayed",
+      "description": "A practical framework for evaluating unfamiliar brands that dominate online marketplaces.",
+      "quick_answer": "Check the brand's presence outside Amazon, look for warranty and customer support information, read the 1-star reviews for deal-breakers, and start with a lower-priced item to test quality before committing to expensive purchases.",
+      "target_words": 1800,
+      "internal_links": [
+        "how-to-spot-fake-products",
+        "guide-to-understanding-reviews",
+        "how-to-compare-products"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection"
+      ],
+      "tags": [
+        "brands",
+        "trust",
+        "shopping"
+      ],
+      "publish_date": "2026-02-28"
+    },
+    {
+      "id": 8,
+      "tier": 1,
+      "slug": "guide-to-reading-specifications",
+      "title": "A Guide to Reading Product Specifications \u2014 What Actually Matters",
+      "author_id": "dina-karam",
+      "description": "How to decode spec sheets, which numbers actually affect your experience, and which are just marketing.",
+      "quick_answer": "Focus on specs that match your use case \u2014 screen brightness matters more than resolution for outdoor use, battery life matters more than processor speed for travel laptops, and wattage matters more than 'turbo mode' marketing for air fryers.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-compare-products",
+        "guide-to-buying-a-laptop",
+        "guide-to-smart-tvs"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "screen_resolution",
+        "ergonomics"
+      ],
+      "tags": [
+        "specifications",
+        "methodology",
+        "tech"
+      ],
+      "publish_date": "2026-03-02"
+    },
+    {
+      "id": 9,
+      "tier": 1,
+      "slug": "how-to-try-new-categories",
+      "title": "How to Try New Product Categories Without Wasting Money",
+      "author_id": "tariq-sayed",
+      "description": "A strategy for exploring unfamiliar product categories \u2014 from smart home devices to fitness gear \u2014 without buyer's remorse.",
+      "quick_answer": "Start with the most popular mid-range option, not the cheapest or most expensive. Read buying guides first, buy one item at a time, and give yourself a 2-week trial period before judging.",
+      "target_words": 1800,
+      "internal_links": [
+        "how-to-find-best-deals",
+        "how-to-start-a-new-hobby",
+        "how-to-choose-unknown-brands",
+        "guide-to-pro-cooking-at-home",
+        "guide-to-starting-reading-habit"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "consumer_protection"
+      ],
+      "tags": [
+        "beginners",
+        "budgets",
+        "exploration"
+      ],
+      "publish_date": "2026-03-05"
+    },
+    {
+      "id": 10,
+      "tier": 1,
+      "slug": "guide-to-seasonal-sales",
+      "title": "A Guide to Seasonal Sales and Shopping Events in the {{COUNTRY}}",
+      "author_id": "tariq-sayed",
+      "description": "When to buy what \u2014 a calendar of shopping events, what actually goes on sale, and how to prepare.",
+      "quick_answer": "The biggest savings come during White Friday (November), Ramadan sales, and Amazon Prime Day. Electronics drop most in January and November, while home goods see the best deals during Ramadan.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-find-best-deals",
+        "how-to-shop-online-safely",
+        "guide-to-gifting",
+        "how-to-cook-for-family-on-budget"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "e_commerce"
+      ],
+      "tags": [
+        "sales",
+        "calendar",
+        "shopping"
+      ],
+      "publish_date": "2026-03-08"
+    },
+    {
+      "id": 11,
+      "tier": 2,
+      "slug": "how-to-choose-vacuum-cleaner",
+      "title": "How to Choose the Right Vacuum Cleaner for Your Home",
+      "author_id": "lina-mikhail",
+      "description": "Corded vs cordless, upright vs canister, HEPA vs standard \u2014 everything you need to pick the right vacuum.",
+      "quick_answer": "For most apartments, a cordless stick vacuum with HEPA filtration is the best all-rounder. For large homes with pets, consider a canister vacuum with a motorized brush head.",
+      "target_words": 2500,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "how-to-compare-products",
+        "how-to-organize-your-home"
+      ],
+      "product_links": [
+        "cordless-vacuum-cleaners",
+        "canister-vacuum-cleaners",
+        "dyson-vacuum-cleaners",
+        "car-vacuum-cleaners"
+      ],
+      "outbound_authority": [
+        "hepa_filters",
+        "air_quality"
+      ],
+      "tags": [
+        "vacuum",
+        "home",
+        "cleaning"
+      ],
+      "publish_date": "2026-02-14",
+      "byg_keywords": [
+        "cordless-vacuum-cleaners",
+        "canister-vacuum-cleaners"
+      ]
+    },
+    {
+      "id": 12,
+      "tier": 2,
+      "slug": "guide-to-buying-a-laptop",
+      "title": "A Guide to Buying Your Next Laptop \u2014 What to Look For in 2026",
+      "author_id": "omar-hassan",
+      "description": "RAM, storage, processors, displays \u2014 cutting through the jargon to help you pick the right laptop.",
+      "quick_answer": "For most people: 16GB RAM, 512GB SSD, and a screen you enjoy looking at for hours. Don't overpay for a processor you'll never fully use. Gaming laptops need dedicated GPUs; office laptops don't.",
+      "target_words": 2500,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "guide-to-tech-upgrades",
+        "how-to-set-up-home-office"
+      ],
+      "product_links": [
+        "gaming-laptops",
+        "14-inch-laptops",
+        "asus-laptops",
+        "dell-laptops"
+      ],
+      "outbound_authority": [
+        "screen_resolution",
+        "ergonomics"
+      ],
+      "tags": [
+        "laptops",
+        "tech",
+        "buying guide"
+      ],
+      "publish_date": "2026-02-17",
+      "byg_keywords": [
+        "gaming-laptops",
+        "14-inch-laptops"
+      ]
+    },
+    {
+      "id": 13,
+      "tier": 2,
+      "slug": "how-to-pick-wireless-earbuds",
+      "title": "How to Pick the Perfect Wireless Earbuds for Every Budget",
+      "author_id": "tariq-sayed",
+      "description": "Active noise cancellation, battery life, fit types, and which features actually matter at each price point.",
+      "quick_answer": "For everyday use, prioritize battery life and comfort over specs. For commuting and travel, active noise cancellation is worth the investment. Premium earbuds add spatial audio and superior build quality that you'll appreciate over time.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "how-to-compare-products",
+        "guide-to-gaming-accessories"
+      ],
+      "product_links": [
+        "earbuds",
+        "bluetooth-earbuds",
+        "earbuds-with-noise-cancellation"
+      ],
+      "outbound_authority": [
+        "noise_cancellation"
+      ],
+      "tags": [
+        "earbuds",
+        "audio",
+        "tech"
+      ],
+      "publish_date": "2026-02-19",
+      "byg_keywords": [
+        "earbuds",
+        "bluetooth-earbuds"
+      ]
+    },
+    {
+      "id": 14,
+      "tier": 2,
+      "slug": "guide-to-smart-tvs",
+      "title": "A Guide to Smart TVs \u2014 Screen Size, Resolution, and What Actually Matters",
+      "author_id": "omar-hassan",
+      "description": "OLED vs QLED, 4K vs 8K, which smart platform to choose, and how to pick the right size for your room.",
+      "quick_answer": "Measure your viewing distance: sit 1.5x the screen diagonal away. For most living rooms, a 55-65 inch 4K TV is the sweet spot. Skip 8K \u2014 there's almost no 8K content. OLED for dark rooms, QLED for bright rooms.",
+      "target_words": 2500,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "how-to-build-smart-home",
+        "how-to-set-up-movie-night"
+      ],
+      "product_links": [
+        "55-inch-smart-tv",
+        "65-inch-smart-tv",
+        "4k-tv",
+        "85-inch-smart-tv"
+      ],
+      "outbound_authority": [
+        "screen_resolution"
+      ],
+      "tags": [
+        "TV",
+        "smart home",
+        "entertainment"
+      ],
+      "publish_date": "2026-02-22",
+      "byg_keywords": [
+        "55-inch-smart-tv",
+        "65-inch-smart-tv"
+      ]
+    },
+    {
+      "id": 15,
+      "tier": 2,
+      "slug": "how-to-find-running-shoes",
+      "title": "How to Find Running Shoes That Actually Fit Your Feet",
+      "author_id": "youssef-nabil",
+      "description": "Pronation, cushioning, drop height, and why the shoe that works for your friend might be terrible for you.",
+      "quick_answer": "Know your foot type (neutral, overpronation, or underpronation), try shoes in the evening when feet are largest, and prioritize comfort on a test run over brand name or looks.",
+      "target_words": 2000,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "how-to-start-a-new-hobby",
+        "guide-to-outdoor-camping-gear"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "running_biomechanics"
+      ],
+      "tags": [
+        "running",
+        "fitness",
+        "shoes"
+      ],
+      "publish_date": "2026-02-24",
+      "byg_keywords": []
+    },
+    {
+      "id": 16,
+      "tier": 2,
+      "slug": "guide-to-ninja-kitchen-appliances",
+      "title": "A Guide to Ninja Kitchen Appliances \u2014 Which One Do You Really Need",
+      "author_id": "lina-mikhail",
+      "description": "Air fryers, grills, blenders, coffee makers \u2014 Ninja makes a dozen appliances. Here's which ones are worth the counter space.",
+      "quick_answer": "Start with the Ninja Air Fryer if you only buy one. Add the Ninja Grill if you love grilling but lack outdoor space. Skip the specialized models unless you use that specific function at least 3 times a week.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-air-fryers",
+        "how-to-cook-quick-dinners",
+        "how-to-organize-your-home"
+      ],
+      "product_links": [
+        "ninja-air-fryers",
+        "ninja-grills",
+        "ninja-coffee-makers",
+        "ninja-smokers"
+      ],
+      "outbound_authority": [
+        "nutrition"
+      ],
+      "tags": [
+        "Ninja",
+        "kitchen",
+        "appliances"
+      ],
+      "publish_date": "2026-02-26",
+      "byg_keywords": [
+        "ninja-air-fryers",
+        "ninja-grills"
+      ]
+    },
+    {
+      "id": 17,
+      "tier": 2,
+      "slug": "how-to-set-up-home-office",
+      "title": "How to Set Up a Home Office on Any Budget",
+      "author_id": "tariq-sayed",
+      "description": "From a basic setup to a dream office \u2014 ergonomic essentials, tech picks, and space optimization.",
+      "quick_answer": "Invest in a good chair first \u2014 it affects your health more than any other purchase. A 24-inch monitor is the minimum for productive work. Everything else can be upgraded over time.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-buying-a-laptop",
+        "guide-to-reading-specifications",
+        "how-to-shop-for-first-apartment"
+      ],
+      "product_links": [
+        "office-chairs",
+        "ergonomic-chairs",
+        "computer-monitors",
+        "laptop-stand-for-desk"
+      ],
+      "outbound_authority": [
+        "ergonomics"
+      ],
+      "tags": [
+        "home office",
+        "remote work",
+        "ergonomics"
+      ],
+      "publish_date": "2026-03-01",
+      "byg_keywords": [
+        "office-chairs",
+        "ergonomic-chairs"
+      ]
+    },
+    {
+      "id": 18,
+      "tier": 2,
+      "slug": "guide-to-air-fryers",
+      "title": "A Guide to Air Fryers \u2014 Size, Wattage, and What Nobody Tells You",
+      "author_id": "lina-mikhail",
+      "description": "Capacity, presets, cleaning difficulty, and the honest truth about what air fryers can and can't do.",
+      "quick_answer": "A 4-5L air fryer suits 1-2 people, 6-8L for families. Wattage above 1500W is fine for most cooking. The real differentiator is basket design \u2014 drawer-style is easier to clean than rotisserie-style.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-ninja-kitchen-appliances",
+        "air-fryer-recipes-beyond-fries",
+        "how-to-cook-quick-dinners"
+      ],
+      "product_links": [
+        "air-fryers",
+        "electric-air-fryers",
+        "ninja-5l-air-fryer"
+      ],
+      "outbound_authority": [
+        "nutrition"
+      ],
+      "tags": [
+        "air fryer",
+        "kitchen",
+        "cooking"
+      ],
+      "publish_date": "2026-03-04",
+      "byg_keywords": [
+        "air-fryers"
+      ]
+    },
+    {
+      "id": 19,
+      "tier": 2,
+      "slug": "how-to-choose-perfume-online",
+      "title": "How to Choose a Perfume Online Without Smelling It First",
+      "author_id": "lina-mikhail",
+      "description": "Fragrance families, note pyramids, and practical strategies for buying perfume when you can't test it.",
+      "quick_answer": "Learn the 4 main fragrance families (fresh, floral, oriental, woody), read reviews that describe similar perfumes you already own, and start with smaller bottles or discovery sets before committing.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-compare-products",
+        "guide-to-returns-and-refunds",
+        "guide-to-gifting"
+      ],
+      "product_links": [
+        "perfume",
+        "women's-perfume",
+        "men's-cologne"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "perfume",
+        "fragrance",
+        "beauty"
+      ],
+      "publish_date": "2026-03-06",
+      "byg_keywords": [
+        "perfume",
+        "women's-perfume"
+      ]
+    },
+    {
+      "id": 20,
+      "tier": 2,
+      "slug": "guide-to-kids-toys-games",
+      "title": "A Guide to Kids' Toys and Games \u2014 Safety, Age Ratings, and Value",
+      "author_id": "youssef-nabil",
+      "description": "How to choose age-appropriate toys, what safety certifications to look for, and which brands deliver lasting value.",
+      "quick_answer": "Always match the toy to the child's developmental stage, not just their age. Look for CE or ASTM safety marks, avoid toys with small detachable parts for under-3s, and prioritize open-ended toys that grow with the child.",
+      "target_words": 2000,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "guide-to-gifting",
+        "how-to-start-a-new-hobby"
+      ],
+      "product_links": [
+        "lego-toys",
+        "barbie-toys",
+        "remote-control-toys",
+        "fidget-toys"
+      ],
+      "outbound_authority": [
+        "product_safety_standards"
+      ],
+      "tags": [
+        "toys",
+        "kids",
+        "safety"
+      ],
+      "publish_date": "2026-03-09",
+      "byg_keywords": [
+        "lego-toys"
+      ]
+    },
+    {
+      "id": 21,
+      "tier": 2,
+      "slug": "how-to-build-smart-home",
+      "title": "How to Build a Smart Home \u2014 Start with These Devices",
+      "author_id": "omar-hassan",
+      "description": "A practical, step-by-step approach to home automation \u2014 which devices to buy first and how to avoid compatibility headaches.",
+      "quick_answer": "Start with a smart speaker (it becomes your control hub), then add smart lights, then a smart plug for your most-used appliance. Don't buy everything at once \u2014 add one device per month and learn the ecosystem.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-smart-tvs",
+        "guide-to-reading-specifications",
+        "how-to-shop-for-first-apartment"
+      ],
+      "product_links": [
+        "smart-watches",
+        "smart-light-switches"
+      ],
+      "outbound_authority": [
+        "smart_home"
+      ],
+      "tags": [
+        "smart home",
+        "automation",
+        "tech"
+      ],
+      "publish_date": "2026-03-11",
+      "byg_keywords": []
+    },
+    {
+      "id": 22,
+      "tier": 2,
+      "slug": "guide-to-gaming-accessories",
+      "title": "A Guide to Gaming Accessories \u2014 Controllers, Headsets, and Monitors",
+      "author_id": "omar-hassan",
+      "description": "Which gaming peripherals actually improve your experience and which are just marketing hype.",
+      "quick_answer": "A good gaming headset matters more than a fancy controller. For monitors, 144Hz refresh rate is the minimum for competitive gaming. Invest in a comfortable gaming chair only if you play for 3+ hours at a time.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-reading-specifications",
+        "how-to-start-a-new-hobby",
+        "how-to-pick-wireless-earbuds"
+      ],
+      "product_links": [
+        "gaming-headset",
+        "gaming-monitors",
+        "gaming-chairs",
+        "gaming-consoles"
+      ],
+      "outbound_authority": [
+        "screen_resolution"
+      ],
+      "tags": [
+        "gaming",
+        "accessories",
+        "tech"
+      ],
+      "publish_date": "2026-03-13",
+      "byg_keywords": [
+        "gaming-headset",
+        "gaming-monitors"
+      ]
+    },
+    {
+      "id": 23,
+      "tier": 3,
+      "slug": "how-our-team-tests-products",
+      "title": "How Our Team Tests and Reviews Products at TheWinner",
+      "author_id": "sarah-al-rashid",
+      "description": "A behind-the-scenes look at our review methodology, testing standards, and editorial independence.",
+      "quick_answer": "We research every category, cross-reference specifications with real-world reviews, test usability claims, and update our recommendations when better options appear. We earn commissions from purchases, but our rankings are based on product quality, not commission rates.",
+      "target_words": 1800,
+      "internal_links": [
+        "how-to-compare-products",
+        "guide-to-understanding-reviews",
+        "guide-to-reading-specifications"
+      ],
+      "product_links": [],
+      "outbound_authority": [],
+      "tags": [
+        "about us",
+        "methodology",
+        "trust"
+      ],
+      "publish_date": "2026-02-10"
+    },
+    {
+      "id": 24,
+      "tier": 3,
+      "slug": "guide-to-gifting",
+      "title": "A Guide to Gifting \u2014 What People Actually Want",
+      "author_id": "sarah-al-rashid",
+      "description": "Gift ideas by occasion, budget, and recipient type \u2014 based on what actually gets used, not returned.",
+      "quick_answer": "The best gifts solve a problem the person hasn't solved yet. Tech accessories, premium versions of everyday items, and experience-related gifts consistently beat novelty items.",
+      "target_words": 2000,
+      "internal_links": [
+        "guide-to-seasonal-sales",
+        "guide-to-kids-toys-games",
+        "how-to-choose-perfume-online",
+        "guide-to-makeup-tips-from-professionals"
+      ],
+      "product_links": [
+        "perfume-gift-sets",
+        "men's-cologne-gift-sets"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "gifting",
+        "holidays",
+        "lifestyle"
+      ],
+      "publish_date": "2026-03-07"
+    },
+    {
+      "id": 25,
+      "tier": 3,
+      "slug": "how-to-start-a-new-hobby",
+      "title": "How to Start a New Hobby Without Overspending on Gear",
+      "author_id": "youssef-nabil",
+      "description": "A practical guide to picking up new hobbies \u2014 from running to gardening to gaming \u2014 without the gear trap.",
+      "quick_answer": "Borrow or buy the cheapest usable gear first. Commit to 30 days before upgrading anything. The gear doesn't make the hobby \u2014 consistency does.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-try-new-categories",
+        "guide-to-gaming-accessories",
+        "how-to-find-running-shoes",
+        "guide-to-makeup-tips-from-professionals",
+        "guide-to-most-watched-movies"
+      ],
+      "product_links": [],
+      "outbound_authority": [],
+      "tags": [
+        "hobbies",
+        "lifestyle",
+        "budgets"
+      ],
+      "publish_date": "2026-03-10"
+    },
+    {
+      "id": 26,
+      "tier": 3,
+      "slug": "guide-to-sustainable-shopping",
+      "title": "A Guide to Sustainable Shopping \u2014 Less Waste, Better Choices",
+      "author_id": "youssef-nabil",
+      "description": "How to reduce your environmental impact while still getting the products you need.",
+      "quick_answer": "Buy fewer, better items that last longer. Check product materials and certifications, prefer repairable over disposable, and consider the full lifecycle cost \u2014 not just the sticker price.",
+      "target_words": 1800,
+      "internal_links": [
+        "how-to-choose-unknown-brands",
+        "how-to-organize-your-home",
+        "how-to-try-new-categories"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "sustainability"
+      ],
+      "tags": [
+        "sustainability",
+        "eco",
+        "lifestyle"
+      ],
+      "publish_date": "2026-03-14"
+    },
+    {
+      "id": 27,
+      "tier": 3,
+      "slug": "how-to-organize-your-home",
+      "title": "How to Organize Your Home with Products That Actually Work",
+      "author_id": "lina-mikhail",
+      "description": "Storage solutions, decluttering strategies, and the organizational products worth buying vs. skipping.",
+      "quick_answer": "Declutter first, organize second, buy products third. The best storage solutions are the ones you'll actually use daily \u2014 not the prettiest ones on Instagram.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-choose-vacuum-cleaner",
+        "guide-to-air-fryers",
+        "how-to-shop-for-first-apartment",
+        "guide-to-home-gardening-tools"
+      ],
+      "product_links": [
+        "shoe-storage-cabinet"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "organization",
+        "home",
+        "lifestyle"
+      ],
+      "publish_date": "2026-03-16"
+    },
+    {
+      "id": 28,
+      "tier": 3,
+      "slug": "guide-to-tech-upgrades",
+      "title": "A Guide to Tech Upgrades \u2014 When to Buy New vs. When to Wait",
+      "author_id": "omar-hassan",
+      "description": "A framework for deciding whether to upgrade your phone, laptop, TV, or any tech \u2014 or wait for the next generation.",
+      "quick_answer": "Upgrade when your current device can't do something you need, not when a new model launches. Most tech improves incrementally \u2014 waiting one generation rarely costs you much.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-compare-products",
+        "guide-to-buying-a-laptop",
+        "guide-to-smart-tvs"
+      ],
+      "product_links": [],
+      "outbound_authority": [],
+      "tags": [
+        "tech",
+        "upgrades",
+        "methodology"
+      ],
+      "publish_date": "2026-03-18"
+    },
+    {
+      "id": 29,
+      "tier": 3,
+      "slug": "how-to-shop-for-first-apartment",
+      "title": "How to Shop for Your First Apartment",
+      "author_id": "lina-mikhail",
+      "description": "Essential purchases, what to buy first vs. later, and how to avoid overspending when furnishing a new home.",
+      "quick_answer": "Buy in priority order: mattress, basic kitchen essentials, bathroom necessities, then furniture. Skip decorative items for the first month \u2014 you'll have a better sense of what you need after living in the space.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-set-up-home-office",
+        "how-to-organize-your-home",
+        "how-to-build-smart-home",
+        "how-to-cook-for-family-on-budget",
+        "guide-to-home-gardening-tools",
+        "how-to-choose-vacuum-cleaner"
+      ],
+      "product_links": [
+        "office-chairs",
+        "air-fryers"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "apartment",
+        "first home",
+        "essentials"
+      ],
+      "publish_date": "2026-03-20"
+    },
+    {
+      "id": 30,
+      "tier": 3,
+      "slug": "guide-to-outdoor-camping-gear",
+      "title": "A Guide to Outdoor and Camping Gear for Hot Climates",
+      "author_id": "youssef-nabil",
+      "description": "Camping in {{CLIMATE_CHALLENGE}} requires different gear than temperate climates. Here's what actually works.",
+      "quick_answer": "Prioritize ventilation in tents (mesh panels > solid walls), bring twice the water you think you need, use UV-rated shade structures, and time activities for early morning or late evening.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-find-running-shoes",
+        "how-to-start-a-new-hobby",
+        "guide-to-reading-specifications"
+      ],
+      "product_links": [
+        "camping-tents",
+        "camping-lanterns",
+        "camping-flashlight"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "camping",
+        "outdoors",
+        "gear"
+      ],
+      "publish_date": "2026-03-22",
+      "byg_keywords": [
+        "camping-tents"
+      ]
+    },
+    {
+      "id": 31,
+      "tier": 4,
+      "slug": "how-to-cook-quick-dinners",
+      "title": "How to Cook Quick Weeknight Dinners \u2014 10 Recipes for Busy People",
+      "author_id": "lina-mikhail",
+      "description": "Ten 30-minute-or-less dinner recipes that use common ingredients and minimal cleanup.",
+      "quick_answer": "The secret to fast weeknight cooking is prep overlap: while one thing heats, chop the next. These 10 recipes each use 7 or fewer ingredients and one pan or pot.",
+      "target_words": 2500,
+      "internal_links": [
+        "guide-to-air-fryers",
+        "guide-to-ninja-kitchen-appliances",
+        "guide-to-meal-prepping-singles"
+      ],
+      "product_links": [
+        "air-fryers",
+        "ninja-grills"
+      ],
+      "outbound_authority": [
+        "nutrition",
+        "meal_planning"
+      ],
+      "tags": [
+        "recipes",
+        "quick cooking",
+        "weeknight"
+      ],
+      "publish_date": "2026-03-03"
+    },
+    {
+      "id": 32,
+      "tier": 4,
+      "slug": "guide-to-meal-prepping-singles",
+      "title": "A Guide to Meal Prepping for Singles \u2014 Easy, Cheap, and Actually Good",
+      "author_id": "lina-mikhail",
+      "description": "How to meal prep when cooking for one \u2014 without boring repetition or wasted food.",
+      "quick_answer": "Cook 3 base proteins and 2 grains on Sunday, then mix-and-match with fresh toppings all week. Freeze portions you won't eat within 3 days. Total prep time: about 90 minutes.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-cook-quick-dinners",
+        "guide-to-air-fryers",
+        "guide-to-ninja-kitchen-appliances"
+      ],
+      "product_links": [
+        "air-fryers"
+      ],
+      "outbound_authority": [
+        "nutrition",
+        "meal_planning"
+      ],
+      "tags": [
+        "recipes",
+        "meal prep",
+        "singles"
+      ],
+      "publish_date": "2026-03-12"
+    },
+    {
+      "id": 33,
+      "tier": 4,
+      "slug": "how-to-cook-for-family-on-budget",
+      "title": "How to Cook for a Family on a Budget \u2014 Weekly Meal Plans That Work",
+      "author_id": "lina-mikhail",
+      "description": "Practical weekly meal plans that feed a family of four without breaking the bank.",
+      "quick_answer": "Plan meals around what's on sale, cook in batches, use cheaper cuts of meat with slow cooking methods, and make breakfast-for-dinner a weekly tradition \u2014 eggs are the most cost-effective protein.",
+      "target_words": 2500,
+      "internal_links": [
+        "how-to-cook-quick-dinners",
+        "guide-to-meal-prepping-singles",
+        "guide-to-ninja-kitchen-appliances",
+        "air-fryer-recipes-beyond-fries",
+        "guide-to-kids-toys-games"
+      ],
+      "product_links": [
+        "ninja-air-fryers"
+      ],
+      "outbound_authority": [
+        "nutrition",
+        "meal_planning"
+      ],
+      "tags": [
+        "recipes",
+        "family",
+        "budget"
+      ],
+      "publish_date": "2026-03-15"
+    },
+    {
+      "id": 34,
+      "tier": 4,
+      "slug": "guide-to-pro-cooking-at-home",
+      "title": "A Guide to Pro-Level Cooking at Home \u2014 Techniques Anyone Can Learn",
+      "author_id": "lina-mikhail",
+      "description": "Restaurant techniques adapted for home kitchens \u2014 from proper searing to sauce building to plating.",
+      "quick_answer": "Three techniques that instantly improve home cooking: let meat rest after cooking, season in layers (not just at the end), and learn to deglaze a pan \u2014 it turns burnt bits into flavor.",
+      "target_words": 2200,
+      "internal_links": [
+        "guide-to-ninja-kitchen-appliances",
+        "guide-to-air-fryers",
+        "how-to-cook-quick-dinners"
+      ],
+      "product_links": [
+        "ninja-grills",
+        "ninja-smokers"
+      ],
+      "outbound_authority": [
+        "nutrition"
+      ],
+      "tags": [
+        "recipes",
+        "pro techniques",
+        "cooking"
+      ],
+      "publish_date": "2026-03-17"
+    },
+    {
+      "id": 35,
+      "tier": 4,
+      "slug": "air-fryer-recipes-beyond-fries",
+      "title": "How to Use Your Air Fryer for Everything \u2014 15 Recipes Beyond Fries",
+      "author_id": "lina-mikhail",
+      "description": "Fifteen unexpected air fryer recipes \u2014 from roasted vegetables to baked goods to reheated pizza.",
+      "quick_answer": "Your air fryer is a small convection oven, not just a fryer. It excels at roasting vegetables, reheating leftovers crispy, cooking salmon, making toast, and even baking small cakes.",
+      "target_words": 2500,
+      "internal_links": [
+        "guide-to-air-fryers",
+        "how-to-cook-quick-dinners",
+        "guide-to-ninja-kitchen-appliances"
+      ],
+      "product_links": [
+        "air-fryers",
+        "ninja-5l-air-fryer",
+        "electric-air-fryers"
+      ],
+      "outbound_authority": [
+        "nutrition"
+      ],
+      "tags": [
+        "recipes",
+        "air fryer",
+        "cooking"
+      ],
+      "publish_date": "2026-03-19",
+      "byg_keywords": [
+        "air-fryers"
+      ]
+    },
+    {
+      "id": 36,
+      "tier": 4,
+      "slug": "guide-to-best-selling-books-all-time",
+      "title": "A Guide to the Best-Selling Books of All Time \u2014 What Makes Them Timeless",
+      "author_id": "sarah-al-rashid",
+      "description": "What the world's most-read books have in common, and why they keep resonating with new generations of readers.",
+      "quick_answer": "The best-selling books of all time share universal themes \u2014 love, survival, identity, and the search for meaning. They work across cultures because they speak to experiences every human shares.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-pick-your-next-book",
+        "how-to-start-a-new-hobby",
+        "guide-to-starting-reading-habit"
+      ],
+      "product_links": [
+        "best-seller-books",
+        "famous-books"
+      ],
+      "outbound_authority": [
+        "literature"
+      ],
+      "tags": [
+        "books",
+        "reading",
+        "culture"
+      ],
+      "publish_date": "2026-03-21"
+    },
+    {
+      "id": 37,
+      "tier": 4,
+      "slug": "how-to-pick-your-next-book",
+      "title": "How to Pick Your Next Book \u2014 A Guide for Every Mood and Genre",
+      "author_id": "sarah-al-rashid",
+      "description": "A practical system for choosing books you'll actually finish, based on mood, available time, and reading history.",
+      "quick_answer": "Match books to your current energy: short stories when tired, thrillers when restless, non-fiction when curious. Don't force a book that isn't working after 50 pages \u2014 life's too short.",
+      "target_words": 2000,
+      "internal_links": [
+        "guide-to-best-selling-books-all-time",
+        "how-to-start-a-new-hobby",
+        "guide-to-gifting"
+      ],
+      "product_links": [
+        "best-seller-books",
+        "science-fiction-books",
+        "cooking-books",
+        "children-books"
+      ],
+      "outbound_authority": [
+        "literature"
+      ],
+      "tags": [
+        "books",
+        "reading",
+        "lifestyle"
+      ],
+      "publish_date": "2026-03-23"
+    },
+    {
+      "id": 38,
+      "tier": 4,
+      "slug": "guide-to-most-watched-movies",
+      "title": "A Guide to the Most-Watched Movies of All Time \u2014 Why We Keep Rewatching",
+      "author_id": "youssef-nabil",
+      "description": "What makes a movie rewatchable, and the films that have earned the most collective screen time worldwide.",
+      "quick_answer": "The most-rewatched movies combine emotional comfort with details you notice on repeat viewings. They're less about surprise endings and more about the journey \u2014 which is why comedies and adventures dominate the rewatch charts.",
+      "target_words": 2000,
+      "internal_links": [
+        "how-to-set-up-movie-night",
+        "guide-to-smart-tvs",
+        "guide-to-gaming-accessories"
+      ],
+      "product_links": [],
+      "outbound_authority": [
+        "film_industry"
+      ],
+      "tags": [
+        "movies",
+        "entertainment",
+        "culture"
+      ],
+      "publish_date": "2026-03-24"
+    },
+    {
+      "id": 39,
+      "tier": 4,
+      "slug": "how-to-set-up-movie-night",
+      "title": "How to Set Up the Perfect Movie Night at Home",
+      "author_id": "youssef-nabil",
+      "description": "From screen setup to sound to snacks \u2014 how to create a cinema experience in your living room.",
+      "quick_answer": "Dim the lights (bias lighting behind the TV reduces eye strain), use a soundbar or headphones instead of TV speakers, and prep snacks before hitting play \u2014 nobody wants to pause for popcorn.",
+      "target_words": 1800,
+      "internal_links": [
+        "guide-to-most-watched-movies",
+        "guide-to-smart-tvs",
+        "how-to-build-smart-home"
+      ],
+      "product_links": [
+        "55-inch-smart-tv",
+        "65-inch-smart-tv"
+      ],
+      "outbound_authority": [],
+      "tags": [
+        "movies",
+        "entertainment",
+        "home"
+      ],
+      "publish_date": "2026-03-25"
+    },
+    {
+      "id": 40,
+      "tier": 4,
+      "slug": "guide-to-starting-reading-habit",
+      "title": "A Guide to Starting a Reading Habit That Actually Sticks",
+      "author_id": "sarah-al-rashid",
+      "description": "Practical strategies for building a consistent reading habit, even if you haven't finished a book in years.",
+      "quick_answer": "Start with 10 pages a day \u2014 not 30 minutes. Read what you enjoy, not what you think you should read. Keep a book visible where you usually scroll your phone. Habit beats ambition every time.",
+      "target_words": 1800,
+      "internal_links": [
+        "guide-to-best-selling-books-all-time",
+        "how-to-pick-your-next-book",
+        "how-to-start-a-new-hobby"
+      ],
+      "product_links": [
+        "ebook-reader"
+      ],
+      "outbound_authority": [
+        "literature"
+      ],
+      "tags": [
+        "reading",
+        "habits",
+        "lifestyle"
+      ],
+      "publish_date": "2026-03-26"
+    },
+    {
+      "id": 41,
+      "tier": 4,
+      "slug": "guide-to-makeup-tips-from-professionals",
+      "title": "A Guide to Makeup Tips from Real Professionals That Always Work",
+      "author_id": "lina-mikhail",
+      "description": "Professional makeup techniques simplified for everyday use \u2014 foundation matching, eye basics, and products that actually deliver.",
+      "quick_answer": "Three pro rules that transform any routine: always prep skin with moisturizer before foundation, blend everything (concealer, blush, contour) in upward strokes, and invest in good brushes over expensive products \u2014 the tool matters more than the brand.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-choose-perfume-online",
+        "how-to-compare-products",
+        "guide-to-gifting"
+      ],
+      "product_links": [
+        "foundation-makeup",
+        "concealer",
+        "mascara",
+        "blush"
+      ],
+      "outbound_authority": [
+        "cosmetics_safety"
+      ],
+      "tags": [
+        "makeup",
+        "beauty",
+        "tips"
+      ],
+      "publish_date": "2026-03-27",
+      "byg_keywords": [
+        "foundation-makeup"
+      ]
+    },
+    {
+      "id": 42,
+      "tier": 4,
+      "slug": "guide-to-home-gardening-tools",
+      "title": "A Guide to Pro Tips and Tools for Home Gardening",
+      "author_id": "youssef-nabil",
+      "description": "Everything you need to start and maintain a garden \u2014 from balcony herbs to backyard vegetable patches \u2014 including the tools that make it easier.",
+      "quick_answer": "Start with 3 herbs in pots (basil, mint, rosemary) \u2014 they're nearly impossible to kill and you'll use them in cooking. For tools, you only need 5 basics: pruning shears, a trowel, a watering can, gloves, and a kneeling pad. Everything else is optional.",
+      "target_words": 2200,
+      "internal_links": [
+        "how-to-start-a-new-hobby",
+        "guide-to-sustainable-shopping",
+        "guide-to-outdoor-camping-gear"
+      ],
+      "product_links": [
+        "garden-miniature",
+        "garden-pond"
+      ],
+      "outbound_authority": [
+        "gardening"
+      ],
+      "tags": [
+        "gardening",
+        "outdoors",
+        "hobbies"
+      ],
+      "publish_date": "2026-03-28",
+      "byg_keywords": []
+    }
+  ]
+}

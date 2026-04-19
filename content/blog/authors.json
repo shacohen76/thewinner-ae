@@ -1,0 +1,76 @@
+{
+  "authors": [
+    {
+      "id": "sarah-al-rashid",
+      "name": "Sarah Al-Rashid",
+      "role": "Editor-in-Chief",
+      "avatar": "/blog/authors/sarah-al-rashid.jpg",
+      "bio": "Sarah leads TheWinner's editorial team with over 8 years of experience in consumer journalism. She's reviewed hundreds of products and believes every purchase decision deserves honest, research-backed guidance.",
+      "expertise": ["shopping guides", "consumer trust", "books", "gifting"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    },
+    {
+      "id": "omar-hassan",
+      "name": "Omar Hassan",
+      "role": "Tech Editor",
+      "avatar": "/blog/authors/omar-hassan.jpg",
+      "bio": "Omar has been testing consumer electronics since before smartphones had app stores. He covers laptops, TVs, smart home devices, and gaming gear with a focus on real-world performance over spec-sheet bragging.",
+      "expertise": ["laptops", "smart TVs", "smart home", "gaming", "tech upgrades"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    },
+    {
+      "id": "lina-mikhail",
+      "name": "Lina Mikhail",
+      "role": "Home & Kitchen Editor",
+      "avatar": "/blog/authors/lina-mikhail.jpg",
+      "bio": "Lina tests kitchen appliances, home organization tools, and cleaning gadgets in her own home before recommending them. She's cooked over 500 test recipes and ruined exactly 12 air fryer baskets in the process.",
+      "expertise": ["vacuum cleaners", "air fryers", "Ninja appliances", "recipes", "home organization"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    },
+    {
+      "id": "youssef-nabil",
+      "name": "Youssef Nabil",
+      "role": "Lifestyle Editor",
+      "avatar": "/blog/authors/youssef-nabil.jpg",
+      "bio": "Youssef covers everything from running shoes to camping tents. A weekend athlete and hobby collector, he's uniquely qualified to tell you which gear is worth the investment and which belongs in the clearance bin.",
+      "expertise": ["fitness", "hobbies", "outdoors", "movies", "toys", "sustainability"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    },
+    {
+      "id": "dina-karam",
+      "name": "Dina Karam",
+      "role": "Consumer Rights Editor",
+      "avatar": "/blog/authors/dina-karam.jpg",
+      "bio": "Dina is a former customer service manager who now writes about consumer protection, product authenticity, and smart comparison shopping. She reads the fine print so you don't have to.",
+      "expertise": ["safety", "reviews", "returns", "specifications", "consumer rights"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    },
+    {
+      "id": "tariq-sayed",
+      "name": "Tariq Sayed",
+      "role": "Deals & Value Editor",
+      "avatar": "/blog/authors/tariq-sayed.jpg",
+      "bio": "Tariq tracks prices, hunts for deals, and tests budget-friendly alternatives against premium products. His philosophy: the best product isn't always the most expensive one — it's the one that gives you the most for your money.",
+      "expertise": ["deals", "budgets", "new products", "earbuds", "home office"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
+    }
+  ]
+}
