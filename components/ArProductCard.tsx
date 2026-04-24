@@ -1,6 +1,14 @@
 'use client'
 
 import Image from 'next/image'
+import { buildAffiliateUrl, extractBrand } from '@/lib/utils'
+import { logAsinClickBeacon } from '@/components/TrackingProvider'
+
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
 
 interface ArProductCardProps {
   product: {
@@ -37,21 +45,24 @@ function getReviewCount(asin: string): number {
 export default function ArProductCard({ product, rank, ctaText }: ArProductCardProps) {
   const score = getScoreLabel(rank)
   const reviewCount = getReviewCount(product.asin)
-  const amazonUrl = `https://www.amazon.ae/dp/${product.asin}?language=ar_AE`
+  const brand = extractBrand(product.title_en || '')
+  const baseUrl = buildAffiliateUrl(product.asin, product.title_en)
+  const amazonUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'language=ar_AE'
 
   const handleClick = () => {
-    // sendBeacon for click tracking (same as English ProductCard)
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-      const sessionId = typeof window !== 'undefined' 
-        ? window.sessionStorage?.getItem('tw_session_id') 
-        : null
-      if (sessionId) {
-        navigator.sendBeacon('/api/click-log', JSON.stringify({
-          session_id: sessionId,
-          asin: product.asin,
-        }))
-      }
+    // Push to dataLayer for GTM (same as English ProductCard)
+    if (typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'affiliate_click',
+        product_id: product.asin,
+        product_title: product.title_en,
+        product_rank: rank,
+        product_brand: brand,
+      })
     }
+
+    // Log ASIN click for reconciliation (fire-and-forget)
+    logAsinClickBeacon(product.asin)
   }
 
   return (
