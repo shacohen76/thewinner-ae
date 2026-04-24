@@ -16,7 +16,8 @@ export const CONFIG = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae',
   amazonTag: 'twnraedirect01-21',
   amazonStoreId: 'thewinner02',
-  gtmId: 'GTM-MLB7SDHC',
+  gtmId: process.env.NEXT_PUBLIC_GTM_ID || 'GTM-MLB7SDHC',
+
 };
 
 // ============================================
