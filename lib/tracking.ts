@@ -61,6 +61,8 @@ export interface TagAssignRequest {
   landing_page?: string | null;
   user_agent?: string | null;
   ip_country?: string | null;
+  user_id?: string | null;
+  site?: string | null;
 }
 
 export interface TagAssignResponse {
@@ -78,15 +80,17 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 
     // Log the session (even for static tags — useful for analytics)
     await getSupabaseAdmin().from('click_log').insert({
-      session_id: sessionId,
-      gclid: req.gclid || null,
-      fbclid: req.fbclid || null,
-      assigned_tag: staticTag,
-      traffic_source: req.traffic_source,
-      landing_page: req.landing_page || null,
-      user_agent: req.user_agent || null,
-      ip_country: req.ip_country || null,
-    });
+    session_id: sessionId,
+    gclid: req.gclid || null,
+    fbclid: req.fbclid || null,
+    assigned_tag: assignedTag,
+    traffic_source: req.traffic_source,
+    landing_page: req.landing_page || null,
+    user_agent: req.user_agent || null,
+    ip_country: req.ip_country || null,
+    user_id: req.user_id || null,
+    site: req.site || null,
+  });
 
     return {
       session_id: sessionId,
@@ -151,15 +155,17 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 
   // Step 5: Create click_log entry
   await getSupabaseAdmin().from('click_log').insert({
-    session_id: sessionId,
-    gclid: req.gclid || null,
-    fbclid: req.fbclid || null,
-    assigned_tag: assignedTag,
-    traffic_source: req.traffic_source,
-    landing_page: req.landing_page || null,
-    user_agent: req.user_agent || null,
-    ip_country: req.ip_country || null,
-  });
+      session_id: sessionId,
+      gclid: req.gclid || null,
+      fbclid: req.fbclid || null,
+      assigned_tag: staticTag,
+      traffic_source: req.traffic_source,
+      landing_page: req.landing_page || null,
+      user_agent: req.user_agent || null,
+      ip_country: req.ip_country || null,
+      user_id: req.user_id || null,
+      site: req.site || null,
+    });
 
   return {
     session_id: sessionId,

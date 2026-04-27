@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { gclid, fbclid, traffic_source, landing_page } = body;
+    const { gclid, fbclid, traffic_source, landing_page, user_id, site } = body;
 
     // Skip admin pages — don't track our own dashboard visits
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
@@ -72,6 +72,8 @@ export async function POST(request: NextRequest) {
       landing_page: landing_page || null,
       user_agent: userAgent,
       ip_country: ipCountry,
+      user_id: user_id || null,
+      site: site || null,
     });
 
     return NextResponse.json(result);

@@ -138,6 +138,28 @@ function persistGclid(): { gclid: string | null; fbclid: string | null } {
   return { gclid: storedGclid, fbclid: storedFbclid };
 }
 
+// ADD after the closing brace of persistGclid() function, before the COMPONENT section comment
+
+// ============================================
+// PERSISTENT USER ID (localStorage for cross-session)
+// ============================================
+
+function getUserId(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const STORAGE_KEY = 'tw_user_id';
+    let userId = localStorage.getItem(STORAGE_KEY);
+    if (!userId) {
+      userId = crypto.randomUUID();
+      localStorage.setItem(STORAGE_KEY, userId);
+    }
+    return userId;
+  } catch {
+    return null;
+  }
+}
+
+
 // ============================================
 // COMPONENT
 // ============================================
@@ -170,6 +192,8 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
           fbclid,
           traffic_source: trafficSource,
           landing_page: pathname,
+          user_id: getUserId(),
+          site: window.location.hostname,
         }),
       });
 
