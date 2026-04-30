@@ -6,6 +6,7 @@
 // v1.1: Fixed timezone — uses Dubai time (UTC+4) for calendar day boundaries
 // v1.2: Added user_id + site to session query. Added user-level aggregation
 //       (new/returning, cross-source, click rates) and user_summary in response.
+// v1.3: Added session_details array per user for expandable journey view.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -117,6 +118,7 @@ export async function GET(request: NextRequest) {
           tags: new Set(),
           countries: new Set(),
           sites: new Set(),
+          session_details: [],
         };
       }
       const u = userMap[uid];
@@ -130,6 +132,14 @@ export async function GET(request: NextRequest) {
       if (s.assigned_tag) u.tags.add(s.assigned_tag);
       if (s.ip_country) u.countries.add(s.ip_country);
       if (s.site) u.sites.add(s.site);
+      u.session_details.push({
+        created_at: s.created_at,
+        traffic_source: s.traffic_source,
+        landing_page: s.landing_page,
+        assigned_tag: s.assigned_tag,
+        has_gclid: !!(s.gclid && !s.gclid.startsWith('test')),
+        clicked_asins: s.clicked_asins || [],
+      });
     });
 
     // Convert Sets to arrays for JSON serialization

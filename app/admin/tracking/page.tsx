@@ -8,6 +8,8 @@
 //       Password protected via query param or localStorage.
 // v1.2: Added Users tab — new/returning users, cross-source detection,
 //       click rate comparison, GCLID carryover insight, per-user journey table.
+// v1.3: Expandable user rows with session timeline. Short 6-char user IDs.
+//       Numbered rows. Session details show page, source, tag, GCLID, clicks.
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react';
@@ -45,6 +47,15 @@ interface DailyStat {
   sources: Record<string, number>;
 }
 
+interface UserSessionDetail {
+  created_at: string;
+  traffic_source: string;
+  landing_page: string;
+  assigned_tag: string;
+  has_gclid: boolean;
+  clicked_asins: string[];
+}
+
 interface UserEntry {
   user_id: string;
   sessions: number;
@@ -60,6 +71,7 @@ interface UserEntry {
   sites: string[];
   is_returning: boolean;
   has_cross_source: boolean;
+  session_details: UserSessionDetail[];
 }
 
 interface UserSummary {
@@ -122,6 +134,7 @@ export default function AdminTracking() {
   const [days, setDays] = useState(7);
   const [geoFilter, setGeoFilter] = useState<'ae' | 'all'>('ae');
   const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users'>('overview');
+  const [expandedUser, setExpandedUser] = useState<string | null>(null);
 
   // Check localStorage for saved password
   useEffect(() => {
@@ -563,6 +576,7 @@ export default function AdminTracking() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-left border-b border-gray-800">
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">#</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">User</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sessions</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sources</th>
@@ -574,44 +588,81 @@ export default function AdminTracking() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.users.map((u) => (
-                      <tr key={u.user_id}
-                        className={`border-b border-gray-800/30 hover:bg-gray-800/30 ${u.is_returning ? 'bg-purple-950/10' : ''} ${u.total_asin_clicks > 0 ? 'bg-emerald-950/10' : ''}`}>
-                        <td className="px-3 py-2 font-mono text-xs text-gray-500" title={u.user_id}>
-                          {u.user_id.substring(0, 8)}…
-                        </td>
-                        <td className="px-3 py-2">
-                          <span className={`font-bold ${u.is_returning ? 'text-purple-400' : 'text-gray-400'}`}>
-                            {u.sessions}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2">
-                          <div className="flex gap-1 flex-wrap">
-                            {u.sources.map(src => (
-                              <span key={src} className={`inline-block px-1.5 py-0.5 rounded text-xs ${SRC_BG[src] || SRC_BG.other}`}>
-                                {src}
-                              </span>
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-3 py-2 text-xs">
-                          {u.has_gclid
-                            ? <span className="text-purple-400" title={`${u.gclid_sessions} session(s) with GCLID`}>✓ {u.gclid_sessions > 1 ? `×${u.gclid_sessions}` : ''}</span>
-                            : <span className="text-gray-700">—</span>}
-                        </td>
-                        <td className="px-3 py-2 text-xs">
-                          {u.total_asin_clicks > 0
-                            ? <span className="text-emerald-400 font-bold">{u.total_asin_clicks}</span>
-                            : <span className="text-gray-700">—</span>}
-                        </td>
-                        <td className="px-3 py-2 text-xs text-gray-400">
-                          {u.pages.length > 2
-                            ? <span title={u.pages.join(', ')}>{u.pages.length} pages</span>
-                            : u.pages.map(p => p.replace('/best/', '')).join(', ')}
-                        </td>
-                        <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.first_seen)}</td>
-                        <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.last_seen)}</td>
-                      </tr>
+                    {data.users.map((u, idx) => (
+                      <>
+                        <tr key={u.user_id}
+                          onClick={() => setExpandedUser(expandedUser === u.user_id ? null : u.user_id)}
+                          className={`border-b border-gray-800/30 cursor-pointer transition-colors ${expandedUser === u.user_id ? 'bg-gray-800/50' : 'hover:bg-gray-800/30'} ${u.is_returning ? 'bg-purple-950/10' : ''} ${u.total_asin_clicks > 0 ? 'bg-emerald-950/10' : ''}`}>
+                          <td className="px-3 py-2 text-xs text-gray-600">{idx + 1}</td>
+                          <td className="px-3 py-2 font-mono text-xs text-blue-400" title={u.user_id}>
+                            {u.user_id.substring(0, 6)}
+                          </td>
+                          <td className="px-3 py-2">
+                            <span className={`font-bold ${u.is_returning ? 'text-purple-400' : 'text-gray-400'}`}>
+                              {u.sessions}{u.is_returning ? ' ↩' : ''}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2">
+                            <div className="flex gap-1 flex-wrap">
+                              {u.sources.map(src => (
+                                <span key={src} className={`inline-block px-1.5 py-0.5 rounded text-xs ${SRC_BG[src] || SRC_BG.other}`}>
+                                  {src}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-3 py-2 text-xs">
+                            {u.has_gclid
+                              ? <span className="text-purple-400" title={`${u.gclid_sessions} session(s) with GCLID`}>✓ {u.gclid_sessions > 1 ? `×${u.gclid_sessions}` : ''}</span>
+                              : <span className="text-gray-700">—</span>}
+                          </td>
+                          <td className="px-3 py-2 text-xs">
+                            {u.total_asin_clicks > 0
+                              ? <span className="text-emerald-400 font-bold">{u.total_asin_clicks}</span>
+                              : <span className="text-gray-700">—</span>}
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-400">
+                            {u.pages.length > 2
+                              ? <span title={u.pages.join(', ')}>{u.pages.length} pages</span>
+                              : u.pages.map(p => p.replace('/best/', '')).join(', ')}
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.first_seen)}</td>
+                          <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.last_seen)}</td>
+                        </tr>
+                        {/* Expanded session details */}
+                        {expandedUser === u.user_id && u.session_details && (
+                          <tr key={`${u.user_id}-details`}>
+                            <td colSpan={9} className="px-0 py-0">
+                              <div className="bg-gray-950 border-l-2 border-blue-500 mx-3 my-2 rounded-lg overflow-hidden">
+                                <div className="px-4 py-2 text-xs font-medium text-gray-400 border-b border-gray-800">
+                                  Journey for <span className="text-blue-400 font-mono">{u.user_id.substring(0, 6)}</span> — {u.session_details.length} session{u.session_details.length > 1 ? 's' : ''}
+                                </div>
+                                {u.session_details
+                                  .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
+                                  .map((sd: any, si: number) => (
+                                  <div key={si} className="flex items-center gap-3 px-4 py-2 border-b border-gray-900/50 text-xs">
+                                    <span className="text-gray-600 w-5">{si + 1}.</span>
+                                    <span className="text-gray-500 w-20 whitespace-nowrap">{timeAgo(sd.created_at)}</span>
+                                    <span className={`inline-block px-1.5 py-0.5 rounded w-12 text-center ${SRC_BG[sd.traffic_source] || SRC_BG.other}`}>
+                                      {sd.traffic_source}
+                                    </span>
+                                    <span className="text-gray-400 flex-grow">
+                                      {(sd.landing_page || '').replace('/best/', '')}
+                                    </span>
+                                    <span className="text-gray-600 font-mono w-24 text-right">{sd.assigned_tag?.replace('twnrae', '').replace('-21', '') || '—'}</span>
+                                    {sd.has_gclid && <span className="text-purple-400">🔑</span>}
+                                    {sd.clicked_asins.length > 0 && (
+                                      <span className="text-emerald-400" title={sd.clicked_asins.join(', ')}>
+                                        {sd.clicked_asins.length} click{sd.clicked_asins.length > 1 ? 's' : ''}
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </>
                     ))}
                   </tbody>
                 </table>
