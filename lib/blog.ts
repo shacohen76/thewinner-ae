@@ -148,10 +148,19 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const { remark } = await import('remark');
   const remarkHtml = (await import('remark-html')).default;
 
-  const result = await remark()
-    .use(remarkHtml, { sanitize: false })
-    .process(content);
+  // remark-slug adds id attributes to headings (needed for TOC scroll-spy)
+  let remarkSlug: any = null;
+  try {
+    remarkSlug = (await import('remark-slug')).default;
+  } catch {
+    // remark-slug not installed — TOC will use client-side fallback
+  }
 
+  let pipeline = remark();
+  if (remarkSlug) pipeline = pipeline.use(remarkSlug);
+  pipeline = pipeline.use(remarkSlug).use(remarkHtml, { sanitize: false });
+
+  const result = await pipeline.process(content);
   const htmlContent = result.toString();
 
   // Recalculate read time from actual content

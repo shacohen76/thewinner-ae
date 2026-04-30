@@ -235,6 +235,7 @@ export default function ProductCard({
             {expandableText && (
               <>
                 <button
+                id="read-more"
                   onClick={() => setExpanded(!expanded)}
                   className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1"
                 >
@@ -270,6 +271,7 @@ export default function ProductCard({
 
               {/* CTA Button — native <a> tag for reliable tracking + no popup blocker */}
               <a
+               id="show-offer"
                 href={amazonUrl}
                 target="_blank"
                 rel="noopener noreferrer"
