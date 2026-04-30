@@ -3,8 +3,11 @@
 // Admin Tracking Dashboard — /admin/tracking
 // ============================================
 // Created: 2026-03-28
-// Standalone dashboard for monitoring tag rotation system.
-// Password protected via query param or localStorage.
+// Last Modified: 2026-04-30
+// v1.1: Standalone dashboard for monitoring tag rotation system.
+//       Password protected via query param or localStorage.
+// v1.2: Added Users tab — new/returning users, cross-source detection,
+//       click rate comparison, GCLID carryover insight, per-user journey table.
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react';
@@ -42,10 +45,41 @@ interface DailyStat {
   sources: Record<string, number>;
 }
 
+interface UserEntry {
+  user_id: string;
+  sessions: number;
+  first_seen: string;
+  last_seen: string;
+  sources: string[];
+  pages: string[];
+  total_asin_clicks: number;
+  has_gclid: boolean;
+  gclid_sessions: number;
+  tags: string[];
+  countries: string[];
+  sites: string[];
+  is_returning: boolean;
+  has_cross_source: boolean;
+}
+
+interface UserSummary {
+  total_users: number;
+  new_users: number;
+  returning_users: number;
+  cross_source_users: number;
+  users_with_clicks: number;
+  users_with_gclid: number;
+  avg_sessions: string;
+  returning_click_rate: string;
+  new_click_rate: string;
+}
+
 interface TrackingData {
   tag_pool: TagPoolEntry[];
   sessions: Session[];
   daily_stats: DailyStat[];
+  users: UserEntry[];
+  user_summary: UserSummary;
   meta: {
     total_sessions: number;
     date_range: { from: string; to: string; days: number };
@@ -87,7 +121,7 @@ export default function AdminTracking() {
   const [error, setError] = useState('');
   const [days, setDays] = useState(7);
   const [geoFilter, setGeoFilter] = useState<'ae' | 'all'>('ae');
-  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel'>('overview');
+  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users'>('overview');
 
   // Check localStorage for saved password
   useEffect(() => {
@@ -222,7 +256,7 @@ export default function AdminTracking() {
       {/* Tabs */}
       <div className="border-b border-gray-800 px-4 md:px-6">
         <div className="max-w-7xl mx-auto flex gap-1 pt-2">
-          {(['overview', 'funnel', 'sessions', 'tags'] as const).map(t => (
+          {(['overview', 'funnel', 'sessions', 'users', 'tags'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${tab === t ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
               {t === 'tags' ? 'Tag Pool' : t.charAt(0).toUpperCase() + t.slice(1)}
@@ -476,6 +510,111 @@ export default function AdminTracking() {
                     <span className="text-sm text-gray-400">{count}</span>
                   </div>
                 ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* USERS */}
+        {tab === 'users' && data.users && (
+          <>
+            {/* User summary cards */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+              {[
+                { label: 'Unique Users', value: data.user_summary.total_users, color: '#3b82f6' },
+                { label: 'New', value: data.user_summary.new_users, color: '#10b981' },
+                { label: 'Returning', value: data.user_summary.returning_users, color: '#a855f7' },
+                { label: 'Avg Sessions', value: data.user_summary.avg_sessions, color: '#f59e0b' },
+                { label: 'Cross-Source', value: data.user_summary.cross_source_users, color: '#ec4899' },
+              ].map(s => (
+                <div key={s.label} className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">{s.label}</div>
+                  <div className="text-xl font-bold" style={{ color: s.color }}>{s.value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Click rates comparison */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">New User Click Rate</div>
+                <div className="text-xl font-bold text-emerald-400">{data.user_summary.new_click_rate}%</div>
+              </div>
+              <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Returning User Click Rate</div>
+                <div className="text-xl font-bold text-purple-400">{data.user_summary.returning_click_rate}%</div>
+              </div>
+            </div>
+
+            {/* GCLID carryover insight */}
+            {data.user_summary.cross_source_users > 0 && (
+              <div className="bg-gray-900 rounded-xl p-5 border border-pink-900/30 mb-6">
+                <h2 className="text-sm font-semibold text-pink-400 mb-2">GCLID Carryover Potential</h2>
+                <p className="text-sm text-gray-400">
+                  <span className="text-white font-medium">{data.user_summary.cross_source_users}</span> users arrived via multiple sources (e.g., Google Ads first, then direct return).
+                  These users can inherit their original GCLID for attribution even on return visits without ads.
+                </p>
+              </div>
+            )}
+
+            {/* User list table */}
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left border-b border-gray-800">
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">User</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sessions</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sources</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">GCLID</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">AMZ Clicks</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Pages</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">First Seen</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Last Seen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.users.map((u) => (
+                      <tr key={u.user_id}
+                        className={`border-b border-gray-800/30 hover:bg-gray-800/30 ${u.is_returning ? 'bg-purple-950/10' : ''} ${u.total_asin_clicks > 0 ? 'bg-emerald-950/10' : ''}`}>
+                        <td className="px-3 py-2 font-mono text-xs text-gray-500" title={u.user_id}>
+                          {u.user_id.substring(0, 8)}…
+                        </td>
+                        <td className="px-3 py-2">
+                          <span className={`font-bold ${u.is_returning ? 'text-purple-400' : 'text-gray-400'}`}>
+                            {u.sessions}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2">
+                          <div className="flex gap-1 flex-wrap">
+                            {u.sources.map(src => (
+                              <span key={src} className={`inline-block px-1.5 py-0.5 rounded text-xs ${SRC_BG[src] || SRC_BG.other}`}>
+                                {src}
+                              </span>
+                            ))}
+                          </div>
+                        </td>
+                        <td className="px-3 py-2 text-xs">
+                          {u.has_gclid
+                            ? <span className="text-purple-400" title={`${u.gclid_sessions} session(s) with GCLID`}>✓ {u.gclid_sessions > 1 ? `×${u.gclid_sessions}` : ''}</span>
+                            : <span className="text-gray-700">—</span>}
+                        </td>
+                        <td className="px-3 py-2 text-xs">
+                          {u.total_asin_clicks > 0
+                            ? <span className="text-emerald-400 font-bold">{u.total_asin_clicks}</span>
+                            : <span className="text-gray-700">—</span>}
+                        </td>
+                        <td className="px-3 py-2 text-xs text-gray-400">
+                          {u.pages.length > 2
+                            ? <span title={u.pages.join(', ')}>{u.pages.length} pages</span>
+                            : u.pages.map(p => p.replace('/best/', '')).join(', ')}
+                        </td>
+                        <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.first_seen)}</td>
+                        <td className="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{timeAgo(u.last_seen)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </>

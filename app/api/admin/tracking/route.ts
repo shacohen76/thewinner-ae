@@ -2,8 +2,10 @@
 // Admin Tracking Data API — /api/admin/tracking
 // ============================================
 // Created: 2026-03-28
-// Last Modified: 2026-03-28
+// Last Modified: 2026-04-30
 // v1.1: Fixed timezone — uses Dubai time (UTC+4) for calendar day boundaries
+// v1.2: Added user_id + site to session query. Added user-level aggregation
+//       (new/returning, cross-source, click rates) and user_summary in response.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -60,7 +62,7 @@ export async function GET(request: NextRequest) {
   try {
     // Fetch all data in parallel
     let sessionsQuery = supabase.from('click_log')
-      .select('session_id,gclid,assigned_tag,traffic_source,landing_page,clicked_asins,click_timestamps,user_agent,ip_country,created_at,last_activity,status')
+      .select('session_id,gclid,assigned_tag,traffic_source,landing_page,clicked_asins,click_timestamps,user_agent,ip_country,created_at,last_activity,status,user_id,site')
       .gte('created_at', since)
       .order('created_at', { ascending: false })
       .limit(500);
@@ -96,10 +98,82 @@ export async function GET(request: NextRequest) {
       dailyStats[day].sources[src] = (dailyStats[day].sources[src] || 0) + 1;
     });
 
+    // Compute user-level stats from sessions with user_id
+    const userMap: Record<string, any> = {};
+    sessions.forEach((s: any) => {
+      const uid = s.user_id;
+      if (!uid) return;
+      if (!userMap[uid]) {
+        userMap[uid] = {
+          user_id: uid,
+          sessions: 0,
+          first_seen: s.created_at,
+          last_seen: s.created_at,
+          sources: new Set(),
+          pages: new Set(),
+          total_asin_clicks: 0,
+          has_gclid: false,
+          gclid_sessions: 0,
+          tags: new Set(),
+          countries: new Set(),
+          sites: new Set(),
+        };
+      }
+      const u = userMap[uid];
+      u.sessions++;
+      if (s.created_at < u.first_seen) u.first_seen = s.created_at;
+      if (s.created_at > u.last_seen) u.last_seen = s.created_at;
+      u.sources.add(s.traffic_source);
+      if (s.landing_page) u.pages.add(s.landing_page);
+      if (s.clicked_asins?.length > 0) u.total_asin_clicks += s.clicked_asins.length;
+      if (s.gclid && !s.gclid.startsWith('test')) { u.has_gclid = true; u.gclid_sessions++; }
+      if (s.assigned_tag) u.tags.add(s.assigned_tag);
+      if (s.ip_country) u.countries.add(s.ip_country);
+      if (s.site) u.sites.add(s.site);
+    });
+
+    // Convert Sets to arrays for JSON serialization
+    const users = Object.values(userMap).map((u: any) => ({
+      ...u,
+      sources: Array.from(u.sources),
+      pages: Array.from(u.pages),
+      tags: Array.from(u.tags),
+      countries: Array.from(u.countries),
+      sites: Array.from(u.sites),
+      is_returning: u.sessions > 1,
+      has_cross_source: u.sources.size > 1,
+    })).sort((a: any, b: any) => b.last_seen.localeCompare(a.last_seen));
+
+    // Aggregate user stats
+    const totalUsers = users.length;
+    const returningUsers = users.filter((u: any) => u.is_returning).length;
+    const crossSourceUsers = users.filter((u: any) => u.has_cross_source).length;
+    const usersWithClicks = users.filter((u: any) => u.total_asin_clicks > 0).length;
+    const usersWithGclid = users.filter((u: any) => u.has_gclid).length;
+    const avgSessionsPerUser = totalUsers > 0 ? (users.reduce((s: number, u: any) => s + u.sessions, 0) / totalUsers).toFixed(1) : '0';
+    const returningClickRate = returningUsers > 0
+      ? ((users.filter((u: any) => u.is_returning && u.total_asin_clicks > 0).length / returningUsers) * 100).toFixed(1)
+      : '0';
+    const newClickRate = (totalUsers - returningUsers) > 0
+      ? ((users.filter((u: any) => !u.is_returning && u.total_asin_clicks > 0).length / (totalUsers - returningUsers)) * 100).toFixed(1)
+      : '0';
+
     return NextResponse.json({
       tag_pool: tagPool,
       sessions: sessions,
       daily_stats: Object.values(dailyStats).sort((a: any, b: any) => a.date.localeCompare(b.date)),
+      users: users,
+      user_summary: {
+        total_users: totalUsers,
+        new_users: totalUsers - returningUsers,
+        returning_users: returningUsers,
+        cross_source_users: crossSourceUsers,
+        users_with_clicks: usersWithClicks,
+        users_with_gclid: usersWithGclid,
+        avg_sessions: avgSessionsPerUser,
+        returning_click_rate: returningClickRate,
+        new_click_rate: newClickRate,
+      },
       meta: {
         total_sessions: sessions.length,
         date_range: { from: since, to: new Date().toISOString(), days: daysBack },
