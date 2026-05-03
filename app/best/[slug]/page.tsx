@@ -46,14 +46,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: `/best/${params.slug}`,
       languages: {
-        'en-AE': `${CONFIG.siteUrl}/best/${params.slug}`,
-        'x-default': `${CONFIG.siteUrl}/best/${params.slug}`,
+        'en-AE': `${CONFIG.canonicalUrl}/best/${params.slug}`,
+        'x-default': `${CONFIG.canonicalUrl}/best/${params.slug}`,
       },
     },
     openGraph: {
       title: generatePageTitle(keyword.keyword_text),
       description: generatePageDescription(keyword.keyword_text),
-      url: `${CONFIG.siteUrl}/best/${params.slug}`,
+      url: `${CONFIG.canonicalUrl}/best/${params.slug}`,
     },
   };
 }

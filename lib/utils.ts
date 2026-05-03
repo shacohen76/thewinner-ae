@@ -14,6 +14,7 @@ export const CONFIG = {
   siteName: 'The Winners',
   siteTagline: 'Product Reviews',
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae',
+  canonicalUrl: process.env.NEXT_PUBLIC_CANONICAL_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinners.ae',
   amazonTag: 'twnraedirect01-21',
   amazonStoreId: 'thewinner02',
   gtmId: process.env.NEXT_PUBLIC_GTM_ID || 'GTM-MLB7SDHC',

@@ -4,18 +4,19 @@ import { getAllPosts, getAllTags } from '@/lib/blog';
 import BlogCard from '@/components/blog/BlogCard';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae';
+const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL || SITE_URL;
 const SITE_NAME = 'The Winners';
 
 export const metadata: Metadata = {
   title: `Blog | ${SITE_NAME}`,
   description:
     'Expert buying guides, product tips, and honest advice from our team of reviewers. Learn how to shop smarter in the UAE.',
-  alternates: { canonical: `${SITE_URL}/blog` },
+  alternates: { canonical: `${CANONICAL_URL}/blog` },
   openGraph: {
     title: `Blog | ${SITE_NAME}`,
     description:
       'Expert buying guides, product tips, and honest advice from our team of reviewers.',
-    url: `${SITE_URL}/blog`,
+    url: `${CANONICAL_URL}/blog`,
     siteName: SITE_NAME,
     locale: 'en_AE',
     type: 'website',

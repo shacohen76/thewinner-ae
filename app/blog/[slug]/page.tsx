@@ -8,6 +8,7 @@ import TableOfContents from '@/components/blog/TableOfContents';
 import BlogCard from '@/components/blog/BlogCard';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae';
+const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL || SITE_URL;
 const SITE_NAME = 'The Winners';
 
 // ── Static params ──────────────────────────────────────────────────────────
@@ -32,11 +33,11 @@ export async function generateMetadata({
     title: `${post.title} | ${SITE_NAME}`,
     description: post.description,
     authors: [{ name: post.author.name }],
-    alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
+    alternates: { canonical: `${CANONICAL_URL}/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `${SITE_URL}/blog/${post.slug}`,
+      url: `${CANONICAL_URL}/blog/${post.slug}`,
       siteName: SITE_NAME,
       locale: 'en_AE',
       type: 'article',

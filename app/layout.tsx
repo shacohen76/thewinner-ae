@@ -16,13 +16,13 @@ export const metadata: Metadata = {
   keywords: ['product comparison', 'reviews', 'electronics', 'perfumes', 'baby', 'coffee', 'garden', 'sports', 'cosmetics', 'appliances', 'computers', 'gaming', 'UAE', 'Amazon'],
   authors: [{ name: CONFIG.siteName }],
   creator: CONFIG.siteName,
-  metadataBase: new URL(CONFIG.siteUrl),
+  metadataBase: new URL(CONFIG.canonicalUrl),
 
   alternates: {
     canonical: '/',
     languages: {
-      'en-AE': CONFIG.siteUrl,
-      'x-default': CONFIG.siteUrl,
+      'en-AE': CONFIG.canonicalUrl,
+      'x-default': CONFIG.canonicalUrl,
     },
   },
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AE',
-    url: CONFIG.siteUrl,
+    url: CONFIG.canonicalUrl,
     siteName: CONFIG.siteName,
   },
   robots: {

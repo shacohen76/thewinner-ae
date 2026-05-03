@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       alternates: {
         canonical: `/category/${slug}`,
         languages: {
-          'en-AE': `${CONFIG.siteUrl}/category/${slug}`,
-          'x-default': `${CONFIG.siteUrl}/category/${slug}`,
+          'en-AE': `${CONFIG.canonicalUrl}/category/${slug}`,
+          'x-default': `${CONFIG.canonicalUrl}/category/${slug}`,
         },
       },
     };
@@ -64,8 +64,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: `/category/${slug}`,
       languages: {
-        'en-AE': `${CONFIG.siteUrl}/category/${slug}`,
-        'x-default': `${CONFIG.siteUrl}/category/${slug}`,
+        'en-AE': `${CONFIG.canonicalUrl}/category/${slug}`,
+        'x-default': `${CONFIG.canonicalUrl}/category/${slug}`,
       },
     },
   };
