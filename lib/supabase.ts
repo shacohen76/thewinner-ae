@@ -272,15 +272,29 @@ export async function getAllKeywords() {
     return [] as { slug: string }[];
   }
 
-  const { data, error } = await supabase
-    .from('keywords')
-    .select('slug');
+  // Supabase default limit is 1,000 rows — paginate to get all
+  const allKeywords: { slug: string }[] = [];
+  const PAGE_SIZE = 1000;
+  let from = 0;
 
-  if (error) {
-    console.error('Error fetching all keywords:', error);
-    return [] as { slug: string }[];
+  while (true) {
+    const { data, error } = await supabase
+      .from('keywords')
+      .select('slug')
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error('Error fetching keywords (sitemap pagination):', error);
+      break;
+    }
+
+    if (!data || data.length === 0) break;
+    allKeywords.push(...data);
+    if (data.length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
   }
-  return (data || []) as { slug: string }[];
+
+  return allKeywords;
 }
 
 // Get popular keywords for homepage

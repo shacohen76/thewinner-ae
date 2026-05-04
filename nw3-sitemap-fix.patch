@@ -1,0 +1,222 @@
+From 6645ecc44e5c92a810bbbf33f7920b84c1ba8d0a Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Mon, 4 May 2026 22:26:02 +0000
+Subject: [PATCH] fix: sitemap index + paginate past Supabase 1000 row limit
+ (NW3)
+
+- getAllKeywords() now paginates in 1000-row chunks (was silently capped at 1000)
+- sitemap.ts uses generateSitemaps() for sitemap index with child sitemaps
+- /sitemap/0.xml = static + categories + blog (~93 URLs)
+- /sitemap/1.xml = keywords 1-5000
+- /sitemap/2.xml = keywords 5001-8263+
+- Auto-scales as keyword count grows
+---
+ app/sitemap.ts  | 128 ++++++++++++++++++++++--------------------------
+ lib/supabase.ts |  28 ++++++++---
+ 2 files changed, 80 insertions(+), 76 deletions(-)
+
+diff --git a/app/sitemap.ts b/app/sitemap.ts
+index 26eb273..392f24f 100644
+--- a/app/sitemap.ts
++++ b/app/sitemap.ts
+@@ -1,8 +1,12 @@
+ // ============================================
+ // Sitemap — thewinner.ae
+ // Created: 2026-03-19
+-// Updated: 2026-04-20 (CG1: added blog routes)
+-// Generates sitemap.xml with all keyword pages
++// Updated: 2026-05-05 (NW3: sitemap index + pagination fix)
++// Generates sitemap index with multiple child sitemaps
++// Next.js generateSitemaps() → /sitemap.xml (index),
++//   /sitemap/0.xml (static+categories+blog),
++//   /sitemap/1.xml (keywords 1-5000),
++//   /sitemap/2.xml (keywords 5001-10000), etc.
+ // ============================================
+ 
+ import { MetadataRoute } from 'next';
+@@ -10,88 +14,74 @@ import { getAllKeywords, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supaba
+ import { getAllSlugs } from '@/lib/blog';
+ import { CONFIG } from '@/lib/utils';
+ 
+-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
++const KEYWORDS_PER_SITEMAP = 5000;
++
++export async function generateSitemaps() {
++  const keywords = await getAllKeywords();
++  const keywordChunks = Math.ceil(keywords.length / KEYWORDS_PER_SITEMAP);
++
++  // id 0 = static + categories + blog
++  // id 1..N = keyword chunks
++  const sitemaps = [{ id: 0 }];
++  for (let i = 0; i < keywordChunks; i++) {
++    sitemaps.push({ id: i + 1 });
++  }
++  return sitemaps;
++}
++
++export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+   const baseUrl = CONFIG.siteUrl;
+ 
+-  // Static pages
+-  const staticPages: MetadataRoute.Sitemap = [
+-    {
+-      url: baseUrl,
+-      lastModified: new Date(),
+-      changeFrequency: 'daily',
+-      priority: 1,
+-    },
+-    {
+-      url: `${baseUrl}/about`,
+-      lastModified: new Date(),
+-      changeFrequency: 'monthly',
+-      priority: 0.5,
+-    },
+-    {
+-      url: `${baseUrl}/contact`,
+-      lastModified: new Date(),
+-      changeFrequency: 'monthly',
+-      priority: 0.5,
+-    },
+-    {
+-      url: `${baseUrl}/privacy`,
+-      lastModified: new Date(),
+-      changeFrequency: 'yearly',
+-      priority: 0.3,
+-    },
+-    {
+-      url: `${baseUrl}/terms`,
+-      lastModified: new Date(),
+-      changeFrequency: 'yearly',
+-      priority: 0.3,
+-    },
+-    {
+-      url: `${baseUrl}/blog`,
++  // Sitemap 0: static pages + categories + blog
++  if (id === 0) {
++    const staticPages: MetadataRoute.Sitemap = [
++      { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
++      { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
++      { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
++      { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
++      { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
++      { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
++    ];
++
++    const mainCategoryPages: MetadataRoute.Sitemap = Object.keys(MAIN_CATEGORIES).map((slug) => ({
++      url: `${baseUrl}/category/${slug}`,
+       lastModified: new Date(),
+-      changeFrequency: 'weekly',
++      changeFrequency: 'weekly' as const,
+       priority: 0.8,
+-    },
+-  ];
++    }));
+ 
+-  // Main category pages
+-  const mainCategoryPages: MetadataRoute.Sitemap = Object.keys(MAIN_CATEGORIES).map((slug) => ({
+-    url: `${baseUrl}/category/${slug}`,
+-    lastModified: new Date(),
+-    changeFrequency: 'weekly' as const,
+-    priority: 0.8,
+-  }));
++    const subcategoryPages: MetadataRoute.Sitemap = Object.keys(SUBCATEGORY_NAMES).map((slug) => ({
++      url: `${baseUrl}/category/${slug}`,
++      lastModified: new Date(),
++      changeFrequency: 'weekly' as const,
++      priority: 0.7,
++    }));
+ 
+-  // Subcategory pages
+-  const subcategoryPages: MetadataRoute.Sitemap = Object.keys(SUBCATEGORY_NAMES).map((slug) => ({
+-    url: `${baseUrl}/category/${slug}`,
+-    lastModified: new Date(),
+-    changeFrequency: 'weekly' as const,
+-    priority: 0.7,
+-  }));
++    const blogSlugs = getAllSlugs();
++    const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
++      url: `${baseUrl}/blog/${slug}`,
++      lastModified: new Date(),
++      changeFrequency: 'monthly' as const,
++      priority: 0.7,
++    }));
+ 
+-  // Dynamic keyword pages from database
+-  let keywordPages: MetadataRoute.Sitemap = [];
++    return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...blogPages];
++  }
+ 
++  // Sitemap 1..N: keyword pages in chunks of 5,000
+   try {
+     const keywords = await getAllKeywords();
+-    keywordPages = keywords.map((keyword) => ({
++    const start = (id - 1) * KEYWORDS_PER_SITEMAP;
++    const chunk = keywords.slice(start, start + KEYWORDS_PER_SITEMAP);
++
++    return chunk.map((keyword) => ({
+       url: `${baseUrl}/best/${encodeURIComponent(keyword.slug)}`,
+       lastModified: new Date(),
+       changeFrequency: 'weekly' as const,
+       priority: 0.9,
+     }));
+   } catch (error) {
+-    console.error('Error fetching keywords for sitemap:', error);
++    console.error('Error fetching keywords for sitemap chunk:', error);
++    return [];
+   }
+-
+-  // Blog post pages
+-  const blogSlugs = getAllSlugs();
+-  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+-    url: `${baseUrl}/blog/${slug}`,
+-    lastModified: new Date(),
+-    changeFrequency: 'monthly' as const,
+-    priority: 0.7,
+-  }));
+-
+-  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages, ...blogPages];
+ }
+diff --git a/lib/supabase.ts b/lib/supabase.ts
+index 84db843..d1ac2a4 100644
+--- a/lib/supabase.ts
++++ b/lib/supabase.ts
+@@ -272,15 +272,29 @@ export async function getAllKeywords() {
+     return [] as { slug: string }[];
+   }
+ 
+-  const { data, error } = await supabase
+-    .from('keywords')
+-    .select('slug');
++  // Supabase default limit is 1,000 rows — paginate to get all
++  const allKeywords: { slug: string }[] = [];
++  const PAGE_SIZE = 1000;
++  let from = 0;
+ 
+-  if (error) {
+-    console.error('Error fetching all keywords:', error);
+-    return [] as { slug: string }[];
++  while (true) {
++    const { data, error } = await supabase
++      .from('keywords')
++      .select('slug')
++      .range(from, from + PAGE_SIZE - 1);
++
++    if (error) {
++      console.error('Error fetching keywords (sitemap pagination):', error);
++      break;
++    }
++
++    if (!data || data.length === 0) break;
++    allKeywords.push(...data);
++    if (data.length < PAGE_SIZE) break;
++    from += PAGE_SIZE;
+   }
+-  return (data || []) as { slug: string }[];
++
++  return allKeywords;
+ }
+ 
+ // Get popular keywords for homepage
+-- 
+2.43.0
+
