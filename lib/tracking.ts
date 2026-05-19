@@ -2,8 +2,30 @@
 // TRACKING UTILITIES — Server-side tag rotation
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-03-27
-// Handles tag assignment, click logging, and tag expiry
+// Last Modified: 2026-05-19 (AMZ12)
+//
+// Handles tag assignment, click logging, tag expiry, and pool maintenance.
+//
+// Changelog
+//   2026-03-27  v1   Initial: assignTag (LRU rotation), logAsinClick, releaseExpiredTags
+//   2026-05-19  v2   AMZ12 — Stable-first attribution overhaul:
+//                    - TRACKING_CONFIG: added seedingCohortSize (5), poolLowThreshold (20),
+//                      asinHoldHours (24).
+//                    - sendTelegram() helper for cron alerts.
+//                    - assignTag() Step 1 now filters to is_stable OR seeding_cohort
+//                      and orders is_stable DESC so stables are picked first.
+//                      Step 2 (steal-oldest-busy) unchanged — still the burst safety net.
+//                    - logAsinClick() now extends tag_pool.expires_at to now+24h
+//                      WHEN AND ONLY WHEN the held tag is_stable=true. Cohort/reserve
+//                      tags keep their 4h hold so they keep rotating and graduate.
+//                    - maintainTagPool() new fn: promotes ≥4-order tags to stable,
+//                      graduates stable cohort members, tops up cohort to size 5,
+//                      Telegram-alerts when reserve pool < 20. Called by the new
+//                      /api/cron/maintain-tag-pool cron every 15 min.
+//
+// Tightly coupled tables: public.tag_pool (with new columns is_stable, seeding_cohort)
+//                         public.click_log (sessions + ASIN clicks)
+//                         public.amazon_purchase_snapshot (read-only, for is_stable promotion)
 // ============================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
