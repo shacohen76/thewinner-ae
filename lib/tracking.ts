@@ -35,7 +35,41 @@ export const TRACKING_CONFIG = {
   defaultTag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
   gadsTagType: 'gads',
   staticTagTypes: ['seo', 'fb', 'bing', 'chatgpt', 'direct', 'other_geo', 'other'],
+  // Seeding cohort size: how many unstable tags are eligible alongside stables.
+  // Cohort tags are picked only when all stable tags are busy. Once a cohort
+  // tag crosses the 4-order threshold (snapshot.items_ordered >= 4) it becomes
+  // stable and gets replaced by the next reserve tag via maintainTagPool().
+  seedingCohortSize: parseInt(process.env.SEEDING_COHORT_SIZE || '5'),
+  // Alert threshold: when reserve_pool (unstable, not in cohort) drops below
+  // this, the maintain-tag-pool cron sends a Telegram alert asking for more
+  // tags to be created in Amazon.
+  poolLowThreshold: parseInt(process.env.POOL_LOW_THRESHOLD || '20'),
 };
+
+
+// ============================================
+// TELEGRAM (used by maintain-tag-pool cron alerts)
+// ============================================
+
+async function sendTelegram(message: string): Promise<boolean> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) {
+    console.warn('Telegram not configured (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID missing) — skipping alert');
+    return false;
+  }
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: message }),
+    });
+    return res.ok;
+  } catch (e) {
+    console.error('Telegram send failed:', e);
+    return false;
+  }
+}
 
 // Static tag mapping — traffic source → first matching tag
 // These don't rotate, one tag per source type
@@ -103,13 +137,20 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   const holdHours = TRACKING_CONFIG.tagHoldHours;
   const expiresAt = new Date(Date.now() + holdHours * 60 * 60 * 1000).toISOString();
 
-  // Step 1: Try to find an available tag
+  // Step 1: Try to find an available tag.
+  // Only tags marked `is_stable=true` (≥4 cumulative orders in Amazon's report
+  // = visible) OR `seeding_cohort=true` (small actively-warmed-up bucket of
+  // unseen tags) are eligible. Reserve tags sit idle until maintainTagPool()
+  // rotates them into the cohort. Within the eligible set, stable tags are
+  // picked first (sharp 1-to-1 attribution); cohort is fallback.
   let { data: freeTag } = await getSupabaseAdmin()
     .from('tag_pool')
     .select('tag_id')
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('status', 'available')
-    .order('assigned_at', { ascending: true, nullsFirst: true })
+    .or('is_stable.eq.true,seeding_cohort.eq.true')
+    .order('is_stable', { ascending: false })            // stable first
+    .order('assigned_at', { ascending: true, nullsFirst: true })  // LRU within tier
     .limit(1)
     .single();
 
@@ -213,6 +254,132 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
 // ============================================
 // TAG EXPIRY (called by cron)
 // ============================================
+
+// ============================================
+// TAG POOL MAINTENANCE (called by cron every 15 min)
+// ============================================
+//   1. Promote tags that crossed 4-order threshold → is_stable=true
+//   2. Graduate stable cohort members → seeding_cohort=false
+//   3. Top up seeding cohort to TRACKING_CONFIG.seedingCohortSize
+//   4. Alert via Telegram if reserve pool (unstable, not cohort) drops below
+//      TRACKING_CONFIG.poolLowThreshold (= you need to create more tags in Amazon)
+//
+// Idempotent — safe to call repeatedly. Returns counts for the cron response.
+
+export interface MaintainTagPoolResult {
+  promoted_to_stable: number;
+  graduated_from_cohort: number;
+  cohort_added: number;
+  cohort_size_now: number;
+  reserve_remaining: number;
+  alert_sent: boolean;
+}
+
+export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
+  const sb = getSupabaseAdmin();
+
+  // ── 1. Promote tags whose cumulative order count ≥ 4 ──
+  // Fetch the eligible tag_ids from snapshot, then UPDATE tag_pool.
+  const { data: snapshotEligible } = await sb
+    .from('amazon_purchase_snapshot')
+    .select('tag_id')
+    .gte('items_ordered', 4);
+  const eligibleIds = (snapshotEligible || []).map(r => r.tag_id);
+
+  let promotedCount = 0;
+  if (eligibleIds.length > 0) {
+    const { data: promoted } = await sb
+      .from('tag_pool')
+      .update({ is_stable: true })
+      .in('tag_id', eligibleIds)
+      .eq('is_stable', false)
+      .select('tag_id');
+    promotedCount = promoted?.length || 0;
+  }
+
+  // ── 2. Graduate stable cohort members (they no longer need cohort lane) ──
+  const { data: graduated } = await sb
+    .from('tag_pool')
+    .update({ seeding_cohort: false })
+    .eq('seeding_cohort', true)
+    .eq('is_stable', true)
+    .select('tag_id');
+  const graduatedCount = graduated?.length || 0;
+
+  // ── 3. Top up cohort back to target size ──
+  const targetSize = TRACKING_CONFIG.seedingCohortSize;
+  const { count: cohortCount } = await sb
+    .from('tag_pool')
+    .select('*', { count: 'exact', head: true })
+    .eq('seeding_cohort', true);
+  const currentCohort = cohortCount || 0;
+  const needed = targetSize - currentCohort;
+
+  let addedCount = 0;
+  if (needed > 0) {
+    const { data: candidates } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('is_stable', false)
+      .eq('seeding_cohort', false)
+      .eq('status', 'available')
+      .order('tag_id', { ascending: true })   // deterministic: lowest tag_id first
+      .limit(needed);
+
+    if (candidates && candidates.length > 0) {
+      const ids = candidates.map(r => r.tag_id);
+      const { data: added } = await sb
+        .from('tag_pool')
+        .update({ seeding_cohort: true })
+        .in('tag_id', ids)
+        .select('tag_id');
+      addedCount = added?.length || 0;
+    }
+  }
+
+  // ── 4. Reserve health check + Telegram alert if low ──
+  const { count: reserveCount } = await sb
+    .from('tag_pool')
+    .select('*', { count: 'exact', head: true })
+    .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+    .eq('is_stable', false)
+    .eq('seeding_cohort', false);
+  const reserveRemaining = reserveCount || 0;
+
+  let alertSent = false;
+  if (reserveRemaining < TRACKING_CONFIG.poolLowThreshold) {
+    // Find the highest currently-known tag_id to suggest a starting number
+    const { data: highest } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .like('tag_id', 'twnrae%-21')
+      .order('tag_id', { ascending: false })
+      .limit(1)
+      .single();
+    const nextNumeric = highest?.tag_id
+      ? `(highest current: ${highest.tag_id})`
+      : '';
+
+    alertSent = await sendTelegram(
+      `🟡 AMZ tag pool LOW\n` +
+      `Reserve gads tags: ${reserveRemaining} (threshold: ${TRACKING_CONFIG.poolLowThreshold})\n` +
+      `Cohort: ${currentCohort + addedCount}/${targetSize}\n` +
+      `Action: create more tracking IDs in Amazon Associates ${nextNumeric}, ` +
+      `then INSERT them into tag_pool with tag_type='gads'.`
+    );
+  }
+
+  return {
+    promoted_to_stable: promotedCount,
+    graduated_from_cohort: graduatedCount,
+    cohort_added: addedCount,
+    cohort_size_now: currentCohort + addedCount,
+    reserve_remaining: reserveRemaining,
+    alert_sent: alertSent,
+  };
+}
+
 
 export async function releaseExpiredTags(): Promise<number> {
   const now = new Date().toISOString();

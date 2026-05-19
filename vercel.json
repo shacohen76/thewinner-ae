@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/release-tags",
       "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/maintain-tag-pool",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
