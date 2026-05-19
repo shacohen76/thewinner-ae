@@ -44,6 +44,13 @@ export const TRACKING_CONFIG = {
   // this, the maintain-tag-pool cron sends a Telegram alert asking for more
   // tags to be created in Amazon.
   poolLowThreshold: parseInt(process.env.POOL_LOW_THRESHOLD || '20'),
+  // High-intent extension: when a visitor on a STABLE tag clicks an Amazon
+  // product link (ASIN clickout), we extend that tag's hold so it stays
+  // bound to this visitor while we wait for the order to surface in Amazon's
+  // report. Rolling — each ASIN click resets the timer to now + this many
+  // hours. Cohort/reserve tags are intentionally NOT extended — they need
+  // to keep rotating to accumulate orders and graduate to stable.
+  asinHoldHours: parseInt(process.env.ASIN_HOLD_HOURS || '24'),
 };
 
 
@@ -247,6 +254,28 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
       last_activity: new Date().toISOString(),
     })
     .eq('session_id', sessionId);
+
+  // High-intent attribution lock: extend the tag's hold IF and ONLY IF
+  // this session currently holds a STABLE tag. Cohort/reserve tags must
+  // keep rotating per their original 4h hold so they can accumulate orders
+  // and graduate. The filters below make this a no-op for cohort/reserve.
+  //
+  //   .eq('current_session', sessionId)  → only the tag this session owns
+  //   .eq('is_stable', true)             → only stable tags get extended
+  //   .gt('expires_at', now)             → only still-busy tags (skip if already released)
+  //
+  // Rolling: each ASIN click resets expires_at to now + ASIN_HOLD_HOURS,
+  // so high-engagement visitors keep the tag bound through their session.
+  const nowIso = new Date().toISOString();
+  const asinExpiresIso = new Date(
+    Date.now() + TRACKING_CONFIG.asinHoldHours * 60 * 60 * 1000
+  ).toISOString();
+  await getSupabaseAdmin()
+    .from('tag_pool')
+    .update({ expires_at: asinExpiresIso })
+    .eq('current_session', sessionId)
+    .eq('is_stable', true)
+    .gt('expires_at', nowIso);
 
   return !error;
 }
