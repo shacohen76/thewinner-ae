@@ -2,8 +2,12 @@
 // Tag Assignment API — /api/tag-assign
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-03-27
+// Last Modified: 2026-05-21 (GEOS1)
 // v1.1: Added bot filtering (Vercel bots, crawlers)
+// v1.2: GEOS1 — bot/admin short-circuit responses now include amazon_domain
+//       + geo_group for uniform client-side handling. Main path passes the
+//       fields through automatically via assignTag(). ip_country forwarded
+//       to assignTag → server-side geo derivation; client doesn't post geo.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -32,12 +36,17 @@ export async function POST(request: NextRequest) {
   try {
     const userAgent = request.headers.get('user-agent') || null;
 
-    // Skip bots — don't waste tags or pollute click_log
+    // Skip bots — don't waste tags or pollute click_log.
+    // Response shape includes GEOS1 fields (amazon_domain, geo_group) so the
+    // client can read them uniformly — defaults to gulf since bots don't
+    // need geo routing (they index cached UAE HTML anyway).
     if (isBot(userAgent)) {
       return NextResponse.json({
         session_id: null,
         assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
         expires_at: null,
+        amazon_domain: 'amazon.ae',
+        geo_group: 'gulf',
         is_bot: true,
       });
     }
@@ -51,6 +60,8 @@ export async function POST(request: NextRequest) {
         session_id: null,
         assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
         expires_at: null,
+        amazon_domain: 'amazon.ae',
+        geo_group: 'gulf',
         is_admin: true,
       });
     }
