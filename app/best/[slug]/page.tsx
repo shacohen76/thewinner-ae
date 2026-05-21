@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
+import BackToTopLink from '@/components/BackToTopLink';
 import {
   getKeywordBySlug,
   getProductsForKeyword,
@@ -196,14 +197,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
               ))}
             </div>
 
-            {/* Back to top — UAE SEO anchor */}
+            {/* Back to top — geo-aware (GEOS1). Renders "United Arab Emirates"
+                in the cached SSR HTML; <BackToTopLink> swaps the geo name
+                client-side post-hydration via tw_geo cookie. */}
             <div className="text-center mt-8">
-              <a
-                href="#top"
-                className="text-blue-600 hover:text-blue-800 hover:underline text-lg font-semibold"
-              >
-                ↑ Back to Top 10 {toTitleCase(keyword.keyword_text)} in United Arab Emirates
-              </a>
+              <BackToTopLink keyword={toTitleCase(keyword.keyword_text)} />
             </div>
           </div>
         </section>

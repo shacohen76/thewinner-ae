@@ -3,17 +3,20 @@
 // Admin Tracking Dashboard — /admin/tracking
 // ============================================
 // Created: 2026-03-28
-// Last Modified: 2026-04-30
+// Last Modified: 2026-05-21 (GEOS1)
 // v1.1: Standalone dashboard for monitoring tag rotation system.
-//       Password protected via query param or localStorage.
-// v1.2: Added Users tab — new/returning users, cross-source detection,
-//       click rate comparison, GCLID carryover insight, per-user journey table.
-// v1.3: Expandable user rows with session timeline. Short 6-char user IDs.
-//       Numbered rows. Session details show page, source, tag, GCLID, clicks.
+// v1.2: Added Users tab — new/returning, cross-source, click rates, journeys.
+// v1.3: Expandable user rows with session timeline.
+// v1.4 (GEOS1): 5-state geo filter (All / Gulf / Europe / Intl) + country
+//       drilldown. Per-geo KPI strip + Top countries panel in Overview.
+//       Geo column in Sessions + Users. Per-geo cards + Share Clickouts in
+//       Funnel. By-Program panel in Tag Pool. See geos1-workspace/
+//       admin-mockup.html for the approved design.
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react';
 import { CONFIG } from '@/lib/utils';
+import type { GeoGroup } from '@/lib/geo-config';
 
 interface Session {
   session_id: string;
@@ -28,6 +31,8 @@ interface Session {
   created_at: string;
   last_activity: string;
   status: string;
+  // GEOS1: server-resolved geo group (gulf | europe | international)
+  geo_group: GeoGroup;
 }
 
 interface TagPoolEntry {
@@ -36,6 +41,9 @@ interface TagPoolEntry {
   status: string;
   assigned_at: string | null;
   expires_at: string | null;
+  // GEOS1: AMZ12 tier flags — used by "Currently busy" tier badges
+  is_stable?: boolean;
+  seeding_cohort?: boolean;
 }
 
 interface DailyStat {
@@ -72,6 +80,9 @@ interface UserEntry {
   is_returning: boolean;
   has_cross_source: boolean;
   session_details: UserSessionDetail[];
+  // GEOS1: server-derived from primary country
+  primary_country: string | null;
+  geo_group: GeoGroup;
 }
 
 interface UserSummary {
@@ -86,15 +97,40 @@ interface UserSummary {
   new_click_rate: string;
 }
 
+interface ByGeoBucket {
+  sessions: number;
+  with_gclid: number;
+  with_clicks: number;
+  total_asins: number;
+}
+
+interface TopCountry {
+  code: string;
+  count: number;
+  geo_group: GeoGroup;
+}
+
+interface ByProgram {
+  uae: number;
+  eu: number;
+  us: number;
+}
+
 interface TrackingData {
   tag_pool: TagPoolEntry[];
   sessions: Session[];
   daily_stats: DailyStat[];
   users: UserEntry[];
   user_summary: UserSummary;
+  // GEOS1 aggregations
+  by_geo: { gulf: ByGeoBucket; europe: ByGeoBucket; international: ByGeoBucket };
+  top_countries: TopCountry[];
+  by_program: ByProgram;
   meta: {
     total_sessions: number;
     date_range: { from: string; to: string; days: number };
+    geo_filter?: string;
+    country_filter?: string | null;
     generated_at: string;
   };
 }
@@ -107,6 +143,20 @@ function timeAgo(ts: string) {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
+}
+
+// GEOS1: time-until for FUTURE timestamps (tag expires_at). Returns
+// "expired", "30m", "3h 18m", "23h 50m". timeAgo() is wrong for the future
+// because it floors negative diffs to "just now".
+function timeUntil(ts: string) {
+  const diffMs = new Date(ts).getTime() - Date.now();
+  if (diffMs <= 0) return 'expired';
+  const m = Math.floor(diffMs / 60000);
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  const mm = m % 60;
+  if (h < 24) return `${h}h ${mm}m`;
+  return `${Math.floor(h / 24)}d ${h % 24}h`;
 }
 
 function formatDate(d: string) {
@@ -125,6 +175,51 @@ const SRC_BG: Record<string, string> = {
   other: 'bg-amber-100 text-amber-800',
 };
 
+// GEOS1 geo group badge labels + dark-on-darker chip colors
+const GEO_LABEL: Record<GeoGroup, string> = {
+  gulf: 'GULF',
+  europe: 'EU',
+  international: 'INTL',
+};
+const GEO_BADGE: Record<GeoGroup, string> = {
+  gulf:          'bg-emerald-900 text-emerald-300',
+  europe:        'bg-blue-900 text-blue-300',
+  international: 'bg-purple-900 text-purple-300',
+};
+
+// Country drilldown options for the dropdown — top traffic countries per
+// group. Sorted by current expected volume; not exhaustive.
+const COUNTRY_OPTIONS: { code: string; name: string; group: GeoGroup }[] = [
+  { code: 'AE', name: 'AE — UAE',            group: 'gulf' },
+  { code: 'SA', name: 'SA — Saudi Arabia',   group: 'gulf' },
+  { code: 'OM', name: 'OM — Oman',           group: 'gulf' },
+  { code: 'QA', name: 'QA — Qatar',          group: 'gulf' },
+  { code: 'BH', name: 'BH — Bahrain',        group: 'gulf' },
+  { code: 'KW', name: 'KW — Kuwait',         group: 'gulf' },
+  { code: 'GB', name: 'GB — United Kingdom', group: 'europe' },
+  { code: 'DE', name: 'DE — Germany',        group: 'europe' },
+  { code: 'NL', name: 'NL — Netherlands',    group: 'europe' },
+  { code: 'FR', name: 'FR — France',         group: 'europe' },
+  { code: 'IT', name: 'IT — Italy',          group: 'europe' },
+  { code: 'ES', name: 'ES — Spain',          group: 'europe' },
+  { code: 'US', name: 'US — United States',  group: 'international' },
+  { code: 'SG', name: 'SG — Singapore',      group: 'international' },
+  { code: 'CA', name: 'CA — Canada',         group: 'international' },
+  { code: 'IN', name: 'IN — India',          group: 'international' },
+  { code: 'AU', name: 'AU — Australia',      group: 'international' },
+  { code: 'JP', name: 'JP — Japan',          group: 'international' },
+  { code: 'IL', name: 'IL — Israel',         group: 'international' },
+];
+
+type GeoFilter = 'all' | 'gulf' | 'europe' | 'intl';
+
+// API uses 'intl'; type GeoGroup uses 'international'. Bridge.
+function geoFilterToGroup(f: GeoFilter): GeoGroup | null {
+  if (f === 'all') return null;
+  if (f === 'intl') return 'international';
+  return f;
+}
+
 export default function AdminTracking() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
@@ -132,7 +227,9 @@ export default function AdminTracking() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [days, setDays] = useState(7);
-  const [geoFilter, setGeoFilter] = useState<'ae' | 'all'>('ae');
+  // GEOS1: 5-state geo filter + per-country drilldown. Country overrides geo.
+  const [geoFilter, setGeoFilter] = useState<GeoFilter>('all');
+  const [countryFilter, setCountryFilter] = useState<string>('');
   const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users'>('overview');
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
 
@@ -150,7 +247,9 @@ export default function AdminTracking() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`/api/admin/tracking?key=${encodeURIComponent(key)}&days=${days}&geo=${geoFilter}`);
+      // GEOS1: send geo + country params. Country overrides geo server-side.
+      const url = `/api/admin/tracking?key=${encodeURIComponent(key)}&days=${days}&geo=${geoFilter}${countryFilter ? `&country=${countryFilter}` : ''}`;
+      const res = await fetch(url);
       if (res.status === 401) {
         setError('Wrong password');
         setAuthenticated(false);
@@ -166,11 +265,11 @@ export default function AdminTracking() {
       setError('Failed to fetch data');
     }
     setLoading(false);
-  }, [password, days, geoFilter]);
+  }, [password, days, geoFilter, countryFilter]);
 
   useEffect(() => {
     if (authenticated && password) fetchData();
-  }, [days, geoFilter, authenticated]);
+  }, [days, geoFilter, countryFilter, authenticated]);
 
   // Login screen
   if (!authenticated) {
@@ -206,7 +305,7 @@ export default function AdminTracking() {
   );
 
   // Computed
-  const { tag_pool, sessions, daily_stats, meta } = data;
+  const { tag_pool, sessions, daily_stats, meta, by_geo, top_countries, by_program } = data;
   const gadsTags = tag_pool.filter(t => t.tag_type === 'gads');
   const busyTags = gadsTags.filter(t => t.status === 'busy');
   const realSessions = sessions.filter(s => !s.gclid?.startsWith('test'));
@@ -250,14 +349,48 @@ export default function AdminTracking() {
               <option value={14}>14 days</option>
               <option value={30}>30 days</option>
             </select>
-            <button onClick={() => setGeoFilter(geoFilter === 'ae' ? 'all' : 'ae')}
-              className={`px-3 py-1.5 text-sm font-medium rounded-lg border ${
-                geoFilter === 'ae'
-                  ? 'bg-emerald-900/50 border-emerald-700 text-emerald-400'
-                  : 'bg-gray-800 border-gray-700 text-gray-400'
-              }`}>
-              {geoFilter === 'ae' ? '🇦🇪 UAE Only' : '🌍 All GEOs'}
-            </button>
+            {/* GEOS1: 5-state geo filter pill. Selecting a group clears country. */}
+            <div className="flex items-center gap-0.5 bg-gray-900 border border-gray-700 rounded-lg p-0.5">
+              {([
+                { val: 'all',    label: '🌍 All' },
+                { val: 'gulf',   label: '🇦🇪 Gulf' },
+                { val: 'europe', label: '🇪🇺 Europe' },
+                { val: 'intl',   label: '🇺🇸 Intl' },
+              ] as { val: GeoFilter; label: string }[]).map(g => (
+                <button
+                  key={g.val}
+                  onClick={() => { setGeoFilter(g.val); setCountryFilter(''); }}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
+                    geoFilter === g.val && !countryFilter
+                      ? 'bg-blue-900/60 border border-blue-700 text-blue-200'
+                      : 'text-gray-400 hover:text-gray-200'
+                  }`}>
+                  {g.label}
+                </button>
+              ))}
+            </div>
+            {/* GEOS1: per-country drilldown. Overrides geo group server-side. */}
+            <select
+              value={countryFilter}
+              onChange={e => { setCountryFilter(e.target.value); if (e.target.value) setGeoFilter('all'); }}
+              className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5">
+              <option value="">🔍 Country: any</option>
+              <optgroup label="Gulf">
+                {COUNTRY_OPTIONS.filter(c => c.group === 'gulf').map(c => (
+                  <option key={c.code} value={c.code}>{c.name}</option>
+                ))}
+              </optgroup>
+              <optgroup label="Europe">
+                {COUNTRY_OPTIONS.filter(c => c.group === 'europe').map(c => (
+                  <option key={c.code} value={c.code}>{c.name}</option>
+                ))}
+              </optgroup>
+              <optgroup label="International">
+                {COUNTRY_OPTIONS.filter(c => c.group === 'international').map(c => (
+                  <option key={c.code} value={c.code}>{c.name}</option>
+                ))}
+              </optgroup>
+            </select>
             <button onClick={() => fetchData()} disabled={loading}
               className="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50">
               {loading ? '...' : 'Refresh'}
@@ -283,12 +416,37 @@ export default function AdminTracking() {
         {/* OVERVIEW */}
         {tab === 'overview' && (
           <>
+            {/* GEOS1 per-geo KPI strip — only when filter is 'all' AND no country picked.
+                Once narrowed, the 6-card row + tables already reflect the chosen geo. */}
+            {geoFilter === 'all' && !countryFilter && by_geo && (
+              <div className="grid md:grid-cols-3 gap-3 mb-6">
+                {[
+                  { key: 'gulf'         as const, label: '🇦🇪 Gulf · amazon.ae',        bg: 'bg-emerald-900/20 border-emerald-800/40', accent: 'text-emerald-300', sub: 'text-emerald-400' },
+                  { key: 'europe'       as const, label: '🇪🇺 Europe · amazon.de',      bg: 'bg-blue-900/20 border-blue-800/40',       accent: 'text-blue-300',    sub: 'text-blue-400' },
+                  { key: 'international' as const, label: '🇺🇸 International · amazon.com', bg: 'bg-purple-900/20 border-purple-800/40', accent: 'text-purple-300',  sub: 'text-purple-400' },
+                ].map(g => {
+                  const bucket = by_geo[g.key];
+                  const cr = bucket.sessions > 0 ? ((bucket.with_clicks / bucket.sessions) * 100).toFixed(1) + '%' : '0%';
+                  return (
+                    <div key={g.key} className={`${g.bg} rounded-xl p-4 border`}>
+                      <div className={`text-xs uppercase tracking-wide font-semibold mb-3 ${g.sub}`}>{g.label}</div>
+                      <div className="grid grid-cols-3 gap-2 text-sm">
+                        <div><div className="text-gray-500 text-[11px]">Sessions</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.sessions}</div></div>
+                        <div><div className="text-gray-500 text-[11px]">AMZ Clicks</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.with_clicks}</div></div>
+                        <div><div className="text-gray-500 text-[11px]">CR</div><div className={`text-2xl font-bold ${g.accent}`}>{cr}</div></div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
               {[
                 { label: 'Sessions', value: realSessions.length, color: '#3b82f6' },
                 { label: 'With GCLID', value: withGclid.length, color: '#a855f7' },
-                { label: 'Amazon Clicks', value: totalAsins, color: '#10b981' },
+                { label: 'AMZ Clicks', value: totalAsins, color: '#10b981' },
                 { label: 'Click Rate', value: `${realSessions.length > 0 ? ((withClicks.length / realSessions.length) * 100).toFixed(1) : '0'}%`, color: '#f59e0b' },
                 { label: 'Tags Busy', value: `${busyTags.length}/${gadsTags.length}`, color: '#14b8a6' },
                 { label: 'Bot Leaks', value: realSessions.filter(s => (s.user_agent || '').match(/bot|Bot|crawl|spider/i)).length, color: '#ef4444' },
@@ -327,8 +485,8 @@ export default function AdminTracking() {
               </div>
             )}
 
-            {/* Sources + Top Pages */}
-            <div className="grid md:grid-cols-2 gap-4">
+            {/* Sources + Top Countries (GEOS1) */}
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className="bg-gray-900 rounded-xl p-5 border border-gray-800">
                 <h2 className="text-sm font-semibold text-gray-400 mb-3">Traffic sources</h2>
                 <div className="space-y-2">
@@ -344,19 +502,36 @@ export default function AdminTracking() {
                 </div>
               </div>
 
+              {/* GEOS1 Top countries — derived server-side from filtered click_log */}
               <div className="bg-gray-900 rounded-xl p-5 border border-gray-800">
-                <h2 className="text-sm font-semibold text-gray-400 mb-3">Top landing pages</h2>
-                <div className="space-y-1.5">
-                  {topPages.map(([page, stats]) => (
-                    <div key={page} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400 truncate mr-2">{page}</span>
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <span className="text-gray-500">{stats.visits}</span>
-                        {stats.clicks > 0 && <span className="text-emerald-500 text-xs">→ {stats.clicks}</span>}
-                      </div>
+                <h2 className="text-sm font-semibold text-gray-400 mb-3">Top countries</h2>
+                <div className="space-y-1.5 text-sm">
+                  {top_countries && top_countries.length > 0 ? top_countries.slice(0, 10).map(c => (
+                    <div key={c.code} className="flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${GEO_BADGE[c.geo_group]}`}>{GEO_LABEL[c.geo_group]}</span>
+                        <span className="text-gray-300">{c.code === '_unknown' ? '— Unknown' : c.code}</span>
+                      </span>
+                      <span className="text-gray-500">{c.count}</span>
                     </div>
-                  ))}
+                  )) : <div className="text-gray-600 text-xs">No country data for this filter.</div>}
                 </div>
+              </div>
+            </div>
+
+            {/* Top landing pages — full width below */}
+            <div className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+              <h2 className="text-sm font-semibold text-gray-400 mb-3">Top landing pages</h2>
+              <div className="space-y-1.5">
+                {topPages.map(([page, stats]) => (
+                  <div key={page} className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400 truncate mr-2">{page}</span>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="text-gray-500">{stats.visits}</span>
+                      {stats.clicks > 0 && <span className="text-emerald-500 text-xs">→ {stats.clicks}</span>}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </>
@@ -377,6 +552,7 @@ export default function AdminTracking() {
                       <th className="px-3 py-2 text-xs font-medium text-gray-500">With GCLID</th>
                       <th className="px-3 py-2 text-xs font-medium text-gray-500">Clicked to AMZ</th>
                       <th className="px-3 py-2 text-xs font-medium text-gray-500">Total ASINs</th>
+                      <th className="px-3 py-2 text-xs font-medium text-gray-500">Share Clickouts</th>
                       <th className="px-3 py-2 text-xs font-medium text-gray-500">Click Rate</th>
                       <th className="px-3 py-2 text-xs font-medium text-gray-500">Sources</th>
                     </tr>
@@ -389,6 +565,9 @@ export default function AdminTracking() {
                         <td className="px-3 py-2.5 text-purple-400">{d.with_gclid}</td>
                         <td className="px-3 py-2.5 text-emerald-400">{d.with_clicks}</td>
                         <td className="px-3 py-2.5 text-emerald-400">{d.total_asins}</td>
+                        {/* GEOS1: Share Clickouts not in click_log today — ShareButton fires
+                            data-ga-category="share" to GTM/GA. Placeholder pending integration. */}
+                        <td className="px-3 py-2.5 text-gray-600 text-xs italic">— <span className="text-[10px]">(GA)</span></td>
                         <td className="px-3 py-2.5 text-amber-400">
                           {d.sessions > 0 ? ((d.with_clicks / d.sessions) * 100).toFixed(1) : '0'}%
                         </td>
@@ -404,7 +583,33 @@ export default function AdminTracking() {
                   </tbody>
                 </table>
               </div>
+              <p className="text-[11px] text-gray-500 mt-3 italic">Share Clickouts come from GTM dataLayer (Google Analytics), not click_log — placeholder pending integration.</p>
             </div>
+
+            {/* GEOS1 per-geo funnel rollup — shown when filter is "all" */}
+            {geoFilter === 'all' && !countryFilter && by_geo && (
+              <div className="grid md:grid-cols-3 gap-3 mb-6">
+                {[
+                  { key: 'gulf'         as const, label: '🇦🇪 Gulf · amazon.ae',        bg: 'bg-emerald-900/20 border-emerald-800/40', title: 'text-emerald-400', val: 'text-emerald-300' },
+                  { key: 'europe'       as const, label: '🇪🇺 Europe · amazon.de',      bg: 'bg-blue-900/20 border-blue-800/40',       title: 'text-blue-400',    val: 'text-blue-300' },
+                  { key: 'international' as const, label: '🇺🇸 International · amazon.com', bg: 'bg-purple-900/20 border-purple-800/40', title: 'text-purple-400',  val: 'text-purple-300' },
+                ].map(g => {
+                  const b = by_geo[g.key];
+                  const cr = b.sessions > 0 ? ((b.with_clicks / b.sessions) * 100).toFixed(1) + '%' : '0%';
+                  return (
+                    <div key={g.key} className={`rounded-xl p-4 border ${g.bg}`}>
+                      <h3 className={`text-xs font-semibold uppercase mb-3 ${g.title}`}>{g.label}</h3>
+                      <table className="w-full text-xs"><tbody className="text-gray-300">
+                        <tr><td className="py-0.5 text-gray-500">Sessions</td><td className="text-right text-white font-medium">{b.sessions}</td></tr>
+                        <tr><td className="py-0.5 text-gray-500">With GCLID</td><td className="text-right text-purple-300">{b.with_gclid}</td></tr>
+                        <tr><td className="py-0.5 text-gray-500">AMZ Clicks</td><td className={`text-right font-bold ${g.val}`}>{b.with_clicks} ({cr})</td></tr>
+                        <tr><td className="py-0.5 text-gray-500">Share Clickouts</td><td className="text-right text-gray-600 italic text-[11px]">— (GA)</td></tr>
+                      </tbody></table>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Sanity comparison helper */}
             <div className="bg-gray-900 rounded-xl p-6 border border-amber-900/30 mb-6">
@@ -428,6 +633,7 @@ export default function AdminTracking() {
                   <tr className="text-left border-b border-gray-800">
                     <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Time</th>
                     <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Source</th>
+                    <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Geo</th>
                     <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Tag</th>
                     <th className="px-3 py-2.5 text-xs font-medium text-gray-500">GCLID</th>
                     <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Page</th>
@@ -444,6 +650,9 @@ export default function AdminTracking() {
                         <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${SRC_BG[s.traffic_source] || SRC_BG.other}`}>
                           {s.traffic_source}
                         </span>
+                      </td>
+                      <td className="px-3 py-2">
+                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${GEO_BADGE[s.geo_group]}`}>{GEO_LABEL[s.geo_group]}</span>
                       </td>
                       <td className="px-3 py-2 font-mono text-xs text-gray-500">{s.assigned_tag}</td>
                       <td className="px-3 py-2 text-xs">
@@ -494,24 +703,49 @@ export default function AdminTracking() {
 
             {busyTags.length > 0 && (
               <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 mb-4">
-                <h2 className="text-sm font-semibold text-gray-400 mb-3">Currently busy ({busyTags.length})</h2>
-                <div className="space-y-1.5">
-                  {busyTags.map(t => (
-                    <div key={t.tag_id} className="flex items-center gap-4 text-sm">
-                      <span className="font-mono text-xs text-teal-400 w-28">{t.tag_id}</span>
-                      <span className="text-gray-500 text-xs">{t.assigned_at ? timeAgo(t.assigned_at) : '—'}</span>
-                      <span className="text-xs">
-                        {t.expires_at && new Date(t.expires_at) < new Date()
-                          ? <span className="text-red-400">expired — cron will release</span>
-                          : t.expires_at ? <span className="text-gray-600">expires {timeAgo(t.expires_at)}</span> : '—'}
-                      </span>
-                    </div>
-                  ))}
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-sm font-semibold text-gray-400">Currently busy ({busyTags.length})</h2>
+                  <span className="text-[10px] text-amber-400 italic">Stable tags after ASIN clickout: hold extends to 24h (rolling)</span>
                 </div>
+                <div className="space-y-1.5">
+                  {busyTags.map(t => {
+                    // GEOS1: detect ASIN-extended hold. The base hold is 4h
+                    // (TAG_HOLD_HOURS); the ASIN extension is 24h. If the gap
+                    // between assigned_at and expires_at is > 6h, the tag was
+                    // extended via logAsinClick.
+                    const wasExtended = t.assigned_at && t.expires_at
+                      ? (new Date(t.expires_at).getTime() - new Date(t.assigned_at).getTime()) > 6 * 60 * 60 * 1000
+                      : false;
+                    const isExpired = !!(t.expires_at && new Date(t.expires_at) < new Date());
+                    return (
+                      <div key={t.tag_id} className="flex items-center gap-4 text-sm flex-wrap">
+                        <span className="font-mono text-xs text-teal-400 w-36">{t.tag_id}</span>
+                        {t.is_stable ? (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/60 text-emerald-300 font-medium">stable</span>
+                        ) : t.seeding_cohort ? (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 font-medium">cohort</span>
+                        ) : (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-medium">reserve</span>
+                        )}
+                        <span className="text-gray-500 text-xs">{t.assigned_at ? timeAgo(t.assigned_at) : '—'}</span>
+                        <span className="text-xs">
+                          {isExpired
+                            ? <span className="text-red-400">expired — cron will release</span>
+                            : t.expires_at
+                              ? <span className="text-gray-600">expires in {timeUntil(t.expires_at)}
+                                  {wasExtended && t.is_stable && <span className="text-amber-400 text-[10px] ml-1">(ext: ASIN clickout)</span>}
+                                </span>
+                              : '—'}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-gray-500 mt-3 italic">Stable = ≥4 cumulative orders, 24h rolling hold on clickout. Cohort = seeding, fixed 4h. Reserve idle until promoted.</p>
               </div>
             )}
 
-            <div className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+            <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 mb-4">
               <h2 className="text-sm font-semibold text-gray-400 mb-3">Tag allocation</h2>
               <div className="flex flex-wrap gap-3">
                 {Object.entries(tag_pool.reduce((acc: Record<string, number>, t) => {
@@ -525,6 +759,37 @@ export default function AdminTracking() {
                 ))}
               </div>
             </div>
+
+            {/* GEOS1: By-Program panel — tag counts split by Amazon program.
+                Supplementary to the gads-pool focus above. */}
+            {by_program && (
+              <div className="grid md:grid-cols-3 gap-3">
+                <div className="bg-emerald-900/15 border border-emerald-800/30 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] uppercase font-semibold text-emerald-400">🇦🇪 UAE Program</span>
+                    <span className="text-[10px] text-emerald-500">amazon.ae</span>
+                  </div>
+                  <div className="text-2xl font-bold text-emerald-300">{by_program.uae} tags</div>
+                  <div className="text-[11px] text-gray-500">{gadsTags.length} gads + {by_program.uae - gadsTags.length} static</div>
+                </div>
+                <div className="bg-blue-900/15 border border-blue-800/30 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] uppercase font-semibold text-blue-400">🇪🇺 EU Program</span>
+                    <span className="text-[10px] text-blue-500">amazon.de</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-300">{by_program.eu} tag{by_program.eu === 1 ? '' : 's'}</div>
+                  <div className="text-[11px] text-gray-500">thewinnerde-21 (static)</div>
+                </div>
+                <div className="bg-purple-900/15 border border-purple-800/30 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] uppercase font-semibold text-purple-400">🇺🇸 US Program</span>
+                    <span className="text-[10px] text-purple-500">amazon.com</span>
+                  </div>
+                  <div className="text-2xl font-bold text-purple-300">{by_program.us} tag{by_program.us === 1 ? '' : 's'}</div>
+                  <div className="text-[11px] text-gray-500">thewinnerusa-20 (static)</div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -578,6 +843,7 @@ export default function AdminTracking() {
                     <tr className="text-left border-b border-gray-800">
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">#</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">User</th>
+                      <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Geo</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sessions</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">Sources</th>
                       <th className="px-3 py-2.5 text-xs font-medium text-gray-500">GCLID</th>
@@ -596,6 +862,10 @@ export default function AdminTracking() {
                           <td className="px-3 py-2 text-xs text-gray-600">{idx + 1}</td>
                           <td className="px-3 py-2 font-mono text-xs text-blue-400" title={u.user_id}>
                             {u.user_id.substring(0, 6)}
+                          </td>
+                          <td className="px-3 py-2 text-xs">
+                            <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${GEO_BADGE[u.geo_group]}`}>{GEO_LABEL[u.geo_group]}</span>
+                            <span className="text-gray-500 ml-1">{u.primary_country || '—'}</span>
                           </td>
                           <td className="px-3 py-2">
                             <span className={`font-bold ${u.is_returning ? 'text-purple-400' : 'text-gray-400'}`}>
@@ -632,7 +902,7 @@ export default function AdminTracking() {
                         {/* Expanded session details */}
                         {expandedUser === u.user_id && u.session_details && (
                           <tr key={`${u.user_id}-details`}>
-                            <td colSpan={9} className="px-0 py-0">
+                            <td colSpan={10} className="px-0 py-0">
                               <div className="bg-gray-950 border-l-2 border-blue-500 mx-3 my-2 rounded-lg overflow-hidden">
                                 <div className="px-4 py-2 text-xs font-medium text-gray-400 border-b border-gray-800">
                                   Journey for <span className="text-blue-400 font-mono">{u.user_id.substring(0, 6)}</span> — {u.session_details.length} session{u.session_details.length > 1 ? 's' : ''}

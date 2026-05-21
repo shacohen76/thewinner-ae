@@ -1,11 +1,16 @@
 // ============================================
 // Footer.tsx — Site footer with Amazon disclosure
 // Created: 2026-03-19
+// Last Modified: 2026-05-21 (GEOS1 — geo-aware tagline via FooterTagline)
 // Adapted from KSP: English, Amazon Associates disclosure
+//
+// Tagline country name is swapped client-side by <FooterTagline /> so the
+// cached layout HTML stays geo-agnostic. See FooterTagline.tsx.
 // ============================================
 
 import Link from 'next/link';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
+import FooterTagline from '@/components/FooterTagline';
 
 export default function Footer() {
   return (
@@ -20,9 +25,7 @@ export default function Footer() {
               </div>
               <div className="font-bold text-white text-lg">{CONFIG.siteName}</div>
             </div>
-            <p className="text-sm text-gray-400">
-              The leading product comparison site for the UAE. We help you find the perfect product.
-            </p>
+            <FooterTagline />
           </div>
 
           {/* Categories */}
