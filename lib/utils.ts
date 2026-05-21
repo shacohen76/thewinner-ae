@@ -54,23 +54,31 @@ export function buildAffiliateUrl(
   gclid?: string | null,
   _fbclid?: string | null
 ): string {
-  // Get rotation tag from session (set by TrackingProvider)
-  let tag = CONFIG.amazonTag; // fallback
+  // Defaults match pre-GEOS1 behavior: amazon.ae + UAE direct tag.
+  // Used by (a) the SSR render path (no window), (b) the catch-block fallback,
+  // and (c) pre-GEOS1 sessions where amazon_domain wasn't stored.
+  //
+  // Once the client hydrates AND TrackingProvider's first /api/tag-assign
+  // round-trip completes, sessionStorage carries both `assigned_tag` and
+  // `amazon_domain`. Subsequent renders pick them up here, so non-Gulf
+  // visitors see the right marketplace URL with no DOM rewrite needed.
+  let tag = CONFIG.amazonTag;
+  let domain = 'amazon.ae';
+
   if (typeof window !== 'undefined') {
     try {
       const session = sessionStorage.getItem('tw_tracking_session');
       if (session) {
         const parsed = JSON.parse(session);
-        if (parsed.assigned_tag) {
-          tag = parsed.assigned_tag;
-        }
+        if (parsed.assigned_tag) tag = parsed.assigned_tag;
+        if (parsed.amazon_domain) domain = parsed.amazon_domain;
       }
     } catch {
-      // sessionStorage unavailable — use default
+      // sessionStorage unavailable — use defaults
     }
   }
 
-  return `https://www.amazon.ae/dp/${asin}?tag=${tag}`;
+  return `https://www.${domain}/dp/${asin}?tag=${tag}`;
 }
 
 // ============================================
