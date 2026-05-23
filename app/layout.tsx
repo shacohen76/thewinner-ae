@@ -100,26 +100,13 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Google Consent Mode v2 — default-denied state set BEFORE GTM loads.
-            For non-Gulf visitors, this stays denied until they click Accept All
-            in the cookie banner. Gulf visitors get an immediate auto-update to
-            granted in CookieConsent.tsx on mount (banner doesn't show for them).
-            Required by EU ePrivacy/GDPR + mandatory for Google Ads since Mar 2024. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('consent', 'default', {
-                ad_storage: 'denied',
-                analytics_storage: 'denied',
-                ad_user_data: 'denied',
-                ad_personalization: 'denied',
-                wait_for_update: 500
-              });
-            `,
-          }}
-        />
+        {/* HOTFIX 2026-05-23: Consent Mode v2 default-denied block removed —
+            it was starving GA4 (denied default + GA4 tag not Consent-Mode-v2
+            configured in GTM → no events ever fired). Returns to pre-Path B
+            GTM behavior (implicit grant for everyone). Re-introduce only
+            after GTM tag is properly configured for Consent Mode v2 AND
+            CookieConsent.tsx update path is verified end-to-end.
+            See AM1 decisions log entry GEOS1-HOTFIX-1. */}
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{

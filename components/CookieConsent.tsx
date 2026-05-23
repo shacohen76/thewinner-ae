@@ -35,20 +35,14 @@ import { getGeoGroup, GEO_COOKIE_NAME } from '@/lib/geo-config';
 const STORAGE_KEY = 'cookie-consent';
 type Choice = 'accepted' | 'declined';
 
-// Push consent state into the dataLayer for Google Consent Mode v2.
-// The default 'denied' state was set in app/layout.tsx before GTM loaded.
-function updateConsent(granted: boolean): void {
-  if (typeof window === 'undefined') return;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dataLayer = (window as any).dataLayer as any[] | undefined;
-  if (!dataLayer) return;
-  const state = granted ? 'granted' : 'denied';
-  dataLayer.push(['consent', 'update', {
-    ad_storage: state,
-    analytics_storage: state,
-    ad_user_data: state,
-    ad_personalization: state,
-  }]);
+// HOTFIX 2026-05-23: Consent Mode v2 default-denied was removed from
+// layout.tsx after starving GA4. updateConsent is kept as a no-op so the
+// banner UI still works — choice still saved to localStorage. Re-enable
+// the dataLayer push once GTM's GA4 tag is verified Consent-Mode-v2
+// compliant AND we use proper gtag() function call (not raw array push).
+// See AM1 decisions log entry GEOS1-HOTFIX-1.
+function updateConsent(_granted: boolean): void {
+  // intentionally no-op pending Consent Mode v2 re-integration
 }
 
 function readGeoCookie(): string | null {
