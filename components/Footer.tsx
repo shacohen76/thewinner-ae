@@ -11,6 +11,7 @@
 import Link from 'next/link';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 import FooterTagline from '@/components/FooterTagline';
+import CookieSettingsLink from '@/components/CookieSettingsLink';
 
 export default function Footer() {
   return (
@@ -125,6 +126,9 @@ export default function Footer() {
                 <Link href="/terms" className="hover:text-white transition-colors">
                   Terms of Use
                 </Link>
+              </li>
+              <li>
+                <CookieSettingsLink />
               </li>
             </ul>
           </div>

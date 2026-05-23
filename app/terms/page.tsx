@@ -6,7 +6,9 @@ import { CONFIG } from '@/lib/utils';
 // ============================================
 // Terms of Use
 // Created: 2026-03-20
-// UAE jurisdiction, Amazon Associates references
+// Last Modified: 2026-05-23 (GEOS1 — affiliate disclosure strengthened to
+// FTC / UK CMA / EU UCPD standards + consumer-protection carve-out added
+// for visitors outside the UAE)
 // ============================================
 
 export const metadata: Metadata = {
@@ -23,7 +25,7 @@ export default function TermsPage() {
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Terms of Use</h1>
-          <p className="text-gray-500 mb-8">Last updated: March 2026</p>
+          <p className="text-gray-500 mb-8">Last updated: May 2026</p>
 
           <div className="space-y-8 text-gray-600">
             <section>
@@ -48,10 +50,18 @@ export default function TermsPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-gray-800 mb-4">4. Affiliate Links & Partnerships</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">4. Affiliate Links &amp; Partnerships</h2>
+              <p className="leading-relaxed mb-3">
+                <strong>Affiliate disclosure</strong> (per US FTC §255, UK CMA, and EU UCPD guidance):
+              </p>
+              <p className="leading-relaxed mb-3">
+                The Site contains affiliate links to the Amazon Associates Program, including the regional Amazon storefronts amazon.ae, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, and amazon.se. The specific storefront you are routed to is determined automatically based on your country.
+              </p>
+              <p className="leading-relaxed mb-3">
+                When you click an affiliate link and make a qualifying purchase, we may earn a commission at no additional cost to you. <strong>As Amazon Associates we earn from qualifying purchases.</strong>
+              </p>
               <p className="leading-relaxed">
-                The site participates in the Amazon Associates Program. When you buy through a link on our site, we may receive a commission. Receiving commissions does not affect our rankings.
-                As an Amazon Associates we earn from qualifying purchases.
+                Receiving commissions does not influence our editorial recommendations or product rankings. Products are selected based on data-driven criteria, not commission rates.
               </p>
             </section>
 
@@ -74,8 +84,11 @@ export default function TermsPage() {
 
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">7. Governing Law</h2>
-              <p className="leading-relaxed">
+              <p className="leading-relaxed mb-3">
                 These terms are governed by the laws of the United Arab Emirates. Any disputes arising from the use of this site shall be subject to the exclusive jurisdiction of the courts of Dubai, UAE.
+              </p>
+              <p className="leading-relaxed italic">
+                Nothing in this section shall override mandatory consumer-protection rights you may have under the laws of your country of residence. Visitors in the European Union, the United Kingdom, California, and other jurisdictions with mandatory consumer-protection laws retain those rights regardless of the choice-of-law clause above.
               </p>
             </section>
 

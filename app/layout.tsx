@@ -100,6 +100,26 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* Google Consent Mode v2 — default-denied state set BEFORE GTM loads.
+            For non-Gulf visitors, this stays denied until they click Accept All
+            in the cookie banner. Gulf visitors get an immediate auto-update to
+            granted in CookieConsent.tsx on mount (banner doesn't show for them).
+            Required by EU ePrivacy/GDPR + mandatory for Google Ads since Mar 2024. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                ad_storage: 'denied',
+                analytics_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                wait_for_update: 500
+              });
+            `,
+          }}
+        />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
