@@ -29,7 +29,7 @@
 // ============================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { getGeoGroup, getGeoConfig, GeoGroup } from './geo-config';
+import { getGeoConfig, GeoGroup, AmazonDomain } from './geo-config';
 
 // Server-side Supabase client (uses service role key for writes to tag_pool)
 // Lazy-initialized to avoid build-time errors when env vars are missing
@@ -138,7 +138,7 @@ export interface TagAssignResponse {
   // trigger a clean re-init (see TrackingProvider). Always populated:
   // - When GEOS1_ENABLED: derived from x-vercel-ip-country
   // - Otherwise: defaults to 'amazon.ae' / 'gulf' (pre-GEOS1 behavior)
-  amazon_domain: 'amazon.ae' | 'amazon.de' | 'amazon.com';
+  amazon_domain: AmazonDomain;
   geo_group: GeoGroup;
 }
 
@@ -146,21 +146,26 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   const sessionId = crypto.randomUUID();
 
   // ─── GEOS1: non-Gulf geo branch (early return) ────────────────────────
-  // Routes Europe/International visitors to their geo's default static tag,
+  // Routes any non-Gulf visitor to their program's default static tag,
   // bypassing both the AE static-tag lookup AND the gads rotation pool.
   // Gulf visitors fall through to the existing logic (path unchanged).
+  //
+  // v2 (2026-05-22): generalized from europe||international check to
+  // "anything-not-gulf" so newly-added programs (ca, uk, it, es, fr, pl, se,
+  // au, sg, br) are auto-routed via their lib/geo-config.ts program config —
+  // no code change needed here when adding more programs in the future.
+  //
   // Gated by GEOS1_ENABLED — when unset, treats everyone as Gulf (today's
-  // behavior). geo_group is resolved from x-vercel-ip-country at the edge.
+  // behavior). Program resolved from x-vercel-ip-country at the edge.
   const geos1Enabled = process.env.GEOS1_ENABLED === 'true';
   if (geos1Enabled) {
-    const geoGroup = getGeoGroup(req.ip_country);
-    if (geoGroup === 'europe' || geoGroup === 'international') {
-      const geoConfig = getGeoConfig(req.ip_country);
+    const geoConfig = getGeoConfig(req.ip_country);
+    if (geoConfig.group !== 'gulf') {
       const assignedTag = geoConfig.defaultTag;
 
       // Log the session — click_log still captures everything, with the
-      // non-AE tag in assigned_tag. ip_country tells us the geo. Non-Gulf
-      // gads visitors (~40/week) also get routed here, intentionally skipping
+      // program-specific tag in assigned_tag. ip_country tells us the geo.
+      // Non-Gulf gads visitors also get routed here, intentionally skipping
       // the gads rotation pool (rotation is Gulf-only, GCLID-attribution).
       await getSupabaseAdmin().from('click_log').insert({
         session_id: sessionId,
@@ -180,11 +185,11 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
         assigned_tag: assignedTag,
         expires_at: null, // geo-static tags don't expire
         amazon_domain: geoConfig.amazonDomain,
-        geo_group: geoGroup,
+        geo_group: geoConfig.group,
       };
     }
-    // geoGroup === 'gulf' OR ip_country missing → fall through to existing
-    // logic below. Behavior identical to pre-GEOS1.
+    // geoConfig.group === 'gulf' OR ip_country missing → fall through to
+    // existing logic below. Behavior identical to pre-GEOS1.
   }
 
   // Static sources get static tags (no rotation)

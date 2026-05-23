@@ -16,7 +16,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { CONFIG } from '@/lib/utils';
-import type { GeoGroup } from '@/lib/geo-config';
+import { ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 
 interface Session {
   session_id: string;
@@ -110,11 +110,16 @@ interface TopCountry {
   geo_group: GeoGroup;
 }
 
-interface ByProgram {
-  uae: number;
-  eu: number;
-  us: number;
+interface ByProgramRow {
+  group: GeoGroup;
+  amazonDomain: string;
+  defaultTag: string;
+  tags: number;
+  sessions: number;
+  clicks: number;
 }
+// Per-program rollup keyed by GeoProgram, populated for ALL_PROGRAMS by the API.
+type ByProgram = Partial<Record<GeoProgram, ByProgramRow>>;
 
 interface TrackingData {
   tag_pool: TagPoolEntry[];
@@ -760,34 +765,52 @@ export default function AdminTracking() {
               </div>
             </div>
 
-            {/* GEOS1: By-Program panel — tag counts split by Amazon program.
-                Supplementary to the gads-pool focus above. */}
+            {/* GEOS1 v2: By-Program panel — one row per Amazon Associates
+                program. Driven by ALL_PROGRAMS array so adding a new
+                program in lib/geo-config.ts auto-appears here. */}
             {by_program && (
-              <div className="grid md:grid-cols-3 gap-3">
-                <div className="bg-emerald-900/15 border border-emerald-800/30 rounded-xl p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[11px] uppercase font-semibold text-emerald-400">🇦🇪 UAE Program</span>
-                    <span className="text-[10px] text-emerald-500">amazon.ae</span>
-                  </div>
-                  <div className="text-2xl font-bold text-emerald-300">{by_program.uae} tags</div>
-                  <div className="text-[11px] text-gray-500">{gadsTags.length} gads + {by_program.uae - gadsTags.length} static</div>
+              <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                <div className="p-4 border-b border-gray-800 flex items-center justify-between">
+                  <h2 className="text-sm font-semibold text-gray-300">By Program ({ALL_PROGRAMS.length} Amazon Associates accounts)</h2>
+                  <span className="text-[11px] text-gray-500">Sessions + clicks reflect current filter</span>
                 </div>
-                <div className="bg-blue-900/15 border border-blue-800/30 rounded-xl p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[11px] uppercase font-semibold text-blue-400">🇪🇺 EU Program</span>
-                    <span className="text-[10px] text-blue-500">amazon.de</span>
-                  </div>
-                  <div className="text-2xl font-bold text-blue-300">{by_program.eu} tag{by_program.eu === 1 ? '' : 's'}</div>
-                  <div className="text-[11px] text-gray-500">thewinnerde-21 (static)</div>
-                </div>
-                <div className="bg-purple-900/15 border border-purple-800/30 rounded-xl p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[11px] uppercase font-semibold text-purple-400">🇺🇸 US Program</span>
-                    <span className="text-[10px] text-purple-500">amazon.com</span>
-                  </div>
-                  <div className="text-2xl font-bold text-purple-300">{by_program.us} tag{by_program.us === 1 ? '' : 's'}</div>
-                  <div className="text-[11px] text-gray-500">thewinnerusa-20 (static)</div>
-                </div>
+                <table className="w-full text-xs">
+                  <thead className="bg-gray-800/50 text-gray-400">
+                    <tr>
+                      <th className="text-left px-3 py-2">Program</th>
+                      <th className="text-left px-3 py-2">Group</th>
+                      <th className="text-left px-3 py-2">Domain</th>
+                      <th className="text-left px-3 py-2">Default Tag</th>
+                      <th className="text-right px-3 py-2">Tags</th>
+                      <th className="text-right px-3 py-2">Sessions</th>
+                      <th className="text-right px-3 py-2">AMZ Clicks</th>
+                      <th className="text-right px-3 py-2">CR</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-800/60 text-gray-300">
+                    {ALL_PROGRAMS.map(prog => {
+                      const row = by_program[prog];
+                      if (!row) return null;
+                      const cr = row.sessions > 0 ? `${((row.clicks / row.sessions) * 100).toFixed(1)}%` : '—';
+                      const groupBadge =
+                        row.group === 'gulf' ? 'bg-emerald-900/60 text-emerald-300'
+                        : row.group === 'europe' ? 'bg-blue-900/60 text-blue-300'
+                        : 'bg-purple-900/60 text-purple-300';
+                      return (
+                        <tr key={prog} className="hover:bg-gray-800/40">
+                          <td className="px-3 py-2 font-mono text-white uppercase">{prog}</td>
+                          <td className="px-3 py-2"><span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${groupBadge}`}>{row.group === 'international' ? 'INTL' : row.group === 'europe' ? 'EU' : 'GULF'}</span></td>
+                          <td className="px-3 py-2 text-gray-400">{row.amazonDomain}</td>
+                          <td className="px-3 py-2 font-mono text-gray-500">{prog === 'ae' ? <span className="italic text-gray-600">(rotation pool + statics)</span> : row.defaultTag}</td>
+                          <td className="px-3 py-2 text-right text-teal-400 font-medium">{row.tags}</td>
+                          <td className="px-3 py-2 text-right text-blue-400 font-medium">{row.sessions}</td>
+                          <td className="px-3 py-2 text-right text-emerald-400 font-medium">{row.clicks}</td>
+                          <td className="px-3 py-2 text-right text-amber-400">{cr}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
           </>
