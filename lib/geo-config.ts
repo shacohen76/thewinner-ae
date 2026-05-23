@@ -1,46 +1,85 @@
 // ============================================
-// GEO CONFIG — GEOS1 multi-geo routing
+// GEO CONFIG — GEOS1 multi-geo routing (v2 — 13 programs)
 // ============================================
 // Created: 2026-05-21
+// Updated: 2026-05-22 — expanded from 3 programs to 13 dedicated Amazon
+//                       Associates programs. Backward-compatible: existing
+//                       GeoGroup type kept (gulf/europe/international) for
+//                       dashboard rollups; new GeoProgram type addresses the
+//                       specific Amazon storefront per country.
 //
-// Single source of truth for geo → Amazon program mapping.
-// Routes non-Gulf visitors to the correct Amazon regional program so
-// their clicks generate affiliate commissions:
+// Two-tier model:
+//   GeoGroup    — high-level bucket (3 values)         — used by Overview
+//   GeoProgram  — specific Amazon Associates program   — used by routing
 //
-//   Gulf countries (GCC)  → amazon.ae  (existing tag logic, unchanged)
-//   European countries    → amazon.de  (tag: thewinnerde-21)
-//   Everywhere else       → amazon.com (tag: thewinnerusa-20)
+// Each country resolves to ONE program. Each program belongs to ONE group.
+// Most countries inherit a group-level catch-all program:
+//   - Gulf countries → 'ae'
+//   - European countries without dedicated program → 'de' (catch-all)
+//   - Everything else → 'us' (catch-all)
 //
-// This file is PURE DATA + helpers — no side effects, no DB calls,
-// no env reads. Safe to import from middleware, server components,
-// client components, and API routes.
+// Adding a new Amazon program:
+//   1. Add program to GeoProgram type below
+//   2. Add entry to PROGRAMS map (group, domain, tag)
+//   3. Add country code(s) to COUNTRY_PROGRAM map
+//   4. Optional: add display strings to COUNTRY_NAMES
+//   5. INSERT inventory row in tag_pool
 //
-// Imported by:
-//   middleware.ts                       (set geo cookie)
-//   lib/tracking.ts (assignTag)         (pick tag + domain)
-//   app/api/tag-assign/route.ts         (pass-through)
-//   components/TrackingProvider.tsx     (rewrite links + text swap)
-//   lib/utils.ts (buildAffiliateUrl)    (SSR fallback URL)
-//   components/Footer.tsx               (tagline swap)
-//   app/best/[slug]/page.tsx            (Back-to-Top swap)
-//
-// Adding a new country:
-//   1. Decide group (gulf/europe/international) by where they realistically
-//      buy from. Europe-group = amazon.de ships at reasonable price.
-//   2. Add the code to GULF_SET or EUROPE_SET if not international.
-//   3. Add display strings to COUNTRY_NAMES (otherwise NAME_FALLBACK is used).
+// Pure data + helpers — no side effects, no env reads, no DB. Safe to import
+// from middleware / server / client.
 // ============================================
 
+// ============================================
+// TYPES
+// ============================================
+
+/** High-level geo bucket — drives Overview KPI strip + 3-card dashboard. */
 export type GeoGroup = 'gulf' | 'europe' | 'international';
 
-export interface GeoConfig {
+/** Specific Amazon Associates program — drives the actual link routing. */
+export type GeoProgram =
+  | 'ae'   // amazon.ae       — Gulf catch-all
+  | 'us'   // amazon.com      — International catch-all
+  | 'ca'   // amazon.ca       — Canada
+  | 'de'   // amazon.de       — Europe catch-all
+  | 'uk'   // amazon.co.uk    — United Kingdom
+  | 'it'   // amazon.it       — Italy
+  | 'es'   // amazon.es       — Spain
+  | 'fr'   // amazon.fr       — France
+  | 'pl'   // amazon.pl       — Poland
+  | 'se'   // amazon.se       — Sweden (note: tag uses 'sw' suffix per Amazon account)
+  | 'au'   // amazon.com.au   — Australia
+  | 'sg'   // amazon.sg       — Singapore
+  | 'br';  // amazon.com.br   — Brazil
+
+/** All Amazon marketplace hostnames we route to. Used in TagAssignResponse,
+ *  TrackingProvider, and buildAffiliateUrl. Widened in v2 from 3 to 13. */
+export type AmazonDomain =
+  | 'amazon.ae'
+  | 'amazon.com'
+  | 'amazon.ca'
+  | 'amazon.de'
+  | 'amazon.co.uk'
+  | 'amazon.it'
+  | 'amazon.es'
+  | 'amazon.fr'
+  | 'amazon.pl'
+  | 'amazon.se'
+  | 'amazon.com.au'
+  | 'amazon.sg'
+  | 'amazon.com.br';
+
+interface ProgramConfig {
+  program: GeoProgram;
+  /** Which 3-bucket group this program rolls up under (for dashboard). */
   group: GeoGroup;
-  /** Amazon marketplace hostname for affiliate links (no protocol, no www). */
-  amazonDomain: 'amazon.ae' | 'amazon.de' | 'amazon.com';
-  /** Default affiliate tag for static (non-gads) traffic in this geo.
-   *  Gulf rotates through the gads pool for gads traffic — this is only
-   *  the static-source default for Gulf. Non-Gulf uses this for all sources. */
+  /** Hostname (no protocol, no www) used in affiliate link rewriting. */
+  amazonDomain: AmazonDomain;
+  /** Default affiliate tracking ID for this program. */
   defaultTag: string;
+}
+
+export interface GeoConfig extends ProgramConfig {
   /** Fits into footer: "...comparison site for {countryName}." */
   countryName: string;
   /** Fits into /best/ page: "Back to Top 10 X in {backToTopGeo}". */
@@ -50,69 +89,77 @@ export interface GeoConfig {
 // ============================================
 // COOKIE — name + lifetime
 // ============================================
-// Middleware writes; TrackingProvider + server components read.
-// NOT httpOnly — client TrackingProvider needs to read it for link rewriting.
-// SameSite=Lax + Secure are set at the cookie write site (middleware).
 export const GEO_COOKIE_NAME = 'tw_geo';
-/** 7 days. Re-resolved on every request anyway via x-vercel-ip-country;
- *  cookie is just the client-readable mirror so TrackingProvider can see it
- *  without an extra API round-trip. */
+/** 7 days. Re-resolved every request from x-vercel-ip-country anyway. */
 export const GEO_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
-// Local-dev fallback when x-vercel-ip-country header is absent.
-// AE keeps local dev behaving like today's production default (Gulf).
+/** Local-dev fallback when x-vercel-ip-country header is absent. */
 export const DEFAULT_COUNTRY = 'AE';
 
 // ============================================
-// GROUP DEFAULTS (per Amazon program)
+// PROGRAMS — one config per Amazon Associates account
 // ============================================
-// `defaultTag` here is the STATIC tag for the geo. Gulf gads traffic still
-// rotates through the pool via existing assignTag() logic — Gulf's defaultTag
-// below is only used as a final fallback inside that flow.
-const GROUP_DEFAULTS: Record<GeoGroup, Omit<GeoConfig, 'countryName' | 'backToTopGeo'>> = {
-  gulf: {
-    group: 'gulf',
-    amazonDomain: 'amazon.ae',
-    defaultTag: 'twnraedirect01-21', // matches CONFIG.amazonTag fallback
-  },
-  europe: {
-    group: 'europe',
-    amazonDomain: 'amazon.de',
-    defaultTag: 'thewinnerde-21',
-  },
-  international: {
-    group: 'international',
-    amazonDomain: 'amazon.com',
-    defaultTag: 'thewinnerusa-20',
-  },
+const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
+  // Gulf — only program with a rotation pool (handled in lib/tracking.ts).
+  // defaultTag is the static fallback for non-gads Gulf traffic; gads
+  // visitors get a rotated tag from the pool.
+  ae: { program: 'ae', group: 'gulf',          amazonDomain: 'amazon.ae',      defaultTag: 'twnraedirect01-21' },
+
+  // International programs — single static tag each.
+  us: { program: 'us', group: 'international', amazonDomain: 'amazon.com',     defaultTag: 'thewinnerusa-20' },
+  ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: 'thewinnerca-20' },
+  au: { program: 'au', group: 'international', amazonDomain: 'amazon.com.au',  defaultTag: 'thewinnerau-22' },
+  sg: { program: 'sg', group: 'international', amazonDomain: 'amazon.sg',      defaultTag: 'thewinnersg-22' },
+  br: { program: 'br', group: 'international', amazonDomain: 'amazon.com.br',  defaultTag: 'thewinnerbr-20' },
+
+  // European programs — single static tag each.
+  de: { program: 'de', group: 'europe',        amazonDomain: 'amazon.de',      defaultTag: 'thewinnerde-21' },
+  uk: { program: 'uk', group: 'europe',        amazonDomain: 'amazon.co.uk',   defaultTag: 'thewinneruk-21' },
+  it: { program: 'it', group: 'europe',        amazonDomain: 'amazon.it',      defaultTag: 'thewinnerit-21' },
+  es: { program: 'es', group: 'europe',        amazonDomain: 'amazon.es',      defaultTag: 'thewinneres-21' },
+  fr: { program: 'fr', group: 'europe',        amazonDomain: 'amazon.fr',      defaultTag: 'thewinnerfr-21' },
+  pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: 'thewinnerpl-21' },
+  // Sweden tag uses 'sw' suffix (legacy from Amazon store creation) — intentional.
+  se: { program: 'se', group: 'europe',        amazonDomain: 'amazon.se',      defaultTag: 'thewinnersw-21' },
 };
 
 // ============================================
-// GROUP MEMBERSHIP
+// COUNTRY → PROGRAM mapping
 // ============================================
-// Gulf — GCC countries; Amazon.ae ships, paying in AED.
-const GULF_SET = new Set<string>([
-  'AE', 'SA', 'BH', 'KW', 'OM', 'QA',
-]);
+// Each country code maps to exactly one program. Countries not listed
+// fall back to 'us' (amazon.com catch-all) — handled in getProgram().
+const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
+  // ── Gulf → ae ───────────────────────────────────────────
+  AE: 'ae', SA: 'ae', BH: 'ae', KW: 'ae', OM: 'ae', QA: 'ae',
 
-// Europe — EU + EEA + UK + near-Europe where amazon.de ships at reasonable
-// price. UK currently routed here until a separate amazon.co.uk account opens.
-const EUROPE_SET = new Set<string>([
-  'DE', 'GB', 'FR', 'NL', 'SE', 'FI', 'DK', 'NO', 'BE', 'CH', 'AT',
-  'IT', 'ES', 'PT', 'PL', 'RO', 'GR', 'IE', 'CZ', 'HU', 'HR', 'BG',
-  'SK', 'SI', 'LT', 'LV', 'EE', 'LU', 'MT', 'CY', 'IS', 'TR', 'UA', 'RS',
-]);
+  // ── Dedicated European programs ─────────────────────────
+  GB: 'uk',
+  DE: 'de',
+  IT: 'it',
+  ES: 'es',
+  FR: 'fr',
+  PL: 'pl',
+  SE: 'se',
 
-// Everything else → international (amazon.com).
+  // ── European catch-all → de (amazon.de ships, EUR pricing) ─
+  NL: 'de', FI: 'de', DK: 'de', NO: 'de', BE: 'de', CH: 'de', AT: 'de',
+  PT: 'de', RO: 'de', GR: 'de', IE: 'de', CZ: 'de', HU: 'de', HR: 'de',
+  BG: 'de', SK: 'de', SI: 'de', LT: 'de', LV: 'de', EE: 'de', LU: 'de',
+  MT: 'de', CY: 'de', IS: 'de', TR: 'de', UA: 'de', RS: 'de',
+
+  // ── Dedicated International programs ────────────────────
+  CA: 'ca',
+  AU: 'au',
+  SG: 'sg',
+  BR: 'br',
+
+  // All other countries → 'us' (default, see getProgram fallback)
+};
 
 // ============================================
-// COUNTRY DISPLAY NAMES
+// COUNTRY DISPLAY NAMES (footer + back-to-top swap text)
 // ============================================
-// `countryName` slots into "...site for {X}." (footer tagline).
-// `backToTopGeo` slots into "...Top 10 Y in {X}" (back-to-top anchor).
-// Two columns because some phrasings differ — e.g., "site for the UAE" reads
-// well in the footer, but "Top 10 X in the UAE" reads less natural than
-// "...in United Arab Emirates".
+// Schema unchanged from v1.
 const COUNTRY_NAMES: Record<string, { countryName: string; backToTopGeo: string }> = {
   // ── Gulf ────────────────────────────────────────────────
   AE: { countryName: 'the UAE',              backToTopGeo: 'United Arab Emirates' },
@@ -158,7 +205,7 @@ const COUNTRY_NAMES: Record<string, { countryName: string; backToTopGeo: string 
   UA: { countryName: 'Ukraine',              backToTopGeo: 'Ukraine' },
   RS: { countryName: 'Serbia',               backToTopGeo: 'Serbia' },
 
-  // ── International (top traffic + likely-relevant markets) ──
+  // ── International ──────────────────────────────────────
   US: { countryName: 'the United States',    backToTopGeo: 'the United States' },
   CA: { countryName: 'Canada',               backToTopGeo: 'Canada' },
   MX: { countryName: 'Mexico',               backToTopGeo: 'Mexico' },
@@ -184,42 +231,57 @@ const COUNTRY_NAMES: Record<string, { countryName: string; backToTopGeo: string 
   EG: { countryName: 'Egypt',                backToTopGeo: 'Egypt' },
 };
 
-// Generic fallback for country codes not in COUNTRY_NAMES.
-// Group is still resolved correctly via GULF_SET / EUROPE_SET — this only
-// affects the display strings.
 const NAME_FALLBACK = { countryName: 'your country', backToTopGeo: 'your region' };
 
 // ============================================
 // PUBLIC API
 // ============================================
 
-/** Resolve a 2-letter country code to a geo group. Case-insensitive,
- *  null/empty defaults to 'international'. */
-export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
+/** Resolve a country code to its Amazon program. Unknown codes default to
+ *  'us' (amazon.com catch-all). Case-insensitive, null/empty → 'us'. */
+export function getGeoProgram(countryCode: string | null | undefined): GeoProgram {
   const cc = (countryCode || '').toUpperCase();
-  if (GULF_SET.has(cc)) return 'gulf';
-  if (EUROPE_SET.has(cc)) return 'europe';
-  return 'international';
+  return COUNTRY_PROGRAM[cc] || 'us';
 }
 
-/** Full geo config (group + Amazon domain + tag + display strings).
- *  Always returns a valid config — unknown codes get international defaults
- *  with the generic 'your country'/'your region' fallback names. */
+/** Resolve a country code to its high-level geo group (gulf/europe/international).
+ *  Derived from the program. */
+export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
+  return PROGRAMS[getGeoProgram(countryCode)].group;
+}
+
+/** Full geo config — program + group + domain + tag + display strings.
+ *  Always returns a valid config. Unknown countries get 'us' program with
+ *  generic 'your country' / 'your region' fallback names. */
 export function getGeoConfig(countryCode: string | null | undefined): GeoConfig {
   const cc = (countryCode || '').toUpperCase();
-  const group = getGeoGroup(cc);
+  const programCfg = PROGRAMS[getGeoProgram(cc)];
   const names = COUNTRY_NAMES[cc] || NAME_FALLBACK;
   return {
-    ...GROUP_DEFAULTS[group],
+    ...programCfg,
     countryName: names.countryName,
     backToTopGeo: names.backToTopGeo,
   };
 }
 
-/** True when the code is a known country in COUNTRY_NAMES (has display strings).
- *  Useful for analytics — distinguishes "we have proper text for them" from
- *  "fell back to generic". */
+/** True if the code has explicit display strings (vs falling back to generic). */
 export function isKnownCountry(countryCode: string | null | undefined): boolean {
   const cc = (countryCode || '').toUpperCase();
   return cc in COUNTRY_NAMES;
+}
+
+/** Listing helper — used by admin dashboard to enumerate every program for
+ *  the By-Program panel. Returns programs in the order: ae, dedicated EU,
+ *  de catch-all, dedicated International, us catch-all. */
+export const ALL_PROGRAMS: GeoProgram[] = [
+  'ae',                                  // Gulf
+  'uk', 'it', 'es', 'fr', 'pl', 'se',    // dedicated EU
+  'de',                                  // EU catch-all
+  'ca', 'au', 'sg', 'br',                // dedicated INTL
+  'us',                                  // INTL catch-all
+];
+
+/** Public read-only view of a program's config. Used by admin dashboard. */
+export function getProgramConfig(program: GeoProgram): ProgramConfig {
+  return PROGRAMS[program];
 }

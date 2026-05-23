@@ -15,7 +15,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { getGeoGroup, type GeoGroup } from '@/lib/geo-config';
+import { getGeoGroup, getGeoProgram, getProgramConfig, ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 
 // Country lists for DB-side filtering. Mirror lib/geo-config.ts membership.
 // Kept here as plain arrays (not Sets) so Supabase .in() can consume them.
@@ -253,13 +253,31 @@ export async function GET(request: NextRequest) {
         geo_group: code === '_unknown' ? 'international' : getGeoGroup(code),
       }));
 
-    // ── GEOS1: tag pool counts split by Amazon program (Tag Pool tab).
-    // UAE = everything that isn't us_static or eu_static (gads + AE statics).
-    const byProgram = {
-      uae: tagPool.filter((t: any) => !['us_static', 'eu_static'].includes(t.tag_type)).length,
-      eu:  tagPool.filter((t: any) => t.tag_type === 'eu_static').length,
-      us:  tagPool.filter((t: any) => t.tag_type === 'us_static').length,
-    };
+    // ── GEOS1 v2: per-program rollup (Tag Pool tab By-Program panel).
+    // Each program tracks: how many tag_pool inventory rows it owns,
+    // how many sessions it received in the date range, and clickouts.
+    //
+    // Tag-count rules:
+    //   ae    — all tag_pool rows tagged 'gads' / 'seo' / 'direct' / 'seo_reserve'
+    //           / 'other_geo' (the UAE Amazon Associates account family)
+    //   other — exactly one row matching the program's defaultTag
+    const UAE_TAG_TYPES = new Set(['gads', 'seo', 'direct', 'seo_reserve', 'other_geo']);
+    const byProgram: Record<GeoProgram, { sessions: number; clicks: number; tags: number; group: GeoGroup; amazonDomain: string; defaultTag: string }> = {} as any;
+    ALL_PROGRAMS.forEach(prog => {
+      const cfg = getProgramConfig(prog);
+      const tagsForProgram = prog === 'ae'
+        ? tagPool.filter((t: any) => UAE_TAG_TYPES.has(t.tag_type)).length
+        : tagPool.filter((t: any) => t.tag_id === cfg.defaultTag).length;
+      const progSessions = sessions.filter((s: any) => getGeoProgram(s.ip_country) === prog);
+      byProgram[prog] = {
+        group: cfg.group,
+        amazonDomain: cfg.amazonDomain,
+        defaultTag: cfg.defaultTag,
+        tags: tagsForProgram,
+        sessions: progSessions.length,
+        clicks: progSessions.filter((s: any) => s.clicked_asins?.length > 0).length,
+      };
+    });
 
     return NextResponse.json({
       tag_pool: tagPool,
