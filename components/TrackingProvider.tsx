@@ -71,12 +71,13 @@ function getCurrentGeoGroup(): GeoGroup {
  */
 function isBotClient(): boolean {
   if (typeof navigator === 'undefined') return false;
-  // Includes the GEOS2 spoofed-bot signature (impossible Chrome/145.0.0.0) so
-  // the client skips the /api/tag-assign call entirely for it — no click_log
-  // row, no DOM rewrite. The tag-assign route's BOT_PATTERNS is the backstop.
-  return /Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot|Chrome\/145\.0\.0\.0/i.test(
-    navigator.userAgent
-  );
+  const ua = navigator.userAgent;
+  if (/Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot/i.test(ua)) return true;
+  // Spoofed DESKTOP Chrome/145 bot (GEOS2): real current Chrome ≈146-148; real
+  // Chrome/145 is Android-only. Require NOT-Android so real mobile users aren't
+  // blocked. Backstop is BOT_PATTERNS + isBot() in the tag-assign route.
+  if (ua.includes('Chrome/145.0.0.0') && !/Android/i.test(ua)) return true;
+  return false;
 }
 
 // ============================================

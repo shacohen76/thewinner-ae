@@ -21,13 +21,6 @@ const BOT_PATTERNS = [
   'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
   'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
   'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
-  // Spoofed-browser junk bots (GEOS2 2026-05-25). These mimic a real Chrome UA
-  // so they slipped past the patterns above and were polluting click_log
-  // (~1k rows/week, mostly datacenter Singapore). We match the EXACT impossible
-  // Chrome version (real stable ≈133; 145.0.0.0 does not exist) so there is
-  // zero false-positive risk on real users. Add new exact signatures here if it
-  // rotates — do NOT switch to a version range (real Chrome would grow into it).
-  'Chrome/145.0.0.0',
 ];
 
 // Pages that should not create tracking sessions
@@ -36,7 +29,14 @@ const EXCLUDED_PAGES = ['/admin'];
 
 function isBot(userAgent: string | null): boolean {
   if (!userAgent) return true; // no UA = likely bot
-  return BOT_PATTERNS.some(pattern => userAgent.includes(pattern));
+  if (BOT_PATTERNS.some(pattern => userAgent.includes(pattern))) return true;
+  // Spoofed DESKTOP Chrome/145 bot (GEOS2 2026-05-25). Real current Chrome is
+  // 146-148 (~18% clickout rate); Chrome/145 DESKTOP traffic runs ~0.4% CR =
+  // bots (Windows SEO-referrer spoof + Mac datacenter, ~1.9k rows). Real
+  // Chrome/145 exists ONLY on Android (mobile lags a version; ~14% CR, carries
+  // GCLIDs) — so we require NOT-Android to avoid blocking real mobile users.
+  if (userAgent.includes('Chrome/145.0.0.0') && !userAgent.includes('Android')) return true;
+  return false;
 }
 
 export async function POST(request: NextRequest) {
