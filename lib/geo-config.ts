@@ -48,6 +48,8 @@ export type GeoProgram =
   | 'fr'   // amazon.fr       — France
   | 'pl'   // amazon.pl       — Poland
   | 'se'   // amazon.se       — Sweden (note: tag uses 'sw' suffix per Amazon account)
+  | 'ie'   // amazon.ie       — Ireland (note: tag uses 'ir' suffix per Amazon account)
+  | 'be'   // amazon.com.be   — Belgium (note: tag uses 'bg' suffix per Amazon account)
   | 'au'   // amazon.com.au   — Australia
   | 'sg'   // amazon.sg       — Singapore
   | 'br';  // amazon.com.br   — Brazil
@@ -65,6 +67,8 @@ export type AmazonDomain =
   | 'amazon.fr'
   | 'amazon.pl'
   | 'amazon.se'
+  | 'amazon.ie'
+  | 'amazon.com.be'
   | 'amazon.com.au'
   | 'amazon.sg'
   | 'amazon.com.br';
@@ -121,6 +125,11 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: 'thewinnerpl-21' },
   // Sweden tag uses 'sw' suffix (legacy from Amazon store creation) — intentional.
   se: { program: 'se', group: 'europe',        amazonDomain: 'amazon.se',      defaultTag: 'thewinnersw-21' },
+  // Ireland ('ir') + Belgium ('bg') tags carry legacy suffixes from Amazon
+  // store creation — same pattern as Sweden's 'sw'. Program keys stay ISO
+  // ('ie','be'); only the tag string carries the legacy suffix. Added 2026-05-25.
+  ie: { program: 'ie', group: 'europe',        amazonDomain: 'amazon.ie',      defaultTag: 'thewinnerir-21' },
+  be: { program: 'be', group: 'europe',        amazonDomain: 'amazon.com.be',  defaultTag: 'thewinnerbg-21' },
 };
 
 // ============================================
@@ -140,20 +149,41 @@ const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
   FR: 'fr',
   PL: 'pl',
   SE: 'se',
+  IE: 'ie',   // amazon.ie     — dedicated program added 2026-05-25
+  BE: 'be',   // amazon.com.be — dedicated program added 2026-05-25
+
+  // ── European neighbours routed to their closest dedicated store ─
+  // (Amazon ships these from the mapped store with the best experience:
+  //  language / currency / shipping cost / customs — verified per store.)
+  PT: 'es',   // Portugal → amazon.es (de-facto PT store: free 2-day + Prime)
+  AD: 'es',   // Andorra  → amazon.es
+  LU: 'fr',   // Luxembourg → amazon.fr (larger catalog; FR/DE language)
+  MC: 'fr',   // Monaco   → amazon.fr
 
   // ── European catch-all → de (amazon.de ships, EUR pricing) ─
-  NL: 'de', FI: 'de', DK: 'de', NO: 'de', BE: 'de', CH: 'de', AT: 'de',
-  PT: 'de', RO: 'de', GR: 'de', IE: 'de', CZ: 'de', HU: 'de', HR: 'de',
-  BG: 'de', SK: 'de', SI: 'de', LT: 'de', LV: 'de', EE: 'de', LU: 'de',
+  // NOTE: Nordics (DK/FI/NO) stay here — amazon.se does NOT ship outside
+  // Sweden (verified 2026-05-25), so amazon.de is their best option.
+  NL: 'de', FI: 'de', DK: 'de', NO: 'de', CH: 'de', AT: 'de',
+  RO: 'de', GR: 'de', CZ: 'de', HU: 'de', HR: 'de',
+  BG: 'de', SK: 'de', SI: 'de', LT: 'de', LV: 'de', EE: 'de',
   MT: 'de', CY: 'de', IS: 'de', TR: 'de', UA: 'de', RS: 'de',
+  AL: 'de',   // Albania (Balkans) → amazon.de
 
   // ── Dedicated International programs ────────────────────
   CA: 'ca',
   AU: 'au',
   SG: 'sg',
   BR: 'br',
+  NZ: 'au',   // New Zealand → amazon.com.au (Oceania Global Store)
 
-  // All other countries → 'us' (default, see getProgram fallback)
+  // ── Southeast Asia → amazon.sg regional hub ─────────────
+  // amazon.sg ships across SEA (faster/cheaper than the amazon.com catch-all).
+  MY: 'sg', PH: 'sg', TH: 'sg', ID: 'sg', VN: 'sg', BN: 'sg',
+
+  // All other countries → 'us' (default, see getProgram fallback).
+  // Kept on 'us' deliberately: rest of South America (BR store is domestic-
+  // only), East Asia (KR/JP/TW/HK — no dedicated program), South Asia,
+  // Africa, non-Gulf Middle East, MX — amazon.com Global ships to all.
 };
 
 // ============================================
@@ -204,6 +234,9 @@ const COUNTRY_NAMES: Record<string, { countryName: string; backToTopGeo: string 
   TR: { countryName: 'Turkey',               backToTopGeo: 'Turkey' },
   UA: { countryName: 'Ukraine',              backToTopGeo: 'Ukraine' },
   RS: { countryName: 'Serbia',               backToTopGeo: 'Serbia' },
+  AD: { countryName: 'Andorra',              backToTopGeo: 'Andorra' },
+  MC: { countryName: 'Monaco',               backToTopGeo: 'Monaco' },
+  AL: { countryName: 'Albania',              backToTopGeo: 'Albania' },
 
   // ── International ──────────────────────────────────────
   US: { countryName: 'the United States',    backToTopGeo: 'the United States' },
@@ -224,6 +257,7 @@ const COUNTRY_NAMES: Record<string, { countryName: string; backToTopGeo: string 
   MY: { countryName: 'Malaysia',             backToTopGeo: 'Malaysia' },
   ID: { countryName: 'Indonesia',            backToTopGeo: 'Indonesia' },
   VN: { countryName: 'Vietnam',              backToTopGeo: 'Vietnam' },
+  BN: { countryName: 'Brunei',               backToTopGeo: 'Brunei' },
   PK: { countryName: 'Pakistan',             backToTopGeo: 'Pakistan' },
   BD: { countryName: 'Bangladesh',           backToTopGeo: 'Bangladesh' },
   NG: { countryName: 'Nigeria',              backToTopGeo: 'Nigeria' },
@@ -275,7 +309,7 @@ export function isKnownCountry(countryCode: string | null | undefined): boolean 
  *  de catch-all, dedicated International, us catch-all. */
 export const ALL_PROGRAMS: GeoProgram[] = [
   'ae',                                  // Gulf
-  'uk', 'it', 'es', 'fr', 'pl', 'se',    // dedicated EU
+  'uk', 'it', 'es', 'fr', 'pl', 'se', 'ie', 'be',  // dedicated EU
   'de',                                  // EU catch-all
   'ca', 'au', 'sg', 'br',                // dedicated INTL
   'us',                                  // INTL catch-all
