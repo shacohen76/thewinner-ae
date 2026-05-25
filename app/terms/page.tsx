@@ -55,7 +55,7 @@ export default function TermsPage() {
                 <strong>Affiliate disclosure</strong> (per US FTC §255, UK CMA, and EU UCPD guidance):
               </p>
               <p className="leading-relaxed mb-3">
-                The Site contains affiliate links to the Amazon Associates Program, including the regional Amazon storefronts amazon.ae, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, and amazon.se. The specific storefront you are routed to is determined automatically based on your country.
+                The Site contains affiliate links to the Amazon Associates Program, including the regional Amazon storefronts amazon.ae, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, amazon.se, amazon.ie, and amazon.com.be. The specific storefront you are routed to is determined automatically based on your country.
               </p>
               <p className="leading-relaxed mb-3">
                 When you click an affiliate link and make a qualifying purchase, we may earn a commission at no additional cost to you. <strong>As Amazon Associates we earn from qualifying purchases.</strong>

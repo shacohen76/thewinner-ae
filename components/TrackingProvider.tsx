@@ -25,7 +25,7 @@
 import { useEffect, useCallback } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { CONFIG } from '@/lib/utils';
-import { getGeoGroup, type GeoGroup } from '@/lib/geo-config';
+import { getGeoGroup, type GeoGroup, type AmazonDomain } from '@/lib/geo-config';
 
 // Session data stored in sessionStorage
 interface TrackingSession {
@@ -37,7 +37,9 @@ interface TrackingSession {
   // GEOS1 fields — optional so pre-GEOS1 sessions in sessionStorage still
   // deserialize cleanly. Absent value is treated as 'gulf' / 'amazon.ae' so
   // a Gulf user's existing session keeps working without re-init.
-  amazon_domain?: 'amazon.ae' | 'amazon.de' | 'amazon.com';
+  // Full AmazonDomain union (all 15 programs) — was previously narrowed to
+  // 3 values, which was inaccurate for every non-catch-all program.
+  amazon_domain?: AmazonDomain;
   geo_group?: GeoGroup;
 }
 
