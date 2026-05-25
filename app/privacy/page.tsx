@@ -64,7 +64,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">5. Third Parties</h2>
               <p className="leading-relaxed">
-                We may share information with Google Analytics, Google Tag Manager, Vercel (our hosting provider, with edge servers globally), Supabase (our database provider), and Amazon Associates business partners across multiple regional Amazon storefronts (amazon.ae, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, amazon.se, amazon.ie, amazon.com.be). We do not sell your personal information.
+                We may share information with Google Analytics, Google Tag Manager, Vercel (our hosting provider, with edge servers globally), Supabase (our database provider), and Amazon Associates business partners across multiple regional Amazon storefronts (amazon.ae, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, amazon.se, amazon.ie, amazon.com.be, amazon.nl). We do not sell your personal information.
               </p>
             </section>
 
