@@ -131,8 +131,12 @@ interface TrackingData {
   by_geo: { gulf: ByGeoBucket; europe: ByGeoBucket; international: ByGeoBucket };
   top_countries: TopCountry[];
   by_program: ByProgram;
+  // Phase 2: accurate, bot-excluded full-range aggregates.
+  source_breakdown?: Record<string, number>;
+  top_pages?: [string, { visits: number; clicks: number }][];
   meta: {
     total_sessions: number;
+    totals?: { sessions: number; with_gclid: number; with_clicks: number; total_asins: number; bots_excluded: number };
     date_range: { from: string; to: string; days: number };
     geo_filter?: string;
     country_filter?: string | null;
@@ -313,25 +317,14 @@ export default function AdminTracking() {
   const { tag_pool, sessions, daily_stats, meta, by_geo, top_countries, by_program } = data;
   const gadsTags = tag_pool.filter(t => t.tag_type === 'gads');
   const busyTags = gadsTags.filter(t => t.status === 'busy');
-  const realSessions = sessions.filter(s => !s.gclid?.startsWith('test'));
-  const withGclid = realSessions.filter(s => s.gclid);
-  const withClicks = realSessions.filter(s => s.clicked_asins?.length > 0);
-  const totalAsins = realSessions.reduce((sum, s) => sum + (s.clicked_asins?.length || 0), 0);
 
-  const sourceBreakdown: Record<string, number> = {};
-  realSessions.forEach(s => {
-    sourceBreakdown[s.traffic_source] = (sourceBreakdown[s.traffic_source] || 0) + 1;
-  });
-
-  // Top pages
-  const pageCount: Record<string, { visits: number; clicks: number }> = {};
-  realSessions.forEach(s => {
-    const p = (s.landing_page || 'unknown').replace('/best/', '');
-    if (!pageCount[p]) pageCount[p] = { visits: 0, clicks: 0 };
-    pageCount[p].visits++;
-    if (s.clicked_asins?.length > 0) pageCount[p].clicks++;
-  });
-  const topPages = Object.entries(pageCount).sort((a, b) => b[1].visits - a[1].visits).slice(0, 15);
+  // Phase 2: Overview headline numbers come from accurate, bot-excluded
+  // full-range aggregates (server-side GROUP BY), NOT the capped `sessions`
+  // display list. The `sessions`/`users` arrays remain a recent sample for
+  // the Sessions/Users tabs only.
+  const totals = meta.totals || { sessions: 0, with_gclid: 0, with_clicks: 0, total_asins: 0, bots_excluded: 0 };
+  const sourceBreakdown: Record<string, number> = data.source_breakdown || {};
+  const topPages: [string, { visits: number; clicks: number }][] = data.top_pages || [];
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-200">
@@ -449,12 +442,12 @@ export default function AdminTracking() {
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
               {[
-                { label: 'Sessions', value: realSessions.length, color: '#3b82f6' },
-                { label: 'With GCLID', value: withGclid.length, color: '#a855f7' },
-                { label: 'AMZ Clicks', value: totalAsins, color: '#10b981' },
-                { label: 'Click Rate', value: `${realSessions.length > 0 ? ((withClicks.length / realSessions.length) * 100).toFixed(1) : '0'}%`, color: '#f59e0b' },
+                { label: 'Sessions', value: totals.sessions, color: '#3b82f6' },
+                { label: 'With GCLID', value: totals.with_gclid, color: '#a855f7' },
+                { label: 'AMZ Clicks', value: totals.total_asins, color: '#10b981' },
+                { label: 'Click Rate', value: `${totals.sessions > 0 ? ((totals.with_clicks / totals.sessions) * 100).toFixed(1) : '0'}%`, color: '#f59e0b' },
                 { label: 'Tags Busy', value: `${busyTags.length}/${gadsTags.length}`, color: '#14b8a6' },
-                { label: 'Bot Leaks', value: realSessions.filter(s => (s.user_agent || '').match(/bot|Bot|crawl|spider/i)).length, color: '#ef4444' },
+                { label: 'Bots Excluded', value: totals.bots_excluded, color: '#ef4444' },
               ].map(s => (
                 <div key={s.label} className="bg-gray-900 rounded-xl p-4 border border-gray-800">
                   <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">{s.label}</div>
@@ -499,7 +492,7 @@ export default function AdminTracking() {
                     <div key={src} className="flex items-center gap-3">
                       <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${SRC_BG[src] || SRC_BG.other}`}>{src}</span>
                       <div className="flex-1 bg-gray-800 rounded-full h-2">
-                        <div className="h-2 rounded-full" style={{ width: `${(count / realSessions.length) * 100}%`, backgroundColor: SRC_COLORS[src] || '#f59e0b' }} />
+                        <div className="h-2 rounded-full" style={{ width: `${(count / (totals.sessions || 1)) * 100}%`, backgroundColor: SRC_COLORS[src] || '#f59e0b' }} />
                       </div>
                       <span className="text-sm text-gray-400 w-12 text-right">{count}</span>
                     </div>
