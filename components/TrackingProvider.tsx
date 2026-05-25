@@ -71,7 +71,10 @@ function getCurrentGeoGroup(): GeoGroup {
  */
 function isBotClient(): boolean {
   if (typeof navigator === 'undefined') return false;
-  return /Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot/i.test(
+  // Includes the GEOS2 spoofed-bot signature (impossible Chrome/145.0.0.0) so
+  // the client skips the /api/tag-assign call entirely for it — no click_log
+  // row, no DOM rewrite. The tag-assign route's BOT_PATTERNS is the backstop.
+  return /Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot|Chrome\/145\.0\.0\.0/i.test(
     navigator.userAgent
   );
 }
