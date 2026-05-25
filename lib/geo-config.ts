@@ -50,6 +50,7 @@ export type GeoProgram =
   | 'se'   // amazon.se       — Sweden (note: tag uses 'sw' suffix per Amazon account)
   | 'ie'   // amazon.ie       — Ireland (note: tag uses 'ir' suffix per Amazon account)
   | 'be'   // amazon.com.be   — Belgium (note: tag uses 'bg' suffix per Amazon account)
+  | 'nl'   // amazon.nl       — Netherlands
   | 'au'   // amazon.com.au   — Australia
   | 'sg'   // amazon.sg       — Singapore
   | 'br';  // amazon.com.br   — Brazil
@@ -69,6 +70,7 @@ export type AmazonDomain =
   | 'amazon.se'
   | 'amazon.ie'
   | 'amazon.com.be'
+  | 'amazon.nl'
   | 'amazon.com.au'
   | 'amazon.sg'
   | 'amazon.com.br';
@@ -130,6 +132,7 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   // ('ie','be'); only the tag string carries the legacy suffix. Added 2026-05-25.
   ie: { program: 'ie', group: 'europe',        amazonDomain: 'amazon.ie',      defaultTag: 'thewinnerir-21' },
   be: { program: 'be', group: 'europe',        amazonDomain: 'amazon.com.be',  defaultTag: 'thewinnerbg-21' },
+  nl: { program: 'nl', group: 'europe',        amazonDomain: 'amazon.nl',      defaultTag: 'thewinnernl-21' },
 };
 
 // ============================================
@@ -151,6 +154,7 @@ const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
   SE: 'se',
   IE: 'ie',   // amazon.ie     — dedicated program added 2026-05-25
   BE: 'be',   // amazon.com.be — dedicated program added 2026-05-25
+  NL: 'nl',   // amazon.nl     — dedicated program added 2026-05-25
 
   // ── European neighbours routed to their closest dedicated store ─
   // (Amazon ships these from the mapped store with the best experience:
@@ -163,7 +167,7 @@ const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
   // ── European catch-all → de (amazon.de ships, EUR pricing) ─
   // NOTE: Nordics (DK/FI/NO) stay here — amazon.se does NOT ship outside
   // Sweden (verified 2026-05-25), so amazon.de is their best option.
-  NL: 'de', FI: 'de', DK: 'de', NO: 'de', CH: 'de', AT: 'de',
+  FI: 'de', DK: 'de', NO: 'de', CH: 'de', AT: 'de',
   RO: 'de', GR: 'de', CZ: 'de', HU: 'de', HR: 'de',
   BG: 'de', SK: 'de', SI: 'de', LT: 'de', LV: 'de', EE: 'de',
   MT: 'de', CY: 'de', IS: 'de', TR: 'de', UA: 'de', RS: 'de',
@@ -309,7 +313,7 @@ export function isKnownCountry(countryCode: string | null | undefined): boolean 
  *  de catch-all, dedicated International, us catch-all. */
 export const ALL_PROGRAMS: GeoProgram[] = [
   'ae',                                  // Gulf
-  'uk', 'it', 'es', 'fr', 'pl', 'se', 'ie', 'be',  // dedicated EU
+  'uk', 'it', 'es', 'fr', 'pl', 'se', 'ie', 'be', 'nl',  // dedicated EU
   'de',                                  // EU catch-all
   'ca', 'au', 'sg', 'br',                // dedicated INTL
   'us',                                  // INTL catch-all
