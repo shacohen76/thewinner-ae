@@ -21,6 +21,13 @@ const BOT_PATTERNS = [
   'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
   'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
   'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
+  // Spoofed-browser junk bots (GEOS2 2026-05-25). These mimic a real Chrome UA
+  // so they slipped past the patterns above and were polluting click_log
+  // (~1k rows/week, mostly datacenter Singapore). We match the EXACT impossible
+  // Chrome version (real stable ≈133; 145.0.0.0 does not exist) so there is
+  // zero false-positive risk on real users. Add new exact signatures here if it
+  // rotates — do NOT switch to a version range (real Chrome would grow into it).
+  'Chrome/145.0.0.0',
 ];
 
 // Pages that should not create tracking sessions
