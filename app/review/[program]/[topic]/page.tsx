@@ -87,9 +87,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `10 Best ${topicLabel} Of ${getCurrentYear()} — ${names.backToTopGeo} — ${CONFIG.siteName}`,
     description: generatePageDescription(topicLabel),
-    // Critical: noindex keeps these utility pages out of Google. follow:true
-    // lets Amazon's bot traverse the cross-link banner between them.
-    robots: { index: false, follow: true },
+    // 2026-05-27: flipped to index:true. Goal: let Google index the 30 review
+    // pages so they capture geo-modified queries ("best laptops in Canada")
+    // and so each indexed URL is one more public proof to Amazon that the
+    // program-specific tag is in the source. Each review page has enough
+    // unique geo content (CountryBand, country name in header/footer/headline/
+    // cross-link/back-to-top/disclosure/copyright + areaServed JSON-LD + per-
+    // country marketplace domain in every Amazon link) to differentiate from
+    // the other 14 program variants without needing hreflang. If Search
+    // Console flags duplicate-content collapse in the next ~4 weeks, add
+    // hreflang as a reactive fix (~25 lines in generateMetadata). See
+    // AMAZON_PROGRAM_REVIEW_PAGES_SPEC_v2_1.md for rationale.
+    robots: { index: true, follow: true },
     // No canonical, no openGraph, no alternates — these aren't SEO pages.
   };
 }
