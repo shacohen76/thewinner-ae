@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import CookieConsent from '@/components/CookieConsent';
 import TrackingProvider from '@/components/TrackingProvider';
+import LayoutShell from '@/components/LayoutShell';
 import { CONFIG } from '@/lib/utils';
 import '@/styles/globals.css';
 
@@ -132,10 +130,9 @@ export default function RootLayout({
         </noscript>
         <Suspense fallback={null}>
           <TrackingProvider>
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            <CookieConsent />
+            {/* LayoutShell picks Header+Footer+CookieConsent vs ReviewHeader+ReviewFooter
+                based on pathname. Non-review paths render byte-identical to before. */}
+            <LayoutShell>{children}</LayoutShell>
           </TrackingProvider>
         </Suspense>
       </body>

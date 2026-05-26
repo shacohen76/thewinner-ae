@@ -268,6 +268,13 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
   const initTagRotation = useCallback(async () => {
     if (typeof window === 'undefined') return;
 
+    // /review/* are Amazon program-verification pages with hardcoded
+    // affiliate URLs in source. Tracking must NOT touch them — no session
+    // creation, no /api/tag-assign, no link rewriting (rewriting our
+    // pre-computed amazon.{tld} links would silently corrupt the exact
+    // tag we want the reviewer to verify).
+    if (pathname?.startsWith('/review/')) return;
+
     // GEOS1 belt-and-suspenders: skip all tracking for bots client-side too.
     // Middleware already skips the geo cookie for bots and the server route
     // returns a bot-shaped response; this third layer ensures any new bot
@@ -343,6 +350,9 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
   // Also rewrite links when new content loads (e.g., after client-side navigation).
   // Skip for bots — keep rendered indexing aligned with cached UAE HTML.
   useEffect(() => {
+    // Quarantine /review/* — see comment in initTagRotation. MutationObserver
+    // here would also rewrite our hardcoded amazon.{tld} affiliate links.
+    if (pathname?.startsWith('/review/')) return;
     if (isBotClient()) return;
     const session = getStoredSession();
     if (session) {
@@ -360,7 +370,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
 
       return () => observer.disconnect();
     }
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }
