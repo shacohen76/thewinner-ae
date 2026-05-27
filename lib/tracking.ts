@@ -127,6 +127,14 @@ export interface TagAssignRequest {
   ip_country?: string | null;
   user_id?: string | null;
   site?: string | null;
+  // SG-BOT Phase 0 (2026-05-27): observability for ASN-based bot triage. The
+  // Chrome/145.0.0.0 ingestion filter (GEOS2 2026-05-25) catches the old swarm
+  // but the new SG wave rotates across legitimate Chrome versions. Logging the
+  // visitor's ASN lets us identify the actual hosting infra (likely datacenter)
+  // so a precise filter can be written from real data. NO filtering here — just
+  // capture. See AMZ_AFF/Docs_MD/SG_BOT_FILTER_ROADMAP.md.
+  as_name?: string | null;
+  as_number?: number | null;
 }
 
 export interface TagAssignResponse {
@@ -178,6 +186,8 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
         ip_country: req.ip_country || null,
         user_id: req.user_id || null,
         site: req.site || null,
+        as_name: req.as_name || null,
+        as_number: req.as_number ?? null,
       });
 
       return {
@@ -208,6 +218,8 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
     ip_country: req.ip_country || null,
     user_id: req.user_id || null,
     site: req.site || null,
+    as_name: req.as_name || null,
+    as_number: req.as_number ?? null,
   });
 
     return {
@@ -292,6 +304,8 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
       ip_country: req.ip_country || null,
       user_id: req.user_id || null,
       site: req.site || null,
+      as_name: req.as_name || null,
+      as_number: req.as_number ?? null,
     });
 
   return {
