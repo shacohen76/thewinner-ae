@@ -153,28 +153,38 @@ export interface TagAssignResponse {
 export async function assignTag(req: TagAssignRequest): Promise<TagAssignResponse> {
   const sessionId = crypto.randomUUID();
 
-  // ─── GEOS1: non-Gulf geo branch (early return) ────────────────────────
-  // Routes any non-Gulf visitor to their program's default static tag,
-  // bypassing both the AE static-tag lookup AND the gads rotation pool.
-  // Gulf visitors fall through to the existing logic (path unchanged).
+  // ─── GEOS1: program-static-tag branch (early return) ──────────────────
+  // Routes any visitor whose program is NOT 'ae' to their program's default
+  // static tag, bypassing both the AE static-tag lookup AND the gads rotation
+  // pool. AE visitors (and small GCC routed to ae: BH/KW/OM/QA) fall through
+  // to the existing logic (path unchanged).
   //
   // v2 (2026-05-22): generalized from europe||international check to
-  // "anything-not-gulf" so newly-added programs (ca, uk, it, es, fr, pl, se,
-  // au, sg, br) are auto-routed via their lib/geo-config.ts program config —
-  // no code change needed here when adding more programs in the future.
+  // "anything-not-gulf" so newly-added programs were auto-routed via their
+  // lib/geo-config.ts program config — no code change needed here.
+  //
+  // v3 (2026-05-27, SAUDI-PROGRAM): changed check from `group !== 'gulf'` to
+  // `program !== 'ae'`. The Saudi Arabia program (sa) is in group='gulf' for
+  // dashboard purposes (geographically Gulf, no cookie banner) BUT must use
+  // its own static tag thewinnersa-21, not the AE rotation pool. Routing by
+  // program key is more accurate: AE catch-all (ae) keeps its rotation pool;
+  // every other program — Gulf or otherwise — uses its program static tag.
+  // BH/KW/OM/QA still map to 'ae' in COUNTRY_PROGRAM so their behavior is
+  // unchanged. The next program to get its own static tag (e.g. amazon.sa
+  // gads pool later, or amazon.in) becomes a drop-in addition.
   //
   // Gated by GEOS1_ENABLED — when unset, treats everyone as Gulf (today's
   // behavior). Program resolved from x-vercel-ip-country at the edge.
   const geos1Enabled = process.env.GEOS1_ENABLED === 'true';
   if (geos1Enabled) {
     const geoConfig = getGeoConfig(req.ip_country);
-    if (geoConfig.group !== 'gulf') {
+    if (geoConfig.program !== 'ae') {
       const assignedTag = geoConfig.defaultTag;
 
       // Log the session — click_log still captures everything, with the
       // program-specific tag in assigned_tag. ip_country tells us the geo.
-      // Non-Gulf gads visitors also get routed here, intentionally skipping
-      // the gads rotation pool (rotation is Gulf-only, GCLID-attribution).
+      // Non-AE gads visitors also get routed here, intentionally skipping
+      // the gads rotation pool (rotation is AE-only, GCLID-attribution).
       await getSupabaseAdmin().from('click_log').insert({
         session_id: sessionId,
         gclid: req.gclid || null,
