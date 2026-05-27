@@ -17,6 +17,7 @@ import type { GeoProgram } from '@/lib/geo-config';
 /** Programs that get a /review/{program}/{topic} page. Excludes 'ae' —
  *  the original Gulf program, already approved by Amazon. */
 export const REVIEW_PROGRAMS: Exclude<GeoProgram, 'ae'>[] = [
+  'sa',  // Saudi Arabia (separate program in 'gulf' group, added 2026-05-27)
   'us', 'ca', 'de', 'uk', 'it', 'es', 'fr', 'pl',
   'se', 'ie', 'be', 'nl', 'au', 'sg', 'br',
 ];
@@ -34,6 +35,7 @@ export const TOPIC_LABEL: Record<ReviewTopic, string> = {
 
 /** Flag emoji per program. Used by CountryBand + Header geo indicator. */
 export const PROGRAM_FLAG: Record<Exclude<GeoProgram, 'ae'>, string> = {
+  sa: '🇸🇦',
   us: '🇺🇸',
   ca: '🇨🇦',
   de: '🇩🇪',
@@ -54,6 +56,7 @@ export const PROGRAM_FLAG: Record<Exclude<GeoProgram, 'ae'>, string> = {
 /** ISO 3166-1 alpha-2 country code per program. Used by JSON-LD
  *  areaServed and by the COUNTRY_NAMES lookup in geo-config. */
 export const PROGRAM_COUNTRY_CODE: Record<Exclude<GeoProgram, 'ae'>, string> = {
+  sa: 'SA',
   us: 'US',
   ca: 'CA',
   de: 'DE',

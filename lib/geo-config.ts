@@ -38,7 +38,8 @@ export type GeoGroup = 'gulf' | 'europe' | 'international';
 
 /** Specific Amazon Associates program — drives the actual link routing. */
 export type GeoProgram =
-  | 'ae'   // amazon.ae       — Gulf catch-all
+  | 'ae'   // amazon.ae       — Gulf catch-all (UAE + small GCC: BH/KW/OM/QA)
+  | 'sa'   // amazon.sa       — Saudi Arabia (dedicated; group=gulf, static tag, no rotation)
   | 'us'   // amazon.com      — International catch-all
   | 'ca'   // amazon.ca       — Canada
   | 'de'   // amazon.de       — Europe catch-all
@@ -59,6 +60,7 @@ export type GeoProgram =
  *  TrackingProvider, and buildAffiliateUrl. Widened in v2 from 3 to 13. */
 export type AmazonDomain =
   | 'amazon.ae'
+  | 'amazon.sa'
   | 'amazon.com'
   | 'amazon.ca'
   | 'amazon.de'
@@ -111,6 +113,13 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   // visitors get a rotated tag from the pool.
   ae: { program: 'ae', group: 'gulf',          amazonDomain: 'amazon.ae',      defaultTag: 'twnraedirect01-21' },
 
+  // Saudi Arabia — separate Amazon Associates account (amazon.sa), group=gulf
+  // for dashboard purposes (geographically Gulf, no consent banner needed).
+  // Static tag only — no rotation pool, no gads granularity. If Google Ads
+  // expands to SA later, revisit per-program rotation pool (see OPEN_ITEMS #4).
+  // Added 2026-05-27 after Saudi Associates account approved.
+  sa: { program: 'sa', group: 'gulf',          amazonDomain: 'amazon.sa',      defaultTag: 'thewinnersa-21' },
+
   // International programs — single static tag each.
   us: { program: 'us', group: 'international', amazonDomain: 'amazon.com',     defaultTag: 'thewinnerusa-20' },
   // 2026-05-27: Canada tag rotated thewinnerca-20 → thewinnerca2-20 after
@@ -146,8 +155,11 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
 // Each country code maps to exactly one program. Countries not listed
 // fall back to 'us' (amazon.com catch-all) — handled in getProgram().
 const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
-  // ── Gulf → ae ───────────────────────────────────────────
-  AE: 'ae', SA: 'ae', BH: 'ae', KW: 'ae', OM: 'ae', QA: 'ae',
+  // ── Gulf ─────────────────────────────────────────────────
+  // AE + small GCC (BH/KW/OM/QA) → ae catch-all (shop on amazon.ae, AE rotation pool for gads).
+  // SA → sa dedicated program (amazon.sa, static tag — added 2026-05-27).
+  AE: 'ae', BH: 'ae', KW: 'ae', OM: 'ae', QA: 'ae',
+  SA: 'sa',
 
   // ── Dedicated European programs ─────────────────────────
   GB: 'uk',
@@ -317,7 +329,7 @@ export function isKnownCountry(countryCode: string | null | undefined): boolean 
  *  the By-Program panel. Returns programs in the order: ae, dedicated EU,
  *  de catch-all, dedicated International, us catch-all. */
 export const ALL_PROGRAMS: GeoProgram[] = [
-  'ae',                                  // Gulf
+  'ae', 'sa',                            // Gulf (ae catch-all + sa dedicated)
   'uk', 'it', 'es', 'fr', 'pl', 'se', 'ie', 'be', 'nl',  // dedicated EU
   'de',                                  // EU catch-all
   'ca', 'au', 'sg', 'br',                // dedicated INTL
