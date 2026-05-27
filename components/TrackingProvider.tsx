@@ -349,10 +349,12 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
 
   // Also rewrite links when new content loads (e.g., after client-side navigation).
   // Skip for bots — keep rendered indexing aligned with cached UAE HTML.
+  // Note: /review/* pages are protected by the rewriter's narrow selector
+  // (a[href*="amazon.ae"] — Decision 118) which doesn't match review-page
+  // amazon.ca/.de/etc. links. Adding a pathname guard here is redundant and
+  // would force the observer to disconnect/reconnect on every client-side
+  // navigation. Keeping the original empty-deps behavior (mount-once).
   useEffect(() => {
-    // Quarantine /review/* — see comment in initTagRotation. MutationObserver
-    // here would also rewrite our hardcoded amazon.{tld} affiliate links.
-    if (pathname?.startsWith('/review/')) return;
     if (isBotClient()) return;
     const session = getStoredSession();
     if (session) {
@@ -370,7 +372,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
 
       return () => observer.disconnect();
     }
-  }, [pathname]);
+  }, []);
 
   return <>{children}</>;
 }

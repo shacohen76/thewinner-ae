@@ -48,6 +48,11 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
         <ReviewHeader program={program} />
         <main className="flex-grow">{children}</main>
         <ReviewFooter program={program} />
+        {/* CookieConsent kept on /review/* for GDPR/CCPA compliance (Decision 140
+            in AM1_DECISIONS_LOG_v1_8.md). GTM still loads via root layout, so
+            non-essential tracking happens on review pages too — banner is
+            legally required for non-Gulf visitors. */}
+        <CookieConsent />
       </>
     );
   }
