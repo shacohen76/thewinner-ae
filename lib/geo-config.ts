@@ -113,7 +113,12 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
 
   // International programs — single static tag each.
   us: { program: 'us', group: 'international', amazonDomain: 'amazon.com',     defaultTag: 'thewinnerusa-20' },
-  ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: 'thewinnerca-20' },
+  // 2026-05-27: Canada tag rotated thewinnerca-20 → thewinnerca2-20 after
+  // the first store was rejected and a new Amazon Associates Canada store
+  // was approved. Old tag is no longer valid — Amazon will not credit
+  // commissions to it. Any pre-rotation click_log rows / sessions stay on
+  // the old tag for historical record but won't earn.
+  ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: 'thewinnerca2-20' },
   au: { program: 'au', group: 'international', amazonDomain: 'amazon.com.au',  defaultTag: 'thewinnerau-22' },
   sg: { program: 'sg', group: 'international', amazonDomain: 'amazon.sg',      defaultTag: 'thewinnersg-22' },
   br: { program: 'br', group: 'international', amazonDomain: 'amazon.com.br',  defaultTag: 'thewinnerbr-20' },
