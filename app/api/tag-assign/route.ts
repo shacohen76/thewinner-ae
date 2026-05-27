@@ -80,8 +80,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get country from Vercel geo headers
+    // Get country + ASN from Vercel geo headers.
+    // SG-BOT Phase 0 (2026-05-27): as_name / as_number captured for
+    // observability so we can identify the new SG bot wave's hosting infra
+    // and write a precise filter from data instead of guesses. NO filtering
+    // here. See AMZ_AFF/Docs_MD/SG_BOT_FILTER_ROADMAP.md.
     const ipCountry = request.headers.get('x-vercel-ip-country') || null;
+    const asName = request.headers.get('x-vercel-ip-as-name') || null;
+    const asNumberRaw = request.headers.get('x-vercel-ip-as-number');
+    const asNumber = asNumberRaw ? parseInt(asNumberRaw, 10) : null;
 
     const result = await assignTag({
       gclid: gclid || null,
@@ -92,6 +99,8 @@ export async function POST(request: NextRequest) {
       ip_country: ipCountry,
       user_id: user_id || null,
       site: site || null,
+      as_name: asName,
+      as_number: Number.isFinite(asNumber as number) ? asNumber : null,
     });
 
     return NextResponse.json(result);
