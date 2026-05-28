@@ -35,8 +35,6 @@ There's something magical about transforming your living room into a personal ci
 
 After years of hosting movie nights and testing different setups in my Dubai apartment, I've learned that creating a cinema-quality experience at home isn't about having the most expensive equipment. It's about understanding how all the elements work together: lighting, sound, comfort, and yes, even the snacks matter more than you think.
 
-![The perfect movie night setup in a cozy living room](/blog/images/how-to-set-up-movie-night/hero.jpg)
-
 ## Choosing the Right Screen and Setup
 
 The foundation of any great movie night starts with your display. Whether you're working with an existing TV or considering an upgrade, the key is understanding how screen size, resolution, and placement affect your viewing experience.
@@ -46,8 +44,6 @@ For most UAE living rooms, I've found that a [55-inch smart TV](/best/55-inch-sm
 I learned this the hard way when I first moved to my current apartment. I had a 65-inch TV mounted on the wall, but my sofa was only 6 feet away. After two hours of watching Dune, I had a splitting headache from constantly moving my eyes to follow the action. Moving the seating back just three feet transformed the experience completely.
 
 Screen height matters just as much as distance. The center of your screen should be at eye level when you're seated normally — not craning your neck up or slouching down to see properly. Most wall mounts are positioned too high because people think of TVs like artwork, but you're not glancing at it occasionally; you're staring at it for hours.
-
-![Diagram showing optimal TV viewing distances and angles](/blog/images/how-to-set-up-movie-night/viewing-distance-diagram.jpg)
 
 Resolution is where things get interesting. While 4K is becoming standard, I've noticed that many streaming services in the UAE still deliver content in 1080p, especially older movies. The good news? A quality 4K display will upscale lower-resolution content beautifully. More important than chasing the highest resolution is ensuring your [smart TV](/blog/guide-to-smart-tvs) has good HDR support — the difference in color depth and contrast is immediately noticeable in darker scenes.
 
@@ -63,8 +59,6 @@ TV speakers are engineered to fit in impossibly thin displays, which means they'
 
 Soundbars offer the most straightforward upgrade path. A good soundbar can transform your audio without requiring you to run speaker wire or designate space for multiple speakers. I've tested dozens over the years, and the [Sonos](https://www.sonos.com) Arc consistently impresses with its ability to create virtual surround sound from a single bar.
 
-![Comparison of different soundbar sizes and configurations](/blog/images/how-to-set-up-movie-night/soundbar-comparison.jpg)
-
 For those wanting to go deeper, a 5.1 surround sound system creates genuine spatial audio. The key is proper speaker placement: front left and right speakers should form an equilateral triangle with your seating position, while the center channel handles dialogue (and should be perfectly aligned with your screen). Rear speakers go behind and slightly above your seating, not directly to the sides.
 
 But here's something I discovered recently: high-quality headphones can actually provide a more immersive experience than many speaker setups, especially in apartments where you need to consider neighbors. Open-back headphones like those from [Sennheiser](https://www.sennheiser.com) create an incredibly wide soundstage, while wireless options give you freedom to move without getting tangled in cables.
@@ -78,8 +72,6 @@ Volume calibration is crucial but often ignored. Most people either watch too qu
 Lighting can make or break your movie night, but it's more nuanced than just "turn off all the lights." Complete darkness creates eye strain when you glance away from the bright screen, while too much ambient light washes out the picture and ruins contrast.
 
 The solution is bias lighting — a strip of LEDs placed behind your TV that creates a soft glow on the wall. This technique, borrowed from professional video editing suites, reduces the contrast between your bright screen and dark room without interfering with the picture quality.
-
-![Before and after photos showing bias lighting effects](/blog/images/how-to-set-up-movie-night/bias-lighting-before-after.jpg)
 
 I installed a simple LED strip behind my TV mount, and the difference was immediate. Colors appeared more vibrant, dark scenes revealed more detail, and I could watch longer without eye fatigue. The key is choosing a neutral white LED (around 6500K color temperature) and keeping the brightness low — you want enough light to see the wall, not enough to illuminate the room.
 
@@ -97,8 +89,6 @@ For couples or small groups, a sectional sofa positioned directly facing the scr
 
 Larger groups require more strategic thinking. I've found that a slight arc arrangement works better than a straight line of chairs. People at the edges still have good viewing angles, and it creates a more social atmosphere during breaks between movies.
 
-![Floor plan diagrams showing optimal seating arrangements for different room sizes](/blog/images/how-to-set-up-movie-night/seating-arrangement-diagram.jpg)
-
 Comfort becomes critical during longer viewing sessions. I made the mistake of prioritizing aesthetics over comfort when I first set up my space — those sleek, modern chairs looked great but became torture devices during a four-hour movie marathon. Now I focus on seating that supports proper posture without making you feel like you're at a board meeting.
 
 Reclining chairs have become game-changers for serious movie nights. Being able to adjust your position throughout a long film prevents the stiffness and discomfort that can pull you out of the story. Just ensure that reclined positions still maintain good viewing angles to your screen.
@@ -115,8 +105,6 @@ The ideal temperature for movie watching sits around 21-22°C. Slightly cooler t
 
 Humidity control matters too, especially during the more humid summer months in Dubai and Abu Dhabi. High humidity makes the same temperature feel warmer and stuffier, while very low humidity can cause throat irritation during long talking scenes. Most modern AC units handle this automatically, but it's worth checking if your space feels uncomfortable despite the right temperature.
 
-![Infographic showing optimal temperature and humidity ranges for movie nights](/blog/images/how-to-set-up-movie-night/climate-control-infographic.jpg)
-
 Air circulation prevents that stuffy feeling that develops in closed rooms with multiple people. A ceiling fan on low speed helps circulate air without creating noise or drafts that distract from the movie. Position fans so they don't blow directly on seating areas — you want gentle circulation, not a wind tunnel.
 
 Smart home integration can enhance this aspect significantly. Systems that let you preset temperature, lighting, and even activate "movie mode" with a single command create a seamless experience. I have my [smart home setup](/blog/how-to-build-smart-home) configured to automatically dim lights, adjust temperature, and switch to my preferred audio settings when I activate movie night mode.
@@ -128,8 +116,6 @@ Let's be honest — snacks can make or break a movie night. But there's a scienc
 The cardinal rule: prepare everything before the movie starts. Nothing breaks immersion like someone rustling around in the kitchen during a crucial plot point. I learned this during a tense thriller where someone missed a key reveal because they were making popcorn in the next room.
 
 Popcorn remains the classic choice for good reason. It's relatively quiet to eat, doesn't require utensils, and comes in endless flavor variations. I prefer making it fresh rather than using microwave bags — the smell alone adds to the anticipation, and you can control salt and oil levels.
-
-![A beautifully arranged movie night snack spread](/blog/images/how-to-set-up-movie-night/snack-spread.jpg)
 
 But expand beyond just popcorn. Mixed nuts provide protein and healthy fats that sustain energy during long movies. Cut fruits like apples or grapes offer refreshing contrast to salty snacks. The key is choosing finger foods that don't crunch loudly or require focused attention to eat.
 
@@ -149,8 +135,6 @@ A universal remote consolidates control of multiple devices — TV, soundbar, st
 
 Streaming devices deserve special attention. Even if you have a smart TV, dedicated streaming devices often provide better performance and more regular updates. I've been impressed with the latest Apple TV and NVIDIA Shield devices for their responsive interfaces and broad app support.
 
-![A collection of essential movie night tech accessories arranged neatly](/blog/images/how-to-set-up-movie-night/tech-accessories.jpg)
-
 Cable organizers prevent the inevitable tangle of charging cables, HDMI cords, and power adapters that accumulate around entertainment areas. Simple cable clips attached to your coffee table keep phone chargers accessible without creating visual clutter.
 
 Surge protectors with USB charging ports centralize power for all your devices while protecting expensive electronics. Look for models with widely spaced outlets that accommodate larger power adapters without blocking adjacent ports.
@@ -168,8 +152,6 @@ Choosing the right movies for your audience and occasion requires more strategy 
 Start by considering your audience's preferences and tolerance levels. Mixing horror fans with people who scare easily creates an uncomfortable dynamic. Similarly, action movie enthusiasts might fidget through slow-paced character studies. Gauge the room before making final selections.
 
 Genre variety works well for longer viewing sessions but can create jarring transitions. I prefer grouping similar genres or choosing films with thematic connections. A trilogy marathon works perfectly because everyone knows the time commitment upfront, while a mixed bag of short films lets people leave early without missing anything significant.
-
-![A curated selection of popular movies arranged by genre](/blog/images/how-to-set-up-movie-night/movie-selection.jpg)
 
 The [most popular movies of all time](/blog/guide-to-most-watched-movies) exist for a reason — they appeal to broad audiences and hold up to repeat viewings. When hosting mixed groups, classics provide safe ground where most people will find something to enjoy.
 
@@ -189,8 +171,6 @@ The biggest mistake is inadequate preparation. Waiting until guests arrive to fi
 
 Audio levels cause frequent problems. Starting too quietly means missing dialogue, while starting too loudly can be jarring and annoying. Test your audio levels before guests arrive using similar content to what you'll be watching. Dialogue-heavy scenes require different levels than action sequences.
 
-![Infographic showing common movie night mistakes and solutions](/blog/images/how-to-set-up-movie-night/common-mistakes-infographic.jpg)
-
 Seating hierarchy creates social tension if not handled properly. The best seats go to honored guests or those with vision/hearing challenges, not whoever arrives first. Establish this beforehand to avoid awkward negotiations once people are settling in.
 
 Technology troubleshooting during movie time frustrates everyone. Wifi connectivity, app crashes, and device compatibility issues should be resolved beforehand. Have backup plans — different streaming services, alternative devices, or even physical media — ready to deploy quickly.
@@ -208,8 +188,6 @@ Once you've mastered the basics, these advanced techniques can transform your mo
 Dynamic lighting synchronized with content creates immersion without distraction. Unlike flashy color-changing effects, subtle brightness adjustments that mirror the screen's overall illumination level enhance perceived contrast and reduce eye strain. Smart lighting systems can automate this, or you can manually adjust during natural break points.
 
 Audio calibration goes beyond just volume levels. Many receivers offer room correction features that analyze your space's acoustics and adjust frequency response accordingly. The difference is subtle but noticeable, especially for dialogue clarity and bass response.
-
-![A sophisticated home theater setup with advanced lighting and audio equipment](/blog/images/how-to-set-up-movie-night/advanced-setup.jpg)
 
 Multiple viewing modes optimize different content types. Bright comedies benefit from different picture settings than dark thrillers. Modern displays offer preset modes, or you can create custom settings for different genres. The effort pays off in improved picture quality tailored to specific content.
 

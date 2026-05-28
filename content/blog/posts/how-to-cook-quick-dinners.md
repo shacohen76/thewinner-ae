@@ -38,8 +38,6 @@ After fifteen years of testing kitchen equipment and refining cooking methods, I
 
 Living in Dubai's fast-paced environment, I've watched countless home cooks abandon their kitchen ambitions because they approached weeknight meals like weekend projects. They'd attempt elaborate recipes requiring three hours of prep, only to burn out by Wednesday and resort to the same rotation of delivery apps.
 
-![Modern kitchen setup with essential quick-cooking tools](/blog/images/how-to-cook-quick-dinners/hero.jpg)
-
 The psychology of quick cooking runs deeper than mere convenience. When you know you can produce a satisfying meal in 25 minutes, cooking becomes a stress reliever rather than a burden. You stop viewing the kitchen as another chore competing with work emails and start seeing it as your sanctuary from the day's chaos.
 
 My neighbor Sarah, a marketing executive with two teenagers, transformed her family's eating habits not by becoming a better chef, but by becoming a more efficient one. She mastered seven core recipes that could be executed on autopilot, even after her most demanding workdays. The result? Her grocery spending dropped significantly, her family's health improved, and she reclaimed those precious evening hours previously lost to meal indecision.
@@ -54,8 +52,6 @@ I discovered this principle by accident during my first year living in the UAE. 
 
 The foundation of one-pan success starts with proper heat management. Medium-high heat works for 80% of quick dinner scenarios, providing enough energy to develop flavor through caramelization without burning delicate ingredients. Cast iron and stainless steel excel here because they retain and distribute heat evenly, preventing hot spots that create uneven cooking.
 
-![Infographic: one-pan cooking timeline showing ingredient addition sequence](/blog/images/how-to-cook-quick-dinners/one-pan-timeline.jpg)
-
 Building layers requires a specific sequence: aromatics first (onions, garlic, ginger), followed by proteins that need browning, then sturdier vegetables, and finally delicate items like leafy greens or pre-cooked grains. Each addition builds upon the flavors created by the previous ingredients, creating complexity that belies the simple technique.
 
 Temperature zones within your pan become crucial tools. The center runs hottest, perfect for searing protein, while the edges maintain gentler heat ideal for softening aromatics. Professional chefs intuitively use these zones, but home cooks can master this technique with just a few practice sessions.
@@ -69,8 +65,6 @@ Quality equipment transforms good intentions into consistent results. Over the y
 A large (12-14 inch), heavy-bottomed skillet forms the cornerstone of quick cooking. Stainless steel with an aluminum or copper core provides superior heat distribution compared to thin, lightweight pans that create hot spots. The substantial thermal mass helps maintain consistent temperatures when you add cold ingredients, preventing that frustrating temperature drop that slows cooking.
 
 Sharp knives dramatically impact prep speed. A properly maintained 8-inch chef's knife handles 90% of cutting tasks more efficiently than a drawer full of dull specialty blades. The time difference between dicing an onion with a sharp knife versus a dull one can add 5-10 minutes to your prep time — enough to derail a quick dinner plan.
-
-![Essential quick-cooking equipment laid out on kitchen counter](/blog/images/how-to-cook-quick-dinners/essential-equipment.jpg)
 
 Modern appliances can slash cooking times when used strategically. Air fryers excel at producing crispy textures without lengthy preheating — our [guide to air fryers](/blog/guide-to-air-fryers) covers the size and wattage considerations for different household needs. For those interested in multi-functional appliances, [Ninja's](https://www.ninjakitchen.com) indoor grills combine air frying, grilling, and roasting capabilities, though understanding [which Ninja appliance suits your needs](/blog/guide-to-ninja-kitchen-appliances) requires careful consideration of your cooking patterns.
 
@@ -87,8 +81,6 @@ Strategic ingredient choices separate efficient weeknight cooks from those strug
 Pre-washed salad greens, pre-cut vegetables, and quality frozen options aren't lazy shortcuts — they're time management tools. A bag of pre-washed spinach costs slightly more than whole heads, but the time savings during hectic evenings more than justify the premium. Your UAE grocery stores stock excellent frozen vegetable medleys that maintain nutritional value while eliminating prep work.
 
 Proteins benefit from advance planning but not complex preparation. Chicken thighs cook faster and stay moister than breasts, making them ideal for quick dinners. Ground meats brown rapidly and incorporate easily into diverse cuisines. Fish fillets, particularly salmon and white fish, cook through in 6-8 minutes and pair with countless flavor profiles.
-
-![Comparison chart: fresh vs. frozen vs. pre-prepped ingredients](/blog/images/how-to-cook-quick-dinners/ingredient-comparison.jpg)
 
 Pantry staples form your quick-cooking foundation. High-quality canned tomatoes, coconut milk, and chicken broth provide rich bases for countless dishes. Dried pasta cooks in 8-12 minutes, while instant couscous and pre-cooked rice packets reduce grain preparation to mere minutes. Keep these shelf-stable ingredients stocked, and you're always one protein away from dinner.
 
@@ -119,8 +111,6 @@ Heat your large skillet over medium-high heat. Season chicken thighs with salt a
 In the same pan, add sliced onion and bell pepper. Cook for 3 minutes, then add garlic and cook 30 seconds until fragrant. Add zucchini and cherry tomatoes, cooking 2 minutes more.
 
 Return chicken to the pan, nestling pieces among vegetables. Cover and cook 8-10 minutes until chicken reaches 165°F internal temperature. The vegetables should be tender but maintain slight firmness.
-
-![Mediterranean chicken and vegetables in cast iron pan](/blog/images/how-to-cook-quick-dinners/mediterranean-chicken.jpg)
 
 ### Recipe 2: Asian-Style Beef and Broccoli (20 minutes)
 
@@ -186,8 +176,6 @@ Add vegetable broth and nutritional yeast, stirring to create a light sauce. Add
 
 Drain pasta, reserving 1/2 cup cooking liquid. Add pasta to mushroom mixture, tossing with pasta water as needed to create a silky sauce. Season with salt and pepper.
 
-![Creamy mushroom pasta in serving bowl with fresh herbs](/blog/images/how-to-cook-quick-dinners/mushroom-pasta.jpg)
-
 ### Recipe 5: Middle Eastern Chickpea Stew (25 minutes)
 
 This warming stew draws inspiration from regional flavors familiar to UAE residents. Canned chickpeas make this protein-rich dinner achievable on busy weeknights.
@@ -252,8 +240,6 @@ Add ground chicken, breaking it apart with your spoon. Cook 6-8 minutes, stirrin
 
 Add fish sauce and soy sauce, stirring to coat. Remove from heat and fold in fresh basil leaves — they'll wilt from residual heat. Serve immediately over jasmine rice with fried eggs if desired.
 
-![Thai basil chicken in wok with fresh herbs garnish](/blog/images/how-to-cook-quick-dinners/thai-basil-chicken.jpg)
-
 ### Recipe 8: Spanish-Style Shrimp and Rice (28 minutes)
 
 This simplified paella captures the essence of the Spanish classic without specialty equipment. Bomba rice isn't essential — medium-grain rice produces excellent results.
@@ -316,15 +302,11 @@ Pour sauce over chicken and cook 2-3 minutes, stirring constantly, until sauce t
 
 Serve over rice and garnish with sliced green onions. Add steamed broccoli or snap peas for extra vegetables.
 
-![Teriyaki chicken bowl with rice and vegetables](/blog/images/how-to-cook-quick-dinners/teriyaki-bowl.jpg)
-
 ## Common Mistakes That Kill Speed
 
 After years of testing quick dinner recipes and teaching cooking techniques, I've identified recurring mistakes that transform 20-minute meals into hour-long ordeals. Recognizing these pitfalls helps you avoid the frustration that drives people back to takeout menus.
 
 Inadequate prep represents the biggest time killer. Starting to cook with whole onions, unminced garlic, and unseasoned proteins guarantees delays. Professional kitchens succeed through "mise en place" — having everything measured, chopped, and ready before heat touches the pan. This front-loaded effort pays dividends during actual cooking.
-
-![Diagram showing efficient prep workflow vs. chaotic approach](/blog/images/how-to-cook-quick-dinners/prep-workflow-diagram.jpg)
 
 Temperature management errors create cascading delays. Starting with insufficient heat means proteins won't brown properly, vegetables steam instead of caramelizing, and flavors remain flat. Conversely, excessive heat burns aromatics before other ingredients finish cooking. Medium-high heat works for most situations, but learning to adjust based on visual and auditory cues prevents disasters.
 
@@ -344,8 +326,6 @@ Start with your household's preferences and dietary requirements. If your family
 
 Consider prep time realistically within your weeknight schedule. Monday evenings might accommodate 30-minute recipes, while Thursday's soccer practice pickup demands 15-minute solutions. Map your weekly schedule against recipe complexity to set realistic expectations.
 
-![Weekly meal planning template with time allocations](/blog/images/how-to-cook-quick-dinners/meal-planning-template.jpg)
-
 Ingredient overlap between recipes reduces shopping complexity and prevents waste. If three recipes use onions, garlic, and olive oil, you're building efficiency into your system. Plan recipes that share pantry staples while varying proteins and vegetables for menu diversity.
 
 Batch preparation accelerates weeknight execution without full [meal prepping for singles](/blog/guide-to-meal-prepping-singles) commitment. Sunday afternoon chopping sessions can prepare aromatics for the entire week. Store minced garlic, diced onions, and sliced vegetables in separate containers for grab-and-go convenience.
@@ -361,8 +341,6 @@ Recipe scaling involves more than simple multiplication or division — heat tra
 Single-person portions present unique challenges in quick cooking. Most recipes assume 4-6 servings, but simply dividing ingredients by four often creates problems. A quarter pound of ground meat won't brown properly in a large pan, while tiny quantities of aromatics burn before developing flavor. Instead, consider cooking full recipes and planning for leftovers, which aligns perfectly with efficient meal planning principles.
 
 For solo cooking, sheet pan meals excel at proper scaling. Individual protein portions cook evenly alongside appropriately sized vegetable portions. A single chicken breast with 1 cup of mixed vegetables roasts perfectly in 20 minutes at 425°F, creating a complete meal with minimal cleanup.
-
-![Comparison of portion sizes for 1, 2, and 4 people](/blog/images/how-to-cook-quick-dinners/portion-scaling.jpg)
 
 Two-person households hit the sweet spot for most quick recipes. Standard skillet sizes accommodate these portions perfectly, and cooking times remain consistent with recipe instructions. This size also allows for strategic leftover planning — cook slightly larger portions to provide tomorrow's lunch without committing to full meal prep sessions.
 
@@ -385,8 +363,6 @@ Protein requirements remain constant regardless of cooking speed. Adults need ap
 Vegetables lose nutrients through extended heat exposure, making quick cooking methods advantageous. Steam-sautéing (cooking with minimal water in a covered pan) preserves water-soluble vitamins while developing flavor through brief browning. Aim for vegetables that retain slight firmness — they'll taste better and provide more nutritional value.
 
 Whole grains deserve inclusion in quick dinner plans despite slightly longer cooking times. Brown rice, quinoa, and whole wheat pasta provide fiber, B vitamins, and sustained energy. Cook grains in larger batches during weekend prep sessions, then reheat portions throughout the week. Pre-cooked grain packets offer convenience for truly hectic evenings.
-
-![Nutritional balance chart for complete quick meals](/blog/images/how-to-cook-quick-dinners/nutrition-balance.jpg)
 
 Healthy fats enhance both flavor and nutrition in quick meals. Olive oil, avocado, nuts, and fatty fish provide essential omega-3 fatty acids while improving satiety. Don't fear these ingredients — they're crucial for nutrient absorption and meal satisfaction.
 

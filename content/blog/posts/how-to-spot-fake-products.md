@@ -35,8 +35,6 @@ hero_image: "/blog/images/how-to-spot-fake-products/hero.jpg"
 
 Last month, I helped my neighbor Fatima return what she thought was a genuine Samsung Galaxy watch. The packaging looked convincing, the product photos were crisp, and the seller had decent reviews. But when the watch arrived, the build quality felt off — the crown was loose, the display resolution looked fuzzy, and the heart rate sensor gave wildly inconsistent readings. We discovered she'd purchased from a seller masquerading as an authorized [Samsung](https://www.samsung.com) retailer.
 
-![Hero image showing authentic vs counterfeit products side by side](/blog/images/how-to-spot-fake-products/hero.jpg)
-
 This experience isn't unique. The counterfeit market has exploded alongside e-commerce growth, and Amazon's marketplace model — while offering incredible variety and convenience — has also created opportunities for bad actors. In the UAE, where consumers increasingly rely on online shopping, especially through Amazon.ae, the ability to spot fakes has become an essential skill.
 
 The stakes aren't just financial. Counterfeit electronics can pose safety hazards, fake cosmetics may contain harmful chemicals, and knock-off medication can be life-threatening. According to research on [consumer protection](https://en.wikipedia.org/wiki/Consumer_protection) standards, counterfeit goods cost global consumers billions annually while potentially endangering their health and safety.
@@ -48,8 +46,6 @@ But here's the thing — they still leave traces. Every fake product listing con
 ## Red Flags in Product Listings
 
 Product listings are your first line of defense, and experienced counterfeiters know this. They've gotten good at creating listings that look legitimate at first glance. But spend a few extra minutes analyzing the details, and patterns emerge.
-
-![Infographic showing common red flags in product listings](/blog/images/how-to-spot-fake-products/red-flags-infographic.jpg)
 
 The product title often provides the first clue. Legitimate sellers typically follow brand-specific naming conventions. For example, [Apple](https://www.apple.com) products have precise model numbers and storage capacities. A listing for "iPhone 14 Pro Max 256GB Space Black Unlocked" from an authorized seller will exactly match Apple's official naming. Counterfeits often include extra descriptors like "Premium Quality" or "Latest Version" — language authentic brands rarely use in their official titles.
 
@@ -64,8 +60,6 @@ Watch for missing or inconsistent product variations. Legitimate products usuall
 The seller behind a product listing tells you everything you need to know about authenticity. This is where many shoppers make their biggest mistake — focusing solely on the product while ignoring who's selling it.
 
 Amazon's seller information page is your investigation starting point. Click on the seller name to access their storefront. Legitimate sellers, especially those representing major brands, maintain professional storefronts with consistent branding, complete contact information, and comprehensive return policies. They often include an "About" section explaining their business and relationship with the brands they sell.
-
-![Screenshot comparison of legitimate vs suspicious seller profiles](/blog/images/how-to-spot-fake-products/seller-comparison.jpg)
 
 Seller ratings require careful analysis beyond the overall score. A 98% positive rating sounds great, but dig deeper. How many total reviews has this seller received? A seller with 50,000 reviews and a 96% rating is generally more trustworthy than one with 500 reviews and a 99% rating. New sellers with perfect ratings often indicate review manipulation.
 
@@ -83,8 +77,6 @@ Product photos are where counterfeiters often reveal themselves, despite their b
 
 Start with photo consistency across the listing. Legitimate sellers typically use photos from a consistent source — either their own professional photography or official brand images. Mixed photo styles, varying backgrounds, or inconsistent lighting across images suggest photos were compiled from multiple sources rather than taken of an actual product.
 
-![Comparison showing authentic vs suspicious product photography](/blog/images/how-to-spot-fake-products/photo-analysis.jpg)
-
 Compare detail shots with manufacturer specifications. Zoom in on product labels, buttons, ports, and text. Authentic products feature crisp, properly aligned text with consistent fonts. Counterfeits often have slightly off fonts, misaligned text, or lower-resolution details that become apparent under close examination.
 
 Pay special attention to packaging photos. Legitimate sellers showcase authentic packaging that matches the brand's current design standards. Counterfeits often use outdated packaging designs, slightly wrong colors, or missing elements like holograms, QR codes, or specific authentication features.
@@ -98,8 +90,6 @@ Examine user-submitted photos in the review section. These provide unfiltered lo
 ## Reading Reviews Like a Detective
 
 Customer reviews contain treasure troves of authenticity information — if you know how to read them strategically. Most shoppers skim reviews for overall satisfaction, but spotting fakes requires deeper analysis of review patterns and content.
-
-![Infographic showing how to analyze review patterns for authenticity](/blog/images/how-to-spot-fake-products/review-analysis-infographic.jpg)
 
 Start with negative reviews, particularly those mentioning authenticity concerns. Customers who receive counterfeits often leave detailed reviews describing their disappointment. Look for phrases like "not as described," "cheap quality," "doesn't match brand standards," or direct accusations of counterfeiting. Multiple reviews raising similar concerns create a clear pattern.
 
@@ -121,8 +111,6 @@ Every major brand has official presence indicators that counterfeits struggle to
 
 Most established brands maintain official storefronts on Amazon.ae, marked with verification badges and consistent branding. When possible, purchase directly from these official brand stores. They're clearly labeled and typically appear at the top of search results for brand-specific queries.
 
-![Screenshot showing how to identify official brand stores on Amazon](/blog/images/how-to-spot-fake-products/official-brand-store.jpg)
-
 Cross-reference product model numbers and specifications with manufacturer websites. This step is crucial and surprisingly often skipped. Navigate to the brand's official website and verify that the exact model number exists in their current or recent product catalog. Counterfeiters sometimes create plausible-sounding model numbers that don't actually exist.
 
 Check for proper brand authorization indicators. Many brands provide dealer authorization information on their websites. For expensive electronics or luxury goods, verify that the seller is listed as an authorized retailer. This information isn't always available, but when it is, it provides definitive authentication.
@@ -139,8 +127,6 @@ Packaging details reveal authenticity better than almost any other factor. Count
 
 Legitimate products feature consistent packaging design that matches current brand standards. Colors, fonts, and layout should exactly match what you see on the manufacturer's website. Even slight variations in color shade, font selection, or logo placement can indicate counterfeits.
 
-![Detailed comparison of authentic vs counterfeit packaging elements](/blog/images/how-to-spot-fake-products/packaging-details.jpg)
-
 Authentication features are increasingly common on premium products. These might include holograms, QR codes, scratch-off verification numbers, or special inks that change color under different lighting. Research whether your target product includes these features and verify their presence in listing photos.
 
 Examine text quality and accuracy carefully. Authentic packaging features crisp, properly aligned text in correct languages for the target market. UAE market products typically include Arabic text alongside English and should follow local regulatory labeling requirements. Counterfeits often have poor text quality, grammatical errors, or missing required regulatory information.
@@ -156,8 +142,6 @@ Verify included accessories and documentation. Authentic products come with spec
 Certain product categories attract more counterfeiters than others, often due to high profit margins, brand recognition, or manufacturing accessibility. Understanding which categories face the highest counterfeit risk helps you allocate your verification efforts appropriately.
 
 Electronics top the counterfeit list, particularly smartphones, headphones, and charging accessories. The rapid pace of electronics innovation creates opportunities for counterfeits claiming to offer "latest generation" features. I recently helped a colleague identify a fake pair of AirPods Pro — the packaging looked perfect, but the audio quality and noise cancellation performance were dramatically inferior to authentic versions.
-
-![Infographic showing most commonly counterfeited product categories](/blog/images/how-to-spot-fake-products/counterfeit-categories.jpg)
 
 Beauty and cosmetics face significant counterfeiting challenges, particularly luxury brands and trending products. Counterfeit cosmetics pose serious health risks since they may contain harmful chemicals not approved for cosmetic use. Always purchase beauty products from verified sellers and be extra cautious with products claiming professional or medical-grade formulations.
 
@@ -177,8 +161,6 @@ Technical specifications provide objective verification points that counterfeite
 
 Power specifications offer clear verification opportunities. If a manufacturer lists a blender motor at 1200 watts, but a suspicious listing claims 1800 watts for the same model, investigate further. Power ratings aren't arbitrary — they reflect specific motor designs and electrical requirements.
 
-![Diagram showing how to verify technical specifications](/blog/images/how-to-spot-fake-products/spec-verification-diagram.jpg)
-
 Dimensional specifications should match manufacturer data precisely. Length, width, height, and weight specifications for authentic products are carefully measured and documented. Significant discrepancies often indicate counterfeits made with different materials or construction methods.
 
 Performance metrics provide another verification layer. Battery life claims, processing speeds, capacity ratings, and efficiency measurements should align with manufacturer specifications. Counterfeiters often inflate these numbers to make products seem more appealing.
@@ -196,8 +178,6 @@ Material specifications provide subtle authenticity indicators. Genuine leather 
 Despite your best prevention efforts, you might occasionally receive a counterfeit product. How you handle this situation affects both your immediate resolution and helps protect other consumers from the same seller.
 
 Document everything immediately upon receipt. Take detailed photos of the product, packaging, and any included materials before attempting to use the item. These photos serve as evidence for return requests and potentially for reporting counterfeiting to Amazon or authorities.
-
-![Step-by-step guide showing documentation process for suspected counterfeits](/blog/images/how-to-spot-fake-products/documentation-process.jpg)
 
 Compare the received product directly with manufacturer specifications and official product photos. Create a detailed list of discrepancies — different materials, missing features, incorrect dimensions, or poor build quality. This documentation strengthens your case for returns and helps identify specific counterfeiting tactics.
 
@@ -218,8 +198,6 @@ Following our broader guide on [how to shop online safely](/blog/how-to-shop-onl
 Developing reliable fake-spotting abilities requires practice and systematic approach development. Like any skill, it improves with experience and conscious effort to refine your techniques.
 
 Start by practicing on products you know well. If you're familiar with a particular brand or product category, use that knowledge as a foundation for developing verification techniques. Examine legitimate product listings first to establish baselines for authentic presentation, then look at suspicious listings to identify differences.
-
-![Training guide showing exercises for developing fake-spotting skills](/blog/images/how-to-spot-fake-products/skills-training.jpg)
 
 Create personal checklists for different product categories. Electronics might require checking power specifications, certification markings, and included accessories. Beauty products might focus on ingredient lists, packaging details, and seller authorization. Having systematic approaches prevents you from missing important verification steps.
 

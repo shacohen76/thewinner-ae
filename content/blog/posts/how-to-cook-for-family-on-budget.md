@@ -35,8 +35,6 @@ When my neighbor Sara first moved to Dubai with her husband and twin toddlers, s
 
 She's not alone. After years of testing recipes and talking with families across the UAE, I've learned that successful budget cooking isn't about eating poorly — it's about eating smarter. The families who thrive on smaller grocery budgets aren't the ones buying the cheapest ingredients. They're the ones who understand food costs, seasonal availability, and how to transform affordable staples into meals that actually satisfy.
 
-![Family cooking together in a modern kitchen](/blog/images/how-to-cook-for-family-on-budget/hero.jpg)
-
 The key insight that changed everything for Sara — and what I want to share with you — is this: budget cooking is about maximizing flavor and nutrition per dirham spent, not minimizing spending per meal. When you focus on value rather than just low prices, you end up with better meals that cost less over time.
 
 In the UAE specifically, this means understanding which imported ingredients are worth the premium (quality olive oil, certain spices), which local and regional options offer the best value (dates, certain vegetables), and how to time your shopping with sales cycles at major retailers like Carrefour and Lulu.
@@ -56,8 +54,6 @@ The key is looking beyond the flashy front-page deals to the smaller promotions 
 **Seasonal Shopping Intelligence**
 
 Understanding seasonal patterns in the UAE can dramatically reduce your produce costs. During winter months (December through March), local farms produce exceptional lettuce, tomatoes, and herbs. I've seen the price of locally grown tomatoes drop to less than half the imported versions during peak season.
-
-![Infographic showing seasonal produce availability in UAE](/blog/images/how-to-cook-for-family-on-budget/seasonal-produce-chart.jpg)
 
 But timing goes beyond seasons. Many families don't realize that produce prices often drop significantly on Sunday evenings and Monday mornings as stores clear inventory from the weekend. I've found that shopping for vegetables on Monday morning often yields the same quality at noticeably lower prices.
 
@@ -82,8 +78,6 @@ Effective meal planning for budget-conscious families goes far beyond just decid
 The most successful meal plans I've seen revolve around what I call "anchor ingredients" — versatile, affordable staples that can be prepared multiple ways throughout the week. Chicken thighs, for example, can be roasted whole for Sunday dinner, shredded into tacos for Tuesday, and turned into soup stock for Thursday's meal.
 
 I start every weekly meal plan by selecting three anchor ingredients: typically one protein, one grain, and one versatile vegetable. Last week, my anchors were chicken thighs, basmati rice, and eggplant. This gave me the foundation for seven different meals that shared common elements but felt completely different.
-
-![Diagram showing how anchor ingredients connect to multiple meals](/blog/images/how-to-cook-for-family-on-budget/anchor-ingredients-diagram.jpg)
 
 **The Leftover Integration System**
 
@@ -112,8 +106,6 @@ The right kitchen equipment can make budget cooking significantly easier and mor
 A quality multi-cooker might seem like a significant upfront investment, but it's one of the most transformative tools for budget cooking. I've watched families reduce their cooking time by 40% while simultaneously making cheaper cuts of meat tender and delicious.
 
 The [Ninja](https://www.ninjakitchen.com) Foodi series, for example, combines pressure cooking, slow cooking, air frying, and steaming in one device. This means you can pressure-cook tough cuts of beef until they're fork-tender in 45 minutes instead of braising them for 3 hours, then crisp the exterior with the air fryer function. If you're interested in exploring more about multi-functional cooking appliances, our [guide to Ninja kitchen appliances](/blog/guide-to-ninja-kitchen-appliances) breaks down which models offer the best value for different family sizes.
-
-![Multi-cooker showing different cooking functions](/blog/images/how-to-cook-for-family-on-budget/multi-cooker-functions.jpg)
 
 **Strategic Air Fryer Investment**
 
@@ -152,8 +144,6 @@ This template works best for families where someone can dedicate 2-3 hours on Su
 **Saturday:** Clean-out-the-fridge stir-fry or pasta
 
 The key to this template is strategic ingredient prep on Sunday. While your main dish cooks slowly, you wash and cut vegetables for the week, cook a large batch of rice or quinoa, and prepare any sauces or dressings you'll need later.
-
-![Weekly meal prep containers organized by day](/blog/images/how-to-cook-for-family-on-budget/meal-prep-containers.jpg)
 
 **Template Two: The Minimal Daily Commitment**
 
@@ -197,8 +187,6 @@ Every batch cooking session should create ingredients that can be transformed in
 
 Last month, I batch-cooked 3 kilograms of chicken thighs using a simple herb and spice mixture. The first transformation was serving them whole with roasted vegetables. The second involved shredding the meat for tacos with completely different seasonings. The third transformation combined chopped chicken with vegetables and broth into a hearty soup that tasted nothing like the original preparation.
 
-![Infographic showing one ingredient transformed into three meals](/blog/images/how-to-cook-for-family-on-budget/batch-cooking-transformations.jpg)
-
 **Strategic Undercooking for Flexibility**
 
 One mistake I see frequently in batch cooking is fully finishing every component. This limits your options for final preparation and often results in overcooked food when you reheat. Instead, I batch-cook proteins and vegetables to about 80% doneness, then finish them quickly when assembling final meals.
@@ -239,8 +227,6 @@ Slow cooking methods — braising, slow roasting, and pressure cooking — are y
 
 I've found that my multi-cooker excels at this. A 2-kilogram beef chuck roast that would normally require 4-5 hours of braising becomes perfectly tender in 90 minutes under pressure. The same principles work with lamb shoulder, pork butt, and even tougher cuts of chicken like thighs and drumsticks.
 
-![Comparison showing tough cut before and after slow cooking](/blog/images/how-to-cook-for-family-on-budget/tough-cuts-transformation.jpg)
-
 **Mechanical Tenderizing Techniques**
 
 Sometimes you want the flavors of cheaper cuts but need faster cooking methods. This is where mechanical tenderizing becomes valuable. Marinades with acidic components (citrus, vinegar, yogurt) partially break down tough fibers. Physical tenderizing with a meat mallet creates more surface area and breaks up tough muscle structures.
@@ -277,8 +263,6 @@ While scrambled eggs with toast can certainly work as a budget dinner, the real 
 
 Breakfast grain bowls, for example, combine cooked grains like quinoa or rice with eggs, vegetables, and interesting toppings. Last week, I made a Middle Eastern-inspired version with leftover rice, fried eggs, roasted vegetables, Za'atar, and a drizzle of tahini. It felt substantial and exotic, not like a breakfast compromise.
 
-![Elegant breakfast-for-dinner spread with multiple dishes](/blog/images/how-to-cook-for-family-on-budget/breakfast-dinner-spread.jpg)
-
 **Strategic Pancake and Waffle Dinners**
 
 Pancakes and waffles can anchor satisfying dinner meals when you think beyond sweet toppings. Savory pancakes made with herbs, cheese, or vegetables become vehicles for leftover proteins and sauces. I often make corn and scallion pancakes to serve with shredded chicken and a spicy sauce, creating a dinner that feels fresh and interesting.
@@ -314,8 +298,6 @@ During the UAE's brief but productive winter growing season, local farms produce
 This is the time to embrace salad-heavy meals, fresh herb sauces, and vegetable-forward dishes. I make large batches of herb oils and pestos when fresh herbs are abundant and affordable, then freeze them in ice cube trays for use throughout the year.
 
 Local dairy production also peaks during cooler months, often resulting in better prices on fresh milk, yogurt, and cheese. I take advantage of this timing for dishes that feature dairy prominently — creamy soups, homemade cheese sauces, and yogurt-based marinades.
-
-![Seasonal produce calendar showing UAE growing seasons](/blog/images/how-to-cook-for-family-on-budget/uae-seasonal-calendar.jpg)
 
 **Summer Adaptations (June-September)**
 
@@ -358,8 +340,6 @@ This thinking extends to produce as well. Pre-cut vegetables seem convenient and
 Many families lose more money to spoiled food than they save through careful shopping. I've seen refrigerators full of expensive ingredients that went bad because they weren't stored properly or weren't incorporated into meal plans quickly enough.
 
 Investing in proper storage containers, understanding optimal storage conditions for different foods, and developing systems for using ingredients before they spoil can often save more money than finding lower prices on initial purchases.
-
-![Infographic showing proper food storage techniques](/blog/images/how-to-cook-for-family-on-budget/food-storage-guide.jpg)
 
 **Mistake #3: Abandoning Quality for Savings**
 

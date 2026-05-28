@@ -35,8 +35,6 @@ When I moved to Dubai five years ago, I killed my first three attempts at indoor
 
 The beauty of home gardening lies in its accessibility. You don't need a massive backyard or expensive equipment to grow your own food and flowers. Whether you're working with a tiny balcony in Marina or a villa garden in Arabian Ranches, the principles remain the same: start simple, invest in quality basics, and expand gradually based on what actually works for your space and lifestyle.
 
-![Hero image showing a thriving balcony garden with herbs, vegetables, and flowers in various containers against a UAE cityscape backdrop](/blog/images/guide-to-home-gardening-tools/hero.jpg)
-
 ## Starting Your First Garden: The Foundation
 
 The biggest mistake new gardeners make is trying to do everything at once. I've watched friends spend weekends at garden centers, loading up on twenty different plant varieties, exotic fertilizers, and elaborate irrigation systems, only to feel overwhelmed when half their plants die within the first month.
@@ -59,8 +57,6 @@ After years of accumulating garden tools (some useful, many not), I can confiden
 
 Look for shears with replaceable blades and springs. My [Felco](https://www.felco.com) pruners are eight years old and still cutting cleanly because I can replace worn parts instead of buying new tools. The handle should fit your hand comfortably — too large and you'll strain your grip, too small and you lack leverage for thicker stems.
 
-![Close-up photo of various pruning shears showing the difference between bypass and anvil types, with hands demonstrating proper grip](/blog/images/guide-to-home-gardening-tools/pruning-shears-comparison.jpg)
-
 **Hand Trowels** come in countless variations, but the best ones share common features: a sharp, pointed blade that penetrates soil easily, a comfortable grip that doesn't slip when wet, and solid construction that won't bend when you hit a root or rock.
 
 Stainless steel blades stay sharper longer and clean more easily than carbon steel, which matters when you're working in the UAE's sandy, abrasive soil. The blade should be narrow enough to work between closely spaced plants but wide enough to move meaningful amounts of soil. I prefer trowels with depth markings on the blade — they help ensure consistent planting depths for seeds and bulbs.
@@ -74,8 +70,6 @@ The spout length matters more than you'd expect. Short spouts require awkward po
 The nitrile coating provides excellent grip even when wet, and the thin material lets you feel what you're handling. Leather gloves sacrifice dexterity for protection but are essential when pruning roses, working with cacti, or handling rough materials like bark mulch.
 
 **Knee Protection** saves your joints and clothes. A simple foam kneeling pad costs little but makes weeding, planting, and garden maintenance comfortable enough to do properly instead of rushing through tasks. I use a fold-up pad that doubles as a seat — it's more versatile than fixed kneelers that lock you into one position.
-
-![Infographic showing the 5 essential garden tools laid out with descriptions of key features to look for in each](/blog/images/guide-to-home-gardening-tools/essential-tools-infographic.jpg)
 
 Beyond these five basics, resist the urge to buy more tools until you identify specific needs. I've accumulated dozens of specialty tools over the years, but I still reach for these same five items for 90% of my garden tasks.
 
@@ -94,8 +88,6 @@ Cilantro presents an interesting case study in seasonal timing. Plant it in Octo
 Leafy greens like lettuce, spinach, and chard thrive during cooler months but need afternoon shade even in winter. I use shade cloth (30-50% reduction) to extend their growing season and prevent bitter flavors that develop under stress.
 
 Root vegetables present unique challenges in container growing. Carrots need deep, loose soil but can't handle waterlogged conditions. I mix coarse sand into potting mix to improve drainage and use containers at least 30cm deep. The extra effort pays off — homegrown carrots taste nothing like store-bought ones.
-
-![Photo showing a variety of herbs and vegetables thriving in containers on a sunny UAE balcony, with shade cloth visible in background](/blog/images/guide-to-home-gardening-tools/uae-climate-plants.jpg)
 
 **Flowers** that handle our climate include marigolds, zinnias, portulaca, and vinca. These annuals bloom continuously with minimal care and actually prefer the sandy, well-draining conditions that challenge other plants. Marigolds also provide natural pest control — their scent deters many common garden insects.
 
@@ -121,8 +113,6 @@ Coconut coir holds moisture while maintaining good drainage and doesn't break do
 
 Coarse sand improves drainage and prevents soil compaction, but avoid fine sand or beach sand, which can actually reduce drainage and may contain harmful salts. Builder's sand or river sand works well and is readily available at garden centers throughout the UAE.
 
-![Diagram showing soil composition with percentages and visual representations of different components like compost, sand, and drainage materials](/blog/images/guide-to-home-gardening-tools/soil-composition-diagram.jpg)
-
 **pH and Nutrient Management** requires understanding your plants' needs and your soil's characteristics. Most vegetables and herbs prefer slightly acidic to neutral pH (6.0-7.0), while our natural conditions tend toward alkaline.
 
 Simple pH test strips cost little and provide valuable information. If your soil tests above 7.5, consider adding sulfur to gradually lower pH or choose plants that thrive in alkaline conditions rather than fighting chemistry.
@@ -146,8 +136,6 @@ Check soil moisture by inserting your finger 2-3cm into the potting mix. Most he
 **Timer-Based Systems** handle routine watering automatically and prevent the forgotten plants that stress-kill more gardens than pests or diseases. Simple battery-powered timers connect to standard water taps and can run soaker hoses or drip irrigation lines.
 
 I use a dual-zone timer system that waters my herb containers differently than my vegetable beds. Herbs get shorter, less frequent watering cycles while vegetables receive longer, deeper watering. The initial setup takes a weekend, but it saves hours weekly and provides more consistent results than manual watering.
-
-![Photo showing drip irrigation system setup with timers, tubing, and emitters arranged among container plants](/blog/images/guide-to-home-gardening-tools/irrigation-system-setup.jpg)
 
 **Drip Irrigation** delivers water directly to root zones with minimal evaporation or runoff. Individual emitters provide precise control — you can give thirsty tomatoes 4 liters per hour while nearby herbs receive just 2 liters per hour on the same system.
 
@@ -178,8 +166,6 @@ I learned this lesson the hard way with cherry tomatoes. My first attempt used 1
 Material choice balances cost, durability, and plant health. Plastic containers cost less and retain moisture better but can overheat in direct sun. Terracotta breathes well and stays cooler but dries out faster and breaks easily. Fabric grow bags provide excellent drainage and root aeration but have shorter lifespans.
 
 For the UAE climate, I prefer light-colored plastic or resin containers that reflect heat while retaining the practical benefits of synthetic materials. Dark containers absorb too much heat, while terracotta requires constant watering during summer months.
-
-![Comparison photo showing the same plant variety growing in different container sizes and materials, demonstrating the visible differences in plant health and size](/blog/images/guide-to-home-gardening-tools/container-comparison.jpg)
 
 **Drainage** cannot be compromised. Every container needs multiple holes in the bottom, not just one central drain. I drill additional 12mm holes in store-bought containers that have inadequate drainage. Too many holes drain better than too few.
 
@@ -214,8 +200,6 @@ Native plants support larger populations of beneficial insects because they co-e
 Copper strips around container rims deter slugs and snails, which can devastate seedlings overnight. The strips must be wide enough (at least 5cm) and properly installed to create effective barriers.
 
 Sticky traps capture flying insects and help monitor pest populations before they reach damaging levels. Yellow traps attract aphids and whiteflies, while blue traps capture thrips. Place traps at plant height and replace them when they're covered with insects.
-
-![Infographic showing common UAE garden pests and their natural predators, with identification photos and control strategies](/blog/images/guide-to-home-gardening-tools/pest-control-infographic.jpg)
 
 **Companion Planting** uses plant relationships to reduce pest problems and improve garden productivity. Some plants repel insects that damage other species, while others attract beneficial insects or improve soil conditions.
 
@@ -255,8 +239,6 @@ Summer squash and okra produce well in extreme heat when other vegetables fail. 
 
 Shade cloth becomes essential equipment during summer months. 30-50% shade cloth reduces leaf temperatures and moisture loss while still providing adequate light for photosynthesis. I install removable shade structures that can be adjusted seasonally.
 
-![Diagram showing optimal planting times throughout the UAE year, with temperature ranges and recommended crops for each season](/blog/images/guide-to-home-gardening-tools/seasonal-planting-calendar.jpg)
-
 **Micro-Season Planning** recognizes that even within broad seasons, conditions vary significantly. November offers perfect growing conditions, while January might bring unexpected cold snaps that damage tender plants.
 
 Watch weather forecasts and protect sensitive plants during occasional winter cold fronts. Simple fabric covers or temporary greenhouse structures prevent damage from brief temperature drops that could set back plant development by weeks.
@@ -292,8 +274,6 @@ Conductivity meters measure salt levels in soil and water, which matters in the 
 Pressure-compensated drip emitters maintain consistent flow rates regardless of line pressure variations. I use adjustable emitters that can be fine-tuned for individual plants' water requirements throughout the growing season.
 
 Rain gauges and evaporation pans help you understand local water cycles and adjust irrigation schedules based on actual conditions rather than calendar dates. Even in arid climates, occasional rainfall can supplement irrigation and prevent overwatering.
-
-![Photo showing advanced garden tools like soil meters, precision pruners, and irrigation controllers arranged on a potting bench](/blog/images/guide-to-home-gardening-tools/advanced-tools-collection.jpg)
 
 **Propagation Equipment** lets you grow new plants from seeds, cuttings, and divisions rather than purchasing everything. Heated propagation mats maintain optimal soil temperatures for seed germination during cooler months.
 
@@ -336,8 +316,6 @@ I've saved hundreds of overwatered plants by immediately improving drainage, red
 Most herb and vegetable varieties need 6-8 hours of direct sunlight daily for optimal growth and production. However, in the UAE's intense climate, morning sun with afternoon shade often produces better results than all-day exposure.
 
 I track sun patterns in my garden throughout the year because shadows shift as the sun angle changes seasonally. Locations that receive full sun in December might be shaded in June, which affects which plants will thrive in specific spots.
-
-![Comparison photo showing healthy plants next to examples of common problems like overwatering, sun scorch, and nutrient deficiency](/blog/images/guide-to-home-gardening-tools/common-plant-problems.jpg)
 
 **Poor Soil Quality** undermines everything else you do right. Using garden soil in containers, failing to provide drainage, or choosing cheap potting mixes creates growing conditions that even experienced gardeners struggle to overcome.
 
@@ -382,8 +360,6 @@ Fairy gardens and succulent landscapes work particularly well in the UAE climate
 I maintain several miniature gardens that showcase different themes — a desert landscape with cacti and colored sand, a Mediterranean scene with tiny olive trees and lavender, and a tropical garden with small palms and bright flowers.
 
 Scale relationships matter in miniature gardens just as in full-size landscapes. Choose plants, containers, and decorative elements that maintain appropriate proportions and create believable scenes rather than obvious displays.
-
-![Photo showing a beautifully designed miniature garden with tiny plants, decorative elements, and proper scaling in an attractive container](/blog/images/guide-to-home-gardening-tools/miniature-garden-example.jpg)
 
 **Support Structures** provide vertical growing space while adding architectural interest to flat garden layouts. Trellises, arbors, and pergolas create defined spaces and support climbing plants that maximize production in limited areas.
 

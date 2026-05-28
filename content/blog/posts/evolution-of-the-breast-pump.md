@@ -35,8 +35,6 @@ hero_image: "/blog/images/evolution-of-the-breast-pump/hero.jpg"
 
 ## An Object Hiding in Plain Sight
 
-![Alt](/blog/images/evolution-of-the-breast-pump/hero.jpg)
-
 There are certain household objects you use daily without ever wondering where they came from. The kettle. The tin opener. The breast pump.
 
 That last one, though — follow its history and you'll find one of the stranger design sagas in consumer health. We're talking glass domes, hand-pumped rubber bulbs, machines the size of carry-on luggage bolted to hospital wards, and a decades-long argument about suction patterns that the medical community only recently settled. And now: a device that fits entirely inside a nursing bra and connects to your phone.
@@ -54,8 +52,6 @@ The year is 1854. O. H. Needham files a patent for what we can confidently call 
 In practice, Victorian-era breast pumps were about as comfortable as they sound. Glass provided the suction cup — occasionally scalded from improper cleaning — and raw rubber delivered the mechanism. There were no suction settings. There was no motor. There was no concept of "mimicking a baby's feeding rhythm." There was just squeeze, release, hope.
 
 What's fascinating, and a little humbling, is that the underlying principle — negative pressure over the nipple — hasn't changed in 170 years. What has changed is literally everything else: material safety, motor precision, hygiene standards, comfort engineering, and the battery that makes it cordless.
-
-![Alt](/blog/images/evolution-of-the-breast-pump/victorian-glass-bulb-pump.jpg)
 
 It's also worth noting that the cultural context of early breast pumps was almost entirely medical. They were used primarily in clinical settings, by wet nurses or to relieve engorgement, not as a lifestyle or workplace tool. The idea of a nursing parent casually pumping in a car park or a work bathroom would have been entirely alien. Which, honestly, considering the equipment available, is fair enough.
 
@@ -83,8 +79,6 @@ The shift toward consumer-owned, home-use breast pumps happened gradually across
 
 The noise issue, though. Early electric home pumps were loud. I've spoken to parents who described using one in a parked car during a lunch break and being genuinely concerned colleagues could hear it through the windows. That particular anxiety would persist until motor design caught up — something that took longer than it should have.
 
-![Infographic: Breast Pump Timeline 1854 to Present](/blog/images/evolution-of-the-breast-pump/breast-pump-timeline-infographic.jpg)
-
 ---
 
 ## The Closed-System Breakthrough: When Hygiene Finally Caught Up
@@ -100,8 +94,6 @@ This matters for a single user. It matters *enormously* if a pump is ever shared
 [Spectra](https://www.spectrababy.com) built much of their brand identity around closed-system design, and it's one of the reasons they developed such a devoted following among parents who'd done their homework. [Lansinoh](https://www.lansinoh.com) also offers closed-system options that became popular partly because they combined this hygiene standard with a gentler, quieter motor profile.
 
 When you're comparing models today — and our guide on [how to compare products](/blog/how-to-compare-products) applies exactly here — open versus closed system should be one of your first filters, not an afterthought.
-
-![Diagram: Open vs Closed System Breast Pump](/blog/images/evolution-of-the-breast-pump/open-vs-closed-system-diagram.jpg)
 
 ---
 
@@ -144,8 +136,6 @@ The first time I saw an in-bra wearable pump in person, I made the mistake of sa
 What made this possible wasn't a single breakthrough but a convergence: better battery density, quieter micro-motors, improved sensor miniaturisation, and app development that could surface useful data (session duration, volume expressed, patterns over time) without requiring a computer science degree to operate.
 
 The practical implications for UAE users are particularly worth noting. If you're navigating the logistics of pumping in a workplace environment, or travelling with a baby during Ramadan or school holidays, or managing the specific realities of summer heat and on-the-go schedules that come with life here, the freedom of a truly cordless device is not a luxury — it's a genuine quality-of-life shift. Amazon.ae now stocks several wearable options with local delivery, which wasn't the case even a few years ago.
-
-![Alt](/blog/images/evolution-of-the-breast-pump/wearable-pump-in-bra.jpg)
 
 The trade-offs? They exist. Wearable pumps can be trickier to achieve a perfect fit, particularly for parents at the extremes of flange sizing. Some users report that suction strength, while adequate for established supply, is gentler than a traditional double-electric. And the apps — while useful — do require a charged phone nearby. As with any purchase, read reviews carefully; our [guide to understanding reviews](/blog/guide-to-understanding-reviews) is worth a look before you commit to any specific model.
 

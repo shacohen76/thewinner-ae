@@ -38,8 +38,6 @@ Setting up a home office isn't just about cramming a desk into your spare room. 
 
 When my neighbor Sarah started working from home in 2020, she made the classic mistake of buying everything at once without a plan. She ended up with a beautiful glass desk that reflected her monitor's glare, a gaming chair that looked cool but destroyed her posture, and a setup that looked Instagram-ready but felt terrible to use. Six months later, she was dealing with back pain and eye strain.
 
-![Modern home office setup with natural lighting](/blog/images/how-to-set-up-home-office/hero.jpg)
-
 The reality is that your home office needs to work for your specific situation. Maybe you're sharing a bedroom corner with your partner, or you have a dedicated room but limited budget, or you're upgrading from a kitchen table setup. Regardless of your starting point, the principles remain the same: prioritize ergonomics, invest in quality where it matters most, and build systematically.
 
 Before you buy anything, spend a day or two observing how you actually work. Do you primarily use a laptop, or are you managing multiple screens? Are you on video calls all day, or do you need deep focus time? Do you work standard hours, or are you up late when the house is quiet? These patterns will guide every decision you make.
@@ -49,8 +47,6 @@ Before you buy anything, spend a day or two observing how you actually work. Do 
 Your desk is literally the foundation of everything else, so getting this right matters more than you might think. I've worked from everything from a fold-out card table to a custom-built standing desk, and the difference in how I felt at the end of each day was remarkable.
 
 First, let's talk about size. The absolute minimum workspace you need is 120cm wide by 60cm deep. That gives you room for a laptop, mouse, notepad, and coffee cup without feeling cramped. But if you have the space, aim for 150cm wide by 75cm deep — this gives you breathing room and space for future upgrades.
-
-![Comparison of different desk sizes and layouts](/blog/images/how-to-set-up-home-office/desk-comparison.jpg)
 
 Standing desks have become incredibly popular, and I understand why. After switching to a motorized standing desk three years ago, I can't imagine going back. The ability to change positions throughout the day has eliminated the afternoon energy crash I used to experience. However, these desks require a significant initial investment and take up more space due to the motor housing.
 
@@ -66,8 +62,6 @@ This is where I tell you to spend more than you initially planned, because your 
 
 The key to a good [office chair](/best/office-chairs) isn't just comfort — it's adjustability. You need to be able to modify the seat height, backrest angle, armrest position, and ideally the lumbar support. Your feet should sit flat on the floor (or on a footrest), your thighs should be parallel to the ground, and your back should maintain its natural curve.
 
-![Ergonomic chair adjustment guide with proper posture illustrations](/blog/images/how-to-set-up-home-office/ergonomic-setup-diagram.jpg)
-
 Mesh-back chairs excel in hot climates like the UAE because they allow airflow, preventing the sweaty-back syndrome that plagues many home office workers. However, if you prefer more cushioning, look for chairs with high-density foam that won't compress and lose support over time.
 
 The Herman Miller Aeron and [Steelcase](https://www.steelcase.com) Leap are the gold standards for [ergonomic chairs](/best/ergonomic-chairs), but plenty of other manufacturers offer excellent alternatives that provide 80% of the benefit. The key is trying before buying — even the best-reviewed chair might not work for your body type.
@@ -79,8 +73,6 @@ Don't overlook the importance of armrests. They should support your arms without
 Working on a laptop screen all day is like trying to read a book through a keyhole — technically possible, but unnecessarily limiting. A proper external monitor isn't a luxury; it's a productivity multiplier that pays for itself in reduced eye strain and increased efficiency.
 
 The sweet spot for most people is a 24-inch monitor as the absolute minimum, with 27 inches being ideal for single-monitor setups. Anything larger than 32 inches requires you to turn your head to see the edges, which defeats the ergonomic purpose. When I upgraded from my 21-inch monitor to a 27-inch display, the difference was immediately apparent — suddenly I could have multiple windows open simultaneously without constantly switching between them.
-
-![Diagram showing optimal monitor positioning and viewing angles](/blog/images/how-to-set-up-home-office/monitor-positioning-guide.jpg)
 
 Resolution matters, but not always in the way people expect. A 1080p display on a 24-inch monitor looks sharp and crisp. The same resolution stretched across 32 inches starts to look pixelated. For 27-inch displays, 1440p offers the perfect balance of sharpness and performance — text is crystal clear without requiring a graphics card upgrade.
 
@@ -96,8 +88,6 @@ Poor lighting is the silent productivity killer that most people ignore until th
 
 Overhead lighting alone never works for office tasks. It creates harsh shadows on your keyboard and papers while often reflecting off your monitor screen. The solution is layered lighting: ambient light for general illumination, task lighting for specific work, and accent lighting to reduce contrast and eye strain.
 
-![Home office lighting setup showing different light sources](/blog/images/how-to-set-up-home-office/lighting-setup.jpg)
-
 A good desk lamp is essential, but positioning matters enormously. Place it on the opposite side from your dominant hand to avoid casting shadows while you write. If you're right-handed, the lamp goes on your left, and vice versa. The light should illuminate your workspace without shining directly into your eyes or reflecting off your screen.
 
 LED desk lamps with adjustable color temperature have become incredibly affordable and offer huge benefits. Cool white light (5000-6500K) helps maintain alertness during the day, while warm white light (2700-3000K) is easier on the eyes during evening hours. Some lamps automatically adjust throughout the day, mimicking natural sunlight patterns.
@@ -111,8 +101,6 @@ Consider bias lighting — a strip of LED lights behind your monitor that casts 
 Once you have your physical foundation sorted — desk, chair, monitor, lighting — it's time to consider the technology that will make your workday smoother. These aren't absolute necessities, but they're upgrades that provide immediate, noticeable benefits.
 
 A mechanical keyboard might seem like an expensive indulgence, but if you type for several hours daily, it's an investment in both comfort and productivity. The tactile feedback helps reduce typing errors, and the durability means it will outlast several membrane keyboards. Cherry MX Brown switches offer a good balance of tactile feedback without the clicking noise that might annoy family members.
-
-![Comparison chart of different keyboard types and switches](/blog/images/how-to-set-up-home-office/keyboard-comparison-infographic.jpg)
 
 For mouse selection, ergonomics trumps features every time. A mouse that fits your hand properly prevents the wrist strain that can develop into serious repetitive stress injuries. Vertical mice look odd but can provide significant relief if you're already experiencing wrist discomfort. Wireless mice have eliminated the performance gap that used to make wired mice necessary — just keep spare batteries handy.
 
@@ -128,8 +116,6 @@ Organization isn't just about looking tidy — it's about creating systems that 
 
 Vertical storage is your friend in smaller spaces. Wall-mounted shelves, floating desk organizers, and drawer units that fit under your desk maximize your storage without expanding your footprint. I transformed my cramped corner office by adding floating shelves above my monitor — suddenly I had space for books, supplies, and decorations without sacrificing any desk real estate.
 
-![Organized home office showing various storage solutions](/blog/images/how-to-set-up-home-office/storage-solutions.jpg)
-
 Digital organization matters just as much as physical organization. Invest time in creating a logical folder structure on your computer, use cloud storage for important documents, and establish routines for managing digital clutter. A well-organized digital workspace prevents the frustration of hunting for files when you're trying to focus on important work.
 
 Cable management deserves special attention because visible cables create visual chaos that affects your mental clarity. Cable trays that mount under your desk, adhesive cable clips, and spiral cable wrap can transform a spaghetti mess into clean, organized runs. Start with the power cables — these are usually the thickest and most visually distracting.
@@ -143,8 +129,6 @@ Working from home means you have complete control over your environment, and tem
 In the UAE's hot climate, air conditioning becomes crucial, but direct cold air can create its own problems. Position your desk so you're not sitting directly in the AC airflow, which can cause neck stiffness and dry eyes. A small desk fan can provide personal airflow without the energy cost of over-cooling the entire room.
 
 Humidity matters too. Very dry air (below 30% humidity) can cause eye irritation and static electricity problems with your electronics. Very humid air (above 60%) feels uncomfortable and can damage sensitive equipment over time. A small humidifier or dehumidifier can make a significant difference in comfort levels.
-
-![Climate control setup for home office comfort](/blog/images/how-to-set-up-home-office/climate-comfort.jpg)
 
 Plants aren't just decoration — they can improve air quality and provide psychological benefits. Snake plants, pothos, and peace lilies are nearly indestructible and can thrive in office environments with minimal care. Even artificial plants can provide some of the psychological benefits of biophilia if maintaining live plants isn't practical for your situation.
 
@@ -168,8 +152,6 @@ Year one should focus on ergonomics and basic functionality: a proper chair, ade
 
 Year two might bring productivity upgrades: a second monitor, better peripherals, improved audio equipment, or a standing desk converter. By this point, you understand your work patterns well enough to make informed decisions about which upgrades will provide the most benefit.
 
-![Timeline infographic showing home office evolution over three years](/blog/images/how-to-set-up-home-office/upgrade-timeline.jpg)
-
 Long-term upgrades could include smart home integration, professional lighting for video calls, high-end audio equipment, or even room modifications like built-in shelving or improved electrical outlets. These aren't necessities, but they can significantly enhance your work experience.
 
 Keep a running list of minor annoyances and inefficiencies in your current setup. These small problems often point toward worthwhile upgrades. Maybe you constantly run out of USB ports, or your wireless mouse frequently loses connection, or you wish you had more desk space for spreading out documents. Addressing these issues one by one gradually transforms a functional office into an optimized workspace.
@@ -183,8 +165,6 @@ After helping numerous people set up home offices, I've seen the same mistakes r
 The biggest mistake is prioritizing aesthetics over ergonomics. That beautiful glass desk might look amazing in photos, but if it creates glare problems or doesn't provide enough workspace, you'll be frustrated daily. Similarly, choosing a chair based on appearance rather than proper support will create health problems over time.
 
 Inadequate electrical planning is another common oversight. Count how many devices you'll be plugging in: computer, monitor, desk lamp, phone charger, printer, speakers, router, etc. The number adds up quickly, and using multiple power strips daisy-chained together creates both safety hazards and reliability problems. Plan for more outlets than you think you need.
-
-![Common home office setup mistakes illustrated](/blog/images/how-to-set-up-home-office/common-mistakes-infographic.jpg)
 
 Ignoring noise control causes problems that become apparent only after you start taking calls or working during different hours. Hard surfaces amplify every keyboard click and chair squeak. If other family members are sleeping or working nearby, sound management becomes crucial for maintaining harmony.
 

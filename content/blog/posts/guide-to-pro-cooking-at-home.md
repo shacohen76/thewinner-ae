@@ -34,8 +34,6 @@ Professional cooking isn't about expensive ingredients or complicated techniques
 
 The real breakthrough moment came for me three years ago when I spent a morning in the kitchen with a chef friend in Dubai. Watching him prepare a simple chicken breast, I realized I'd been doing everything wrong — not catastrophically wrong, just inefficiently wrong. He used the same ingredients I had at home, but his understanding of heat, timing, and technique transformed them completely.
 
-![Professional cooking techniques demonstration](/blog/images/guide-to-pro-cooking-at-home/hero.jpg)
-
 ## The Foundation: Understanding Heat Control
 
 Heat control separates professional cooking from amateur cooking more than any other factor. In restaurants, chefs work with powerful equipment that responds instantly to adjustments. At home, we need to work smarter with what we have.
@@ -51,8 +49,6 @@ I learned this lesson the hard way making risotto for guests last year. Instead 
 Professional kitchens use different areas of the grill or stovetop for different cooking stages. Replicate this at home by designating burner purposes: one high-heat burner for searing, one medium for sautéing, one low for holding warm. This prevents the constant temperature adjustments that lead to uneven cooking.
 
 The UAE's intense summer heat actually works in our favor here — your kitchen stays warm, so holding temperatures become easier to maintain. I've noticed that dishes requiring gentle warming (like keeping proteins warm while finishing vegetables) work better during Dubai summers than trying to achieve the same results in air-conditioned environments.
-
-![Heat control zones on a home stovetop](/blog/images/guide-to-pro-cooking-at-home/heat-zones-diagram.jpg)
 
 ### Preheating: The Non-Negotiable Step
 
@@ -75,8 +71,6 @@ For vegetables like mushrooms or onions, avoid overcrowding the pan. Too many pi
 Use oils with high smoke points for searing: avocado oil (270°C), refined safflower oil (265°C), or ghee (250°C). Olive oil, despite its popularity, smokes at 190°C — too low for proper searing.
 
 Heat the pan first, then add oil just before adding food. The oil should shimmer and move freely across the surface. If it smokes immediately, the pan is too hot. If it doesn't move easily, not hot enough.
-
-![Proper searing technique demonstration](/blog/images/guide-to-pro-cooking-at-home/searing-technique.jpg)
 
 ### The Patience Factor
 
@@ -105,8 +99,6 @@ For proteins, salt 20-40 minutes before cooking (depending on thickness) to allo
 Restaurants use acid strategically — lemon juice, vinegar, wine — to brighten flavors and balance richness. Add acid gradually and taste frequently. Too much overwhelms; too little leaves dishes flat.
 
 Wine reduction is a professional technique easily adapted for home cooking. Add wine to the hot pan after removing proteins, scrape up browned bits, and reduce by half before adding other liquid. This concentrates flavor and removes harsh alcohol notes.
-
-![Flavor building process infographic](/blog/images/guide-to-pro-cooking-at-home/flavor-layers-infographic.jpg)
 
 ## The Art of Deglazing and Pan Sauce Construction
 
@@ -146,8 +138,6 @@ Master three cuts and you'll handle 90% of home cooking prep: the rough chop, br
 
 For onions, the professional approach eliminates tears and creates uniform pieces. Cut the onion in half through the root, remove the papery skin but leave the root end intact. Make horizontal cuts parallel to the cutting board, then vertical cuts toward the root, finally cutting across to create dice. The root holds everything together until the final cuts.
 
-![Professional knife techniques demonstration](/blog/images/guide-to-pro-cooking-at-home/knife-skills.jpg)
-
 ### Knife Maintenance for Better Results
 
 Sharp knives are safer knives. Dull blades require more pressure, increasing slip risks and crushing ingredients instead of cutting cleanly. Restaurants sharpen knives daily or use professional sharpening services.
@@ -175,8 +165,6 @@ Convection settings reduce cooking times by 20-25% and lower required temperatur
 Professional kitchens rest all proteins after cooking. This redistributes juices throughout the meat, preventing them from running out when cut. Rest steaks 5-10 minutes, whole chickens 15-20 minutes, roasts 20-30 minutes.
 
 Keep rested proteins warm by tenting loosely with foil or placing in a 50°C oven. Don't wrap tightly — trapped steam softens the crust you worked to create.
-
-![Temperature control infographic for different proteins](/blog/images/guide-to-pro-cooking-at-home/temperature-guide-infographic.jpg)
 
 ## Professional Mise en Place at Home
 
@@ -216,8 +204,6 @@ Professional plating uses odd numbers (3 or 5 elements work better than 2 or 4) 
 
 Leave some negative space — don't fill every inch of the plate. This creates visual breathing room and prevents the dish from looking cluttered. A partially filled dinner plate often looks more appealing than an overcrowded salad plate.
 
-![Professional plating techniques example](/blog/images/guide-to-pro-cooking-at-home/plating-techniques.jpg)
-
 ### Color and Texture Balance
 
 Professional dishes balance colors and textures across components. If the protein is brown (seared), add green vegetables and white starch. If textures are all soft (braised), add something with crunch (toasted nuts, crispy garnish).
@@ -245,8 +231,6 @@ Seasoning only at the end misses opportunities to build flavor layers. Salt prot
 Rushing the cooking process prevents proper flavor development. Onions need 8-10 minutes to caramelize properly. Proteins need time to develop proper crust before turning. Sauces need reduction time to concentrate flavors.
 
 Not resting proteins wastes all the careful cooking work. Cut into a steak immediately after cooking and watch the juices run across the cutting board instead of staying in the meat.
-
-![Common cooking mistakes infographic](/blog/images/guide-to-pro-cooking-at-home/common-mistakes-infographic.jpg)
 
 ### Equipment Misuse
 
@@ -283,8 +267,6 @@ However, technique matters more than equipment. A skilled cook with basic tools 
 Professional kitchens organize tools for efficiency. Store frequently used items within easy reach. Keep cutting boards near prep areas. Store pots and pans near the stove. This organization reduces cooking time and prevents forgetting steps while searching for equipment.
 
 Proper storage also maintains equipment condition. Store knives in blocks or magnetic strips to protect edges. Hang pans when possible to prevent scratching. Season cast iron after each use to maintain its surface.
-
-![Professional kitchen equipment setup](/blog/images/guide-to-pro-cooking-at-home/professional-equipment.jpg)
 
 The path to professional-quality home cooking isn't about recreating restaurant kitchens — it's about understanding and applying professional techniques within home kitchen constraints. These skills develop through practice, patience, and attention to fundamental principles rather than complex recipes or expensive equipment.
 

@@ -31,8 +31,6 @@ hero_image: "/blog/images/guide-to-meal-prepping-singles/hero.jpg"
 - [Scaling Up and Down](#scaling-up-and-down)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
-![Meal prep containers filled with colorful, varied meals arranged on a kitchen counter](/blog/images/guide-to-meal-prepping-singles/hero.jpg)
-
 Living alone in Dubai, I used to think meal prepping meant eating the same sad chicken and rice combination for five straight days. The first time I attempted it, I made a massive batch of tikka masala on Sunday, portioned it into containers, and by Wednesday I was ordering Talabat because I couldn't face another identical meal.
 
 Sound familiar? Most meal prep advice targets families or assumes you're happy eating identical meals all week. But cooking for one doesn't have to mean boring repetition or throwing away half your groceries.
@@ -54,8 +52,6 @@ Here's what usually goes wrong:
 **Quality Degrades Differently:** Some ingredients hold up well for days, others don't. Mixing everything together means your crispy elements get soggy and your fresh elements get wilted.
 
 The solution isn't to give up on meal prep — it's to approach it differently.
-
-![Infographic showing the problems with traditional meal prep versus the mix-and-match method](/blog/images/guide-to-meal-prepping-singles/comparison-infographic.jpg)
 
 ## The Mix-and-Match Method
 
@@ -93,8 +89,6 @@ The key is having containers that stack neatly and fit your fridge shelves. Meas
 This changed my meal prep game completely. Instead of guessing portions, I weigh everything. 150g of protein per meal, 80g of dry grains, 200g of vegetables. It sounds obsessive, but it eliminates food waste and ensures consistent portions.
 
 Digital scales with 1g accuracy work perfectly for home use. Look for ones that switch between grams and ounces — helpful when following international recipes.
-
-![A modern kitchen setup with glass containers, food scale, and air fryer on the counter](/blog/images/guide-to-meal-prepping-singles/kitchen-setup.jpg)
 
 ### Air Fryer or Small Convection Oven
 
@@ -140,8 +134,6 @@ This is where the magic happens. In 90 minutes, you'll prep enough components fo
 
 The key is layering tasks so your active cooking time stays minimal. While proteins roast and grains simmer, you're prepping other components or cleaning as you go.
 
-![Diagram showing the timeline of a 90-minute meal prep session](/blog/images/guide-to-meal-prepping-singles/timeline-diagram.jpg)
-
 ## Mastering the Base Proteins
 
 These three proteins give you maximum versatility with minimal effort. Each one transforms completely depending on how you season and serve it.
@@ -186,8 +178,6 @@ Hard-boiled eggs keep for a week and add protein to any meal. I make 8-10 at onc
 - Peel when completely cool
 
 They're ready-to-eat protein that works in salads, grain bowls, or just grabbed as a snack.
-
-![Three different cooked proteins artfully arranged on a wooden cutting board](/blog/images/guide-to-meal-prepping-singles/proteins-display.jpg)
 
 ## Grain Game: Your Carb Foundation
 
@@ -246,8 +236,6 @@ This is where your meals go from good to restaurant-quality. Fresh cilantro, par
 
 Green onions, fresh garlic, and ginger add aromatic punch. Keep them prepped and ready — slice green onions and store in an airtight container, mince garlic and ginger fresh daily.
 
-![Colorful array of fresh vegetables, herbs, and sauces arranged for meal assembly](/blog/images/guide-to-meal-prepping-singles/fresh-elements.jpg)
-
 ## Storage Systems That Actually Work
 
 Poor storage kills meal prep faster than anything else. Here's what I've learned through plenty of soggy failures:
@@ -273,8 +261,6 @@ I use masking tape and a permanent marker. "Chicken - 15/3" tells me exactly whe
 Freeze portions you won't eat within 3 days. Individual freezer bags work better than containers for single portions — they stack efficiently and thaw quickly.
 
 Grains freeze and reheat beautifully. Proteins are hit-or-miss — ground meat mixtures freeze well, while whole pieces can get tough.
-
-![Organized refrigerator with labeled meal prep containers arranged by type and date](/blog/images/guide-to-meal-prepping-singles/storage-organization.jpg)
 
 ## Making It Work in UAE's Climate
 
@@ -330,8 +316,6 @@ Plan for 4 meals, not 7. Leave room for leftovers, spontaneous meals out, or day
 
 Cheap containers leak, don't seal properly, and crack quickly. This isn't the place to save money — good containers are a one-time investment that pays off for years.
 
-![Infographic showing common meal prep mistakes and their solutions](/blog/images/guide-to-meal-prepping-singles/mistakes-infographic.jpg)
-
 ## Scaling Up and Down
 
 Life changes, and your meal prep needs to adapt. Here's how to adjust the system:
@@ -363,8 +347,6 @@ As you get more serious about meal prep, certain upgrades make a real difference
 **Stand Mixer:** For quick bread making and grinding your own meat blends. Not essential, but it opens up more homemade options.
 
 The key is upgrading strategically — only when you're consistently hitting the limits of your current setup.
-
-![Modern kitchen counter showing upgraded meal prep equipment including vacuum sealer and larger appliances](/blog/images/guide-to-meal-prepping-singles/equipment-upgrade.jpg)
 
 ## Frequently Asked Questions
 

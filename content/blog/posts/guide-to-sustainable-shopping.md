@@ -37,8 +37,6 @@ Growing your own herbs is one of the simplest sustainable swaps — see our [gui
 
 Living in the UAE, I've watched our consumption patterns evolve dramatically over the past decade. Between the convenience of Amazon.ae deliveries and the allure of weekend mall visits, we're buying more stuff than ever — but are we buying better?
 
-![Hero image showing sustainable shopping concept with reusable bags and quality products](/blog/images/guide-to-sustainable-shopping/hero.jpg)
-
 Last month, I helped a friend clean out her apartment before moving, and we filled twelve garbage bags with items she'd bought but barely used. Designer storage boxes still in packaging, kitchen gadgets used once, fitness equipment gathering dust. It was a wake-up call about how our quick-buy culture impacts both our wallets and the planet.
 
 [Sustainable development](https://en.wikipedia.org/wiki/Sustainable_development) isn't just an environmental buzzword — it's about making choices that work for you, your community, and future generations. In practical terms, this means shifting from "I need this now" to "Do I actually need this, and if so, what's the best version I can afford?"
@@ -46,8 +44,6 @@ Last month, I helped a friend clean out her apartment before moving, and we fill
 The UAE generates approximately 2.1 kg of municipal solid waste per person daily — well above the global average. Much of this comes from impulse purchases and products designed to break after minimal use. But here's the encouraging part: small changes in how we shop can make a massive difference.
 
 When I started shopping more sustainably three years ago, I wasn't trying to save the world. I was tired of constantly replacing broken items and frustrated with cluttered spaces. What surprised me was how much better my purchases became when I slowed down the process.
-
-![Infographic showing waste generation statistics in the UAE](/blog/images/guide-to-sustainable-shopping/waste-statistics-infographic.jpg)
 
 ## The Real Cost of Our Shopping Habits
 
@@ -60,8 +56,6 @@ I learned this lesson the hard way with vacuum cleaners. Over five years, I went
 The environmental cost runs even deeper. Manufacturing that cheap coffee maker required raw materials, energy, and water. Shipping it halfway around the world generated carbon emissions. When it breaks, those resources become waste. Multiply this by millions of consumers making similar choices, and you see the scale of the problem.
 
 In the UAE's climate, this waste challenge is particularly acute. Our harsh summers mean electronics work harder and sometimes fail faster. Items left in cars or garages face temperature swings from 20°C to 60°C. Choosing products built for durability isn't just environmentally conscious — it's adapting to our local conditions.
-
-![Diagram showing the hidden costs of cheap vs quality products over time](/blog/images/guide-to-sustainable-shopping/hidden-costs-diagram.jpg)
 
 ## Building a Sustainable Shopping Mindset
 
@@ -80,8 +74,6 @@ The concept of "cost per use" has transformed how I evaluate purchases. A qualit
 
 When [organizing your home](/blog/how-to-organize-your-home), you'll quickly realize that having fewer, better-chosen items creates more satisfaction than rooms full of mediocre stuff. Quality products often have better design, take up appropriate space, and actually fulfill their intended function.
 
-![Lifestyle photo showing a minimalist, well-organized space with quality items](/blog/images/guide-to-sustainable-shopping/quality-over-quantity.jpg)
-
 ## Research Before You Buy
 
 In our instant-gratification world, research feels like a chore, but it's the foundation of sustainable shopping. Fifteen minutes of investigation can save you from years of regret and multiple repurchases.
@@ -98,8 +90,6 @@ I once spent two weeks researching espresso machines before making a purchase. I
 
 Don't forget to investigate local availability of parts and service. A great product becomes useless if you can't get it repaired or find replacement components in the UAE.
 
-![Infographic comparing research time vs. product satisfaction and longevity](/blog/images/guide-to-sustainable-shopping/research-benefits-infographic.jpg)
-
 ## Quality Over Quantity — Every Single Time
 
 This principle seems obvious, but it's surprisingly hard to apply consistently. Quality isn't always about premium brands or luxury materials — it's about choosing products designed and built to perform their intended function reliably over time.
@@ -113,8 +103,6 @@ Kitchen appliances deserve special attention because they endure daily use. A we
 Clothing is where quality over quantity creates the most dramatic lifestyle improvements. A well-made cotton shirt will feel better, look better, and last longer than five cheap alternatives. Quality clothing also tends to fit better and maintain its shape through washing and wearing.
 
 The sweet spot for most categories is the upper-middle tier — not the absolute cheapest, but not the luxury option either. This tier typically offers the best balance of quality, features, and durability without paying for brand prestige or exotic materials.
-
-![Product comparison showing quality construction details vs. cheaper alternatives](/blog/images/guide-to-sustainable-shopping/quality-construction-comparison.jpg)
 
 ## Understanding Product Lifecycles
 
@@ -132,8 +120,6 @@ The end-of-life phase is often overlooked but increasingly important. Can the pr
 
 When [trying new product categories](/blog/how-to-try-new-categories), lifecycle thinking becomes crucial. It's tempting to buy the cheapest option to test your interest, but often the better strategy is buying a quality entry-level product that you can use long-term or resell easily if it doesn't suit your needs.
 
-![Diagram showing product lifecycle from raw materials to disposal/recycling](/blog/images/guide-to-sustainable-shopping/product-lifecycle-diagram.jpg)
-
 ## Sustainable Materials and Certifications
 
 Not all materials are created equal, and understanding the differences can guide your purchases toward more sustainable options. The key is learning to recognize legitimate certifications versus marketing greenwashing.
@@ -150,8 +136,6 @@ Be skeptical of vague claims like "eco-friendly" or "green" without specific cer
 
 For electronics, look for conflict-free mineral certification and recycling programs. Some manufacturers are more transparent about their supply chains and environmental practices than others.
 
-![Infographic showing common sustainable certifications and what they mean](/blog/images/guide-to-sustainable-shopping/certifications-guide-infographic.jpg)
-
 ## The Art of Buying Less But Better
 
 This might be the most challenging aspect of sustainable shopping because it requires rewiring deeply ingrained consumer habits. Our culture equates more purchases with more happiness, but research consistently shows that relationship breaks down quickly.
@@ -166,8 +150,6 @@ Focus on consumables and experiences over durable goods. The best dinner party i
 
 This approach works particularly well in the UAE's transient expat community. Many residents move frequently, making heavy accumulation of stuff impractical anyway. Focusing on fewer, higher-quality items makes relocating easier and less expensive.
 
-![Lifestyle photo showing a curated collection of versatile, quality items](/blog/images/guide-to-sustainable-shopping/versatile-quality-items.jpg)
-
 ## Repair, Reuse, and Smart Disposal
 
 The most sustainable product is often the one you already own, properly maintained and repaired when necessary. Unfortunately, we've lost much of our repair culture, but it's making a comeback as people recognize the environmental and economic benefits.
@@ -181,8 +163,6 @@ When items can't be repaired, consider creative reuse before disposal. That brok
 For proper disposal, research local recycling programs and e-waste collection points. The UAE has made significant improvements in waste management infrastructure, but you need to use it properly. Many electronics retailers now accept old devices when you buy new ones.
 
 Consider selling or donating items that are still functional but no longer needed. Facebook Marketplace, dubizzle, and local buy-nothing groups can find new homes for items that would otherwise become waste. What's unnecessary for you might be exactly what someone else needs.
-
-![Photo showing before and after of a successful repair project](/blog/images/guide-to-sustainable-shopping/repair-success-story.jpg)
 
 ## Common Sustainable Shopping Mistakes
 
@@ -220,8 +200,6 @@ Track your purchase satisfaction. Keep notes about items you buy — how often y
 Build relationships with retailers who share your values. Some stores specialize in sustainable products, offer excellent return policies, or provide knowledgeable staff who can guide your choices. Shopping primarily through trusted sources reduces decision fatigue and improves outcomes.
 
 Consider subscription services for consumables you use regularly. This works well for household supplies, personal care items, and pantry staples. Good subscription services help you buy appropriate quantities and often offer more sustainable packaging than individual purchases.
-
-![Infographic showing the sustainable shopping decision tree process](/blog/images/guide-to-sustainable-shopping/decision-tree-infographic.jpg)
 
 Remember that sustainable shopping is a skill that improves with practice. Your first attempts might feel awkward or time-consuming, but they'll become natural habits that require less mental effort over time. The goal isn't to transform overnight but to make each shopping decision slightly more thoughtful than the last.
 

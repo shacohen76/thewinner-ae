@@ -33,8 +33,6 @@ I used to be that person who'd buy three books at once, start all of them, finis
 
 The secret isn't finding the "perfect" book. It's understanding yourself as a reader and creating a flexible approach that adapts to your energy, schedule, and curiosities. Whether you're commuting through Dubai traffic, winding down after a long day, or looking for your next weekend escape, there's a strategic way to pick books that will keep you engaged from first page to last.
 
-![Reading selection process showing different books matched to different moods and times](/blog/images/how-to-pick-your-next-book/hero.jpg)
-
 ## Understanding Your Reading Personality
 
 Before diving into specific selection strategies, you need to understand your own reading patterns. I learned this the hard way when I spent two months struggling through a dense historical biography simply because it came highly recommended. The problem wasn't the book — it was timing.
@@ -46,8 +44,6 @@ Start by tracking your reading patterns for a week. Notice when you naturally re
 I keep a simple reading log — nothing fancy, just notes about what worked and what didn't. Last year, I realized I consistently abandoned books on Sunday evenings, usually because I'd chosen something too demanding for the end of a busy weekend. That insight alone revolutionized my Sunday reading choices.
 
 Your reading personality also includes practical considerations. Are you someone who can focus with background noise, or do you need complete silence? Do you read better sitting upright at a desk or curled up on the couch? These seemingly minor preferences significantly impact which books will work for you.
-
-![Infographic showing different reading personality types and their characteristics](/blog/images/how-to-pick-your-next-book/reading-personality-types.jpg)
 
 Consider your relationship with unfinished books too. Some readers feel compelled to finish everything they start, while others happily abandon books that aren't clicking. Neither approach is wrong, but understanding your tendency helps you choose more strategically.
 
@@ -62,8 +58,6 @@ This is where the magic happens. Instead of choosing books randomly or based sol
 **Adventure-Hungry Moods:** When routine feels stifling, reach for books that transport you completely. This might mean fantasy epics, travel memoirs, or thrillers that keep you turning pages past bedtime. [Science fiction books](/best/science-fiction-books) excel here, offering both escapism and intellectual stimulation.
 
 **Learning Moods:** That restless feeling when you want to grow or understand something new calls for educational material. But be smart about this — choose books that teach through storytelling rather than dry textbooks. Narrative non-fiction, biographies, or books that explore topics through case studies work better than academic texts.
-
-![Visual guide showing mood-to-book matching with examples](/blog/images/how-to-pick-your-next-book/mood-matching-guide.jpg)
 
 **Processing Moods:** After major life events or during periods of change, books that help you think through experiences become valuable. This might mean memoirs by people who've faced similar challenges, philosophy that explores relevant themes, or fiction that mirrors your emotional landscape.
 
@@ -81,8 +75,6 @@ I discovered this during my daily drives from Jumeirah to Business Bay. Dense no
 
 **Deep Reading Sessions:** Weekend mornings or vacation days call for books that reward sustained attention. This is when to tackle those ambitious novels, comprehensive biographies, or challenging non-fiction that builds complex arguments across hundreds of pages.
 
-![Diagram showing optimal book types for different time windows throughout the day](/blog/images/how-to-pick-your-next-book/time-matching-diagram.jpg)
-
 **Bedtime Reading:** The goal here is gentle engagement that helps your mind transition toward sleep. Avoid cliffhangers, violence, or intellectually demanding material. Light fiction, poetry, or calming non-fiction about topics like nature or mindfulness work better than psychological thrillers or business strategy books.
 
 Your personal energy rhythms matter too. I'm sharpest in the morning, so I save challenging reads for early hours and lighter material for evenings. Some people find the opposite true. Experiment to discover your optimal timing for different types of books.
@@ -96,8 +88,6 @@ If you're newer to reading or want to expand beyond familiar territory, systemat
 **Use Gateway Authors:** Every genre has writers who serve as excellent introductions because they emphasize accessibility without sacrificing quality. For fantasy, Terry Pratchett's humor makes the magical elements less intimidating. For literary fiction, authors like Alice Munro write complex stories in clear, engaging prose.
 
 When I wanted to explore [science fiction books](/best/science-fiction-books), I felt intimidated by the technical aspects and unfamiliar terminology. Starting with books that focused on character relationships within sci-fi settings, rather than hard science concepts, helped me develop appreciation for the genre's possibilities.
-
-![Collection of gateway books arranged by genre showing entry points for new readers](/blog/images/how-to-pick-your-next-book/genre-gateway-books.jpg)
 
 **Sample Before Committing:** Read first chapters online, browse in bookstores, or check out shorter works by authors before diving into their lengthy novels. Many UAE libraries offer digital previews through apps like OverDrive, letting you test-drive books risk-free.
 
@@ -115,8 +105,6 @@ Your "Must Read Soon" pile should include variety — different genres, lengths,
 
 **Seasonal Curation:** Some books work better at different times of year. Beach reads during summer, cozy mysteries during winter, and motivational books at the beginning of new years aren't clichés — they're recognition of how seasons affect our reading moods. In the UAE, the cooler months often inspire more ambitious reading projects, while summer heat calls for lighter entertainment.
 
-![Organizational chart showing how to structure a personal reading queue](/blog/images/how-to-pick-your-next-book/reading-queue-organization.jpg)
-
 **Balance Recommendation Sources:** Mix recommendations from friends, professional reviews, social media, and your own browsing. Over-relying on any single source creates reading echo chambers. I try to include at least one book per quarter that I discovered independently, without any external recommendation.
 
 **Track What Didn't Work:** Note books you abandoned and why. Patterns reveal important insights about your preferences. If you consistently quit books after 50 pages because they're "too slow," that information guides future choices better than any recommendation list.
@@ -132,8 +120,6 @@ This game-changing approach eliminates the pressure of finding the single "perfe
 **Book Two: The Backup:** A lighter option for when your main book feels too demanding. This could be a re-read of an old favorite, a collection of short stories, or genre fiction that doesn't require intense concentration. The backup prevents reading paralysis on days when your main book doesn't match your energy.
 
 **Book Three: The Specialist:** Reserved for specific situations — commute reading, bedtime, or particular moods. This might be poetry for quiet moments, a humor book for stress relief, or educational material related to work or hobbies.
-
-![Three different books positioned to show the three-book strategy in action](/blog/images/how-to-pick-your-next-book/three-book-strategy.jpg)
 
 I discovered this system accidentally when I started keeping different books in different locations — one by my bed, one in my bag, one on the coffee table. Instead of choice paralysis, I had options that matched my circumstances and energy levels.
 
@@ -153,8 +139,6 @@ Physical books work beautifully for deep weekend reading sessions and create nat
 
 Digital formats excel for travel reading and commute situations where carrying multiple books isn't practical. The search function proves invaluable for non-fiction books when you need to relocate specific information quickly.
 
-![Comparison showing different reading devices and physical books with their use cases](/blog/images/how-to-pick-your-next-book/format-comparison.jpg)
-
 **Audiobooks:** Transform previously unusable time into reading opportunities. Commuting, exercising, doing household chores, or walking all become potential reading time. Some books — particularly memoirs read by their authors — gain additional impact in audio format. The narrator's interpretation adds layers of meaning that silent reading might miss.
 
 However, audiobooks require different selection criteria. Books with complex plots, numerous characters, or technical information can become confusing without visual references. Simple narratives, biographies, and motivational books often work better in audio format than dense academic texts.
@@ -170,8 +154,6 @@ Even experienced readers fall into predictable traps that lead to abandoned book
 **Mood Mismatching:** Choosing books that fight against your current emotional state rather than working with it. Forcing yourself to read upbeat material when you're processing grief, or selecting heavy topics when you need escapism, creates unnecessary reading resistance.
 
 **The Sunk Cost Fallacy:** Continuing with books that aren't working because you've already invested time in them. This is particularly problematic with longer books — the further you get, the harder it becomes to admit the book isn't right for you. Establish a clear abandonment policy: if you're not engaged after 50-100 pages (depending on book length), it's okay to stop.
-
-![Infographic showing common reading mistakes and their solutions](/blog/images/how-to-pick-your-next-book/common-mistakes-infographic.jpg)
 
 **Length Intimidation:** Avoiding longer books due to page count rather than actual difficulty or interest level. Some 600-page novels read faster than 200-page academic texts. Page count doesn't predict reading experience — engagement does. Conversely, don't assume short books will be quick reads if they're dense or challenging.
 
@@ -193,8 +175,6 @@ I switched to time-based goals after realizing that my "books per year" target w
 
 **Seasonal Adjustments:** Recognize that reading patterns naturally fluctuate with life circumstances. Ramadan, exam periods, busy work seasons, or family commitments affect available reading time. Build these variations into your goals rather than fighting them.
 
-![Visual calendar showing seasonal reading goal adjustments throughout the year](/blog/images/how-to-pick-your-next-book/seasonal-reading-goals.jpg)
-
 **Quality Metrics:** Include goals that focus on reading satisfaction rather than just completion. "Finish 80% of books I start" or "discover two new favorite authors" emphasize the quality of your reading experience. These goals encourage better book selection and more thoughtful engagement with material.
 
 **Social Elements:** Share goals with other readers or join reading communities for accountability and motivation. Dubai has several active book clubs, and online communities provide support for readers worldwide. Social connection transforms reading from solitary activity into shared experience, though be careful not to let others' reading pace pressure you into unhealthy comparisons.
@@ -215,8 +195,6 @@ Major life transitions — new jobs, relationships, moves, health changes, or fa
 
 **Parenting Phases:** New parents rarely have sustained reading time or mental energy for complex material. Picture books shared with children, short essay collections, or audiobooks during feeding sessions maintain reading connections during demanding periods. As children grow, reading together becomes possible, potentially rekindling your own interest in genres like fantasy or adventure stories.
 
-![Timeline showing how reading preferences adapt during different life stages](/blog/images/how-to-pick-your-next-book/life-changes-timeline.jpg)
-
 **Seasonal Mental Health:** Many people experience mood changes with seasons or cultural periods. During winter months or stressful cultural periods, comfort reads and uplifting material might appeal more than challenging literary fiction. Recognize these patterns without judgment and choose books that support rather than fight your natural rhythms.
 
 **Geographic Moves:** Relocating, especially internationally, often shifts reading interests toward material about new locations, cultural differences, or themes related to identity and belonging. When I first moved to the UAE, I found myself gravitating toward books about expatriate experiences and Middle Eastern culture as ways to process my own adjustment.
@@ -234,8 +212,6 @@ I maintain a "comfort reading" section with books I've loved and know I'll revis
 **Diverse Genre Representation:** Even if you have strong genre preferences, keeping some variety ensures options for different moods. A few mysteries, some non-fiction, perhaps poetry or short stories provide alternatives when your usual genres don't appeal. This prevents the "nothing to read" syndrome despite owning hundreds of books.
 
 **The "To Be Read" Pile Management:** Keep your unread book collection manageable — perhaps 10-15 books maximum. Too many unread books creates choice paralysis and guilt about unfinished purchases. Too few leaves you without options when you finish current reads. The goal is having appealing choices without overwhelming abundance.
-
-![Well-organized bookshelf showing different sections and organization methods](/blog/images/how-to-pick-your-next-book/home-library-organization.jpg)
 
 **Climate Considerations:** In the UAE's humid climate, proper book storage prevents damage. Keep books away from direct sunlight and consider dehumidifiers in storage areas. Damaged books are disappointing when you're ready to read them, and replacement costs add up over time.
 

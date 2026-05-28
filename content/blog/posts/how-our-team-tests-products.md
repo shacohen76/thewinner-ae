@@ -32,8 +32,6 @@ hero_image: "/blog/images/how-our-team-tests-products/hero.jpg"
 
 When I started TheWinner three years ago, I had one goal: create product reviews that actually help people make better purchasing decisions. Too many review sites felt like glorified affiliate link farms, pushing whatever paid the highest commission. We decided to do things differently.
 
-![Testing various products in our UAE lab facility](/blog/images/how-our-team-tests-products/hero.jpg)
-
 ## Our Testing Philosophy
 
 Every product that earns our recommendation goes through what we call the "Real Life Test" — because specifications on paper don't always translate to real-world performance. Last month, we tested a highly-rated air purifier that looked impressive on paper: HEPA filtration, smart connectivity, energy-efficient motors. But after running it for two weeks in Dubai's dusty environment, we discovered the pre-filter clogged so frequently that maintenance became a nightmare. That's the kind of insight you only get from extended testing.
@@ -45,8 +43,6 @@ Our philosophy centers on three principles:
 **Long-Term Value:** We think beyond the honeymoon period. Products that seem great for the first few days might develop issues after weeks of use. Our testing periods typically run 4-6 weeks minimum, with some categories getting 3-6 months of evaluation.
 
 **UAE-Specific Considerations:** Products that work brilliantly in temperate climates sometimes struggle with our heat, humidity, and dust. We factor in local conditions that other review sites might miss.
-
-![Infographic showing our testing timeline from research to final review](/blog/images/how-our-team-tests-products/testing-timeline-infographic.jpg)
 
 ## The Research Phase: Before We Touch a Product
 
@@ -73,8 +69,6 @@ For each category, we develop specific testing protocols. When reviewing wireles
 - Battery drain during long international flights
 - Call quality in windy conditions common to our coastal areas
 
-![Our team reviewing technical specifications and user feedback data](/blog/images/how-our-team-tests-products/research-phase.jpg)
-
 ## Hands-On Testing: Real-World Scenarios
 
 This is where the magic happens — and where we differ most from other review sites. We don't just run products through artificial tests; we integrate them into real daily routines.
@@ -96,8 +90,6 @@ I learned this lesson when testing a highly-rated [Philips](https://www.philips.
 We push products beyond normal use to understand their limits. Coffee machines get 10 cups per day for weeks. Fitness trackers accompany ultra-runners through desert heat. Laptop bags carry maximum weight loads through airport security lines.
 
 This approach revealed that a popular travel backpack had excellent build quality but uncomfortable weight distribution during extended wear — something you'd never discover in a 30-minute test.
-
-![Diagram showing our multi-stage testing process from arrival to final scoring](/blog/images/how-our-team-tests-products/testing-process-diagram.jpg)
 
 ## How We Score and Rank Products
 
@@ -132,8 +124,6 @@ We organize recommendations into tiers based on feature sets and build quality, 
 **Premium:** Advanced technology, superior build quality, comprehensive feature sets
 **Flagship:** Cutting-edge innovation, exceptional materials, maximum performance
 
-![Comparison chart showing different product tiers and their characteristics](/blog/images/how-our-team-tests-products/tier-comparison-chart.jpg)
-
 ## Editorial Independence and Transparency
 
 This topic makes some review sites uncomfortable, but we believe transparency builds trust. Yes, we earn affiliate commissions when readers purchase products through our links. But those commissions don't influence our rankings.
@@ -156,8 +146,6 @@ Brands occasionally offer products for testing, which saves us purchasing costs 
 - Same testing standards as purchased items
 
 Last year, we received a high-end espresso machine from a major brand for review. After six weeks of testing, we ranked it third in our category roundup because competitors offered better value. The brand wasn't thrilled, but our readers got honest guidance.
-
-![Our editorial team discussing review criteria and independence policies](/blog/images/how-our-team-tests-products/editorial-independence.jpg)
 
 ## Working with Brands vs. Staying Neutral
 
@@ -212,8 +200,6 @@ Local conditions significantly impact product performance. What works in London 
 
 **Service and Support:** Products need accessible local support or very reliable build quality, since repair options might be limited.
 
-![Testing products in various UAE-specific conditions including heat, dust, and humidity](/blog/images/how-our-team-tests-products/uae-testing-conditions.jpg)
-
 ## Common Testing Mistakes We Avoid
 
 Through experience, we've identified testing pitfalls that compromise review accuracy. Avoiding these mistakes helps us provide better guidance.
@@ -245,8 +231,6 @@ When reviewing water filtration systems, we calculate filter replacement costs o
 ### Testing in Unrealistic Conditions
 
 Laboratory conditions don't reflect real use. We test products in environments that match how people actually use them: noisy homes, cluttered spaces, multitasking scenarios, and varying skill levels.
-
-![Common testing mistakes illustrated with examples and corrections](/blog/images/how-our-team-tests-products/testing-mistakes-infographic.jpg)
 
 ## How We Keep Reviews Updated
 
@@ -307,8 +291,6 @@ Every test generates data: performance measurements, user experience notes, phot
 Fridays bring team discussions where we share findings, debate scoring decisions, and identify potential biases. These sessions often reveal insights that individual testing missed.
 
 During one session, we realized our air conditioner testing favored units that cooled quickly but ignored energy efficiency. Users care about both performance and utility bills, so we adjusted our testing weights accordingly.
-
-![Day in the life of our testing facility showing various products being evaluated](/blog/images/how-our-team-tests-products/behind-the-scenes.jpg)
 
 The work isn't glamorous — lots of data entry, repetitive testing, and careful documentation. But this methodical approach is what separates reliable reviews from quick impressions.
 

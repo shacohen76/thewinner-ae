@@ -33,8 +33,6 @@ hero_image: "/blog/images/running-shoe-brands-hidden-stories/hero.jpg"
 
 ---
 
-![A flat-lay of five different running shoes on a Dubai running track at golden hour](/blog/images/running-shoe-brands-hidden-stories/hero.jpg)
-
 ## The Waffle Iron That Started Everything
 
 Picture a Sunday morning in Eugene, Oregon, sometime around 1971. Bill Bowerman — track coach, relentless tinkerer, man who apparently had zero interest in a quiet breakfast — is staring at his wife Barbara's waffle iron. Not because he's hungry. Because he has rubber.
@@ -77,8 +75,6 @@ The name "Hoka One One" comes from the Māori phrase meaning "fly over the earth
 
 The resulting "CloudTec" system — hollow pods that compress on impact and snap back on toe-off — is now worn by millions of runners. On went public on the New York Stock Exchange in 2021 in one of the most successful sportswear IPOs in years. Not bad for a concept that started with leftover irrigation equipment.
 
-![Infographic: Timeline of major running shoe brand founding moments and key technology launches](/blog/images/running-shoe-brands-hidden-stories/brand-origin-timeline-infographic.jpg)
-
 ---
 
 ## The Carbon-Plate Revolution
@@ -114,8 +110,6 @@ Here's a quick comparison of the major proprietary foam technologies:
 - **ASICS FF BLAST+ / FF TURBO:** ASICS' proprietary foams — BLAST+ for cushioning, TURBO for race-day energy return. The Metaspeed Sky uses TURBO to genuinely impressive effect.
 - **Hoka CMEVA / ProFly:** Hoka uses a combination of compression-molded EVA and ProFly for their performance upper. The Clifton line's CMEVA delivers that signature soft ride.
 - **On Helion:** A superfoam used across On's performance range that aims to balance cushioning with the mechanical snap of the CloudTec pods.
-
-![Diagram: Cross-section of a modern running shoe midsole showing foam layers, carbon plate position, and outsole rubber placement](/blog/images/running-shoe-brands-hidden-stories/midsole-cross-section-diagram.jpg)
 
 The key insight: "soft" and "fast" are not the same thing, and neither are "firm" and "responsive." The most energy-returning foams feel plush but spring back quickly. Pure softness (think older, cheaper EVA) can feel comfortable on short runs but turns your legs to mush over 30km because you're doing all the propulsive work yourself. The goal of modern foam engineering is high energy return *combined with* adequate cushioning — the two are no longer as mutually exclusive as they once were.
 
@@ -162,8 +156,6 @@ Running shoe history is littered with moments where a famous performance changed
 **Eliud Kipchoge, Breaking2 Project, 2017 (and 1:59 challenge, 2019):** Kipchoge's Nike-sponsored attempt to break the two-hour marathon barrier turned the Vaporfly's technology into front-page news worldwide. His eventual 1:59:40 in Vienna — wearing the Alphafly prototype — made carbon-plate shoes a household topic in a way that no product launch ever could have.
 
 I remember watching Kipchoge cross that finish line on a livestream with two friends in a Dubai apartment, all of us standing up from the couch in the final kilometre as if we'd been personally summoned. It's the kind of moment that makes you immediately go online and research whether your old training shoes are secretly ruining your half-marathon times. (They probably weren't. But we all ordered new shoes anyway.)
-
-![A running track at dawn with a single pair of running shoes in the foreground, blurred stadium lights in background](/blog/images/running-shoe-brands-hidden-stories/running-track-dawn.jpg)
 
 ---
 
@@ -219,8 +211,6 @@ Most running shoes are built for 500-800km of use before the midsole foam compre
 If you're tempted by barefoot or minimal running after reading about Abebe Bikila or feeling like modern cushioning is somehow "cheating," please transition *extremely* slowly. The Achilles and calf complex takes months to adapt to dramatically reduced heel elevation. Many of the running-store staff in Dubai I've spoken with say Achilles-related injuries from fast minimalist transitions are among the most common presentations they hear about.
 
 If you're heading somewhere like a mountain trail and need a perspective on the full gear picture beyond shoes, our [guide to outdoor camping gear](/blog/guide-to-outdoor-camping-gear) has some adjacent wisdom on kit selection that applies well here too.
-
-![A runner's shoe rack showing multiple pairs of running shoes organized by use — race day, training, trail](/blog/images/running-shoe-brands-hidden-stories/shoe-rotation-collection.jpg)
 
 ---
 

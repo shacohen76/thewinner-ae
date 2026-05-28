@@ -39,8 +39,6 @@ This is the new reality of online shopping: established brands share shelf space
 
 The challenge isn't whether to trust unfamiliar brands entirely — it's developing the judgment to separate the hidden gems from the potential disasters. In the UAE market especially, where we have access to both international and regional brands through various online platforms, this skill becomes invaluable.
 
-![Understanding unknown brands in online shopping](/blog/images/how-to-choose-unknown-brands/hero.jpg)
-
 ## Building Your Research Framework
 
 Before diving into any purchase from an unfamiliar brand, I follow what I call the "Three-Layer Investigation." Think of it as due diligence for your wallet.
@@ -64,8 +62,6 @@ Let me share exactly how I research an unknown brand, using a recent example. La
 **Step three:** I searched for the brand name plus "problems" or "complaints." Every brand has some negative feedback, but I'm looking for patterns. With Govee, the complaints centered on app connectivity issues — annoying but not deal-breaking for smart devices.
 
 **Step four:** I verified their social media presence and engagement. Govee maintained active Instagram and YouTube accounts with actual customer interactions, not just promotional content. Fake brands rarely invest in ongoing social media management.
-
-![Brand research methodology diagram](/blog/images/how-to-choose-unknown-brands/research-methodology-infographic.jpg)
 
 This entire process took less than five minutes and gave me confidence to proceed. The Govee LED strips I eventually purchased have performed flawlessly for eight months now, proving that systematic research pays off.
 
@@ -95,8 +91,6 @@ Customer reviews for unknown brands require a different reading strategy than re
 
 **Watch for review timing patterns.** Legitimate products accumulate reviews gradually over months or years. When I see dozens of five-star reviews all posted within the same week, especially for a newly launched product, it raises immediate suspicions about [review authenticity](/blog/guide-to-understanding-reviews).
 
-![Review analysis comparison chart](/blog/images/how-to-choose-unknown-brands/review-analysis-chart.jpg)
-
 **Cross-reference reviews across platforms.** If a brand sells through multiple channels, I compare reviews between Amazon.ae, Noon, and international sites. Consistent feedback patterns across platforms suggest authentic user experiences, while dramatically different review profiles might indicate manipulation on specific platforms.
 
 The most valuable reviews often come from customers who bought multiple items from the same brand over time. These long-term users provide insights into build quality, customer service experiences, and product longevity that single-purchase reviews cannot offer.
@@ -115,8 +109,6 @@ When evaluating unknown brands, technical specifications become your primary qua
 
 **Compatibility lists demonstrate thoroughness.** Quality brands provide comprehensive compatibility information. Rather than claiming "works with all devices," they list specific models, operating systems, and software versions. This attention to detail usually correlates with overall product quality.
 
-![Technical specifications comparison infographic](/blog/images/how-to-choose-unknown-brands/specs-comparison.jpg)
-
 **Performance metrics under specific conditions.** The best unknown brands provide performance data with context. Instead of claiming "50-hour battery life," they specify "50 hours at 50% volume with noise cancellation disabled." This transparency builds trust and sets realistic expectations.
 
 ## Understanding Warranty and Customer Support
@@ -132,8 +124,6 @@ Customer support quality often determines whether an unknown brand becomes a sma
 **Check their return and refund policies.** Amazon's return policy provides some protection, but the brand's own policy reveals their confidence level. Brands that offer extended return periods or money-back guarantees typically stand behind their products.
 
 **Evaluate their communication channels.** Professional brands maintain multiple contact methods — email, phone, live chat, and social media support. They also respond consistently across all channels. I've noticed that brands with only email contact often struggle with customer service quality.
-
-![Customer support evaluation flowchart](/blog/images/how-to-choose-unknown-brands/support-evaluation-diagram.jpg)
 
 **Research their problem resolution approach.** Search for customer service experiences with the brand name plus terms like "replacement" or "refund." How do they handle defective products? Do they require extensive documentation, or do they trust customer reports? This research often reveals the true character of an unknown brand.
 
@@ -165,8 +155,6 @@ Some warning signs with unknown brands are so significant that they should end y
 
 **Unrealistic performance claims.** I immediately dismiss brands claiming their budget headphones "rival studio monitors costing ten times more" or their basic smartphone camera lenses "achieve professional DSLR quality." Legitimate brands make realistic comparisons and acknowledge their market positioning.
 
-![Red flags warning infographic](/blog/images/how-to-choose-unknown-brands/red-flags-infographic.jpg)
-
 **Absence from all major retail platforms.** Brands that only sell through obscure websites or single marketplace accounts often lack the partnerships and legitimacy that come with established retail relationships. Quality unknown brands typically expand to multiple platforms as they grow.
 
 **Bundled products without clear synergy.** When I see unknown brands offering seemingly unrelated product bundles — like phone cases with kitchen gadgets — it usually indicates they're importing random products rather than developing focused product lines.
@@ -186,8 +174,6 @@ Despite the risks, unknown brands sometimes offer compelling advantages over est
 **Specialized expertise.** Some unknown brands emerge from industries with deep technical knowledge. Baseus started as a mobile accessory company with strong engineering backgrounds, and their early products reflected this technical expertise even before brand recognition developed.
 
 **Value positioning without compromise.** The best unknown brands offer established-quality products at more accessible price points by eliminating marketing overhead and retail partnerships that don't add customer value. They invest in engineering and manufacturing instead of advertising budgets.
-
-![Unknown brand success factors diagram](/blog/images/how-to-choose-unknown-brands/success-factors-chart.jpg)
 
 **Regional market optimization.** In the UAE market, some unknown brands specifically design products for local preferences and environmental conditions. These regionally-focused brands often understand customer needs better than global companies with standardized offerings.
 
@@ -210,8 +196,6 @@ Successfully identifying quality unknown brands creates opportunities for ongoin
 **Leverage direct communication advantages.** Unknown brands often provide access to customer service levels that established brands cannot match. I've had unknown brand founders personally respond to product questions and even customize orders for specific needs. These relationships provide advantages beyond the products themselves.
 
 The most rewarding unknown brand relationships develop into long-term partnerships where you receive excellent products and service while supporting companies that truly value customers over marketing metrics. These relationships often outlast and outperform interactions with famous brands that take customer loyalty for granted.
-
-![Building brand relationships over time](/blog/images/how-to-choose-unknown-brands/brand-relationship-timeline.jpg)
 
 ## Common Mistakes to Avoid
 

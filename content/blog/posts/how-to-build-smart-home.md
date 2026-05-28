@@ -37,8 +37,6 @@ I've been testing smart home devices for seven years now, and I've seen countles
 
 Last month, I visited a friend's apartment in Dubai Marina. He'd spent a small fortune on smart devices — different brands, different apps, different protocols. His coffee table was covered with five different remote controls, and he needed three separate apps just to dim the lights. "Smart homes are overrated," he said, switching back to manually operating everything.
 
-![Smart home setup gone wrong with multiple remotes and devices](/blog/images/how-to-build-smart-home/hero.jpg)
-
 The truth is, smart homes aren't overrated — they're just poorly planned. When done right, [home automation](https://en.wikipedia.org/wiki/Home_automation) genuinely improves your daily life. My morning routine now happens automatically: lights gradually brighten at 6:30 AM, the coffee maker starts brewing, and my favorite playlist begins softly. It took eighteen months to build this system, adding one device at a time.
 
 The key insight? Smart homes work best when they fade into the background. You shouldn't think about the technology — you should just experience the convenience. This requires patience, planning, and a systematic approach.
@@ -57,8 +55,6 @@ The three major ecosystems are Google Assistant, Amazon Alexa, and Apple HomeKit
 
 **Apple HomeKit prioritizes security and privacy.** HomeKit devices must pass Apple's strict certification process, which means fewer options but higher quality. If you're already invested in Apple's ecosystem (iPhone, iPad, Mac), HomeKit creates the most seamless experience. However, HomeKit-compatible devices often cost more than alternatives.
 
-![Infographic: comparing Google vs Alexa vs HomeKit ecosystems](/blog/images/how-to-build-smart-home/ecosystem-comparison-infographic.jpg)
-
 My personal recommendation? If you own an iPhone and value privacy, choose HomeKit. If you want maximum device variety and competitive pricing, choose Alexa. If you want the smartest voice assistant and use Android, choose Google Assistant.
 
 Here's a crucial tip I learned the hard way: stick to your chosen ecosystem religiously, especially in the beginning. I once bought a beautiful smart thermostat that only worked with HomeKit, even though the rest of my setup used Alexa. The thermostat became an expensive manual device because I couldn't integrate it with my existing routines.
@@ -75,8 +71,6 @@ Smart speakers serve multiple functions: they're your voice interface, your auto
 
 **For HomeKit, the HomePod mini provides excellent integration** with Apple devices, though it lacks a screen. The HomePod's computational audio automatically adjusts to your room's acoustics, creating surprisingly rich sound from a compact form factor.
 
-![Smart speaker hub controlling various home devices](/blog/images/how-to-build-smart-home/hub-control-lifestyle.jpg)
-
 Placement matters enormously. Position your hub centrally, away from walls and corners that might muffle voice recognition. I initially placed my Echo in a kitchen corner, and it constantly missed commands from the living room. Moving it to the kitchen island improved recognition dramatically.
 
 Consider your home's layout when choosing between multiple hubs versus one central unit. Apartments under 1,200 square feet typically work fine with a single hub, while larger homes benefit from multiple devices for reliable coverage.
@@ -92,8 +86,6 @@ Start with your most-used rooms: bedroom, living room, and kitchen. Don't automa
 For most people, I recommend a hybrid approach: smart bulbs for accent lighting and lamps, [smart switches](/best/smart-light-switches) for overhead fixtures with multiple bulbs.
 
 The Philips Hue ecosystem remains the gold standard for smart lighting. [Philips](https://www.philips.com) invested heavily in color accuracy, dimming performance, and app refinement. Hue bulbs produce 16 million colors with smooth transitions and natural-looking whites. Yes, they're expensive, but they last 15,000-25,000 hours and maintain consistent performance.
-
-![Philips Hue smart lighting setup in modern living room](/blog/images/how-to-build-smart-home/smart-lighting-setup.jpg)
 
 For budget-conscious buyers, TP-Link Kasa and LIFX offer solid alternatives with good app support and reliable connectivity. However, avoid ultra-cheap brands that promise identical features — I've tested bulbs that failed within months, flickered constantly, or lost Wi-Fi connectivity randomly.
 
@@ -132,8 +124,6 @@ However, consider privacy implications carefully. Video doorbells record public 
 
 **Indoor cameras** work best for pet monitoring, child supervision, or general home monitoring while away. The Wyze Cam v3 delivers surprising quality and features considering its modest price point. For higher-end needs, the Arlo Pro 4 includes weatherproofing, wireless operation, and advanced AI that distinguishes between people, animals, and vehicles.
 
-![Security camera system monitoring home entrance](/blog/images/how-to-build-smart-home/security-monitoring-setup.jpg)
-
 **Smart locks** eliminate keys while providing detailed access logs. The August Smart Lock Pro retrofits existing deadbolts without changing exterior appearance — crucial for apartment dwellers with landlord restrictions. You can grant temporary access to cleaners, maintenance workers, or guests, then revoke it automatically.
 
 In the UAE, consider smart locks with backup physical keys. Electronic failures during extreme heat can strand you outside your home. The best smart locks include multiple unlock methods: smartphone app, keypad, physical key, and voice control.
@@ -150,8 +140,6 @@ If you're considering a TV upgrade, modern smart TVs integrate naturally with ho
 
 Smart speakers throughout your home enable multi-room audio that follows you from room to room. Start with one speaker per primary living area, then expand based on usage patterns. The Sonos ecosystem excels at synchronized multi-room playback, though it requires separate smart home control devices.
 
-![Multi-room audio system with smart speakers](/blog/images/how-to-build-smart-home/multiroom-audio-setup.jpg)
-
 **Universal remote control** through smart home apps eliminates the coffee table clutter of multiple remotes. The Logitech Harmony series (discontinued but still available) or newer solutions like the SofaBaton X1 can control TVs, sound systems, streaming devices, and smart lights from a single interface.
 
 Voice control shines for entertainment scenarios: "Movie time" can dim lights, close blinds, turn on the TV, switch to Netflix, and adjust volume to your preferred level. "Good night" can turn off all entertainment devices, activate security cameras, and set appropriate lighting.
@@ -167,8 +155,6 @@ The most frustrating smart home moments happen when devices don't communicate pr
 Consider mesh Wi-Fi systems for homes over 1,000 square feet or with challenging layouts. The ASUS AiMesh system, NETGEAR Orbi, or Amazon Eero create seamless coverage that hand off device connections between access points automatically.
 
 **Protocol compatibility** creates the most confusion for newcomers. Wi-Fi devices connect directly to your router, while Zigbee and Z-Wave require dedicated hubs. Thread represents a newer protocol designed for smart home reliability, but it requires compatible devices and border routers.
-
-![Diagram showing how different smart home protocols connect](/blog/images/how-to-build-smart-home/protocol-diagram.jpg)
 
 My recommendation: start with Wi-Fi devices for simplicity, then expand to Zigbee if you need mesh networking benefits or battery-powered sensors. Avoid mixing protocols unnecessarily — it complicates troubleshooting and limits automation possibilities.
 
@@ -187,8 +173,6 @@ After years of testing and consulting with friends on their setups, I've identif
 **Mistake 3: Choosing devices based solely on pricing.** Ultra-cheap smart plugs and bulbs often lack proper certifications, reliable firmware updates, or adequate customer support. When they fail (and they often do), they can take your entire network down or create security vulnerabilities.
 
 **Mistake 4: Not considering long-term support.** Smart home devices require ongoing software updates for security and functionality. Companies occasionally discontinue products or shut down cloud services, rendering devices useless. Research manufacturer track records and choose established brands with sustainable business models.
-
-![Common smart home setup mistakes to avoid](/blog/images/how-to-build-smart-home/mistakes-to-avoid-infographic.jpg)
 
 **Mistake 5: Over-automating everything.** Not every light switch or appliance needs smart control. Focus automation on repetitive tasks that genuinely improve convenience or efficiency. I initially automated my bathroom exhaust fan, but manual control proved more practical for varying usage needs.
 
@@ -210,8 +194,6 @@ Once your basic smart home functions reliably, advanced automations can create g
 
 **Energy management** automation reduces utility costs through intelligent scheduling. High-power devices like water heaters, washing machines, and dishwashers can automatically operate during off-peak hours when electricity rates drop. Smart plugs monitor power consumption and alert you to inefficient devices.
 
-![Advanced home automation controlling multiple systems](/blog/images/how-to-build-smart-home/advanced-automation-control.jpg)
-
 **Security integration** creates layered protection that responds to various triggers. When security cameras detect unexpected motion during away periods, lights activate in multiple rooms, sirens sound, and notifications alert your phone immediately. This approach deters intruders more effectively than passive recording alone.
 
 **Seasonal adjustments** automatically adapt your home to changing conditions throughout the year. During UAE's cooler months (December through February), heating elements in bathrooms can activate earlier in the morning, while cooling systems scale back their scheduling.
@@ -229,8 +211,6 @@ Smart home technology evolves rapidly, making future-proofing essential for prot
 **Modular expansion** allows gradual system growth without replacing existing components. Choose platforms that support multiple device types and communication protocols, enabling diverse future additions without compatibility concerns.
 
 **Open-source alternatives** like Home Assistant provide maximum flexibility and longevity. While they require technical expertise, open-source platforms can't be discontinued by corporate decisions, and community support often exceeds commercial alternatives.
-
-![Future smart home technologies and standards](/blog/images/how-to-build-smart-home/future-tech-trends.jpg)
 
 **Energy independence** integration prepares homes for solar panels, battery storage, and electric vehicle charging. Smart energy management systems can optimize renewable energy usage, reduce grid dependence, and potentially generate income through excess energy sales.
 
