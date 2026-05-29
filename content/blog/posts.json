@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "total_posts": 46,
+  "total_posts": 47,
   "generation_model": "claude-sonnet-4-20250514",
   "posts": [
     {
@@ -1337,6 +1337,45 @@
         "innovation"
       ],
       "publish_date": "2026-05-28"
+    },
+    {
+      "id": 47,
+      "tier": 4,
+      "slug": "why-vinyl-sounds-the-way-it-does",
+      "title": "The Science of Why Vinyl Sounds the Way It Does: Grooves, Warmth, and the 2026 Analog Revival",
+      "author_id": "peter-gods",
+      "description": "Why a needle dragging through a plastic groove can move people in ways a perfect digital file sometimes can't. The real physics of analog warmth, the loudness war, and the turntables and speakers bringing vinyl back to life in 2026.",
+      "quick_answer": "Vinyl's distinctive sound comes from how it stores music: one continuous analog groove, gentle high-frequency roll-off, subtle harmonic distortion, and mastering that avoids digital's loudness war. It isn't technically 'more accurate' than digital, but for many listeners it's more pleasurable, and in 2026 a new generation of well-engineered turntables and speakers makes that sound easier to get than ever.",
+      "target_words": 2400,
+      "internal_links": [
+        "how-to-set-up-movie-night",
+        "how-to-build-smart-home",
+        "how-to-pick-wireless-earbuds",
+        "how-to-start-a-new-hobby",
+        "guide-to-tech-upgrades"
+      ],
+      "product_links": [
+        "analog-turntable",
+        "record-players",
+        "bookshelf-speakers",
+        "audioengine-wireless-powered-speakers",
+        "integrated-stereo-amplifier",
+        "bluetooth-turntables"
+      ],
+      "outbound_authority": [
+        "phonograph_record",
+        "riaa_equalization",
+        "loudness_war",
+        "sound_recording_and_reproduction"
+      ],
+      "tags": [
+        "vinyl",
+        "audio",
+        "hi-fi",
+        "sound science",
+        "turntables"
+      ],
+      "publish_date": "2026-05-29"
     }
   ]
 }
