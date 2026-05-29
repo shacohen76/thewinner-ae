@@ -33,8 +33,6 @@ Thinking about getting outdoors? Our [guide to camping gear for hot climates](/b
 
 Last month, I watched my neighbor Ahmed haul a brand-new mountain bike out of his SUV — carbon fiber frame, electronic shifting, the works. "Finally decided to get into cycling," he said proudly. Three weeks later, I noticed it gathering dust in his garage. Sound familiar? We've all been there, seduced by the promise that the right gear will transform us into instant experts.
 
-![Starting a new hobby with minimal gear](/blog/images/how-to-start-a-new-hobby/hero.jpg)
-
 The truth is, I've fallen into this trap more times than I care to admit. There was the time I bought professional-grade oil paints before I'd even learned to hold a brush properly. The espresso machine that cost more than my monthly grocery budget, purchased during a two-week coffee enthusiasm phase. Each time, I told myself the gear would motivate me to stick with it. Each time, I was wrong.
 
 After years of expensive mistakes — and thankfully, some genuine successes — I've learned that the secret to starting new hobbies isn't about having the best equipment. It's about understanding the difference between what you need to begin and what you think you need to succeed.
@@ -44,8 +42,6 @@ After years of expensive mistakes — and thankfully, some genuine successes —
 Here's what nobody tells you about starting hobbies: the gear shopping phase feels like progress, but it's actually procrastination in disguise. When you're browsing Amazon.ae for the perfect running watch or researching camera lenses for three hours straight, your brain gets the same satisfaction hit as if you'd actually gone for a run or taken a photo. It's called "shopping momentum" — the illusion that purchasing equals participating.
 
 I experienced this firsthand when I decided to try photography. Instead of grabbing my phone and taking pictures, I spent two weeks researching camera bodies, reading lens comparisons, and joining photography forums. By the time I finally made a purchase, I was so overwhelmed by technical specifications that I barely touched the camera for months. The research phase had satisfied my brain's desire to engage with the hobby without actually engaging with it.
-
-![Infographic showing the gear addiction cycle](/blog/images/how-to-start-a-new-hobby/gear-addiction-cycle.jpg)
 
 This phenomenon is particularly strong in the UAE, where we have easy access to every conceivable piece of equipment. Walk through any Dubai Mall or browse online, and you'll find professional-grade gear for every hobby imaginable. The abundance creates a false sense that you need premium equipment to have a legitimate experience.
 
@@ -59,8 +55,6 @@ Before you buy a single piece of equipment, commit to 30 days of your new hobby 
 
 When I decided to try running two years ago, I was ready to invest in everything: specialized shoes, moisture-wicking clothes, a GPS watch, even those fancy compression socks. Instead, I forced myself to run in old sneakers and cotton t-shirts for a month. It was revelatory. I learned that I actually hated running in the Dubai heat but loved early morning jogs. I discovered that my biggest challenge wasn't tracking my pace — it was simply getting out the door consistently.
 
-![Runner in basic gear during sunrise](/blog/images/how-to-start-a-new-hobby/basic-running-gear.jpg)
-
 Those 30 days taught me more about my running preferences than any amount of research could have. When I finally did [invest in proper running shoes](/blog/how-to-find-running-shoes), I knew exactly what I needed: lightweight shoes for road running, with extra cushioning for my heel-heavy gait. I skipped the GPS watch entirely because I'd learned that tracking metrics actually made running less enjoyable for me.
 
 The 30-day rule works for several reasons. First, it separates genuine interest from fleeting enthusiasm. We've all had hobbies that seemed appealing for a week before reality set in. Second, it helps you understand your specific needs within that hobby. Reading about gardening and actually spending time with soil under your fingernails are completely different experiences. Third, it builds confidence in your own judgment rather than relying on reviews and recommendations from people with different preferences.
@@ -70,8 +64,6 @@ Apply this rule ruthlessly. Want to try cooking? Use the pots and pans you alrea
 ## Starting Smart: Borrow Before You Buy
 
 The fastest way to test a hobby without financial commitment is borrowing equipment from friends, family, or rental services. This strategy has saved me countless dirham and prevented several hobby graveyard additions. Last year, before committing to paddleboarding, I borrowed a friend's board for three different sessions. I learned that I preferred longer boards for stability and that I needed to build up core strength before longer sessions. More importantly, I discovered that I genuinely loved being on the water — it wasn't just a passing fancy.
-
-![People sharing hobby equipment](/blog/images/how-to-start-a-new-hobby/sharing-equipment.jpg)
 
 In the UAE, our expat community is particularly well-suited for equipment sharing. Most people have accumulated gear from various hobby phases, and many are happy to lend items that are gathering dust. I've borrowed everything from camping gear for weekend trips to professional-quality paint brushes from an artist friend. The key is being a responsible borrower — return things promptly, in good condition, and with genuine appreciation.
 
@@ -86,8 +78,6 @@ When borrowing isn't possible, consider the absolute minimum viable equipment. F
 Learning to distinguish between essential and nice-to-have equipment is perhaps the most valuable skill for hobby longevity. This distinction isn't about cheap versus expensive — it's about understanding what actually enables the activity versus what enhances it. The enhancement can wait; the enablement cannot.
 
 Take photography as an example. The essential equipment is simple: something that captures images. That could be your phone, a basic point-and-shoot camera, or an entry-level DSLR. Everything else — additional lenses, external flashes, tripods, filters — falls into the nice-to-have category initially. I learned this lesson the hard way when I spent months researching macro lenses before I'd even mastered basic composition principles.
-
-![Comparison of essential vs. nice-to-have photography gear](/blog/images/how-to-start-a-new-hobby/essential-vs-nice-gear.jpg)
 
 The essential gear test is straightforward: can you meaningfully participate in the hobby without this item? For running, shoes are essential (though even this is debatable given the barefoot running movement). A heart rate monitor is nice-to-have. For cooking, heat source and basic utensils are essential. A food processor is nice-to-have, no matter what recipe blogs suggest.
 
@@ -108,8 +98,6 @@ The fitness industry thrives on the myth that you need equipment to get fit. Sta
 For cardio, use what's already available. Walk or run outdoors (Dubai's winter months are perfect for this). Take stairs instead of elevators. Dance to music in your living room. The goal is establishing consistency, not optimizing performance metrics.
 
 When you do invest in fitness equipment, prioritize quality over quantity. One well-made kettlebell will serve you better than a collection of flimsy gadgets. A single pair of adjustable dumbbells beats an entire rack of fixed weights for home use.
-
-![Minimalist home gym setup](/blog/images/how-to-start-a-new-hobby/minimalist-gym.jpg)
 
 **Cooking and Baking**
 
@@ -139,8 +127,6 @@ The constraint of basic supplies often sparks more creativity than unlimited opt
 
 Not all entry-level equipment is created equal. The trick is finding items that offer genuine quality at accessible entry points rather than just cheap versions of expensive products. This requires understanding what compromises are acceptable for beginners and which ones will frustrate you into quitting.
 
-![Diagram showing quality indicators in entry-level products](/blog/images/how-to-start-a-new-hobby/quality-indicators.jpg)
-
 Quality entry-level gear shares several characteristics. First, it focuses on core functionality over advanced features. A quality entry-level camera might lack professional controls but takes sharp, well-exposed photos reliably. A good starter guitar stays in tune and has comfortable action, even if it lacks premium tonewoods and electronics.
 
 Second, quality entry-level items are built to handle regular use. They might not have the refined feel or advanced materials of premium products, but they won't break down under normal hobby usage. I learned this distinction the hard way with a ultra-cheap exercise bike that wobbled dangerously after two weeks. The slightly more expensive model I replaced it with has been rock-solid for two years.
@@ -157,8 +143,6 @@ Knowing when to upgrade equipment is as important as knowing what to buy initial
 
 The clearest upgrade signal is when your current equipment prevents you from doing something you've learned to do. When I started playing guitar, my fingers often slipped on the cheap strings that came with my starter instrument. After three months of consistent practice, I could hear the difference between my guitar and better instruments, and I could feel how the poor setup was affecting my playing. That's when string replacement and a professional setup made sense.
 
-![Timeline showing hobby progression and upgrade points](/blog/images/how-to-start-a-new-hobby/upgrade-timeline.jpg)
-
 Contrast this with upgrade temptation — when you think better equipment will accelerate your learning or make the hobby more enjoyable. This rarely works as expected. Better equipment usually requires more skill to use effectively, not less. Professional cameras have more complex controls that can confuse beginners. High-end sports equipment often has performance characteristics that only advanced practitioners can appreciate.
 
 The right time to upgrade is when you can articulate specific limitations of your current gear and how specific upgrades will address them. "I need a telephoto lens because I want to photograph birds and my current lens can't get close enough shots" is upgrade logic. "I need a better camera because my photos don't look professional" usually isn't — the camera isn't the limitation.
@@ -173,8 +157,6 @@ After watching friends navigate hobby spending for years, I've noticed patterns 
 
 The biggest mistake is buying solutions to problems you don't have yet. This happened to me with [gaming accessories](/blog/guide-to-gaming-accessories) when I bought a mechanical keyboard because reviews said it would improve my typing speed and gaming performance. The problem? I wasn't a serious gamer, and my typing speed wasn't limiting my work productivity. The keyboard gathered dust because it solved problems I'd imagined, not experienced.
 
-![Common hobby spending mistakes infographic](/blog/images/how-to-start-a-new-hobby/spending-mistakes.jpg)
-
 Another trap is the "complete setup" mentality — believing you need everything at once to start properly. This thinking leads to shopping carts full of items that seem logical as a package but aren't individually necessary. When I decided to try home brewing, I nearly bought a complete starter kit with equipment for advanced techniques I hadn't learned yet. Starting with basic equipment and adding pieces as I understood their purpose saved money and helped me learn more effectively.
 
 Brand loyalty traps beginners who assume that sticking to one manufacturer guarantees compatibility and quality. While brand ecosystems exist for some hobbies, this thinking often leads to overspending on mediocre products within a "premium" brand lineup. Sometimes the best value comes from mixing brands based on each item's individual merits.
@@ -188,8 +170,6 @@ The final major mistake is ignoring total cost of ownership. Some hobbies have o
 ## Building a Sustainable Hobby Budget
 
 Creating a sustainable approach to hobby spending isn't about limiting yourself — it's about spending intentionally so your money supports long-term enjoyment rather than short-term impulses. The most successful hobby enthusiasts I know aren't the ones who spend the most; they're the ones who spend most thoughtfully.
-
-![Diagram showing sustainable hobby budgeting approach](/blog/images/how-to-start-a-new-hobby/budget-approach.jpg)
 
 Start by separating your hobby budget into two categories: exploration money and investment money. Exploration money covers trying new hobbies, entry-level equipment, and experimental purchases. This should be money you're comfortable losing if the hobby doesn't stick. Investment money goes toward upgrading equipment for hobbies you've proven you'll stick with consistently.
 

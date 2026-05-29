@@ -71,6 +71,18 @@
         "twitter": null,
         "linkedin": null
       }
+    },
+    {
+      "id": "peter-gods",
+      "name": "Peter Gods",
+      "role": "Audio & Hi-Fi Editor",
+      "avatar": "/team/peter-gods.jpg",
+      "bio": "Peter has spent two decades chasing the perfect sound — from soldering his first phono preamp as a teenager to running blind listening tests that have ended more than one friendship. He writes about turntables, speakers, and the strange, wonderful physics of analog audio, and still owns the warped Fleetwood Mac record that started it all.",
+      "expertise": ["vinyl", "turntables", "speakers", "hi-fi audio", "sound science"],
+      "social": {
+        "twitter": null,
+        "linkedin": null
+      }
     }
   ]
 }

@@ -36,8 +36,6 @@ Let me start with a confession: I was skeptical about air fryers for years. "It'
 
 An air fryer is essentially a compact convection oven with a powerful fan that circulates superheated air at high speed. The "frying" happens through rapid dehydration of the food's surface, creating that coveted crispy texture. It's not magic, but when done right, it's remarkably effective.
 
-![Air fryer mechanism showing hot air circulation](/blog/images/guide-to-air-fryers/hero.jpg)
-
 Here's what air fryers excel at: reheating leftovers (seriously, try reheating pizza), cooking frozen foods, making vegetables actually appealing to kids, and creating crispy textures without deep frying. They're faster than conventional ovens for small batches and use less energy.
 
 But let's address the elephant in the room — what they can't do. An air fryer won't replace your stovetop for sautéing, won't handle large family meals efficiently, and definitely won't make everything "healthier" just by existing in your kitchen. I've seen too many people disappointed because they expected their air fryer to revolutionize their entire cooking routine overnight.
@@ -51,8 +49,6 @@ This is where most people go wrong. They either buy too small (thinking they'll 
 For 1-2 people, a 3-4L capacity is genuinely sufficient. I know it sounds small, but remember — you're not batch cooking Sunday meal prep here. You're making dinner for two or reheating last night's takeaway. My friend Sarah has a 3.5L model in her Dubai apartment, and it handles her daily needs perfectly while fitting under her kitchen cabinets.
 
 Families need to think differently. A 6-8L capacity becomes necessary not just for volume, but for basket shape. Larger baskets give you more surface area, which means better air circulation and more even cooking. I learned this the hard way when testing a 5L model that was deep but narrow — the food in the center consistently undercooked while the edges overdid it.
-
-![Comparison of different air fryer sizes on counter](/blog/images/guide-to-air-fryers/size-comparison.jpg)
 
 Here's a practical test I always recommend: measure the space where you plan to keep your air fryer, then subtract 10cm from each dimension. This accounts for the ventilation space you'll need (most models require 15cm clearance on at least three sides) and the reality that appliances always look smaller in the store than on your counter.
 
@@ -68,8 +64,6 @@ Most quality air fryers range from 1200W to 2000W. Below 1200W, you'll notice sl
 
 But here's what matters more than raw wattage: temperature stability. A well-designed 1400W air fryer with good insulation and smart heating elements will outperform a poorly designed 1800W model every time. I've tested budget models that claimed 1600W but struggled to maintain consistent temperatures, leading to uneven cooking.
 
-![Infographic showing wattage vs. performance comparison](/blog/images/guide-to-air-fryers/wattage-comparison-infographic.jpg)
-
 In the UAE, consider your kitchen's electrical setup. Most standard outlets handle up to 2000W comfortably, but if you're running other appliances simultaneously, you might trip breakers with high-wattage models. I learned this during a dinner party when the air fryer, microwave, and coffee machine running together plunged half the apartment into darkness.
 
 Temperature recovery is where wattage shows its value. When you open the basket to check or flip food, internal temperature drops. Higher wattage models recover faster, maintaining consistent cooking conditions. This becomes crucial for recipes requiring precise timing and temperature control.
@@ -83,8 +77,6 @@ This is the section I wish I'd read before buying my first air fryer. Basket des
 The classic drawer-style basket is what most people picture: a removable basket that slides into the main unit like a drawer. These excel at easy loading, simple cleanup, and foolproof operation. You can shake ingredients mid-cooking without removing anything from the unit. The downside is limited capacity and potential for food to pile up in the center.
 
 Rotisserie-style air fryers use rotating baskets or cages that tumble food during cooking. They're excellent for even browning and can handle more delicate items without you needing to flip them manually. But — and this is a big but — they're significantly harder to clean. All those rotating parts create crevices where grease accumulates.
-
-![Diagram showing different basket designs and air flow](/blog/images/guide-to-air-fryers/basket-design-diagram.jpg)
 
 Multi-level baskets attempt to maximize capacity by stacking cooking surfaces. In theory, brilliant. In practice, the top level often shields the bottom level from proper air circulation. I've had mixed results with these — they work well for reheating different items simultaneously but struggle with raw cooking tasks.
 
@@ -102,8 +94,6 @@ The real value lies in manual temperature and timer controls. Look for models of
 
 Temperature accuracy varies significantly between models. I've tested air fryers that claimed 180°C but actually ran at 160°C or 200°C. This inconsistency ruins recipes and creates unpredictable results. Quality models maintain temperature within 5-10°C of the setting; budget models can vary by 20-30°C.
 
-![Infographic comparing preset functions vs. manual control](/blog/images/guide-to-air-fryers/control-comparison-infographic.jpg)
-
 Timer functionality should extend to at least 60 minutes for slow-cooking applications. Some models max out at 30 minutes, requiring you to restart mid-cooking for longer recipes. This becomes particularly annoying for roasted vegetables or slow-cooked meats that benefit from extended cooking times.
 
 Digital displays beat analog dials for precision, but they're not automatically better. Some digital interfaces are frustratingly complex, requiring multiple button presses for simple adjustments. The best designs offer intuitive controls that let you adjust temperature and time quickly without consulting the manual.
@@ -117,8 +107,6 @@ After years of testing appliances, I've learned to spot quality indicators that 
 External housing material tells a story. Stainless steel and high-grade plastics feel substantial and resist wear. Thin plastic housings develop stress marks, discoloration, and sometimes crack around high-heat areas. The housing should feel solid when you press on it, not hollow or flexible.
 
 Internal components reveal manufacturing priorities. Quality heating elements use thicker wire coils that heat evenly and last longer. Fan motors should run quietly — excessive noise indicates cheap bearings that will fail prematurely. When testing in stores, listen for rattling, grinding, or high-pitched whining sounds.
-
-![Cross-section view of air fryer internal components](/blog/images/guide-to-air-fryers/internal-components.jpg)
 
 Fit and finish matter more than you might expect. Removable parts should slide in and out smoothly without forcing. Gaps between components should be minimal — large gaps collect grease and are difficult to clean. Control knobs and buttons should feel responsive, not mushy or stiff.
 
@@ -135,8 +123,6 @@ I've made every air fryer mistake possible, so you don't have to. Here are the o
 Overcrowding is the cardinal sin of air frying. I get it — you want to cook everything at once, especially when feeding a family. But air fryers depend on air circulation, and cramming too much food into the basket blocks airflow. Your food steams instead of crisps, defeating the entire purpose. Cook in smaller batches, even if it means an extra five minutes of total cooking time.
 
 Forgetting to preheat wastes the air fryer's main advantage: speed. Most models need 2-3 minutes to reach target temperature, and adding cold food to a cold air fryer extends cooking time significantly. I preheat while I'm preparing ingredients — it's become an automatic habit that saves time and improves results.
-
-![Common mistakes infographic with solutions](/blog/images/guide-to-air-fryers/mistakes-infographic.jpg)
 
 Not shaking or flipping food mid-cooking leads to uneven results. Unlike a deep fryer where oil surrounds food completely, air fryers cook from one direction primarily. Vegetables need shaking every 5-7 minutes; proteins benefit from flipping halfway through. Set a timer reminder — you'll forget otherwise.
 
@@ -156,8 +142,6 @@ The air fryer market spans from basic models to premium multi-function units, an
 
 Philips pioneered consumer air frying and maintains strong engineering standards. Their models typically offer precise temperature control and well-designed user interfaces. They focus on traditional air frying rather than multi-function approaches, which appeals to users who prefer dedicated appliances.
 
-![Product lineup showing different brand offerings](/blog/images/guide-to-air-fryers/brand-lineup.jpg)
-
 Budget brands often surprise with solid basic performance but skimp on durability and advanced features. The main compromises appear in temperature consistency, build quality of removable parts, and longevity of non-stick coatings. For occasional users, these trade-offs might be acceptable.
 
 Mid-range brands like Cuisinart and Black+Decker offer decent performance with better build quality than budget options. They typically include useful features like pause functionality and extended timers while maintaining reasonable manufacturing standards.
@@ -176,8 +160,6 @@ Summer heat affects appliance performance more than you might expect. When ambie
 
 Kitchen ventilation becomes crucial during summer. Air fryers exhaust significant heat, and in already warm kitchens, this can become uncomfortable quickly. I've learned to use my air fryer during cooler parts of the day or ensure strong ventilation when cooking during peak heat.
 
-![Air fryer in modern UAE kitchen setting](/blog/images/guide-to-air-fryers/uae-kitchen-lifestyle.jpg)
-
 Dust is the enemy of all electronics in the UAE, and air fryers are particularly susceptible due to their ventilation requirements. I clean intake vents monthly with a soft brush to prevent dust accumulation that can reduce performance and potentially damage internal components.
 
 Power quality varies across the UAE, and some areas experience voltage fluctuations that can affect sensitive electronics. If you live in an area with unstable power, consider a surge protector for your air fryer. I learned this lesson the hard way when a power surge damaged the control board of an expensive model.
@@ -193,8 +175,6 @@ Let me be brutally honest about what air fryers can and cannot achieve, because 
 Air fryers excel at creating crispy exteriors on foods that already have some structure. French fries, chicken wings, roasted vegetables — these work beautifully because the food itself provides a foundation for the crisping process. But they won't magically transform wet batters into crispy coatings or create deep-fried textures from scratch.
 
 Reheating is where air fryers truly shine, often outperforming their primary cooking capabilities. Day-old pizza, leftover fried chicken, roasted vegetables — an air fryer brings these back to life in ways that microwaves and conventional ovens can't match. This alone justifies ownership for many households.
-
-![Before and after photos of reheated foods](/blog/images/guide-to-air-fryers/reheating-results.jpg)
 
 Capacity limitations affect real-world usage more than specifications suggest. Even large air fryers handle family meals awkwardly. You'll often cook in batches, which extends total cooking time beyond what you might expect. For [quick weeknight dinners](/blog/how-to-cook-quick-dinners), this can be frustrating when you're juggling multiple meal components.
 

@@ -37,8 +37,6 @@ hero_image: "/blog/images/hundred-year-history-of-ai/hero.jpg"
 
 ---
 
-![A century of artificial intelligence — from Karel Čapek to ChatGPT](/blog/images/hundred-year-history-of-ai/hero.jpg)
-
 ## The Dream Before the Machine
 
 Let's start in a theatre.
@@ -83,8 +81,6 @@ The Dartmouth crew came in optimistic. The proposal casually assumed that *"ever
 
 They were off by about 65 years.
 
-![Infographic: Key milestones in AI history from 1920 to 2023](/blog/images/hundred-year-history-of-ai/ai-milestones-infographic.jpg)
-
 ---
 
 ## The First Golden Age and Its Beautiful Lies
@@ -126,8 +122,6 @@ What nobody quite appreciated yet was that the ideas weren't wrong. The hardware
 ## Brute Force Strikes Back
 
 On May 11, 1997, a computer called Deep Blue played the last game of a six-game match against the reigning world chess champion, Garry Kasparov. The computer won. Kasparov lost. Chess, which humans had long held up as the supreme test of intellect, had fallen.
-
-![IBM Deep Blue chess match against Garry Kasparov in 1997](/blog/images/hundred-year-history-of-ai/deep-blue-kasparov.jpg)
 
 IBM's [Deep Blue](https://deepmind.google) wasn't intelligent in any meaningful sense. It evaluated roughly 200 million chess positions per second through brute-force search, guided by hand-coded evaluation functions written by grandmasters. It didn't "understand" chess any more than a calculator "understands" arithmetic. But it was faster than fast — and speed, at chess, is functionally indistinguishable from genius.
 
@@ -172,8 +166,6 @@ They called the architecture the [Transformer](https://en.wikipedia.org/wiki/Tra
 I remember reading a summary of this paper a few years after its publication and thinking it sounded like the kind of incremental improvement that fills the middle pages of conference proceedings. I was wrong in a way that has become professionally embarrassing to recall. The Transformer didn't just improve language models — it became the foundational architecture for almost everything that followed. [GPT](https://www.openai.com). BERT. T5. Every large language model you've heard of in the last five years is, at its core, a scaled-up Transformer.
 
 The key insight was attention itself — the ability to weigh context dynamically. Given the sentence "The trophy didn't fit in the suitcase because it was too big," a Transformer can learn that "it" refers to the trophy, not the suitcase, by attending to the right parts of the sentence. Earlier models would get this wrong constantly. The Transformer got it right, and as it got bigger, it got righter.
-
-![Diagram: How the Transformer architecture uses self-attention across tokens](/blog/images/hundred-year-history-of-ai/transformer-attention-diagram.jpg)
 
 By 2020, [OpenAI](https://www.openai.com) had trained GPT-3 — a Transformer model with 175 billion parameters, trained on hundreds of gigabytes of text. To give you a sense of scale: GPT-2, released in 2019, had 1.5 billion parameters and OpenAI initially declined to release it, citing concerns about misuse. GPT-3 was more than 100 times larger and could write code, complete essays, answer questions, and translate languages, all from a single model with no task-specific training. It wasn't perfect. But it was clearly something new.
 
@@ -224,8 +216,6 @@ In 2023, two New York lawyers submitted a court brief containing citations to mu
 I had my own smaller version of this moment earlier that year. I asked a chatbot to summarize a technical report I was reviewing for TheWinner, received a beautifully structured summary, and only noticed on the third read that one of the "key findings" it cited didn't appear anywhere in the original document. The model had read the surrounding text, inferred what *should* have been in the report, and written it in. Confidently. Without a footnote.
 
 This is, to put it gently, a known issue. And it's why understanding how to actually [evaluate reviews and summaries](/blog/guide-to-understanding-reviews) — whether they come from humans or machines — is still a skill worth developing.
-
-![AlphaGo Move 37 — the Go board position that stunned the world in 2016](/blog/images/hundred-year-history-of-ai/alphago-move-37.jpg)
 
 ---
 

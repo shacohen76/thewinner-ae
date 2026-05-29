@@ -40,8 +40,6 @@ That first night, I slept on an air mattress I borrowed from a friend, ordered t
 
 Here's what I wish someone had told me: your first apartment doesn't need to be Instagram-ready on day one. In fact, rushing to fill every corner usually leads to buyer's remorse and a mismatched collection of impulse purchases. The smartest approach? Think like you're building a foundation, not decorating a showroom.
 
-![New apartment with moving boxes and basic necessities](/blog/images/how-to-shop-for-first-apartment/hero.jpg)
-
 The key insight that changed everything for me was understanding the difference between "needs" and "wants" — and more importantly, recognizing that some "wants" become genuine needs after you've lived in the space for a few weeks. That decorative floor lamp might seem essential in the store, but you'll appreciate having a good can opener much more on Tuesday night when you're trying to make dinner.
 
 In the UAE market specifically, you'll face unique considerations. The climate means you'll want blackout curtains sooner rather than later, air conditioning becomes non-negotiable, and dust management is a real concern that affects your purchasing decisions. Plus, if you're an expat, you're likely thinking about portability and whether items are worth shipping if you eventually move.
@@ -64,8 +62,6 @@ WiFi setup (if not included), phone chargers, and a power strip. Modern life sto
 
 **Basic Cleaning:**
 All-purpose cleaner, paper towels, garbage bags, and a simple broom. Moving is messy, and you'll want to clean as you unpack.
-
-![Basic apartment essentials laid out on a counter](/blog/images/how-to-shop-for-first-apartment/essentials-flatlay.jpg)
 
 I spent my first weekend in Dubai hitting up [IKEA](https://www.ikea.com/ae/en/) and Carrefour with this exact list, and it cost significantly less than I'd feared while covering all the absolute necessities. The key was staying disciplined and not getting distracted by all the appealing extras.
 
@@ -102,8 +98,6 @@ Start with a non-stick frying pan (10-12 inches), a medium saucepan with lid (2-
 **Small Appliances That Earn Their Space:**
 This is where [air fryers](/best/air-fryers) shine for apartment living. They're incredibly versatile, energy-efficient, and perfect for the smaller quantities you're likely cooking. I use my [Ninja](https://www.ninjakitchen.com) air fryer almost daily — it handles everything from reheating leftovers to cooking entire meals. A good blender and electric kettle round out the essentials.
 
-![Modern apartment kitchen with essential appliances and tools](/blog/images/how-to-shop-for-first-apartment/kitchen-setup.jpg)
-
 **Storage and Organization:**
 Airtight containers keep food fresh longer in humid climates and prevent pest issues. Glass containers work well for leftovers and meal prep. Don't underestimate good drawer organizers and cabinet storage solutions — [organizing your home](/blog/how-to-organize-your-home) properly from the start prevents the chaos that builds up over time.
 
@@ -128,8 +122,6 @@ Cotton or bamboo sheets breathe better than synthetics. Percale weaves are coole
 
 Blackout curtains aren't optional in the UAE — they're essential for quality sleep and energy efficiency. The intense sunlight will wake you earlier than you want and heat up your apartment if not blocked effectively.
 
-![Comfortable bedroom setup with quality bedding and blackout curtains](/blog/images/how-to-shop-for-first-apartment/bedroom-comfort.jpg)
-
 **Storage Solutions:**
 Unless you have a walk-in closet, you'll need additional clothing storage. Under-bed storage boxes maximize space efficiently. A bedside table with drawers serves double duty for nighttime essentials and general storage.
 
@@ -153,8 +145,6 @@ Overhead lighting alone creates a harsh, unwelcoming atmosphere. Add table lamps
 
 **Climate Control Considerations:**
 Your furniture placement affects air conditioning efficiency. Don't block vents with large pieces, and consider how heat from electronics might affect comfort. Glass coffee tables stay cooler than wood, but they show every fingerprint and dust speck.
-
-![Comfortable living room with strategic furniture placement and good lighting](/blog/images/how-to-shop-for-first-apartment/living-room-layout.jpg)
 
 ## Bathroom Necessities
 
@@ -185,8 +175,6 @@ Storage ottomans provide seating and hiding spots for clutter. Bed frames with b
 **Closet Organization:**
 Most apartments have limited closet space that's poorly designed. Closet organizers, additional rods, and shelf dividers can double your effective storage capacity. Vacuum storage bags work well for seasonal clothing in smaller spaces.
 
-![Apartment storage solutions showing organized closet and multi-functional furniture](/blog/images/how-to-shop-for-first-apartment/storage-solutions.jpg)
-
 **Kitchen and Bathroom Storage:**
 Drawer dividers, shelf risers, and door-mounted storage maximize space in these high-use areas. Clear containers help you see what you have and prevent buying duplicates.
 
@@ -207,8 +195,6 @@ Always measure everything — room dimensions, doorways, elevator access. I once
 
 **Impulse Buying Without Research:**
 Especially for major appliances, spending time researching pays off. That discounted washer-dryer combo might seem like a great deal until you discover it takes four hours for a normal cycle and doesn't actually get clothes dry.
-
-![Infographic showing common apartment shopping mistakes and how to avoid them](/blog/images/how-to-shop-for-first-apartment/mistakes-infographic.jpg)
 
 **Ignoring Assembly Requirements:**
 Many furniture pieces require assembly, and some are much more complex than others. Factor in either your time and skill level or the cost of professional assembly. Some "great deals" become expensive once you add assembly fees.
@@ -232,8 +218,6 @@ Local warranty service matters more for appliances and electronics. Brands with 
 **Delivery and Installation:**
 Factor in delivery costs and timing, especially for large items. Many buildings have restrictions on delivery times and elevator usage. Professional installation often pays for itself in time saved and proper setup.
 
-![UAE apartment shopping showing local store options and delivery considerations](/blog/images/how-to-shop-for-first-apartment/uae-shopping.jpg)
-
 **Expat-Specific Considerations:**
 If you're planning to eventually relocate, consider resale value and portability. Some items worth shipping internationally, others are better sold locally and repurchased at your next destination. Electronics with UAE plugs and voltage work throughout the GCC but may need adapters elsewhere.
 
@@ -255,8 +239,6 @@ For items like seating, dining furniture, and electronics, mid-range options oft
 
 **Research-Dependent Purchases:**
 Major appliances, electronics, and anything with moving parts benefit from thorough research. Reading reviews, comparing specifications, and understanding warranty terms prevent expensive mistakes.
-
-![Comparison chart showing investment priorities for apartment furnishing](/blog/images/how-to-shop-for-first-apartment/investment-priorities.jpg)
 
 **Cultural and Climate Considerations:**
 In the UAE's environment, some traditionally "splurge" categories become necessities. High-quality air conditioning, dust-resistant storage, and sun-protective window treatments aren't luxuries — they're essential for comfort and protecting your other investments.
@@ -281,8 +263,6 @@ Filing systems, desk organizers, and storage for supplies keep work materials se
 
 **Noise and Distraction Management:**
 In apartment settings, managing noise from neighbors or street traffic affects work quality. Sound-absorbing materials, strategic furniture placement, and quality headphones create a more professional environment.
-
-![Home office setup in apartment corner showing efficient use of space](/blog/images/how-to-shop-for-first-apartment/home-office-corner.jpg)
 
 ## Tech and Smart Home Integration
 
@@ -314,8 +294,6 @@ Air conditioning filters need regular replacement for efficiency and air quality
 
 **Seasonal Considerations:**
 Dust control becomes more challenging during certain times of year. Having adequate supplies and tools ready prevents small issues from becoming major problems.
-
-![Organized cleaning supplies and maintenance tools for apartment living](/blog/images/how-to-shop-for-first-apartment/cleaning-supplies.jpg)
 
 **Professional vs. DIY:**
 Some maintenance tasks require professional service, especially for appliances and air conditioning systems. Building relationships with reliable service providers prevents emergency situations and often results in better pricing.

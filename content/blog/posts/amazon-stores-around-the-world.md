@@ -35,8 +35,6 @@ hero_image: "/blog/images/amazon-stores-around-the-world/hero.jpg"
 
 ---
 
-![A traveler's world map of Amazon storefronts glowing on a globe](/blog/images/amazon-stores-around-the-world/hero.jpg)
-
 ## Why There Isn't One Amazon — The Federation Explained
 
 I used to assume Amazon was just... Amazon. One enormous warehouse in the sky, raining parcels down on a grateful planet. Then I tried to use my American account to buy a region-specific Kindle book from Japan, and reality arrived quickly and without bubble wrap.
@@ -53,8 +51,6 @@ Here's what that means in practice:
 Understanding this federation is the difference between a smooth shopping experience and a confused shopper staring at a "this item cannot be shipped to your address" error at midnight.
 
 The rise of [e-commerce](https://en.wikipedia.org/wiki/E-commerce) globally meant Amazon had to localize — hard — to compete with Flipkart in India, MercadoLibre in Brazil, and Noon in the UAE. The result is that each storefront carries cultural fingerprints. Once you learn to read them, you can use Amazon's global network like a power user rather than a tourist.
-
-![Infographic: Amazon's global storefronts map with launch years and key categories](/blog/images/amazon-stores-around-the-world/amazon-global-storefronts-infographic.jpg)
 
 ---
 
@@ -146,8 +142,6 @@ The language barrier is the obvious friction — most product listings are in Ge
 ### Amazon Netherlands — The Newcomer with Logistics Genes
 
 [Amazon Netherlands](https://www.amazon.nl) launched in 2020 and immediately leaned into its geographic advantage: the Netherlands is Europe's shipping hub. Rotterdam, Schiphol — logistics is practically the national sport. Amazon.nl is growing steadily and is worth bookmarking if you ship regularly to BeNeLux.
-
-![Photo: A laptop showing multiple Amazon European storefronts side by side](/blog/images/amazon-stores-around-the-world/amazon-europe-storefronts.jpg)
 
 ---
 
@@ -248,8 +242,6 @@ The challenge for UAE shoppers: language, international shipping, and the fact t
 
 [Amazon Turkey](https://www.amazon.com.tr) is genuinely interesting for the UAE market given the strong trade and cultural ties between the two countries. Turkey has a sophisticated manufacturing sector — textiles, ceramics, leather goods — and Amazon Turkey has become a reasonable destination for Turkish-made products. If you're looking for genuine Turkish goods, it's worth checking before assuming you need to buy through a local reseller in Dubai.
 
-![Photo: Amazon Japan packaging and Japanese product labels on a desk](/blog/images/amazon-stores-around-the-world/amazon-japan-products.jpg)
-
 ---
 
 ## How Shipping Reality (Not Geography) Decides Where You Buy
@@ -283,8 +275,6 @@ The real calculus for UAE shoppers:
 
 Learn to [compare products properly](/blog/how-to-compare-products) before committing to a cross-border purchase. The best deal on paper isn't always the best deal once shipping, potential duties, and return-policy friction are accounted for.
 
-![Diagram: Decision flowchart — which Amazon storefront to use based on product type, destination, and shipping preference](/blog/images/amazon-stores-around-the-world/which-amazon-to-use-diagram.jpg)
-
 ---
 
 ## Common Mistakes Shoppers Make Crossing Storefronts
@@ -316,8 +306,6 @@ The UAE has customs regulations that apply to imported goods above certain decla
 ### Assuming the Same Seller Is Listed Everywhere
 
 A product you trust from a specific third-party seller on amazon.com may have an entirely different seller behind the same listing on Amazon.ae. Seller reputation, shipping practices, and product authenticity can all vary. Check seller ratings per storefront, not just per product.
-
-![Infographic: Common cross-storefront shopping mistakes and how to avoid them](/blog/images/amazon-stores-around-the-world/common-mistakes-infographic.jpg)
 
 ---
 

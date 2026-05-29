@@ -34,8 +34,6 @@ Online shopping has transformed how we buy everything from electronics to grocer
 
 Last month, my neighbor Sarah showed me a designer handbag she'd ordered online. It looked nothing like the website photos — the leather felt plasticky, the stitching was crooked, and the color was completely different. "I guess I'm stuck with it," she sighed. But she wasn't. Twenty minutes later, we'd initiated a return, documented the discrepancies with photos, and started the refund process. She got her money back within a week.
 
-![Guide to returns and refunds hero image showing various online shopping scenarios](/blog/images/guide-to-returns-and-refunds/hero.jpg)
-
 The difference between Sarah's initial resignation and her successful return? Understanding how the system works. Online returns aren't mysterious — they're governed by clear policies and laws. The key is knowing what those are and how to work within them effectively.
 
 ## Understanding Your Consumer Rights in the UAE
@@ -53,8 +51,6 @@ The UAE's consumer protection framework covers several key areas:
 **Reasonable Expectation of Performance**: Products should perform their intended function for a reasonable period. A washing machine that breaks after three months of normal use, or headphones that stop working after light usage, fall under this protection.
 
 **Right to Clear Information**: Retailers must provide accurate product information, including specifications, warranty terms, and return policies. Hidden fees or undisclosed limitations can void a sale.
-
-![Infographic showing UAE consumer rights for online shopping](/blog/images/guide-to-returns-and-refunds/consumer-rights-infographic.jpg)
 
 The Dubai Economic Department and other local authorities actively enforce these protections. They've successfully mediated thousands of consumer disputes, often ruling in favor of shoppers who document their cases properly. When [shopping online safely](/blog/how-to-shop-online-safely), understanding these rights forms your first line of defense.
 
@@ -78,8 +74,6 @@ Amazon.ae, for instance, has built their reputation partly on generous return po
 
 But here's what most people miss: return policies are starting points for negotiation, not final decisions. When I ordered a standing desk that arrived with a wobbly leg after the 30-day window, the retailer initially refused a return. However, by documenting the defect, referencing the consumer protection law, and escalating professionally, I secured a replacement desk plus a partial refund for the inconvenience.
 
-![Diagram showing typical return policy timeline and customer rights](/blog/images/guide-to-returns-and-refunds/return-timeline-diagram.jpg)
-
 The key insight is that [e-commerce](https://en.wikipedia.org/wiki/E-commerce) platforms make their money from repeat customers and positive reviews. A customer who feels treated fairly after a return problem often becomes more loyal than someone who never had an issue in the first place.
 
 ## Before You Hit "Buy Now": Setting Yourself Up for Success
@@ -97,8 +91,6 @@ When researching products, I always check multiple sources. [Finding the best de
 **Document Your Decision Process**: Keep notes about why you chose specific models or features. If that noise-canceling headphone doesn't actually cancel noise effectively, your notes about researching this specific feature strengthen your return case.
 
 I learned this lesson when buying a coffee machine. I'd specifically chosen a model advertised as "office-quiet" for my home workspace. When it arrived sounding like a construction site, my documented research showing I'd selected it specifically for quiet operation helped secure a full refund despite the machine working "as designed."
-
-![Photo of organized product research documents and screenshots](/blog/images/guide-to-returns-and-refunds/research-organization.jpg)
 
 **Consider the Return Logistics Early**: Large items, fragile electronics, and international purchases all present return challenges. Factor these into your decision-making. That imported Italian coffee maker might be perfect, but returning it if something goes wrong could cost more than buying locally.
 
@@ -121,8 +113,6 @@ This includes not just the packaging, but every plastic bag, twist tie, and docu
 The moment you notice any issue, create a paper trail. Take photos showing the defect from multiple angles. Record videos demonstrating functionality problems. Write down dates, times, and exactly what happened.
 
 When I received a smartphone with a dead pixel, I took macro photos showing the exact location, tested the pixel with different colors, and recorded a video panning across the screen. This documentation package made the return process with [Samsung](https://www.samsung.com) quick and painless.
-
-![Step-by-step photos showing proper documentation of product defects](/blog/images/guide-to-returns-and-refunds/documentation-process.jpg)
 
 **Rule 4: Understand the Difference Between "Defective" and "Not What I Expected"**
 
@@ -152,8 +142,6 @@ Platforms like Noon.com and others follow UAE consumer protection standards but 
 
 I've had success with local platforms by explaining specific UAE context. Mentioning delivery challenges due to building security, or seasonal considerations specific to the Gulf region, often results in more understanding customer service.
 
-![Comparison chart of different platform return policies and processes](/blog/images/guide-to-returns-and-refunds/platform-comparison-infographic.jpg)
-
 **International Retailer Challenges**
 
 Ordering directly from US or European retailers can offer better selection and sometimes better value, but returns become significantly more complex. International return shipping can be expensive, and you may face customs complications on returned items.
@@ -181,8 +169,6 @@ When my smart home hub stopped connecting after a firmware update, first-level s
 Effective escalation requires building a documented case that demonstrates the retailer's responsibility. This isn't about being aggressive — it's about being thorough and professional.
 
 Your case should include: the original product description showing what was promised, evidence of the actual product performance, timeline of events, and documentation of your attempts to resolve the issue through normal channels.
-
-![Example of well-documented return case with photos and correspondence](/blog/images/guide-to-returns-and-refunds/case-documentation.jpg)
 
 **When to Involve Consumer Protection Authorities**
 
@@ -222,8 +208,6 @@ Banks limit chargeback rights to protect themselves from fraud. Most require fil
 
 Frivolous chargebacks can result in penalties, account restrictions, or even account closure. Some merchants also maintain databases of customers who file chargebacks and may refuse future orders.
 
-![Flowchart showing when and how to use credit card chargebacks](/blog/images/guide-to-returns-and-refunds/chargeback-flowchart.jpg)
-
 **Alternatives to Consider First**
 
 Before filing a chargeback, consider whether other dispute resolution methods might work better. Sometimes a merchant who won't process a return will respond quickly to a chargeback threat, especially if you can demonstrate clear grounds for one.
@@ -249,8 +233,6 @@ In the UAE, restocking fees for defective products violate consumer protection l
 Who pays return shipping dramatically affects the economics of returning items. Many customers don't realize this varies by reason for return and can often be negotiated.
 
 If you received a defective item, the retailer should cover return shipping. If you're returning due to preference, you typically pay. However, if the product description was misleading or if you can demonstrate that the item doesn't match reasonable expectations, you can often get the retailer to cover shipping costs.
-
-![Common return mistakes illustrated with cost implications](/blog/images/guide-to-returns-and-refunds/mistakes-infographic.jpg)
 
 **Mistake 4: Failing to Consider Total Cost of Ownership**
 
@@ -281,8 +263,6 @@ When I returned a wireless router with intermittent connectivity issues, I docum
 Online clothing returns require balancing subjective preferences with objective quality standards. Size discrepancies are often legitimate return reasons if sizing charts were inaccurate. Quality issues include poor stitching, fabric defects, or color variation from website photos.
 
 However, personal fit preferences or styling dissatisfaction typically fall outside return policies unless the item was clearly misrepresented. The key is focusing on objective, measurable differences between the product description and what you received.
-
-![Before and after photos showing proper documentation for clothing returns](/blog/images/guide-to-returns-and-refunds/clothing-return-documentation.jpg)
 
 **Perishable and Time-Sensitive Products**
 
@@ -317,8 +297,6 @@ When documenting phone calls, immediately email the company summarizing the conv
 Effective evidence clearly demonstrates the gap between what was promised and what was delivered. This requires systematic documentation that builds a compelling case.
 
 For defective products, show the defect in context. Don't just photograph a scratch — show how it affects the product's function or appearance. For performance issues, document normal operation versus the problem through videos or comparative measurements.
-
-![Example of comprehensive purchase documentation system](/blog/images/guide-to-returns-and-refunds/documentation-system.jpg)
 
 **Timeline Management**
 

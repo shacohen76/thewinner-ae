@@ -35,8 +35,6 @@ When I first bought my air fryer three years ago, I'll admit I was skeptical. Li
 
 An air fryer isn't just a healthier way to make french fries — it's a compact convection oven that happens to excel at creating crispy textures without oil. The rapid air circulation (typically 1,400-1,700 watts in most quality models) creates what food scientists call the Maillard reaction — the browning process that makes food taste incredible.
 
-![Air fryer with various ingredients around it showing versatility](/blog/images/air-fryer-recipes-beyond-fries/hero.jpg)
-
 The magic happens through superheated air (up to 200°C) circulating at high speed around your food. This creates a convection effect that's actually more intense than most home ovens. Where your traditional oven might take 25 minutes to roast vegetables, an air fryer accomplishes the same result in 12-15 minutes.
 
 If you're still choosing between models, our [comprehensive guide to air fryers](/blog/guide-to-air-fryers) breaks down capacity, wattage, and features that actually matter. But regardless of which model you have, the principles I'm sharing work across [all air fryers](/best/air-fryers) from compact 2-liter units to family-sized 5.5-liter models.
@@ -53,8 +51,6 @@ Always preheat for 2-3 minutes. This seems unnecessary when you're hungry, but i
 
 **Space and Airflow**
 Never overcrowd the basket — food should sit in a single layer with space between pieces. When I'm cooking for my family of four, I often do two smaller batches rather than cramming everything in. The air needs to circulate freely, or you'll end up steaming instead of crisping.
-
-![Diagram showing proper air fryer loading technique with spacing](/blog/images/air-fryer-recipes-beyond-fries/proper-loading-diagram.jpg)
 
 ## Vegetables That Transform in the Air Fryer
 
@@ -81,8 +77,6 @@ Start with 4 salmon fillets, skin-on, at room temperature. Pat completely dry an
 ### Recipe 5: Moroccan-Spiced Chicken Thighs
 Mix 2 teaspoons each of cumin, coriander, and paprika with 1 teaspoon cinnamon and salt. Rub onto 6 bone-in chicken thighs and let marinate 30 minutes. Cook at 180°C for 22-25 minutes, skin-side down first, then flip for the last 8 minutes. The spices create an aromatic crust that's absolutely addictive.
 
-![Golden chicken thighs with Middle Eastern spices in air fryer basket](/blog/images/air-fryer-recipes-beyond-fries/spiced-chicken.jpg)
-
 ### Recipe 6: Lamb Kofta Bites
 Combine 500g ground lamb with minced onion, garlic, parsley, cumin, and allspice. Form into walnut-sized balls. Cook at 175°C for 8-10 minutes, turning once. Serve with tahini sauce and fresh herbs. These disappear at every gathering I host.
 
@@ -100,8 +94,6 @@ Spread cold fried rice in the basket (single layer), sprinkle with a few drops o
 
 ### Recipe 9: Crispy Leftover Roast Potatoes
 Cut leftover roasted potatoes in half, brush lightly with oil, and cook at 180°C for 5-6 minutes. They emerge crispy outside and fluffy inside — often better than when first made.
-
-![Infographic showing before and after of reheated foods in air fryer](/blog/images/air-fryer-recipes-beyond-fries/reheating-comparison.jpg)
 
 **The Science Behind Great Reheating**
 The key is lower temperatures (150-160°C) and shorter times than fresh cooking. You're driving out accumulated moisture while reactivating surface browning, not cooking from scratch.
@@ -128,8 +120,6 @@ Air fryers transform morning routines by cooking multiple breakfast components s
 ### Recipe 13: Perfect Soft-Boiled Eggs
 Place eggs directly in the basket (no water needed). Cook at 160°C for 10 minutes for runny yolks, 12 minutes for jammy centers. Transfer immediately to ice water to stop cooking. The whites are perfectly set while yolks remain creamy — ideal for avocado toast or salads.
 
-![Perfect soft-boiled eggs cut in half showing runny yolks](/blog/images/air-fryer-recipes-beyond-fries/soft-boiled-eggs.jpg)
-
 ### Recipe 14: Shakshuka-Style Baked Eggs
 In an oven-safe dish that fits your air fryer, combine canned tomatoes, diced onions, bell peppers, cumin, and paprika. Cook at 180°C for 8 minutes until bubbling. Create wells in the sauce and crack eggs into them. Continue cooking 5-6 minutes until whites are set. Serve with crusty bread for dipping.
 
@@ -148,8 +138,6 @@ Press firm tofu, cut into cubes, and toss with cornstarch. Cook at 185°C for 12
 
 **Mexican Street Corn (Elote) Bites**
 Cut corn kernels from cobs, toss with lime juice, chili powder, and a touch of oil. Cook at 175°C for 8-10 minutes until some kernels are charred. Finish with mayonnaise, cotija cheese, and cilantro. All the flavors of street corn in convenient bite-sized form.
-
-![Comparison chart showing cooking times for different international dishes](/blog/images/air-fryer-recipes-beyond-fries/international-cooking-times.jpg)
 
 These international adaptations work particularly well if you have a larger capacity model. The [Ninja 5L air fryer](/best/ninja-5l-air-fryer) handles family portions of these dishes beautifully, while smaller units work perfectly for individual servings or appetizers.
 
@@ -174,8 +162,6 @@ Single layers with space between pieces allow proper air circulation. When cooki
 
 **Mistake 6: Wrong Temperature for Food Type**
 Delicate items like fish and vegetables need 160-175°C, while proteins and potatoes can handle 180-200°C. When in doubt, start lower — you can always increase temperature.
-
-![Common air fryer mistakes illustrated with before/after photos](/blog/images/air-fryer-recipes-beyond-fries/common-mistakes-visual.jpg)
 
 Understanding these mistakes helps you troubleshoot when recipes don't turn out as expected. Most air fryer disappointments trace back to one of these issues rather than the appliance itself.
 
@@ -230,8 +216,6 @@ Check the heating element for buildup and clean carefully with a soft brush if n
 If food isn't browning properly, check for overcrowding, insufficient preheating, or blocked vents. Smoke usually indicates excess oil or food debris on the heating element. Strange odors often mean thorough cleaning is overdue.
 
 Quality air fryers from established brands like [Ninja](https://www.ninjakitchen.com) typically last 3-5 years with proper maintenance. If you're comparing options, our [guide to Ninja kitchen appliances](/blog/guide-to-ninja-kitchen-appliances) helps identify which models offer the best longevity for different cooking styles.
-
-![Step-by-step maintenance guide showing proper cleaning technique](/blog/images/air-fryer-recipes-beyond-fries/maintenance-guide.jpg)
 
 ## Building Your Air Fryer Recipe Collection
 

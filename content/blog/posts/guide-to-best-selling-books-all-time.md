@@ -30,8 +30,6 @@ hero_image: "/blog/images/guide-to-best-selling-books-all-time/hero.jpg"
 - [Finding Your Next Timeless Read](#finding-your-next-timeless-read)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
-![Hero image showing classic books stacked with modern bestsellers](/blog/images/guide-to-best-selling-books-all-time/hero.jpg)
-
 ## The DNA of Universal Appeal
 
 After spending the last decade reviewing books and tracking reading trends across the UAE and beyond, I've noticed something fascinating: the books that truly endure aren't necessarily the most technically brilliant or literarily complex. They're the ones that tap into something fundamentally human.
@@ -45,8 +43,6 @@ But here's what's really remarkable: these books continue selling decades or eve
 ## The Titans: Books That Shaped Generations
 
 Let me walk you through the heavy hitters, because understanding what made these books successful gives us insight into what readers truly crave.
-
-![Comparison chart showing sales figures of top bestselling books](/blog/images/guide-to-best-selling-books-all-time/bestseller-comparison-infographic.jpg)
 
 **Don Quixote (1605)** remains the undisputed champion. Cervantes created something revolutionary: a character who was simultaneously ridiculous and noble. Don Quixote's delusions are absurd, but his desire to make the world better resonates across centuries. I've watched UAE book club members debate whether Quixote is a fool or a visionary, and the conversation never gets old because the answer depends entirely on your perspective.
 
@@ -65,8 +61,6 @@ The most fascinating aspect of analyzing global bestsellers is discovering which
 **Emotional Recognition Over Cultural Specificity**
 
 The books that work internationally focus on emotions everyone experiences rather than cultural practices only some people understand. Take *The Alchemist* by Paulo Coelho, which has sold over 165 million copies globally. The story's specifics — a shepherd boy from Andalusia seeking treasure in Egypt — are culturally particular, but the underlying theme is universal: the courage to pursue your dreams despite uncertainty.
-
-![Infographic showing universal themes across cultures](/blog/images/guide-to-best-selling-books-all-time/universal-themes-infographic.jpg)
 
 I remember discussing *The Alchemist* with a reading group that included members from seven different countries. The Filipino nurse connected with Santiago's sacrifice to pursue his calling. The British engineer related to the fear of leaving a comfortable but unsatisfying situation. The Syrian teacher saw parallels with leaving home to find opportunity. Same story, completely different personal connections.
 
@@ -92,8 +86,6 @@ Here's something that surprised me when researching this piece: many of the worl
 
 Similarly, *The Diary of a Young Girl* by Anne Frank became a global phenomenon not just because of its literary merit, but because it humanized the Holocaust in a way that historical accounts couldn't. Frank's teenage voice made an incomprehensible tragedy personally relatable.
 
-![Timeline showing book sales spikes during historical events](/blog/images/guide-to-best-selling-books-all-time/timing-success-timeline.jpg)
-
 **Technological Changes That Expand Access**
 
 The paperback revolution of the 1960s made literature accessible to entirely new audiences. Books that had been limited to hardcover editions suddenly became affordable to students and working-class readers. *To Kill a Mockingbird*, published in 1960, benefited enormously from this timing — it arrived just as paperback distribution was expanding and as American society was grappling with civil rights issues.
@@ -117,8 +109,6 @@ The key to this archetype is giving the character one defining quality that make
 **The Wise Mentor**
 
 Gandalf, Dumbledore, Atticus Finch — these characters provide guidance while allowing protagonists to make their own choices. They work because everyone needs mentorship at some point, and everyone eventually becomes a mentor to someone else. The best mentor characters have their own flaws and limitations, making their wisdom feel earned rather than divinely granted.
-
-![Character archetype diagram showing relationships between hero types](/blog/images/guide-to-best-selling-books-all-time/character-archetypes-diagram.jpg)
 
 **The Relatable Villain**
 
@@ -145,8 +135,6 @@ Coming-of-age stories work universally because everyone goes through the process
 **Justice vs. Reality**
 
 Books that explore the tension between how the world should work and how it actually works have permanent relevance. *To Kill a Mockingbird* examines racial injustice. *1984* explores political oppression. *The Grapes of Wrath* tackles economic inequality. These themes never become outdated because human societies always struggle with fairness and power.
-
-![Thematic analysis showing how universal themes appear across different books](/blog/images/guide-to-best-selling-books-all-time/themes-analysis-chart.jpg)
 
 **Mortality and Meaning**
 
@@ -176,8 +164,6 @@ Film and television adaptations can transform moderately successful books into m
 
 The key is that adaptations work best when they introduce the story to new audiences while remaining faithful enough that existing fans feel respected. Poor adaptations can actually hurt book sales by disappointing fans and misrepresenting the source material.
 
-![Diagram showing how publishing innovations affect book sales](/blog/images/guide-to-best-selling-books-all-time/publishing-innovation-diagram.jpg)
-
 **Digital Revolution and Global Access**
 
 E-books and online retailers like Amazon.ae have made it possible for readers anywhere to access almost any book instantly. This has been particularly beneficial for older titles that might otherwise go out of print. Classic bestsellers often see renewed sales when they become easily available in digital formats.
@@ -206,8 +192,6 @@ Historical bestsellers often required significant cultural context to fully appr
 
 Contemporary bestsellers tend to be more immediately accessible. They include necessary context within the story or draw on cultural references most readers already understand. This accessibility contributes to faster global spread but sometimes results in less depth.
 
-![Comparison chart showing historical vs. modern bestseller characteristics](/blog/images/guide-to-best-selling-books-all-time/historical-vs-modern-comparison.jpg)
-
 **The Role of Author Platforms**
 
 Modern bestselling authors often build personal brands and direct relationships with readers through social media, websites, and public appearances. Stephen King's Twitter presence, J.K. Rowling's continued engagement with *Harry Potter* fans, and Paulo Coelho's inspirational social media posts all contribute to sustained book sales.
@@ -233,8 +217,6 @@ Just because you don't enjoy a bestselling book doesn't mean it's objectively ba
 While marketing certainly helps books succeed, it can't create bestsellers from books that don't fundamentally connect with readers. Publishers spend enormous amounts promoting certain titles that still fail, while other books become bestsellers through word-of-mouth with minimal marketing support.
 
 *The Kite Runner* by Khaled Hosseini became a bestseller primarily through book club recommendations and reader-to-reader suggestions. The initial marketing was modest, but the book's emotional impact created organic promotion that money can't buy.
-
-![Common misconceptions about bestsellers infographic](/blog/images/guide-to-best-selling-books-all-time/misconceptions-infographic.jpg)
 
 **Ignoring the Power of Timing**
 
@@ -263,8 +245,6 @@ If you're just [starting a reading habit](/blog/guide-to-starting-reading-habit)
 **Don't Be Afraid of Popular Books**
 
 There's sometimes a stigma around reading bestsellers, as if popularity automatically means lower quality. This is misguided. Many bestselling books are popular because they're genuinely good at what they do. *Harry Potter* is both commercially successful and genuinely well-crafted. *The Kite Runner* achieved massive sales because it tells a powerful story beautifully.
-
-![Guide showing how to select books based on personal interests](/blog/images/guide-to-best-selling-books-all-time/book-selection-guide.jpg)
 
 **Read Across Cultures and Time Periods**
 

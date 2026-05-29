@@ -34,8 +34,6 @@ I've spent the last five years testing dozens of smart TVs in different UAE home
 
 Let me cut through the marketing noise and share what actually matters when you're investing in a smart TV that'll serve you well for the next decade.
 
-![Smart TV in a modern UAE living room setup](/blog/images/guide-to-smart-tvs/hero.jpg)
-
 ## Understanding Screen Size: The Math Behind the Magic
 
 The biggest mistake I see people make is choosing screen size based on their room dimensions rather than their viewing distance. Last month, I helped my neighbor install a massive 75-inch TV in his relatively compact living room. He was convinced bigger was always better until we measured the actual viewing distance — just 2.5 meters from the couch.
@@ -50,8 +48,6 @@ I use this simple formula when advising friends:
 
 But here's where it gets interesting — UAE homes often have unique layouts that complicate these calculations. Many Dubai apartments have open-plan living areas where the TV might be viewed from multiple distances: close-up from the main sofa, and farther away from the dining area. In these cases, I typically recommend sizing for the primary viewing position and accepting that the secondary positions won't be perfectly optimized.
 
-![Infographic showing optimal viewing distances for different TV sizes](/blog/images/guide-to-smart-tvs/viewing-distance-chart.jpg)
-
 The height question comes up constantly too. Your TV's center should be at eye level when you're seated. Most people mount their TVs too high — I blame those impressive hotel lobby displays. In a typical UAE living room with standard ceiling heights, this means the TV center should be about 100-120cm from the floor.
 
 Screen size also impacts your upgrade path. I've noticed that people who start with smaller screens (43-50 inches) often feel the urge to upgrade within 2-3 years. Those who invest in larger displays from the start tend to stay satisfied longer. It's worth understanding the commitment you're making.
@@ -63,8 +59,6 @@ Let me be blunt about 8K TVs: they're solving a problem that doesn't exist yet. 
 [4K resolution](https://en.wikipedia.org/wiki/Display_resolution) delivers 8.3 million pixels compared to Full HD's 2 million. That's a meaningful jump that you'll notice on screens 50 inches and larger, especially when watching high-quality content from Netflix, Amazon Prime, or playing modern games. The detail in nature documentaries is genuinely stunning — you can see individual whiskers on a leopard's face.
 
 8K pushes this to 33 million pixels, but here's the catch: there's virtually no native 8K content available to UAE consumers. No streaming service offers 8K shows. YouTube has some 8K videos, but they're mostly tech demos. Most 8K TVs rely on upscaling 4K content, and while the algorithms are impressive, you're not seeing true 8K detail.
-
-![Comparison showing 4K vs 8K resolution detail](/blog/images/guide-to-smart-tvs/resolution-comparison.jpg)
 
 I conducted a blind test with friends using identical [Samsung](https://www.samsung.com) models — one 4K, one 8K — playing the same Netflix series. From typical viewing distances, even trained eyes struggled to consistently identify the 8K display. The differences become apparent only when you're unrealistically close to large screens.
 
@@ -80,8 +74,6 @@ This is where TV shopping gets genuinely technical, but the differences matter f
 
 OLED excels in dark room viewing. The technology handles shadow details beautifully, revealing texture in dark clothing and nighttime scenes that other displays crush to black. Colors appear more natural because they're not fighting against backlight bleed. Gaming benefits too — OLEDs typically offer the fastest response times for competitive gaming.
 
-![OLED display showing perfect black levels in a dark scene](/blog/images/guide-to-smart-tvs/oled-black-levels.jpg)
-
 The trade-offs? OLED panels don't get as bright as their competitors, which can be limiting in UAE's sun-drenched living rooms. During afternoon viewing sessions with natural light streaming in, OLED TVs can appear dim. There's also the burn-in consideration — though modern OLEDs have safeguards, static images displayed for extended periods can leave permanent marks.
 
 **QLED (Quantum Dot LED)** is Samsung's answer to OLED. These use traditional LED backlights enhanced with quantum dot technology for wider color gamuts and higher brightness. QLED TVs can achieve peak brightness levels of 1000-4000 nits, making them excellent for bright rooms.
@@ -94,8 +86,6 @@ QLED weaknesses center on contrast ratio. Because the backlight is always on, bl
 
 Budget LED TVs typically use basic backlighting without local dimming, resulting in inconsistent brightness and limited contrast. Mid-tier models add features like full-array local dimming and wide color gamuts that significantly improve performance. The best LED TVs can rival QLED in many scenarios while offering better value.
 
-![Diagram explaining OLED vs QLED vs LED backlighting technology](/blog/images/guide-to-smart-tvs/display-tech-diagram.jpg)
-
 For UAE buyers, I generally recommend QLED for bright living spaces and OLED for dedicated home theaters or dark viewing environments. LED TVs work well for secondary rooms, kids' bedrooms, or when budget is the primary consideration.
 
 ## Smart TV Platforms: Which Operating System Rules
@@ -105,8 +95,6 @@ The smart platform determines how you'll interact with your TV daily for years t
 **Android TV/Google TV** has become my go-to recommendation. The platform offers the widest app selection, including regional favorites important for UAE viewers. Google's regular updates mean your TV's software stays current longer. The voice search actually works well — I can say "Show me Arabic movies on Netflix" and get relevant results.
 
 The integration with other Google services is seamless if you're already in that ecosystem. Your search history, preferences, and watchlists sync across devices. Chromecast built-in means easy casting from phones and tablets, which practically everyone in my extended family uses regularly.
-
-![Android TV interface showing local and international streaming apps](/blog/images/guide-to-smart-tvs/android-tv-interface.jpg)
 
 **Samsung's Tizen** runs exclusively on Samsung TVs and offers excellent performance. The interface is clean and responsive, rarely showing the lag that plagued earlier smart TV platforms. Samsung's app store covers all major streaming services, and the company has maintained good relationships with content providers.
 
@@ -118,8 +106,6 @@ WebOS occasionally lags behind in app updates compared to Android TV. Some regio
 
 **Amazon Fire TV** appears on select brands and offers deep integration with Amazon's services. If you're an Amazon Prime subscriber and frequently use Alexa, the experience is cohesive. However, the app selection is more limited, and Amazon's tendency to promote its own content can feel intrusive.
 
-![Comparison chart of smart TV platform features and app availability](/blog/images/guide-to-smart-tvs/smart-platform-comparison.jpg)
-
 For most UAE buyers, I recommend prioritizing Android TV or Tizen. Both platforms receive regular updates, support all major streaming services, and offer reliable performance. The choice often comes down to brand preference and ecosystem integration.
 
 ## HDR and Brightness: Where Picture Quality Really Lives
@@ -129,8 +115,6 @@ This is where marketing specifications often mislead buyers. HDR (High Dynamic R
 True HDR preserves detail in both bright and dark areas simultaneously. Standard dynamic range video crushes bright highlights to white and dark shadows to black. HDR maintains information across this entire range, creating more realistic images that match what your eyes see in real life.
 
 But here's the crucial part: HDR content needs to be displayed on capable hardware to show its benefits. I've tested entry-level TVs that claim HDR10 support but lack the peak brightness and local dimming zones to actually display HDR properly. The result is content that looks worse than standard dynamic range because the TV is trying to display information it can't handle.
-
-![HDR content comparison showing detail preservation in bright and dark areas](/blog/images/guide-to-smart-tvs/hdr-comparison.jpg)
 
 **Peak brightness** is the most important HDR specification. Content mastered for HDR assumes displays can reach 1000-4000 nits of brightness. Most LED/QLED TVs achieve 400-1500 nits, while OLEDs typically max out around 700-900 nits. Higher isn't always better — you need local dimming to control where that brightness appears.
 
@@ -154,8 +138,6 @@ Here's an uncomfortable truth: as TVs get thinner, their audio gets worse. Physi
 
 I tested the audio quality of twelve different TV models last year using identical content. Even the most expensive TVs struggled with dialogue clarity during action scenes and lacked the dynamic range to make explosions feel impactful. The problem is particularly noticeable in UAE homes with hard surfaces (marble floors, glass tables) that reflect sound rather than absorbing it.
 
-![Soundbar setup enhancing a smart TV's audio performance](/blog/images/guide-to-smart-tvs/soundbar-setup.jpg)
-
 **Soundbars** offer the most practical audio upgrade for most buyers. A quality soundbar can transform your viewing experience more dramatically than upgrading from 4K to 8K. I've heard the difference when friends finally add proper audio — dialogue becomes clear, music gains depth, and action scenes develop the impact they're supposed to have.
 
 When shopping for soundbars, consider your room size and seating arrangement. Smaller soundbars work well for near-field listening but lack the power for larger spaces. Models with dedicated subwoofers handle low-frequency effects better, making movies more immersive. Some soundbars include rear speakers for true surround sound, though this requires additional setup and wire management.
@@ -178,8 +160,6 @@ Gaming has driven many recent TV innovations, and if you own a PlayStation 5, Xb
 
 I tested input lag using a specialized device across twenty different TV models. The results varied enormously, even within the same brand's lineup. Some TVs that performed excellently for video content showed terrible gaming performance due to excessive video processing that couldn't be fully disabled.
 
-![Gaming setup showing low input lag performance on a modern smart TV](/blog/images/guide-to-smart-tvs/gaming-performance.jpg)
-
 **HDMI 2.1** enables the full potential of current-generation consoles. This newer standard supports 4K gaming at 120Hz, variable refresh rates, and automatic low-latency mode switching. If you're investing in a TV for PS5 or Xbox Series X gaming, HDMI 2.1 on at least one port is essential.
 
 However, not all HDMI 2.1 implementations are equal. Some TVs support 4K/120Hz but lack variable refresh rate (VRR). Others include VRR but limit it to specific refresh rate ranges. When evaluating TVs for gaming, verify exactly which HDMI 2.1 features are supported and on which ports.
@@ -201,8 +181,6 @@ After helping dozens of friends and family members choose TVs, I've noticed recu
 **Mistake 1: Choosing size based on room dimensions rather than viewing distance.** I've seen people cram 75-inch TVs into small bedrooms because "the room can fit it." The result is an overwhelming viewing experience where you can't see the entire screen without moving your head. Always measure your primary seating distance first, then calculate optimal screen size from there.
 
 **Mistake 2: Falling for meaningless specification inflation.** Marketing teams love impressive numbers that don't reflect real performance. "8K upscaling," "1000+ local dimming zones," and "quantum dot enhancement" sound technical but implementation quality matters more than the raw specifications. A TV with 50 well-controlled dimming zones outperforms one with 200 poorly controlled zones.
-
-![Common mistakes infographic showing poor TV placement and sizing decisions](/blog/images/guide-to-smart-tvs/common-mistakes.jpg)
 
 **Mistake 3: Ignoring the smart platform until after purchase.** The operating system determines your daily interaction with the TV for years. I've seen people buy TVs based purely on picture quality, then struggle with slow interfaces, missing apps, or frustrating navigation. Research the smart platform thoroughly — watch YouTube reviews showing actual usage, not just feature lists.
 
@@ -227,8 +205,6 @@ When buying from physical stores, negotiate. Listed prices often have room for m
 **Warranty Considerations:** UAE's consumer protection laws require one-year warranties, but premium TVs often include manufacturer warranties of 2-3 years. International warranties from brands like Samsung and LG are typically honored at local service centers, but verify this before purchase, especially for gray market imports.
 
 Extended warranties vary in value. Electronics retailers often push these aggressively, but modern TVs are generally reliable. Consider extended coverage only for premium OLED models where panel replacement costs are high, or if you're installing the TV in challenging environments with temperature extremes.
-
-![Professional TV installation in a UAE apartment setting](/blog/images/guide-to-smart-tvs/installation-setup.jpg)
 
 **Installation Planning:** UAE's building codes and wall construction affect TV mounting. Many newer buildings use hollow concrete blocks that require specialized anchors for heavy TVs. Older buildings often have solid concrete walls that require hammer drills and masonry bits.
 
@@ -255,8 +231,6 @@ A quality TV should serve you well for 7-10 years, but technology evolution can 
 **Connectivity Evolution:** HDMI 2.1 is still rolling out across device manufacturers. Future gaming consoles, streaming devices, and AV equipment will increasingly rely on HDMI 2.1's bandwidth and features. TVs with multiple HDMI 2.1 ports positioned themselves better for future connectivity needs.
 
 USB-C video input is emerging as an alternative connection method, especially for laptops and mobile devices. While not essential now, USB-C capability might prove valuable as more devices adopt the standard for video output.
-
-![Diagram showing future smart TV technology roadmap](/blog/images/guide-to-smart-tvs/future-tech-roadmap.jpg)
 
 **Smart Platform Longevity:** Android TV/Google TV receives the longest software support due to Google's resources and update model. Samsung's Tizen and LG's webOS also maintain good update records, though support duration varies by model tier.
 

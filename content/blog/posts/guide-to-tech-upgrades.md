@@ -36,8 +36,6 @@ I still remember the exact moment I realized I was upgrading my tech all wrong. 
 
 That realization changed how I approach every tech purchase, both personally and professionally. Over the past five years of testing and reviewing hundreds of devices, I've developed what I call a "need-based upgrade framework" — and it's saved me (and countless readers) from thousands of dirhams worth of unnecessary purchases.
 
-![Hero image showing a person contemplating between an old laptop and new devices on a desk](/blog/images/guide-to-tech-upgrades/hero.jpg)
-
 Here's the thing about modern technology: the improvements between generations are often incremental, not revolutionary. Yet marketing departments work overtime to convince us that this year's 5% camera improvement or slightly faster processor is somehow life-changing. It rarely is.
 
 ## Understanding Tech Upgrade Cycles
@@ -49,8 +47,6 @@ Take smartphones, for example. We've been conditioned to expect annual upgrades,
 I learned this lesson the hard way when I upgraded from a perfectly capable [Samsung](https://www.samsung.com) Galaxy S20 to the S21 in 2021. The new phone was undoubtedly "better" on paper — slightly faster processor, marginally improved cameras, shinier design. But in daily use? I couldn't tell the difference. My photos weren't noticeably better, apps didn't feel faster, and I certainly wasn't more productive.
 
 The same principle applies to laptops, where Intel and AMD processor generations might offer 10-15% performance improvements year-over-year, but every third or fourth generation brings architectural changes that actually matter — better power efficiency, significantly improved integrated graphics, or new connectivity standards like Thunderbolt 4 or Wi-Fi 6E.
-
-![Infographic showing technology improvement curves across different device categories](/blog/images/guide-to-tech-upgrades/improvement-curves-infographic.jpg)
 
 Here's what I've observed across major tech categories:
 
@@ -73,8 +69,6 @@ When we talk about upgrade costs, most people focus on the sticker price — but
 Let me break this down with a real example. My colleague Sarah bought a MacBook Air in early 2023, then upgraded to the M3 version in late 2023 when it launched. The performance difference? About 15% in synthetic benchmarks, virtually identical in real-world use. But here's what that upgrade actually cost her:
 
 Her 10-month-old MacBook Air had already depreciated by roughly 30% of its original value. She spent an entire weekend migrating data, reinstalling applications, and reconfiguring her workspace setup. Her existing USB-A accessories required new adapters. Three months later, she admitted she couldn't tell the difference in day-to-day performance.
-
-![Photo showing a cluttered desk with multiple generations of similar devices](/blog/images/guide-to-tech-upgrades/upgrade-clutter.jpg)
 
 The hidden costs compound:
 
@@ -102,8 +96,6 @@ Performance impacts your productivity measurably. If you're regularly waiting fo
 
 Battery life no longer meets your daily needs. When your laptop dies halfway through a workday, or your phone requires midday charging despite normal usage, the convenience factor has eroded. I consider less than 6 hours of real-world laptop battery life or less than a full day of smartphone usage as upgrade-worthy degradation.
 
-![Diagram showing the difference between perceived vs actual performance needs](/blog/images/guide-to-tech-upgrades/performance-needs-diagram.jpg)
-
 Physical limitations affect your experience. Cracked screens, failing keyboards, or broken ports that impact daily use qualify as upgrade triggers. Storage limitations that prevent you from using your device normally also count — though external storage solutions might be more economical.
 
 **False upgrade triggers (that often fool us):**
@@ -124,8 +116,6 @@ Through extensive testing and real-world observation, I've found that a 3-year u
 
 Let me walk you through the math on a typical laptop scenario. A well-chosen laptop purchased today will likely serve you effectively for 36-48 months before meaningful limitations appear. During year one, the device performs optimally but depreciates rapidly. Year two brings stable performance with moderate depreciation. Year three often introduces the first signs of meaningful limitations — perhaps slightly reduced battery life, occasional performance hiccups with newer software, or compatibility questions with emerging standards.
 
-![Infographic comparing 1-year, 2-year, and 3-year upgrade cycles in terms of value](/blog/images/guide-to-tech-upgrades/upgrade-cycle-comparison.jpg)
-
 Here's where the magic happens: waiting three full generations typically delivers 40-60% performance improvements rather than the 10-15% you'd see from single-generation jumps. Your three-year-old laptop getting replaced by a current model will feel genuinely faster, offer meaningfully better battery life, and include connectivity standards that weren't available when you made your original purchase.
 
 The 3-year rule works particularly well in the UAE market for practical reasons. Our climate can be tough on electronics — batteries degrade faster in high heat, and dust infiltration accelerates over time. Three years represents a realistic lifespan before these environmental factors begin impacting performance noticeably.
@@ -145,8 +135,6 @@ The psychological benefit matters too. Three years provides enough distance from
 Timing your tech upgrades isn't just about your personal needs — market dynamics, product cycles, and technological transitions create windows where upgrades deliver exceptional value or periods where patience pays off significantly.
 
 I learned this lesson during the 2020-2021 laptop shortage. Chip supply constraints meant limited inventory, inflated pricing, and reduced selection across all manufacturers. Meanwhile, 2022 brought not just supply normalization, but also the introduction of Apple's M2 chips, Intel's 12th generation processors, and AMD's Ryzen 6000 series — representing the biggest performance leap in laptop processors in several years.
-
-![Photo showing a calendar with tech launch dates and seasonal patterns marked](/blog/images/guide-to-tech-upgrades/market-timing-calendar.jpg)
 
 **Optimal upgrade windows:**
 
@@ -182,8 +170,6 @@ After testing dozens of laptops across different price segments and use cases, I
 
 Modern laptop processors follow a fascinating pattern. Each generation typically offers 10-15% performance improvements in CPU tasks, but the real gains come from integrated graphics, power efficiency, and specialized processing units. The jump from Intel's 10th generation to 12th generation processors, for example, delivered 20-25% CPU improvements but up to 80% graphics performance gains — transforming these machines for creative work.
 
-![Infographic showing laptop performance improvements across generations](/blog/images/guide-to-tech-upgrades/laptop-performance-timeline.jpg)
-
 I experienced this firsthand when upgrading my primary work laptop. My 2019 MacBook Pro handled text editing, web browsing, and light photo editing perfectly well. But when I started creating more video content for TheWinner, rendering times became a genuine productivity bottleneck. What took 45 minutes on the older machine now completes in 12 minutes on my current M2 MacBook Pro — that's time savings worth measuring.
 
 **Battery life reality check:**
@@ -205,8 +191,6 @@ For anyone considering a laptop upgrade, I recommend following the guidance in o
 Smartphone upgrades present the most interesting case study in diminishing returns. We've reached a point where flagship phones from three years ago still handle every task most users encounter, yet the upgrade pressure remains intense due to annual release cycles and carrier marketing.
 
 The reality check: unless you're a professional photographer, mobile gamer playing the most demanding titles, or someone who consistently pushes their device to its limits, most smartphone upgrades deliver minimal real-world improvement. Yet somehow, we've been conditioned to feel like our perfectly capable devices are "outdated" after 12-18 months.
-
-![Photo showing three generations of smartphones side by side demonstrating minimal visual differences](/blog/images/guide-to-tech-upgrades/smartphone-generations.jpg)
 
 **When smartphone upgrades make sense:**
 
@@ -246,8 +230,6 @@ Your current TV can't display content formats you want to watch. If your TV lack
 
 Smart TV platform feels sluggish or unsupported. Older smart TV platforms become slower over time and eventually lose app support. When your TV can't run Netflix, YouTube, or other essential streaming services effectively, the smart features have become a liability rather than an asset.
 
-![Comparison chart showing different TV technologies and their benefits](/blog/images/guide-to-tech-upgrades/tv-technology-comparison.jpg)
-
 Gaming performance requirements. If you own a PlayStation 5 or Xbox Series X, TVs with HDMI 2.1, 120Hz refresh rates, and low input lag provide genuinely better gaming experiences. This represents a clear use case where hardware capabilities directly impact performance.
 
 **TV upgrade timing considerations:**
@@ -271,8 +253,6 @@ Start with high-impact, low-complexity devices. Smart thermostats, video doorbel
 Prioritize devices that integrate with your existing habits rather than requiring new routines. Smart switches that work normally but also respond to voice commands succeed better than devices that only work through apps.
 
 Choose platforms carefully for long-term compatibility. Apple HomeKit, Google Assistant, and Amazon Alexa represent the most stable platforms, but even these aren't guaranteed permanent support. Matter/Thread compatibility provides some future-proofing, though the standard is still evolving.
-
-![Diagram showing a smart home ecosystem with interconnected devices](/blog/images/guide-to-tech-upgrades/smart-home-ecosystem-diagram.jpg)
 
 **Common smart home upgrade mistakes:**
 
@@ -299,8 +279,6 @@ Your system can't maintain playable frame rates in games you want to play. This 
 You've upgraded your display and your hardware can't drive it effectively. Moving from 1080p to 1440p, or from 60Hz to 120Hz displays, often requires graphics hardware upgrades to maintain smooth performance.
 
 Loading times significantly impact your gaming enjoyment. The transition from mechanical hard drives to SSDs represents one of the most noticeable gaming upgrades available — reducing loading times from minutes to seconds in many titles.
-
-![Photo of gaming setup showing multiple monitors and high-end hardware](/blog/images/guide-to-tech-upgrades/gaming-setup.jpg)
 
 **Gaming hardware considerations:**
 
@@ -333,8 +311,6 @@ The solution: wait 3-6 months after launch for reviews, price stabilization, and
 People consistently upgrade based on theoretical capabilities rather than their real-world needs. The photographer who rarely shoots in low light upgrading for better night mode. The office worker who primarily uses web browsers upgrading for gaming performance they'll never utilize.
 
 Before any upgrade, track your actual usage for a week. Note when your current device feels limiting and when it performs adequately. This data provides objective guidance for upgrade decisions.
-
-![Infographic showing common upgrade mistakes and their costs](/blog/images/guide-to-tech-upgrades/common-mistakes-infographic.jpg)
 
 **Underestimating setup and migration time:**
 
@@ -402,8 +378,6 @@ Establish realistic timelines for different device categories based on their upg
 - Smart home devices: Replace on failure or when they can't provide needed functionality
 
 These timelines aren't rules — they're planning tools that help you anticipate upgrade costs and resist premature upgrade pressure.
-
-![Planning calendar showing optimal upgrade timing for different devices](/blog/images/guide-to-tech-upgrades/upgrade-planning-calendar.jpg)
 
 **Step 4: Budget for upgrades**
 

@@ -30,8 +30,6 @@ hero_image: "/blog/images/how-to-try-new-categories/hero.jpg"
 - [Building Your Product Exploration System](#building-your-product-exploration-system)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
-![Person researching products on laptop with notebooks and coffee](/blog/images/how-to-try-new-categories/hero.jpg)
-
 Exploring new product categories feels like stepping into a foreign country where everyone speaks a different language. One minute you're confidently buying your usual coffee pods, the next you're staring at a wall of air fryers wondering what "dual-zone technology" means and whether 8.5-liter capacity is too much for two people.
 
 I learned this the hard way three years ago when I decided to get "serious" about coffee. Within two weeks, I'd accumulated an espresso machine, a burr grinder, a gooseneck kettle, a digital scale, and enough specialty beans to supply a small café. The total investment could have funded a nice weekend getaway — and I didn't even know if I'd stick with manual brewing beyond the initial enthusiasm.
@@ -49,8 +47,6 @@ Six months later, two plants are dead, one's barely surviving, and that humidity
 The smarter approach reverses this process. Instead of shopping first and learning later, you research first, test minimally, then gradually build your knowledge and collection.
 
 This principle applies whether you're exploring smart home automation, fitness equipment, cooking gadgets, or any category that's new to you. The fundamentals remain consistent.
-
-![Infographic showing the wrong vs. right approach to trying new product categories](/blog/images/how-to-try-new-categories/approach-comparison-infographic.jpg)
 
 ## The Research Phase: Your Secret Weapon
 
@@ -75,8 +71,6 @@ When my neighbor wanted to try home fitness, her instinct was to create a comple
 After four weeks, she realized she preferred bodyweight exercises and resistance training over free weights. She returned the dumbbells and invested in a high-quality resistance band system instead. If she'd bought everything upfront, she'd have wasted money on equipment that didn't match her preferences.
 
 This "gateway product" approach works across categories. For smart home automation, start with a single smart switch or plug, not a whole-house system. For photography, begin with a capable entry-level camera body and one versatile lens, not a complete kit with multiple lenses and accessories you might never use.
-
-![Person testing a single smart plug before upgrading to full smart home system](/blog/images/how-to-try-new-categories/start-small-lifestyle.jpg)
 
 The key is choosing that first product carefully. It should be:
 
@@ -115,8 +109,6 @@ The best way to avoid buyer's remorse is experiencing products before you own th
 
 **Trial Programs:** Some categories offer trial periods or satisfaction guarantees. [Philips](https://www.philips.com/), for example, often provides extended return windows on their personal care products, allowing genuine at-home testing.
 
-![Diagram showing different ways to test products before buying](/blog/images/how-to-try-new-categories/testing-methods-diagram.jpg)
-
 **Workshop Classes:** Many categories have associated classes or workshops. Photography courses often include equipment trials, cooking classes let you test different tools, and fitness studios expose you to various equipment types. These experiences provide context that pure product testing cannot.
 
 **Community Meetups:** Hobbyist communities often organize meetups where members share equipment. I've attended coffee brewing sessions where everyone brought different gear, drone flying meetups with various models, and gardening exchanges where people shared tools and techniques.
@@ -134,8 +126,6 @@ After helping friends navigate various product categories and making my own shar
 **Brand Bias Based on Other Categories:** Assuming a company that makes great phones will automatically make great headphones, or that a kitchen brand's excellence in mixers translates to food processors. Each product category has different expertise requirements and market leaders.
 
 **Ignoring Ecosystem Lock-in:** Some purchases commit you to specific ecosystems or consumables. Smart home devices, printer ink systems, and specialized batteries can create ongoing costs or compatibility constraints you didn't anticipate.
-
-![Common mistakes when trying new product categories infographic](/blog/images/how-to-try-new-categories/common-mistakes-infographic.jpg)
 
 **The Upgrade Assumption:** Thinking you'll quickly outgrow entry-level products and should skip directly to advanced models. Most people's usage patterns remain fairly consistent, and entry-level products have improved dramatically across most categories.
 
@@ -177,8 +167,6 @@ Here's my framework for making this decision:
 - You can easily upgrade later without losing your initial investment
 - Personal preferences vary widely within the category
 
-![Lifestyle photo showing someone carefully choosing between different product options](/blog/images/how-to-try-new-categories/investment-decision-lifestyle.jpg)
-
 For example, when exploring coffee brewing, investing in a quality burr grinder makes sense because it fundamentally affects every cup you make, and poor grinders can make even excellent beans taste terrible. However, starting with an inexpensive manual brewing method lets you explore different flavor profiles before committing to an expensive espresso machine.
 
 The key insight: invest in the components that most directly impact your core experience, experiment with everything else.
@@ -198,8 +186,6 @@ Shopping for unfamiliar product categories in the UAE presents unique opportunit
 When I was exploring smart home automation, I learned that certain wireless protocols perform differently in high-rise buildings with dense WiFi networks — a consideration that wouldn't appear in most international reviews but was crucial for my Dubai apartment setup.
 
 **Amazon.ae vs. International Options:** Balance the convenience of local delivery and returns through Amazon.ae with potentially broader selection from international suppliers. Factor in customs duties, return complexity, and warranty implications when making this choice.
-
-![UAE shopping context considerations diagram](/blog/images/how-to-try-new-categories/uae-shopping-considerations.jpg)
 
 **Seasonal Availability:** Some categories have distinct seasonal patterns in the UAE that differ from other markets. Outdoor equipment might be more available and competitively priced during cooler months, while indoor categories like home appliances might see promotions during summer months when people spend more time indoors.
 
@@ -229,8 +215,6 @@ Developing a repeatable approach to exploring new categories saves time and redu
 - Either commit to gradual expansion or exit the category
 - If continuing, plan your next 2-3 purchases
 - If exiting, sell or return initial purchases promptly
-
-![System workflow diagram for exploring new product categories](/blog/images/how-to-try-new-categories/exploration-system-workflow.jpg)
 
 This timeline might seem long, but it's much faster than the alternative: buying impulsively, regretting it, researching what you should have bought, then starting over with better knowledge but financial losses.
 

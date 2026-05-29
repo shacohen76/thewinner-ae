@@ -33,8 +33,6 @@ hero_image: "/blog/images/how-to-shop-online-safely/hero.jpg"
 
 Last month, I was helping my neighbor set up her first online shopping account. She'd been hesitant to buy anything online, convinced that the internet was full of scammers waiting to steal her money. While I assured her that online shopping is generally safe when done properly, her concerns weren't entirely unfounded. The convenience of clicking "buy now" from your couch comes with responsibilities that many shoppers overlook.
 
-![Online shopping safety guide hero image](/blog/images/how-to-shop-online-safely/hero.jpg)
-
 After years of helping readers navigate the digital marketplace and personally testing hundreds of products through [our rigorous testing process](/blog/how-our-team-tests-products), I've learned that shopping online safely isn't about avoiding the internet — it's about shopping smarter. The UAE's e-commerce landscape has exploded in recent years, offering incredible convenience and selection, but also creating new opportunities for those looking to take advantage of unprepared shoppers.
 
 ## Understanding Online Shopping Risks in the UAE
@@ -48,8 +46,6 @@ The [e-commerce industry](https://en.wikipedia.org/wiki/E-commerce) in the UAE h
 **Identity theft through poorly secured checkout processes** is another serious concern. When a website asks for your Emirates ID number but doesn't use proper encryption, you're essentially handing over the keys to your identity. I've seen cases where people's personal information was sold to marketing companies or worse, used to open fraudulent accounts.
 
 **Counterfeit products sold as genuine items** plague nearly every product category. From fake [Samsung](https://www.samsung.com) smartphones that die after a month to counterfeit skincare products that can actually harm your skin, these items waste your money and potentially endanger your health.
-
-![Infographic showing common online shopping risks](/blog/images/how-to-shop-online-safely/risks-infographic.jpg)
 
 ### Why the UAE Market Has Unique Considerations
 
@@ -78,8 +74,6 @@ The foundation of safe online shopping starts with choosing where to shop. Not a
 **Trust seals and certifications** from recognized authorities add credibility. However, be aware that fake trust seals exist. When in doubt, click on the seal — legitimate ones link to verification pages on the certifying organization's website.
 
 **Clear return and refund policies** indicate a business that stands behind its products. I once compared two electronics retailers: one had a detailed, easy-to-understand return policy with specific timeframes and conditions, while the other had vague language about "case-by-case" refund decisions. Guess which one I chose?
-
-![Diagram showing website security indicators](/blog/images/how-to-shop-online-safely/security-indicators-diagram.jpg)
 
 ### Red Flags That Should Stop You Cold
 
@@ -111,8 +105,6 @@ Your financial information is the crown jewel that scammers are after. Protectin
 
 **Avoid saving payment information** on websites unless absolutely necessary. While convenient, stored payment data becomes vulnerable if the website's security is compromised. The few extra seconds to re-enter payment details are worth the reduced risk.
 
-![Payment security comparison chart](/blog/images/how-to-shop-online-safely/payment-security-chart.jpg)
-
 ### Creating a Secure Payment Environment
 
 **Use dedicated devices and networks** for important purchases. Avoid shopping on public WiFi networks, where data can be intercepted. If you must shop while out, use your mobile data connection instead of public internet.
@@ -140,8 +132,6 @@ Whether you're shopping on Amazon.ae or a smaller specialized retailer, understa
 **Response times to customer inquiries** indicate seller reliability. Professional sellers typically respond to questions within 24 hours and provide detailed, helpful answers. Slow or evasive responses often predict poor after-sale support.
 
 **Return and exchange policies** vary significantly between sellers, even on the same platform. Some sellers offer hassle-free returns, while others create obstacles that make returns practically impossible.
-
-![Seller evaluation criteria infographic](/blog/images/how-to-shop-online-safely/seller-evaluation-infographic.jpg)
 
 ### Building Seller Relationships
 
@@ -171,8 +161,6 @@ Scammers continuously evolve their tactics, but certain patterns remain consiste
 
 **The "flash sale" group buy** scam operates through WhatsApp groups or Telegram channels, promising exclusive access to bulk pricing on popular products. Participants send money to coordinators who disappear once they've collected enough payments.
 
-![Common scam tactics awareness guide](/blog/images/how-to-shop-online-safely/scam-tactics-guide.jpg)
-
 ### Protecting Yourself from Sophisticated Fraud
 
 **Cross-reference prices and sellers** across multiple platforms. When I see a deal that seems exceptional, I spend five minutes checking the same product on other sites. Legitimate sales are usually reflected across multiple retailers, while scam prices exist only on fraudulent sites.
@@ -200,8 +188,6 @@ Your personal data has value beyond its use in completing transactions. Understa
 **Adjust privacy settings** on established platforms regularly. Companies often introduce new data collection practices and enable them by default. Quarterly reviews of your account settings help maintain control over your information.
 
 **Monitor your digital footprint** by searching for your name and contact information online. Sometimes personal information appears on data broker sites or in connection with data breaches without your knowledge.
-
-![Personal data protection checklist](/blog/images/how-to-shop-online-safely/data-protection-checklist.jpg)
 
 ### Responding to Data Breaches
 
@@ -240,8 +226,6 @@ When I purchased a smart home device that stopped working after two weeks, I fol
 **Noon's Purchase Protection** offers similar safeguards for marketplace purchases, with particular strength in resolving delivery issues and counterfeit product claims.
 
 **PayPal's Buyer Protection** extends beyond platform-specific programs, offering protection for purchases made through their payment system regardless of the retailer.
-
-![Consumer rights flowchart](/blog/images/how-to-shop-online-safely/consumer-rights-flowchart.jpg)
 
 ## Safe Delivery and Package Handling
 
@@ -291,8 +275,6 @@ Mobile devices have become the primary shopping platform for many consumers, but
 
 **Review app permissions regularly.** Shopping apps should need access to storage (for photos), camera (for barcode scanning), and location (for shipping addresses). They shouldn't need access to contacts, call logs, or text messages.
 
-![Mobile shopping security tips infographic](/blog/images/how-to-shop-online-safely/mobile-security-tips.jpg)
-
 ### Managing Multiple Shopping Apps
 
 **Consolidate accounts when possible.** Using fewer platforms means fewer password management requirements and reduced exposure to potential data breaches. Major retailers like Amazon.ae often offer broader selection than specialized apps.
@@ -328,8 +310,6 @@ Safe online shopping isn't about individual transactions — it's about developi
 **Lead by example in group purchases** or when shopping with others. Demonstrate good practices like price comparison, seller verification, and secure payment methods in real shopping situations.
 
 **Advocate for better business practices** by supporting retailers that prioritize customer security and avoiding those that don't. Your purchasing decisions influence how businesses approach customer protection.
-
-![Long-term shopping habits guide](/blog/images/how-to-shop-online-safely/shopping-habits-guide.jpg)
 
 ## What to Do When Things Go Wrong
 

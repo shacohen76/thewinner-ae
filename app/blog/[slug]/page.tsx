@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllSlugs, getPostBySlug, getRelatedPosts } from '@/lib/blog';
 import AuthorBio from '@/components/blog/AuthorBio';
+import AuthorAvatar from '@/components/blog/AuthorAvatar';
 import ReadingProgress from '@/components/blog/ReadingProgress';
 import TableOfContents from '@/components/blog/TableOfContents';
 import BlogCard from '@/components/blog/BlogCard';
@@ -140,9 +141,12 @@ export default async function BlogPostPage({
 
               {/* Author + date row */}
               <div className="flex items-center gap-4 pb-6 border-b border-gray-200">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
-                  {post.author.name.split(' ').map((n) => n[0]).join('')}
-                </div>
+                <AuthorAvatar
+                  name={post.author.name}
+                  avatar={post.author.avatar}
+                  sizeClass="w-10 h-10 text-sm"
+                  gradientClass="from-blue-500 to-indigo-600"
+                />
                 <div>
                   <div className="font-medium text-gray-800">{post.author.name}</div>
                   <div className="text-sm text-gray-400">

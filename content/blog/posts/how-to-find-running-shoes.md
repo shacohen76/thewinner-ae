@@ -29,8 +29,6 @@ hero_image: "/blog/images/how-to-find-running-shoes/hero.jpg"
 - [Building Your Shoe Rotation Strategy](#building-your-shoe-rotation-strategy)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
-![Professional runner getting gait analysis at specialty running store](/blog/images/how-to-find-running-shoes/hero.jpg)
-
 ## Why Most People Get Running Shoes Wrong
 
 Last year, I watched a friend spend three months nursing a stress fracture because she bought the same [Nike](https://www.nike.com) model her marathon-running colleague swore by. The problem? My friend has high arches and tends to supinate, while her colleague has flat feet and overpronates. Same shoe, completely different biomechanical needs.
@@ -71,8 +69,6 @@ While not as accurate as professional analysis, this test provides a starting po
 
 Modern running shoes represent decades of [biomechanical](https://en.wikipedia.org/wiki/Biomechanics) research translated into wearable technology. Understanding the key components helps you make informed decisions rather than relying on marketing claims or assumptions.
 
-![Cutaway view of running shoe showing internal construction elements](/blog/images/how-to-find-running-shoes/shoe-construction-diagram.jpg)
-
 ### Midsole Technology
 
 The midsole provides cushioning and energy return — arguably the most critical component for comfort and performance. EVA (ethylene vinyl acetate) foam offers lightweight cushioning but compresses over time. Polyurethane provides durability and support but adds weight. Newer technologies like [Adidas](https://www.adidas.com) Boost, Nike React, and [ASICS](https://www.asics.com) GEL attempt to balance cushioning, energy return, and longevity.
@@ -94,8 +90,6 @@ The balance between breathability and support varies by brand and model. During 
 ## Key Features That Actually Matter
 
 When evaluating running shoes, certain features directly impact your running experience while others are primarily marketing. [Learning to read specifications](/blog/guide-to-reading-specifications) effectively helps you focus on elements that matter for your specific needs.
-
-![Comparison chart showing key shoe features across different categories](/blog/images/how-to-find-running-shoes/features-comparison-infographic.jpg)
 
 ### Cushioning Systems
 
@@ -125,8 +119,6 @@ Tread patterns influence traction on different surfaces. Deeper lugs work better
 
 Proper shoe fitting goes far beyond trying on your usual size and walking around the store. The process requires systematic evaluation of multiple factors that influence long-term comfort and performance.
 
-![Professional fitting session showing foot measurement and gait analysis](/blog/images/how-to-find-running-shoes/fitting-process.jpg)
-
 ### Timing Your Shopping
 
 Your feet expand throughout the day, reaching maximum size in late afternoon or evening. Shopping for running shoes in the morning often results in shoes that feel tight during actual running times. I learned this lesson after buying morning-fitted shoes that became uncomfortable during evening runs along Dubai Marina.
@@ -155,8 +147,6 @@ If possible, use a treadmill for running assessment, or at minimum, try jogging 
 
 The UAE's unique environment presents specific challenges that influence optimal shoe selection. From scorching asphalt temperatures to beach runs and desert trails, your shoe needs vary significantly based on where and when you run.
 
-![Runner on Dubai Marina boardwalk during sunrise with city skyline](/blog/images/how-to-find-running-shoes/dubai-running-surface.jpg)
-
 ### Pavement and Road Running
 
 UAE roads reach extreme temperatures during summer months, creating additional heat stress on both feet and shoe materials. Lighter-colored shoes reflect more heat, while dark colors absorb it. More importantly, the shoe's upper ventilation becomes critical for preventing overheating and excessive moisture buildup.
@@ -184,8 +174,6 @@ Indoor climate control also changes breathability requirements. While outdoor UA
 ## Common Mistakes That Lead to Injury
 
 Through years of helping friends and colleagues with running shoe selection, I've observed patterns of mistakes that consistently lead to discomfort, poor performance, or injury. Understanding these pitfalls helps you avoid similar problems.
-
-![Infographic showing common shoe fitting mistakes and their consequences](/blog/images/how-to-find-running-shoes/common-mistakes-infographic.jpg)
 
 ### The Brand Loyalty Trap
 
@@ -221,8 +209,6 @@ The goal is gentle guidance toward neutral movement, not complete elimination of
 
 Knowing when to replace running shoes prevents injury and maintains optimal performance. Unlike casual shoes that might last years, running shoes face intense, repetitive stress that gradually degrades their protective and supportive properties.
 
-![Comparison showing new vs. worn running shoe tread and midsole compression](/blog/images/how-to-find-running-shoes/shoe-wear-comparison.jpg)
-
 ### Mileage Guidelines and UAE Factors
 
 Traditional advice suggests replacing shoes every 300-500 miles, but UAE conditions can accelerate wear. Extreme heat degrades midsole foam faster, while abrasive surfaces like concrete and asphalt increase outsole wear. Runners logging most miles during hot months might need replacement closer to 300 miles rather than 500.
@@ -250,8 +236,6 @@ The rotation strategy works particularly well for high-mileage runners or those 
 ## Building Your Shoe Rotation Strategy
 
 Serious runners often maintain multiple pairs of shoes for different training purposes and to extend overall shoe lifespan. This isn't excessive gear accumulation — it's strategic equipment management that improves performance and prevents injury.
-
-![Multiple pairs of running shoes organized by type and purpose](/blog/images/how-to-find-running-shoes/shoe-rotation-strategy.jpg)
 
 ### The Basic Two-Shoe System
 

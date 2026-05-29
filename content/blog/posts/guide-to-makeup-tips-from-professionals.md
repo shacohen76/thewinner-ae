@@ -30,8 +30,6 @@ hero_image: "/blog/images/guide-to-makeup-tips-from-professionals/hero.jpg"
 - [Adapting to UAE Climate Challenges](#adapting-to-uae-climate-challenges)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
-![Professional makeup artist applying foundation with a beauty blender](/blog/images/guide-to-makeup-tips-from-professionals/hero.jpg)
-
 After fifteen years of watching makeup artists work their magic backstage at fashion shows, photo shoots, and wedding venues across the UAE, I've collected enough professional secrets to fill several beauty encyclopedias. But here's what I've learned: the techniques that work for real women in real life aren't the dramatic, Instagram-worthy tricks you see online. They're the subtle, reliable methods that make you look polished at 7 AM and fresh at 7 PM.
 
 Last month, I shadowed celebrity makeup artist Sarah Khalil during Dubai Fashion Week, and she shared something that changed my entire approach to makeup. "The best makeup looks effortless," she told me while prepping a model for the Chanel show. "If someone notices your technique before they notice how beautiful you look, you've failed."
@@ -43,8 +41,6 @@ That philosophy guides everything in this comprehensive guide. These aren't tren
 The difference between amateur and professional makeup starts with foundation, and I learned this lesson the hard way during my sister's wedding in Abu Dhabi last summer. I'd matched her foundation in the air-conditioned Sephora, but under the natural light at the outdoor ceremony, it looked completely wrong — too pink, too obvious, too much.
 
 Professional makeup artists never match foundation under store lighting. They always test on the jawline and check it in natural light, preferably after wearing it for at least 30 minutes. Your skin changes throughout the day, especially in the UAE's humidity, and what looks perfect at 10 AM might look patchy by noon.
-
-![Before and after foundation application showing proper blending technique](/blog/images/guide-to-makeup-tips-from-professionals/foundation-application.jpg)
 
 ### The Professional Foundation Matching Process
 
@@ -63,8 +59,6 @@ When shopping for [Foundation Makeup](/best/foundation-makeup), consider your li
 ### Setting for UAE Weather
 
 The final step separates amateur from professional results: setting. In the UAE's climate, this isn't optional. Use a translucent powder applied with a large, fluffy brush, focusing on the T-zone where oil production is highest. For areas prone to creasing (under eyes, around the nose), press powder in with a smaller brush rather than sweeping it on.
-
-![Infographic showing foundation undertone matching for different skin tones](/blog/images/guide-to-makeup-tips-from-professionals/undertone-matching-infographic.jpg)
 
 ## Concealer Secrets That Actually Work
 
@@ -88,8 +82,6 @@ Apply corrector sparingly — a tiny amount goes much further than you think. Pa
 
 The biggest misconception about eye makeup is that more products equal better results. Professional makeup artists actually use fewer products but apply them more strategically. During a recent makeup session with artist Layla Ahmed in Dubai Marina, she created a stunning smoky eye using just two eyeshadow colors and a well-chosen [Mascara](/best/mascara).
 
-![Step-by-step eye makeup application showing professional blending techniques](/blog/images/guide-to-makeup-tips-from-professionals/eye-makeup-steps.jpg)
-
 ### The Three-Shadow Rule
 
 Professionals rarely use more than three eyeshadow shades per look: a light shade for highlighting, a medium tone for the main lid color, and a darker shade for definition. The magic happens in the blending, not in adding more colors.
@@ -107,8 +99,6 @@ For lower lashes, hold the wand vertically and gently tap it against the lashes 
 Professional artists never attempt to draw a perfect line in one stroke. Instead, they create a series of small dashes along the lash line, then connect them. This technique gives you much more control and results in a smoother, more even line.
 
 For winged liner, the trick is to look straight ahead in the mirror while drawing. Many people tilt their head or close their eye while applying liner, which distorts the shape. When you look straight ahead, you can see exactly how the wing will appear to others.
-
-![Diagram showing proper eyeliner application angles and techniques](/blog/images/guide-to-makeup-tips-from-professionals/eyeliner-technique-diagram.jpg)
 
 ## Blush Placement That Flatters Every Face
 
@@ -137,8 +127,6 @@ The key is to step back from the mirror frequently. Blush looks different from c
 Eyebrows frame your entire face, and professional makeup artists spend considerable time perfecting them. But here's what most people don't realize: good eyebrows are about enhancing your natural shape, not creating an entirely new one.
 
 I spent an afternoon with brow specialist Noor Hassan at her Dubai clinic, learning techniques she uses on celebrities and influencers. The most important lesson: your eyebrows should be sisters, not twins. Perfect symmetry looks artificial and draws attention to the fact that you're wearing makeup.
-
-![Before and after eyebrow shaping showing professional techniques](/blog/images/guide-to-makeup-tips-from-professionals/eyebrow-shaping.jpg)
 
 ### Mapping Your Perfect Brow Shape
 
@@ -173,8 +161,6 @@ For fuller-looking lips, apply concealer slightly outside your natural lip line,
 Professional lipstick application happens in thin layers. Apply the first layer directly from the bullet, starting at the center of your lips and working outward. Blot with a tissue, then apply a second layer using a lip brush for precision.
 
 For maximum longevity, especially important in the UAE's heat, try the professional layering technique: apply lipstick, blot, dust with translucent powder through a tissue, then apply another layer of lipstick. This creates a stain that won't transfer to your coffee cup or fade unevenly.
-
-![Infographic comparing different lipstick application techniques and their longevity](/blog/images/guide-to-makeup-tips-from-professionals/lipstick-techniques-infographic.jpg)
 
 ## Brush Selection and Care
 
@@ -214,8 +200,6 @@ Harsh lines anywhere on your face scream amateur application. Professional makeu
 
 Use clean brushes for blending — leftover product on your brush will muddy colors and create uneven application. Professional artists have multiple brushes for each step, but you can achieve similar results by cleaning brushes with a quick-drying brush cleanser between applications.
 
-![Common makeup mistakes illustrated with corrections](/blog/images/guide-to-makeup-tips-from-professionals/makeup-mistakes.jpg)
-
 ### Color Matching Errors
 
 Mismatched makeup colors create an unbalanced, artificial appearance. Your blush, lipstick, and eyeshadow don't need to match exactly, but they should harmonize. Professional artists often choose colors from the same family or with similar undertones.
@@ -247,8 +231,6 @@ Consider the versatility of each product. A cream blush that works as both cheek
 Some products justify higher investment, while others perform equally well at lower price points. Generally, base products (foundation, concealer, primer) and tools (brushes, beauty sponges) merit spending more for better quality and longevity.
 
 Color products like eyeshadow, lipstick, and blush often perform similarly across price ranges. Focus on finding shades you love and formulas that work with your skin type rather than assuming expensive equals better.
-
-![Professional makeup kit essentials laid out with explanations](/blog/images/guide-to-makeup-tips-from-professionals/makeup-kit-essentials.jpg)
 
 ## Adapting to UAE Climate Challenges
 
@@ -297,8 +279,6 @@ For events lasting several hours, layer products strategically. Apply makeup in 
 Use the professional sandwich technique: primer, thin layer of foundation, powder, another thin layer of foundation, final powder setting. This method provides coverage that can withstand hours of celebration without touch-ups.
 
 For lips, apply lipstick, blot, powder lightly through a tissue, then apply another layer. This creates a stain that won't transfer to glasses or disappear after the first course of dinner.
-
-![Before and after special occasion makeup showing longevity techniques](/blog/images/guide-to-makeup-tips-from-professionals/special-occasion-makeup.jpg)
 
 When selecting makeup for special occasions, the same principles that apply to [how to choose a perfume online](/blog/how-to-choose-perfume-online) are relevant: consider the setting, duration, and how you want to be perceived. Like fragrance, makeup creates an impression that extends beyond just looking good.
 

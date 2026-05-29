@@ -48,8 +48,6 @@ Ahmed's problem wasn't lack of intelligence or interest. He was making the same 
 
 **Mistake #3: Trying to read like we did in university.** You don't need to remember every detail, analyze themes, or feel guilty about skipping boring parts. Reading for pleasure is completely different from reading for exams.
 
-![Infographic showing the three main reasons reading habits fail](/blog/images/guide-to-starting-reading-habit/why-habits-fail-infographic.jpg)
-
 The neuroscience is clear: habits stick when they're easy, obvious, attractive, and satisfying. Most people make reading hard (impossible daily goals), hidden (no visual cues), unattractive (boring book choices), and unsatisfying (no sense of progress).
 
 Here's what works instead: micro-habits that feel almost ridiculously easy, books you genuinely want to read, and a system that gives you small wins every day.
@@ -67,8 +65,6 @@ This sounds almost insultingly small, but it's genius for three reasons:
 **It creates momentum without overwhelm.** Ten pages is enough to maintain story flow and character connection, but not so much that it feels like work. You'll often find yourself reading more — but the minimum is always just 10.
 
 **It compounds dramatically.** Ten pages daily equals 3,650 pages per year — roughly 12-15 average-length books. That's more than most people read in three years.
-
-![Photo of someone reading exactly 10 pages marked with a bookmark](/blog/images/guide-to-starting-reading-habit/ten-pages-bookmark.jpg)
 
 Here's how to implement the 10-page rule:
 
@@ -92,8 +88,6 @@ I spent my twenties forcing myself through "important" literature because I thou
 
 **Ignore "should" entirely.** Don't read books because they won awards, because your book club chose them, or because they're classics you "should" have read by now. Read books because you're curious about what happens next.
 
-![Photo of diverse book genres laid out on a table](/blog/images/guide-to-starting-reading-habit/diverse-genres.jpg)
-
 Here's my personal system for [picking your next book](/blog/how-to-pick-your-next-book) when you're building a new habit:
 
 **Start with authors who are natural storytellers.** Some writers prioritize prose style or literary themes; others are primarily concerned with keeping you turning pages. For habit-building, choose the page-turners. You can expand to more challenging material once the habit is solid.
@@ -115,8 +109,6 @@ Your environment shapes your behavior more than your willpower does. If you want
 **Multiple access points:** Don't rely on having your book with you at all times. Keep a physical book at home, another in your car, and have the ebook version on your phone. This eliminates the "I forgot my book" excuse.
 
 **Lighting matters more than you think.** Poor lighting is the fastest way to make reading feel like work. Invest in a good reading light for your favorite chair — something with adjustable brightness and color temperature. Many people in the UAE prefer cooler light in the morning and warmer light in the evening.
-
-![Photo of a cozy reading nook with good lighting and accessible books](/blog/images/guide-to-starting-reading-habit/reading-environment.jpg)
 
 **The phone distance rule:** Keep your phone at least arm's length away while reading. This is crucial. When your phone is within easy reach, you'll check it constantly without realizing it, breaking your reading flow.
 
@@ -151,8 +143,6 @@ That said, each format has distinct advantages for habit building:
 - Instant access to new books
 - Travel and commuting
 
-![Comparison chart showing pros and cons of different reading formats](/blog/images/guide-to-starting-reading-habit/format-comparison.jpg)
-
 If you're choosing an [ebook reader](/best/ebook-reader), prioritize battery life and eye comfort over fancy features. The [Amazon](https://amazon.com) Kindle ecosystem offers the largest selection of English books available in the UAE, while [Kobo](https://www.kobo.com) readers often support more file formats if you prefer flexibility.
 
 **My personal recommendation:** Start with whichever format you already own. Don't let equipment shopping delay your habit building. I've seen too many people spend weeks researching the "perfect" e-reader while never actually reading anything.
@@ -175,8 +165,6 @@ The most successful reading habits piggyback on routines you already have. This 
 **Bedtime replacement:** Instead of scrolling your phone before sleep (which disrupts your circadian rhythm), read for 15-20 minutes. This serves double duty: building your reading habit and improving your sleep quality.
 
 **Lunch break enhancement:** If you usually eat lunch alone, bring a book instead of defaulting to your phone. Many people find this transforms their lunch break from mindless scrolling into the day's most rejuvenating period.
-
-![Diagram showing how to stack reading habits onto existing routines](/blog/images/guide-to-starting-reading-habit/habit-stacking-diagram.jpg)
 
 **The two-minute rule:** On days when your routine is disrupted, commit to reading for just two minutes. This maintains the habit chain even when you can't do your full 10 pages. Two minutes is better than zero minutes.
 
@@ -205,8 +193,6 @@ Modern brains are trained for constant stimulation. Reading requires sustained a
 - Eliminate obvious distractions (phone, TV, notifications)
 - Try background instrumental music if complete silence feels wrong
 
-![Photo of someone reading while managing common distractions](/blog/images/guide-to-starting-reading-habit/managing-distractions.jpg)
-
 **Obstacle 4: "This book is boring, but I should finish it"**
 Permission to quit boring books is essential for habit building. The goal is to become a reader, not to finish specific books. Keep a "did not finish" list without guilt. Successful readers abandon more books than unsuccessful readers.
 
@@ -232,8 +218,6 @@ Tracking your reading progress can be motivating, but it can also become a sourc
 **Apps and digital tools:**
 Goodreads remains the most popular reading tracker, allowing you to set annual goals, rate books, and see what friends are reading. However, be careful with reading challenges — they can shift your focus from enjoyment to book completion quotas.
 
-![Screenshot showing a simple reading progress tracking method](/blog/images/guide-to-starting-reading-habit/progress-tracking.jpg)
-
 **Red flags in tracking:**
 - Feeling guilty when you don't hit arbitrary daily targets
 - Choosing shorter books just to increase your "books completed" number
@@ -258,8 +242,6 @@ Once you've maintained a consistent reading habit for several months, you can ex
 **Genre cycling:** Plan your reading across different genres to maintain interest and develop diverse perspectives. Follow a thriller with a biography, then a science book, then literary fiction. This variety keeps your reading experience fresh and prevents mental fatigue from similar writing styles.
 
 **The commonplace book method:** Keep a notebook specifically for capturing interesting quotes, ideas, and reflections from your reading. This isn't about formal book reviews — it's about preserving thoughts that resonate with you. Many successful readers in the UAE find this practice transforms reading from passive consumption to active engagement.
-
-![Photo of a reading journal with notes and quotes from books](/blog/images/guide-to-starting-reading-habit/reading-journal.jpg)
 
 **Strategic re-reading:** Some books reveal new layers upon re-reading, especially complex fiction or philosophy books. Keep a "re-read someday" list of books that made significant impressions. You'll often discover that books you loved at 25 speak to you differently at 35.
 
@@ -289,8 +271,6 @@ Book buying can become a substitute for book reading. You feel productive purcha
 Many people treat every book like a commitment that must be honored. This turns reading into a chore rather than a pleasure.
 
 **Solution:** Implement the 50-page rule ruthlessly. Life is too short for books that don't engage you after giving them a fair chance.
-
-![Infographic showing the most common reading habit mistakes](/blog/images/guide-to-starting-reading-habit/common-mistakes.jpg)
 
 **Mistake 4: Reading only "improving" books**
 Some new readers think every book must teach them something practical or make them smarter. This eliminates the simple pleasure of storytelling and entertainment.

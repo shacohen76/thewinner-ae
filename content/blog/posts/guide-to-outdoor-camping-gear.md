@@ -32,8 +32,6 @@ hero_image: "/blog/images/guide-to-outdoor-camping-gear/hero.jpg"
 
 Last summer, I made the rookie mistake of bringing my trusty three-season tent to a camping trip in the Empty Quarter. By 6 AM, the interior temperature hit 45°C while the outside air was only 38°C. I spent the next three days learning hard lessons about how extreme heat transforms every aspect of outdoor gear selection. That experience taught me that hot-climate camping isn't just regular camping with more water — it's an entirely different discipline.
 
-![Desert camping setup showing proper heat management techniques](/blog/images/guide-to-outdoor-camping-gear/hero.jpg)
-
 ## Understanding Desert Heat Challenges
 
 Hot climate camping presents three primary challenges that your gear must address: radiant heat from the sun, conductive heat from the ground, and the body's struggle to cool itself when ambient temperatures exceed skin temperature (around 32°C).
@@ -47,8 +45,6 @@ Your gear selection must prioritize three functions: blocking radiant heat, insu
 ## Essential Shelter Solutions
 
 The tent is your primary defense against desert conditions, but choosing the right one requires rethinking everything you know about shelter. Traditional dome tents with full rain flies become ovens in hot climates — I learned this the hard way during that Empty Quarter trip.
-
-![Comparison of tent designs for hot weather camping](/blog/images/guide-to-outdoor-camping-gear/tent-comparison.jpg)
 
 **Ventilation Architecture**
 
@@ -74,8 +70,6 @@ Double-wall tent designs provide better insulation than single-wall models, but 
 
 Your tent should integrate with shade structures rather than standing alone. Look for models with guyout points that support awnings or tarps. The ability to create a shaded outdoor living space extends your usable camping area significantly.
 
-![Infographic showing proper tent ventilation principles](/blog/images/guide-to-outdoor-camping-gear/ventilation-infographic.jpg)
-
 ## Water Management Systems
 
 Water management in hot climates goes far beyond carrying a few extra bottles. You need systems that store, cool, purify, and monitor water consumption across multiple days in extreme conditions.
@@ -97,8 +91,6 @@ For base camp, consider solar-powered cooling systems. These units use the sun's
 Heat accelerates bacterial growth, making water purification more critical. UV sterilization pens work well but require battery power. Gravity-fed filtration systems like those from [Katadyn](https://www.katadyn.com) or Platypus process large volumes without power requirements.
 
 Boiling water in 45°C ambient temperature creates unbearable heat inside any shelter. Chemical purification tablets become more effective as temperature increases, making them ideal for hot-climate camping.
-
-![Water storage and cooling system setup for desert camping](/blog/images/guide-to-outdoor-camping-gear/water-system.jpg)
 
 ## Cooling and Ventilation Strategies
 
@@ -131,8 +123,6 @@ Your clothing system in extreme heat must balance sun protection with heat dissi
 Synthetic moisture-wicking fabrics sound ideal for hot climates, but they often trap heat while moving moisture. Merino wool actually regulates temperature better across a wider range of conditions, though it's heavier when wet.
 
 New synthetic blends incorporate phase-change materials and enhanced ventilation. These fabrics actively cool your skin rather than simply wicking moisture away.
-
-![Diagram showing proper layering for extreme heat conditions](/blog/images/guide-to-outdoor-camping-gear/clothing-diagram.jpg)
 
 **Sun Protection Architecture**
 
@@ -167,8 +157,6 @@ Reflective sleeping pads bounce ground heat away rather than absorbing it. Air-f
 **Elevation and Airflow**
 
 Elevating your sleeping surface even 15-20 cm above ground level accesses cooler air and improves ventilation around your body. Cots designed for hot climates feature mesh construction that eliminates the insulation that traps heat in solid-surface cots.
-
-![Sleep system setup showing elevation and ventilation principles](/blog/images/guide-to-outdoor-camping-gear/sleep-system.jpg)
 
 ## Cooking and Food Storage
 
@@ -212,8 +200,6 @@ Heat-related medical emergencies develop faster and require different treatment 
 
 Some medications become ineffective or dangerous when exposed to extreme heat. Insulin, epinephrine auto-injectors, and some pain medications require temperature-controlled storage.
 
-![Emergency equipment layout for hot climate safety](/blog/images/guide-to-outdoor-camping-gear/safety-equipment.jpg)
-
 ## Power Management in Extreme Heat
 
 Electronic equipment faces unique challenges in extreme heat, while power demands increase due to cooling and communication needs.
@@ -255,8 +241,6 @@ Scout campsites during peak heat hours, not during the cooler morning when you t
 The temptation to bring every cooling gadget leads to overpacked, heavy camps that create more heat stress during setup. Battery-powered air conditioners and elaborate cooling systems often consume more energy and create more problems than they solve.
 
 Focus on passive cooling strategies first, then add powered cooling only where it provides clear benefits.
-
-![Infographic showing common hot weather camping mistakes and solutions](/blog/images/guide-to-outdoor-camping-gear/mistakes-infographic.jpg)
 
 **Inappropriate Timing**
 

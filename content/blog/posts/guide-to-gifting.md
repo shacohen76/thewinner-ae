@@ -29,8 +29,6 @@ hero_image: "/blog/images/guide-to-gifting/hero.jpg"
 - [Cultural Considerations in the UAE](#cultural-considerations-in-the-uae)
 - [Last-Minute Gifting That Doesn't Look Last-Minute](#last-minute-gifting-that-doesnt-look-last-minute)
 
-![Hero image showing thoughtfully wrapped gifts with quality items visible](/blog/images/guide-to-gifting/hero.jpg)
-
 ## The Psychology of Gift-Giving Success
 
 After years of watching gift exchanges at office parties, family gatherings, and friend celebrations, I've noticed a clear pattern: the gifts that spark genuine excitement aren't necessarily the most expensive or elaborate ones. They're the ones that make the recipient think, "How did you know I needed this?"
@@ -40,8 +38,6 @@ The secret lies in identifying the gap between what someone wants and what they 
 I learned this lesson the hard way three years ago when I gave my tech-savvy brother-in-law the latest smart home gadget. It sat unused for months because his apartment wasn't set up for it, and honestly, he was overwhelmed by another device to configure. Meanwhile, the simple bamboo phone stand I'd considered "too basic" became his most-used desk accessory.
 
 The best gifts fall into three categories: **problem solvers**, **experience enablers**, and **quality upgrades**. Problem solvers address a frustration the person deals with regularly. Experience enablers open doors to activities they're curious about but haven't explored. Quality upgrades replace something they use daily with a significantly better version.
-
-![Infographic comparing gift types: novelty vs. practical vs. experiential](/blog/images/guide-to-gifting/gift-types-comparison.jpg)
 
 Understanding this framework transforms your gift selection process from guesswork into strategic thinking. Instead of asking "What should I get them?" start with "What problem do they mention repeatedly?" or "What activity have they shown interest in but never pursued?"
 
@@ -60,8 +56,6 @@ When my colleague received a premium leather tech organizer for her bag, she cal
 Avoid generic kitchen gadget sets. Instead, focus on single-purpose tools that excel at one task. A quality microplane grater, a precise digital scale that weighs to the gram, or a set of glass containers with airtight seals. These items get integrated into daily cooking routines rather than stored in "special occasion" drawers.
 
 The key is identifying which cooking tasks your recipient does regularly but finds frustrating. Someone who bakes will treasure a silicone mat with measurement guides. Someone who meal-preps will love stackable containers that actually stack without toppling.
-
-![Photo of high-quality kitchen tools arranged aesthetically](/blog/images/guide-to-gifting/kitchen-tools-lifestyle.jpg)
 
 **Personal Care Upgrades**
 
@@ -89,8 +83,6 @@ Holiday gifts work best when they align with seasonal activities or preparation 
 
 Timing matters enormously for seasonal gifts. Shopping during [seasonal sales events](/blog/guide-to-seasonal-sales) can help you access quality items that might otherwise exceed your budget, allowing you to give more thoughtful gifts.
 
-![Diagram showing seasonal gifting timeline and occasions](/blog/images/guide-to-gifting/seasonal-gifting-timeline.jpg)
-
 **Professional Milestone Gifts**
 
 Promotions, new jobs, or career achievements call for gifts that acknowledge the recipient's professional growth. High-quality desk accessories, premium notebooks, or items that enhance their work-from-home setup show you recognize their accomplishment while providing ongoing utility.
@@ -116,8 +108,6 @@ For practical optimizers, focus on premium versions of items they already use or
 **The Experience Collector**
 
 These recipients value memories over possessions and prefer gifts that enable new experiences. However, they often avoid committing to experiences themselves due to scheduling constraints or uncertainty about their interest level.
-
-![Photo showing experience-related gifts like cooking classes or adventure gear](/blog/images/guide-to-gifting/experience-gifts.jpg)
 
 The key with experience collectors is removing barriers to participation. Instead of just gifting a cooking class, include all necessary materials. Instead of just concert tickets, handle the transportation planning. Your gift should make the experience effortless to enjoy.
 
@@ -149,8 +139,6 @@ Audio accessories succeed because they improve experiences people already have r
 
 When evaluating audio gifts, consider the environments where they'll be used. Waterproof ratings matter for people who exercise. Noise cancellation matters more for commuters than for home listeners. Battery life becomes crucial for people who travel frequently.
 
-![Infographic showing different audio accessories and their ideal use cases](/blog/images/guide-to-gifting/audio-accessories-guide.jpg)
-
 **Smart Home Accessories (With Caution)**
 
 Smart home devices can be excellent gifts, but only when they integrate with systems people already use. A smart bulb that works with existing voice assistants, a smart plug that doesn't require a new app, or a device that enhances rather than replaces current solutions.
@@ -179,8 +167,6 @@ Sleep-related gifts work because everyone values good rest, but many people have
 
 The key is understanding their current sleep challenges. Someone who travels frequently might appreciate a compact sleep kit with eye mask, earplugs, and travel pillow. Someone who struggles with temperature regulation might love bamboo sheets or a cooling mattress topper.
 
-![Photo of premium bedding and sleep accessories arranged attractively](/blog/images/guide-to-gifting/sleep-comfort-upgrades.jpg)
-
 **Kitchen and Dining Enhancements**
 
 Kitchen upgrades work exceptionally well because cooking is a daily activity where quality improvements are immediately noticeable. A sharp knife will transform meal preparation for someone using dull blades. Quality cutting boards will enhance food safety and presentation for someone using warped plastic boards.
@@ -206,8 +192,6 @@ When I gave my sister a pottery class, I also handled the scheduling coordinatio
 **Matching Experiences to Personality Types**
 
 Not everyone enjoys the same types of experiences, and mismatched experience gifts can create stress rather than joy. Some people prefer solo activities that allow personal exploration. Others need social elements to feel motivated. Some want physical challenges, while others prefer mental or creative stimulation.
-
-![Diagram showing different experience gift categories matched to personality types](/blog/images/guide-to-gifting/experience-matching-guide.jpg)
 
 **Creating Tangible Memories**
 
@@ -242,8 +226,6 @@ Beautiful gifts that don't fit the recipient's living situation, lifestyle, or p
 **Choosing Novelty Over Utility**
 
 Novelty items create initial excitement but often lack staying power. Items chosen primarily because they're unique, funny, or unusual often end up stored away after the initial charm wears off. Utility doesn't exclude creativity, but it should be the foundation.
-
-![Comparison image showing novelty items vs. practical gifts side by side](/blog/images/guide-to-gifting/novelty-vs-practical.jpg)
 
 **Assuming Size Preferences**
 
@@ -294,8 +276,6 @@ High-quality consumable items — artisanal food products, premium skincare samp
 Assembling themed collections of useful items can create thoughtful last-minute gifts. A "work-from-home comfort kit" with premium coffee, cozy accessories, and desk organizers. A "travel essentials kit" with quality travel-sized products. A "self-care evening kit" with bath products, tea, and comfort items.
 
 For families with young children, our [guide to kids' toys and games](/blog/guide-to-kids-toys-games) can help you quickly identify age-appropriate, safe options that provide genuine entertainment value rather than just filling space.
-
-![Photo of thoughtfully assembled gift kits with various themes](/blog/images/guide-to-gifting/emergency-gift-kits.jpg)
 
 The success of these kits comes from thoughtful curation around specific themes or needs rather than random collections of items. Each item should complement the others and contribute to an overall experience or solution.
 

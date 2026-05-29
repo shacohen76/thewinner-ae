@@ -28,8 +28,6 @@ hero_image: "/blog/images/guide-to-reading-specifications/hero.jpg"
 - [Making Sense of Product Tiers](#making-sense-of-product-tiers)
 - [Your Specification Checklist](#your-specification-checklist)
 
-![Person reviewing product specifications on laptop with multiple devices around them](/blog/images/guide-to-reading-specifications/hero.jpg)
-
 I learned this lesson the hard way three years ago when I bought what I thought was the perfect laptop for working from Dubai's many outdoor cafés. The specs looked impressive on paper — blazing fast processor, ample RAM, sleek design. But I'd completely overlooked one crucial number: screen brightness. At 250 nits, that beautiful display was essentially unusable anywhere with decent sunlight. I ended up returning it and learning a valuable lesson about which specifications actually matter for real-world use.
 
 This experience sparked my obsession with decoding product specifications properly. After years of testing products and helping readers navigate [how to compare products](/blog/how-to-compare-products) effectively, I've discovered that most people focus on the wrong numbers entirely.
@@ -42,8 +40,6 @@ Take smartphone cameras, for example. Everyone obsesses over megapixel counts, b
 
 During my time reviewing products for UAE consumers, I've noticed we're particularly susceptible to specification inflation because we often shop online without physically testing products first. When you're browsing Amazon.ae at midnight, those impressive-looking numbers become your only guide to quality. But without context, they can be deeply misleading.
 
-![Infographic showing common spec misconceptions vs reality](/blog/images/guide-to-reading-specifications/misconceptions-infographic.jpg)
-
 The psychology behind this is fascinating. Manufacturers know that consumers scan spec sheets in seconds, not minutes. They highlight the numbers that sound impressive while downplaying or omitting the ones that actually affect your daily experience. It's not necessarily malicious — it's marketing reality.
 
 I remember testing two air purifiers last year for a comparison piece. One advertised a "99.97% filtration rate" in bold letters, while the other modestly listed its "Clean Air Delivery Rate (CADR)" in small print. Guess which one actually cleaned the air more effectively in my dusty Dubai apartment? The second one, by a significant margin. The first was technically accurate but measured filtration of particles that were already captured, not the unit's real-world cleaning power.
@@ -55,8 +51,6 @@ Marketing departments have become incredibly sophisticated at presenting specifi
 Here's a perfect example: "Turbo mode" in kitchen appliances. I've tested blenders, food processors, and air fryers that advertise turbo modes, but what does that actually mean? Sometimes it's a genuine power boost, sometimes it's just the regular high setting with a flashier name, and sometimes it's a brief burst that the motor can't sustain for actual cooking tasks.
 
 The real problem is unit manipulation. A vacuum cleaner might advertise "2000W of power!" but fail to mention that most of that wattage is lost to inefficiency. The actual suction power — measured in air watts — might be a fraction of that number. Meanwhile, a premium model with better engineering might use 1400W while delivering superior cleaning performance.
-
-![Comparison chart showing marketing claims vs actual performance metrics](/blog/images/guide-to-reading-specifications/marketing-vs-reality-chart.jpg)
 
 Smart TV manufacturers are notorious for this. They'll advertise "4K HDR Premium+" without mentioning that the peak brightness only reaches 300 nits — barely enough to display proper HDR content. True HDR requires at least 400 nits for noticeable improvement, with premium displays hitting 1000+ nits. But which number do you think makes it into the product title?
 
@@ -75,8 +69,6 @@ Screen resolution gets all the attention, but it's often the least important dis
 **Color gamut coverage**: Look for sRGB coverage percentages. 95%+ sRGB coverage ensures accurate colors for photos, videos, and professional work. Many budget displays only manage 60-70% sRGB, resulting in washed-out colors.
 
 **Panel type**: IPS panels offer better viewing angles and color accuracy than TN panels, though they typically consume more power. OLED panels provide the best contrast but may have burn-in concerns for static content.
-
-![Diagram showing different display technologies and their characteristics](/blog/images/guide-to-reading-specifications/display-tech-diagram.jpg)
 
 **Resolution considerations**: [Display resolution](https://en.wikipedia.org/wiki/Display_resolution) should match your screen size and use case. A 13-inch laptop rarely benefits from 4K resolution — you'll just drain battery faster without noticeable improvement. However, a 27-inch monitor absolutely benefits from higher resolution for detailed work.
 
@@ -99,8 +91,6 @@ RAM specifications are usually straightforward — more is generally better for 
 **Storage interface matters**: NVMe SSDs are significantly faster than SATA SSDs, which in turn outperform traditional hard drives. For reference, a typical hard drive reads at 80-120 MB/s, SATA SSDs hit 500-550 MB/s, and NVMe drives can exceed 3,500 MB/s.
 
 **Battery life calculations**: Manufacturer estimates assume ideal conditions — screen dimmed, WiFi off, minimal processing. Real-world battery life is typically 60-70% of advertised figures. Look for independent testing results rather than trusting marketing claims.
-
-![Product photo showing laptop internals with SSD and RAM highlighted](/blog/images/guide-to-reading-specifications/laptop-internals.jpg)
 
 ## Kitchen Appliances: What Numbers Actually Cook
 
@@ -127,8 +117,6 @@ Espresso machine specifications are particularly misleading because they often m
 
 I own a [Breville](https://www.breville.com) machine that prioritizes temperature stability over flashy pressure numbers, and it consistently produces better espresso than machines with twice the advertised bar rating.
 
-![Kitchen appliance performance comparison showing actual vs. advertised specs](/blog/images/guide-to-reading-specifications/kitchen-performance-chart.jpg)
-
 ### Blender Power Reality
 
 Blender motors are rated in peak horsepower or wattage, but these numbers represent maximum theoretical output, not sustained blending power. A blender might hit 3.5 peak horsepower for milliseconds but only maintain 1.8 horsepower during actual use.
@@ -150,8 +138,6 @@ Vacuum specifications are notoriously misleading. I've tested dozens of models a
 **Filtration efficiency**: HEPA filtration is crucial for Dubai's dusty environment, but not all HEPA filters are equal. True HEPA filters capture 99.97% of particles 0.3 microns or larger. "HEPA-style" or "HEPA-like" filters are marketing terms with no standardized meaning.
 
 **Brush design and adjustability**: The cleaning head matters more than raw suction power. Adjustable brush height, edge-cleaning capabilities, and specialized tools for different surfaces impact real-world performance significantly.
-
-![Vacuum cleaner cutaway showing airflow and filtration systems](/blog/images/guide-to-reading-specifications/vacuum-airflow-diagram.jpg)
 
 My current [Dyson](https://www.dyson.com) vacuum uses less wattage than my previous model but cleans more effectively due to superior cyclone technology and brush engineering. The specifications that mattered weren't in the marketing materials — they were buried in the technical documentation.
 
@@ -177,8 +163,6 @@ Audio specifications are particularly prone to marketing manipulation because so
 
 **Driver quality over quantity**: A well-designed two-driver system often sounds better than a multi-driver setup with inferior components. I've heard bookshelf speakers with simple woofer/tweeter combinations that outperform complex multi-driver towers because of superior crossover design and driver matching.
 
-![Audio frequency response graph showing idealized vs. real-world performance](/blog/images/guide-to-reading-specifications/audio-frequency-graph.jpg)
-
 ### Headphone Specifications Demystified
 
 **Impedance matching**: Headphone impedance affects volume and sound quality when paired with different devices. High-impedance headphones (300+ ohms) often need dedicated amplifiers to reach proper volume levels, while low-impedance models (32 ohms or less) work well with phones and laptops.
@@ -200,8 +184,6 @@ This is the most pervasive trap — assuming the product with the highest number
 **Router speed ratings**: WiFi routers advertise theoretical maximum speeds under perfect conditions with zero interference. A router rated for "AC3000" might deliver 50-100 Mbps in typical home environments due to walls, interference, and device limitations.
 
 **Portable battery capacity**: Power bank capacity is measured in mAh, but actual charging capacity depends on conversion efficiency and voltage regulation. A 20,000mAh power bank might only deliver 12,000-14,000mAh of usable power to your devices.
-
-![Infographic showing specification traps and what to look for instead](/blog/images/guide-to-reading-specifications/specification-traps-infographic.jpg)
 
 ### Marketing Term Confusion
 
@@ -237,8 +219,6 @@ Never rely on a single source of information, especially manufacturer specificat
 
 **Specification verification**: Cross-reference key specifications across multiple sources. Discrepancies often indicate marketing optimization or measurement methodology differences.
 
-![Screenshot showing multiple research sources and how to cross-reference information](/blog/images/guide-to-reading-specifications/research-methodology.jpg)
-
 ### Understanding Test Conditions
 
 Most specifications are measured under idealized conditions that don't reflect real-world use. Learning to identify and account for these conditions helps set realistic expectations.
@@ -272,8 +252,6 @@ Entry-level products typically sacrifice build quality, advanced features, or pe
 **Feature completeness**: Entry-level products may omit convenience features while maintaining core functionality. A basic coffee machine might brew excellent coffee but lack programmable timers or automatic shut-off.
 
 **Performance consistency**: Premium products typically maintain performance better under stress and over time. A high-end blender might produce identical results from the first use to the thousandth, while budget alternatives may degrade more quickly.
-
-![Product comparison showing entry-level vs premium features side by side](/blog/images/guide-to-reading-specifications/tier-comparison.jpg)
 
 ### Where Premium Specs Matter Most
 
@@ -328,8 +306,6 @@ Cross-reference key specifications and add real-world context to manufacturer cl
 **User experience feedback**: Look for detailed user reviews that mention performance in situations similar to your intended use case.
 
 **Local considerations**: Account for UAE-specific factors like climate, voltage standards, warranty support, and parts availability.
-
-![Checklist infographic showing the complete specification evaluation process](/blog/images/guide-to-reading-specifications/specification-checklist.jpg)
 
 ### Long-Term Value Assessment
 
