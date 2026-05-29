@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { BlogPostMeta } from '@/lib/blog';
+import AuthorAvatar from '@/components/blog/AuthorAvatar';
 
 const AUTHOR_COLORS: Record<string, string> = {
   'sarah-al-rashid': 'from-rose-500 to-red-600',
@@ -8,6 +9,7 @@ const AUTHOR_COLORS: Record<string, string> = {
   'youssef-nabil': 'from-green-500 to-green-600',
   'dina-karam': 'from-amber-500 to-amber-600',
   'tariq-sayed': 'from-purple-500 to-purple-600',
+  'peter-gods': 'from-slate-600 to-zinc-800',
 };
 
 const TIER_COLORS: Record<number, string> = {
@@ -31,10 +33,6 @@ interface BlogCardProps {
 
 export default function BlogCard({ post, compact = false }: BlogCardProps) {
   const authorGradient = AUTHOR_COLORS[post.author_id] || 'from-gray-500 to-gray-600';
-  const initials = post.author.name
-    .split(' ')
-    .map((n) => n[0])
-    .join('');
 
   if (compact) {
     return (
@@ -86,11 +84,12 @@ export default function BlogCard({ post, compact = false }: BlogCardProps) {
 
         {/* Author row */}
         <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-          <div
-            className={`w-7 h-7 rounded-full bg-gradient-to-br ${authorGradient} flex items-center justify-center text-white text-[10px] font-bold`}
-          >
-            {initials}
-          </div>
+          <AuthorAvatar
+            name={post.author.name}
+            avatar={post.author.avatar}
+            sizeClass="w-7 h-7 text-[10px]"
+            gradientClass={authorGradient}
+          />
           <div>
             <div className="text-xs font-medium text-gray-700">{post.author.name}</div>
             <div className="text-[10px] text-gray-400">{post.publish_date}</div>
