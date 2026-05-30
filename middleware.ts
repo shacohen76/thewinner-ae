@@ -95,6 +95,19 @@ export function middleware(request: NextRequest) {
   // then attach the geo cookie to THIS response so both concerns coexist.
   const response = intlMiddleware(request);
 
+  // ─── INTL1 Phase 2: Arabic subtree is NOINDEX (private preview) ──────────
+  // The whole /ar/* tree is half-built during Phase 2 (English content in an
+  // RTL shell until the Arabic data path lands). We keep it OUT of search until
+  // Phase 3 flips indexing on deliberately. Setting X-Robots-Tag here — at the
+  // edge, on the ORIGINAL request path — is override-proof: it noindexes every
+  // /ar page regardless of that page's own metadata (e.g. /review sets
+  // robots:index, which would otherwise win). English is prefix-less ("/",
+  // "/best/…"), so its pathname NEVER starts with "/ar" → English is untouched.
+  const path = request.nextUrl.pathname;
+  if (path === '/ar' || path.startsWith('/ar/')) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+
   // ─── GEOS1 geo cookie ───────────────────────────────────────────────────
   const geos1Enabled = process.env.GEOS1_ENABLED === 'true';
 

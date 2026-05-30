@@ -15,6 +15,7 @@ declare global {
 
 import Image from 'next/image';
 import { useState, useMemo } from 'react';
+import { useLocale } from 'next-intl';
 import {
   getFixedScore,
   getScoreLabel,
@@ -24,6 +25,7 @@ import {
   formatNumber,
   getTrackingParams
 } from '@/lib/utils';
+import { splitTitle } from '@/lib/title-split';
 import { logAsinClickBeacon } from '@/components/TrackingProvider';
 
 interface ProductCardProps {
@@ -37,31 +39,11 @@ interface ProductCardProps {
   reviewCount?: number;
 }
 
-// Split title at first comma or spaced-dash — short title + rest for "Show more"
-// Does NOT split at hyphens inside words (Wi-Fi, 128GB-256GB, etc.)
-function splitTitle(fullTitle: string): { shortTitle: string; restTitle: string | null } {
-  // Try comma first (most common in Amazon titles)
-  const commaIdx = fullTitle.indexOf(',');
-  if (commaIdx >= 10) {
-    return {
-      shortTitle: capitalizeFirst(fullTitle.substring(0, commaIdx).trim()),
-      restTitle: fullTitle.substring(commaIdx + 1).trim() || null,
-    };
-  }
+// Title splitting (headline + "Show more" tail) now lives in the locale-aware
+// @/lib/title-split → splitTitle(title, locale). English output is byte-identical
+// to the previous inline rule; Arabic ('ar') uses the validated Arabic splitter.
 
-  // Try spaced dash/pipe: " - ", " – ", " — ", " | "
-  const spacedBreak = fullTitle.match(/^(.{10,}?)\s+[-–—|]\s+([\s\S]*)/);
-  if (spacedBreak) {
-    return {
-      shortTitle: capitalizeFirst(spacedBreak[1].trim()),
-      restTitle: spacedBreak[2].trim() || null,
-    };
-  }
-
-  return { shortTitle: capitalizeFirst(fullTitle), restTitle: null };
-}
-
-// Capitalize first letter of a string
+// Capitalize first letter of a string (English WWL points; no-op on Arabic)
 function capitalizeFirst(text: string): string {
   if (!text) return text;
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -78,11 +60,12 @@ export default function ProductCard({
   reviewCount = 0,
 }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const locale = useLocale();
 
   const isWinner = rank === 1;
   const score = getFixedScore(rank);
   const scoreInfo = getScoreLabel(score);
-  const { shortTitle, restTitle } = splitTitle(title);
+  const { shortTitle, restTitle } = splitTitle(title, locale);
   const brand = extractBrand(title);
   const stars = scoreToStars(score);
   const rankPadded = rank.toString().padStart(2, '0');
