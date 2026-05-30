@@ -28,10 +28,13 @@
 import { defineRouting } from 'next-intl/routing';
 
 export const routing = defineRouting({
-  // Phase 1: English-only. Add 'ar' (then 'pt', …) in Phase 2.
-  locales: ['en'],
+  // Phase 2A: Arabic ('ar') added. English stays the default and prefix-less;
+  // 'ar' is served under /ar/* and is NOINDEX during Phase 2 (enforced by an
+  // X-Robots-Tag header in middleware.ts, not per-page metadata, so the whole
+  // /ar subtree is private regardless of any page's own robots). Add 'pt', … later.
+  locales: ['en', 'ar'],
   defaultLocale: 'en',
-  // English prefix-less (rewrite); future locales get a /xx prefix.
+  // English prefix-less (rewrite); non-default locales get a /xx prefix.
   localePrefix: 'as-needed',
 });
 
