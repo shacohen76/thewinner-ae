@@ -1,3 +1,11 @@
+// INTL1 Phase 1 (2026-05-30): wrap config with the next-intl plugin so the
+// App Router picks up i18n/request.ts for per-request locale + messages.
+// Adds NO behavior change on its own — routing only activates once the
+// [locale] tree + middleware land (Phase 1 Increment B). All existing config
+// below is unchanged.
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -28,4 +36,4 @@ const nextConfig = {
   // www.thewinner.ae will auto-redirect at edge level.
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig)
