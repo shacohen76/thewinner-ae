@@ -1,141 +1,29 @@
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import TrackingProvider from '@/components/TrackingProvider';
-import LayoutShell from '@/components/LayoutShell';
-import { CONFIG } from '@/lib/utils';
-import '@/styles/globals.css';
-
-export const metadata: Metadata = {
-  title: {
-    default: `${CONFIG.siteName} — ${CONFIG.siteTagline}`,
-    template: `%s | ${CONFIG.siteName}`,
-  },
-  description: 'The leading product comparison site for the UAE. Find the best products across electronics, appliances, computers, beauty and more.',
-  keywords: ['product comparison', 'reviews', 'electronics', 'perfumes', 'baby', 'coffee', 'garden', 'sports', 'cosmetics', 'appliances', 'computers', 'gaming', 'UAE', 'Amazon'],
-  authors: [{ name: CONFIG.siteName }],
-  creator: CONFIG.siteName,
-  metadataBase: new URL(CONFIG.canonicalUrl),
-
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en-AE': CONFIG.canonicalUrl,
-      'x-default': CONFIG.canonicalUrl,
-    },
-  },
-
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: '/apple-touch-icon.png',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_AE',
-    url: CONFIG.canonicalUrl,
-    siteName: CONFIG.siteName,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+// ============================================
+// Root layout (passthrough) — INTL1 Phase 1 (Increment B)
+// ============================================
+// Created: 2026-03-19 — Restructured: 2026-05-30 (INTL1 Phase 1, [locale] tree)
+//
+// The real document shell (<html>/<body>, metadata, GTM, JSON-LD, TrackingProvider,
+// LayoutShell) moved DOWN into app/[locale]/layout.tsx so those can depend on the
+// active locale. Next.js still requires a layout at the app/ root, so this file
+// stays — but it is intentionally a PASSTHROUGH that just returns children.
+//
+// WHY A PASSTHROUGH (the standard next-intl App-Router pattern):
+//   • Matched routes render through app/[locale]/layout.tsx, which supplies the
+//     <html>/<body>. The root layout therefore must NOT also emit <html>/<body>
+//     (doing so would nest two documents).
+//   • The one render path that does NOT go through [locale] is the GLOBAL
+//     not-found (app/not-found.tsx) — an unmatched/invalid-locale URL. That file
+//     carries its OWN <html>/<body> precisely because this root no longer does.
+//
+// Do not add markup here. Locale-specific shell belongs in [locale]/layout.tsx;
+// the global 404 shell belongs in app/not-found.tsx.
+// ============================================
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en-AE" dir="ltr">
-      <head>
-        {/* Structured Data — WebSite + Organization with geo signals */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@graph': [
-                {
-                  '@type': 'WebSite',
-                  '@id': `${CONFIG.siteUrl}/#website`,
-                  'url': CONFIG.siteUrl,
-                  'name': CONFIG.siteName,
-                  'description': 'The leading product comparison site for the UAE',
-                  'inLanguage': 'en-AE',
-                  'potentialAction': {
-                    '@type': 'SearchAction',
-                    'target': `${CONFIG.siteUrl}/best/{search_term_string}`,
-                    'query-input': 'required name=search_term_string',
-                  },
-                },
-                {
-                  '@type': 'Organization',
-                  '@id': `${CONFIG.siteUrl}/#organization`,
-                  'name': CONFIG.siteName,
-                  'url': CONFIG.siteUrl,
-                  'areaServed': [
-                    { '@type': 'Country', 'name': 'United Arab Emirates' },
-                    { '@type': 'Country', 'name': 'Saudi Arabia' },
-                    { '@type': 'Country', 'name': 'Bahrain' },
-                    { '@type': 'Country', 'name': 'Kuwait' },
-                    { '@type': 'Country', 'name': 'Oman' },
-                    { '@type': 'Country', 'name': 'Qatar' },
-                  ],
-                  'contactPoint': {
-                    '@type': 'ContactPoint',
-                    'email': 'thewinners@atomicmail.io',
-                    'contactType': 'customer service',
-                    'availableLanguage': 'English',
-                  },
-                },
-              ],
-            }),
-          }}
-        />
-        {/* HOTFIX 2026-05-23: Consent Mode v2 default-denied block removed —
-            it was starving GA4 (denied default + GA4 tag not Consent-Mode-v2
-            configured in GTM → no events ever fired). Returns to pre-Path B
-            GTM behavior (implicit grant for everyone). Re-introduce only
-            after GTM tag is properly configured for Consent Mode v2 AND
-            CookieConsent.tsx update path is verified end-to-end.
-            See AM1 decisions log entry GEOS1-HOTFIX-1. */}
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','${CONFIG.gtmId}');
-            `,
-          }}
-        />
-      </head>
-      <body className="bg-gray-50 min-h-screen flex flex-col overflow-x-hidden">
-        {/* GTM noscript */}
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${CONFIG.gtmId}`}
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        <Suspense fallback={null}>
-          <TrackingProvider>
-            {/* LayoutShell picks Header+Footer+CookieConsent vs ReviewHeader+ReviewFooter
-                based on pathname. Non-review paths render byte-identical to before. */}
-            <LayoutShell>{children}</LayoutShell>
-          </TrackingProvider>
-        </Suspense>
-      </body>
-    </html>
-  );
+  return children;
 }
