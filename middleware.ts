@@ -3,28 +3,44 @@
 // ============================================
 // Created: 2026-03-28
 // Updated: 2026-05-21 (GEOS1 — added geo cookie for multi-geo routing)
+// Updated: 2026-05-30 (INTL1 Phase 1 — composed next-intl locale routing in)
 //
-// Two independent concerns, each gated by its own flag:
+// THREE concerns, run in a deliberate order:
+//
+//   0. INTL1 locale routing (next-intl)
+//      createMiddleware(routing) maps URLs to the [locale] app tree. With
+//      localePrefix 'as-needed' + defaultLocale 'en', it REWRITES "/" → "/en"
+//      internally (no redirect, no visible prefix), so English URLs are
+//      byte-identical. It OWNS the response object — we take the response it
+//      returns and then layer the GEOS1 cookie onto it, rather than starting
+//      from NextResponse.next(). (A 451 geo-block, if ever enabled, short-
+//      circuits BEFORE next-intl so a blocked visitor never reaches a page.)
 //
 //   1. GEOS1 geo cookie (env var GEOS1_ENABLED)
-//      Sets `tw_geo` cookie with the visitor's 2-letter country code so the
-//      client TrackingProvider can route Amazon links to the correct regional
-//      program (.ae / .de / .com) and swap the footer + back-to-top text.
-//      Cookies don't affect Vercel's HTML cache key — the 24h ISR cache on
-//      /best/[slug] is preserved.
-//      Skipped for: (a) known bot UAs, so Googlebot indexes the cached UAE
-//      HTML unchanged; (b) requests with no country header (e.g., local dev).
-//      Kill switch: set GEOS1_ENABLED to anything other than 'true' (or unset
-//      it) and redeploy → next request reverts to pre-GEOS1 behavior and any
-//      stale cookie is cleared.
+//      Sets `tw_geo` with the visitor's 2-letter country so the client
+//      TrackingProvider routes Amazon links to the right regional program and
+//      swaps footer/back-to-top text. Cookies don't affect Vercel's HTML cache
+//      key — the 24h ISR cache on /best/[slug] is preserved. Skipped for known
+//      bots and for requests with no country header (local dev). Kill switch:
+//      set GEOS1_ENABLED to anything but 'true' and redeploy → the next request
+//      reverts to pre-GEOS1 behavior and clears any stale cookie.
 //
 //   2. Geo-blocking (constant GEO_BLOCKING_ENABLED, currently false)
-//      Blocks N countries with a 451. Disabled pending Amazon appeal —
-//      logic kept intact for easy re-enable.
+//      Blocks N countries with a 451. Disabled pending Amazon appeal — logic
+//      kept intact for easy re-enable.
+//
+// NOTE on matcher: /api is now EXCLUDED so next-intl never rewrites API routes.
+// The geo cookie is still delivered to the browser by page navigations, and the
+// browser keeps sending it to /api, so API handlers still see tw_geo.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS } from '@/lib/geo-config';
+import { routing } from '@/i18n/routing';
+
+// next-intl locale router. Produces the (rewritten) response we mutate below.
+const intlMiddleware = createMiddleware(routing);
 
 // TEMPORARILY DISABLED — geo-blocking is off pending Amazon appeal (2026-03-30).
 const GEO_BLOCKING_ENABLED = false;
@@ -58,8 +74,26 @@ export function middleware(request: NextRequest) {
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = isSearchBot(userAgent);
 
-  // Default pass-through; we mutate cookies on it or replace it with 451.
-  const response = NextResponse.next();
+  // ─── Geo-blocking (legacy, disabled) — short-circuits before routing ─────
+  // A blocked visitor must never reach a rendered page, so this runs first.
+  if (GEO_BLOCKING_ENABLED && !isBot && BLOCKED_COUNTRIES.has(country)) {
+    return new NextResponse(
+      'This website is not available in your region.',
+      {
+        status: 451, // Unavailable For Legal Reasons (commonly used for geo-blocks)
+        headers: {
+          'Content-Type': 'text/plain',
+          'Cache-Control': 'no-store',
+          'X-Blocked-Country': country,
+        },
+      }
+    );
+  }
+
+  // ─── INTL1 locale routing ────────────────────────────────────────────────
+  // Let next-intl build the response (handles the "/" → "/en" rewrite). We
+  // then attach the geo cookie to THIS response so both concerns coexist.
+  const response = intlMiddleware(request);
 
   // ─── GEOS1 geo cookie ───────────────────────────────────────────────────
   const geos1Enabled = process.env.GEOS1_ENABLED === 'true';
@@ -83,33 +117,12 @@ export function middleware(request: NextRequest) {
     response.cookies.delete(GEO_COOKIE_NAME);
   }
 
-  // ─── Geo-blocking (legacy, disabled) ────────────────────────────────────
-  if (!GEO_BLOCKING_ENABLED) {
-    return response;
-  }
-  if (isBot) {
-    return response; // bots bypass geo-block
-  }
-  if (BLOCKED_COUNTRIES.has(country)) {
-    return new NextResponse(
-      'This website is not available in your region.',
-      {
-        status: 451, // Unavailable For Legal Reasons (commonly used for geo-blocks)
-        headers: {
-          'Content-Type': 'text/plain',
-          'Cache-Control': 'no-store',
-          'X-Blocked-Country': country,
-        },
-      }
-    );
-  }
-
   return response;
 }
 
-// Apply to all routes except static assets and Next.js internals.
+// Apply to all routes except API, static assets and Next.js internals.
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon|icon|apple-touch|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$).*)',
+    '/((?!api|_next/static|_next/image|favicon|icon|apple-touch|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$).*)',
   ],
 };
