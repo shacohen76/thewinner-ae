@@ -49,6 +49,16 @@ function capitalizeFirst(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Map getScoreLabel()'s English label → message key. utils.ts stays the single
+// source of the score thresholds; this only routes the label through the locale
+// dictionary. Unknown labels fall back to the raw English (never breaks).
+const SCORE_LABEL_KEYS: Record<string, string> = {
+  Exceptional: 'exceptional',
+  Excellent: 'excellent',
+  'Very Good': 'veryGood',
+  Good: 'good',
+};
+
 export default function ProductCard({
   rank,
   asin,
@@ -66,6 +76,8 @@ export default function ProductCard({
   const isWinner = rank === 1;
   const score = getFixedScore(rank);
   const scoreInfo = getScoreLabel(score);
+  const scoreLabelKey = SCORE_LABEL_KEYS[scoreInfo.label];
+  const scoreLabel = scoreLabelKey ? t(`scoreLabels.${scoreLabelKey}`) : scoreInfo.label;
   const { shortTitle, restTitle } = splitTitle(title, locale);
   const brand = extractBrand(title);
   const stars = scoreToStars(score);
@@ -103,7 +115,7 @@ export default function ProductCard({
   const renderScoreBox = (additionalClasses: string = '') => (
     <div className={`bg-gray-50 rounded-xl p-4 text-center ${additionalClasses}`}>
       <div className={`text-4xl font-bold ${scoreInfo.color}`}>{score}</div>
-      <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreInfo.label}</div>
+      <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreLabel}</div>
 
       {/* Stars — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
       <div className="hidden flex justify-center mt-2">

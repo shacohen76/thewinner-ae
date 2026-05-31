@@ -44,7 +44,13 @@
     "showLess": "Show less",
     "showOffer": "Show Offer",
     "interested": "🔥 {count} interested",
-    "defaultWwl": "Recommended product in this category"
+    "defaultWwl": "Recommended product in this category",
+    "scoreLabels": {
+      "exceptional": "Exceptional",
+      "excellent": "Excellent",
+      "veryGood": "Very Good",
+      "good": "Good"
+    }
   },
   "Cookie": {
     "consent": "We use cookies to understand how visitors use our site and to measure our marketing. Choose your preference below — you can change it later from the footer.",
