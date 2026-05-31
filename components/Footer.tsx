@@ -8,7 +8,7 @@
 // cached layout HTML stays geo-agnostic. See FooterTagline.tsx.
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 import FooterTagline from '@/components/FooterTagline';
 import CookieSettingsLink from '@/components/CookieSettingsLink';

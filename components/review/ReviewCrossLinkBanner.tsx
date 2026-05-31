@@ -8,7 +8,7 @@
 // this is a multi-page comparison site, not a single landing page.
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { GeoProgram } from '@/lib/geo-config';
 import type { ReviewTopic } from './program-display';
 import { TOPIC_LABEL, PROGRAM_FLAG } from './program-display';

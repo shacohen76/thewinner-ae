@@ -5,7 +5,8 @@
 // Adapted from KSP: English LTR, Amazon UAE market
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
+import { setRequestLocale } from 'next-intl/server';
 import SearchBox from '@/components/SearchBox';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 
@@ -39,7 +40,9 @@ const popularSearches = [
   { text: 'Earbuds', slug: 'earbuds' },
 ];
 
-export default function HomePage() {
+export default function HomePage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   return (
     <>
       {/* Hero Section with Smart Search */}

@@ -29,7 +29,7 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getGeoGroup, GEO_COOKIE_NAME } from '@/lib/geo-config';
 
 const STORAGE_KEY = 'cookie-consent';

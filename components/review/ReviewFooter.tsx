@@ -21,7 +21,7 @@
 //     the review page; reviewer focus stays on the product cards
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 import { getGeoConfig, getProgramConfig } from '@/lib/geo-config';
 import type { GeoProgram } from '@/lib/geo-config';

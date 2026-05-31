@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { getKeywordsByCategory, MAIN_CATEGORIES, SUBCATEGORY_NAMES, isMainCategory, getMainCategoryForSubcat } from '@/lib/supabase';

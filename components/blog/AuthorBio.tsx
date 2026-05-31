@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { BlogAuthor } from '@/lib/blog';
 import AuthorAvatar from '@/components/blog/AuthorAvatar';
 

@@ -5,7 +5,7 @@
 // Adapted from KSP: English LTR, AMZ categories
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useState } from 'react';
 import { CONFIG } from '@/lib/utils';
 
