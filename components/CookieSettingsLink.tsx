@@ -10,7 +10,11 @@
 // tiny client component so the parent Footer can stay a server component.
 // ============================================
 
+import { useTranslations } from 'next-intl';
+
 export default function CookieSettingsLink() {
+  const t = useTranslations('Cookie');
+
   const reopen = () => {
     window.dispatchEvent(new CustomEvent('tw:open-cookie-settings'));
   };
@@ -21,7 +25,7 @@ export default function CookieSettingsLink() {
       onClick={reopen}
       className="hover:text-white transition-colors text-start bg-transparent border-0 p-0 cursor-pointer"
     >
-      Cookie Settings
+      {t('settings')}
     </button>
   );
 }

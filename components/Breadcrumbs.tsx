@@ -5,6 +5,7 @@
 // ============================================
 
 import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 interface BreadcrumbItem {
   label: string;
@@ -16,12 +17,13 @@ interface BreadcrumbsProps {
 }
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
+  const t = useTranslations('Nav');
   return (
     <div className="bg-white border-b">
       <div className="max-w-6xl mx-auto px-4 py-3">
         <nav className="flex items-center gap-2 text-sm text-gray-500">
           <Link href="/" className="hover:text-blue-600 transition-colors">
-            Home
+            {t('home')}
           </Link>
 
           {items.map((item, index) => (
