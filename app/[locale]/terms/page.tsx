@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
+import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
 
@@ -17,7 +17,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/terms' },
 };
 
-export default function TermsPage() {
+export default function TermsPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'Terms of Use' }]} />

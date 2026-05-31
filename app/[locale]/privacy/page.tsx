@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
+import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
 
@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/privacy' },
 };
 
-export default function PrivacyPage() {
+export default function PrivacyPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'Privacy Policy' }]} />

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
+import { setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { getAllPosts, getAllTags } from '@/lib/blog';
 import BlogCard from '@/components/blog/BlogCard';
 
@@ -37,7 +38,9 @@ const TIER_INFO: Record<number, { label: string; color: string }> = {
   4: { label: 'Recipes & Entertainment', color: 'bg-amber-100 text-amber-700 border-amber-200' },
 };
 
-export default function BlogIndexPage() {
+export default function BlogIndexPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   const posts = getAllPosts();
 
   // Group by tier for section headers

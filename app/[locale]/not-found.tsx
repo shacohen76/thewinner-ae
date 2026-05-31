@@ -12,7 +12,7 @@
 // Content is byte-identical to the pre-restructure app/not-found.tsx.
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 
 export default function NotFound() {
   return (

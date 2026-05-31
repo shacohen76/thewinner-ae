@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
 
@@ -13,7 +14,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contact' },
 };
 
-export default function ContactPage() {
+export default function ContactPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'Contact' }]} />

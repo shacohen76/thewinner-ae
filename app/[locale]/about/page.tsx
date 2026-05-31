@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
 
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
-export default function AboutPage() {
+export default function AboutPage({ params }: { params: { locale: string } }) {
+  setRequestLocale(params.locale);
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'About' }]} />

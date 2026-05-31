@@ -29,7 +29,8 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { getGeoGroup, GEO_COOKIE_NAME } from '@/lib/geo-config';
 
 const STORAGE_KEY = 'cookie-consent';
@@ -54,6 +55,7 @@ function readGeoCookie(): string | null {
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const t = useTranslations('Cookie');
 
   useEffect(() => {
     const geo = readGeoCookie();
@@ -107,10 +109,10 @@ export default function CookieConsent() {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-gray-300 text-center md:text-left max-w-2xl">
-          We use cookies to understand how visitors use our site and to measure our marketing. Choose your preference below — you can change it later from the footer.{' '}
+        <p className="text-sm text-gray-300 text-center md:text-start max-w-2xl">
+          {t('consent')}{' '}
           <Link href="/privacy" className="underline hover:text-white whitespace-nowrap">
-            Privacy Policy
+            {t('privacyPolicy')}
           </Link>
           .
         </p>
@@ -121,13 +123,13 @@ export default function CookieConsent() {
             onClick={handleReject}
             className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Reject All
+            {t('rejectAll')}
           </button>
           <button
             onClick={handleAccept}
             className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Accept All
+            {t('acceptAll')}
           </button>
         </div>
       </div>

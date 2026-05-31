@@ -1,1 +1,62 @@
-{}
+{
+  "Nav": {
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "home": "Home"
+  },
+  "Categories": {
+    "appliances-main": "Home Appliances",
+    "kitchen-main": "Kitchen & Coffee",
+    "computers-main": "Computers & Phones",
+    "entertainment-main": "TV & Audio",
+    "care-main": "Beauty, Care & Family",
+    "hobbies-main": "Hobbies & Leisure",
+    "home-main": "Home & Garden",
+    "other-main": "More"
+  },
+  "Footer": {
+    "categories": "Categories",
+    "popular": "Popular",
+    "info": "Info",
+    "popularItems": {
+      "portable-speakers": "Portable Speakers",
+      "coffee-machines": "Coffee Machines",
+      "washing-machines": "Washing Machines",
+      "televisions": "Televisions"
+    },
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "disclosure": "Disclosure: We work with premium partners to ensure great results for our users. We may receive a commission separately and never on the behalf of our users. As an Amazon Associates we earn from qualifying purchases. Loyalty and trust above all, always.",
+    "copyright": "© {year} {siteName} — {tagline}. All rights reserved.",
+    "trademark": "Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates."
+  },
+  "ProductCard": {
+    "topPick": "Our Top Pick",
+    "discounted": "DISCOUNTED TODAY",
+    "whyWeLoveIt": "Why We Love It",
+    "details": "The Details:",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "showOffer": "Show Offer",
+    "interested": "🔥 {count} interested",
+    "defaultWwl": "Recommended product in this category",
+    "scoreLabels": {
+      "exceptional": "Exceptional",
+      "excellent": "Excellent",
+      "veryGood": "Very Good",
+      "good": "Good"
+    }
+  },
+  "Cookie": {
+    "consent": "We use cookies to understand how visitors use our site and to measure our marketing. Choose your preference below — you can change it later from the footer.",
+    "privacyPolicy": "Privacy Policy",
+    "rejectAll": "Reject All",
+    "acceptAll": "Accept All",
+    "settings": "Cookie Settings"
+  }
+}

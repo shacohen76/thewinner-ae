@@ -5,24 +5,28 @@
 // Adapted from KSP: English LTR, AMZ categories
 // ============================================
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { CONFIG } from '@/lib/utils';
 
-// Main categories — 8 groups linking to /category/{slug}
+// Main categories — 8 groups linking to /category/{slug}.
+// Labels come from the Categories.{slug} message namespace (locale-aware).
 const categories = [
-  { name: 'Home Appliances', slug: 'appliances-main', icon: '🏠' },
-  { name: 'Kitchen & Coffee', slug: 'kitchen-main', icon: '☕' },
-  { name: 'Computers & Phones', slug: 'computers-main', icon: '💻' },
-  { name: 'TV & Audio', slug: 'entertainment-main', icon: '📺' },
-  { name: 'Beauty, Care & Family', slug: 'care-main', icon: '✨' },
-  { name: 'Hobbies & Leisure', slug: 'hobbies-main', icon: '🎮' },
-  { name: 'Home & Garden', slug: 'home-main', icon: '🏡' },
-  { name: 'More', slug: 'other-main', icon: '📦' },
+  { slug: 'appliances-main', icon: '🏠' },
+  { slug: 'kitchen-main', icon: '☕' },
+  { slug: 'computers-main', icon: '💻' },
+  { slug: 'entertainment-main', icon: '📺' },
+  { slug: 'care-main', icon: '✨' },
+  { slug: 'hobbies-main', icon: '🎮' },
+  { slug: 'home-main', icon: '🏡' },
+  { slug: 'other-main', icon: '📦' },
 ];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = useTranslations('Nav');
+  const tc = useTranslations('Categories');
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
@@ -44,14 +48,14 @@ export default function Header() {
             {/* Categories Dropdown */}
             <div className="relative group">
               <button className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors font-medium">
-                Categories
+                {t('categories')}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               {/* Dropdown Menu */}
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full start-0 mt-2 w-56 bg-white rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="p-2">
                   {categories.map((cat) => (
                     <Link
@@ -60,7 +64,7 @@ export default function Header() {
                       className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 text-gray-700"
                     >
                       <span className="text-xl">{cat.icon}</span>
-                      <span>{cat.name}</span>
+                      <span>{tc(cat.slug)}</span>
                     </Link>
                   ))}
                 </div>
@@ -68,13 +72,13 @@ export default function Header() {
             </div>
 
             <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
-              About
+              {t('about')}
             </Link>
             <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">
-              Contact
+              {t('contact')}
             </Link>
 		<Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
-		  Blog
+		  {t('blog')}
 		</Link>
           </nav>
 
@@ -106,7 +110,7 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <span>{cat.icon}</span>
-                  <span>{cat.name}</span>
+                  <span>{tc(cat.slug)}</span>
                 </Link>
               ))}
               <div className="border-t my-2" />
@@ -115,21 +119,21 @@ export default function Header() {
                 className="px-4 py-2 text-gray-600"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                About
+                {t('about')}
               </Link>
               <Link
                 href="/contact"
                 className="px-4 py-2 text-gray-600"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Contact
+                {t('contact')}
               </Link>
 		<Link
 		  href="/blog"
 		  className="px-4 py-2 text-gray-600"
 		  onClick={() => setMobileMenuOpen(false)}
 		>
-		  Blog
+		  {t('blog')}
 		</Link>
             </nav>
           </div>

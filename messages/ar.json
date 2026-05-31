@@ -1,1 +1,62 @@
-{}
+{
+  "Nav": {
+    "categories": "الفئات",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "blog": "المدونة",
+    "home": "الرئيسية"
+  },
+  "Categories": {
+    "appliances-main": "الأجهزة المنزلية",
+    "kitchen-main": "المطبخ والقهوة",
+    "computers-main": "الكمبيوترات والهواتف",
+    "entertainment-main": "التلفزيونات والصوتيات",
+    "care-main": "الجمال والعناية والعائلة",
+    "hobbies-main": "الهوايات والترفيه",
+    "home-main": "المنزل والحديقة",
+    "other-main": "المزيد"
+  },
+  "Footer": {
+    "categories": "الفئات",
+    "popular": "الأكثر رواجاً",
+    "info": "معلومات",
+    "popularItems": {
+      "portable-speakers": "مكبرات الصوت المحمولة",
+      "coffee-machines": "ماكينات القهوة",
+      "washing-machines": "الغسالات",
+      "televisions": "التلفزيونات"
+    },
+    "about": "من نحن",
+    "blog": "المدونة",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الاستخدام",
+    "disclosure": "إفصاح: نتعاون مع شركاء مميزين لضمان أفضل النتائج لمستخدمينا. قد نحصل على عمولة بشكل منفصل وليس على حساب مستخدمينا أبداً. وبصفتنا شركاء في برنامج Amazon Associates، نكسب عمولة من عمليات الشراء المؤهلة. الولاء والثقة فوق كل شيء، دائماً.",
+    "copyright": "© {year} {siteName} — {tagline}. جميع الحقوق محفوظة.",
+    "trademark": "Amazon وشعار Amazon علامتان تجاريتان لشركة Amazon.com, Inc. أو الشركات التابعة لها."
+  },
+  "ProductCard": {
+    "topPick": "اختيارنا الأفضل",
+    "discounted": "خصم اليوم فقط",
+    "whyWeLoveIt": "لماذا نحبه",
+    "details": "التفاصيل:",
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل",
+    "showOffer": "شاهد العرض",
+    "interested": "🔥 {count} مهتم",
+    "defaultWwl": "منتج موصى به في هذه الفئة",
+    "scoreLabels": {
+      "exceptional": "استثنائي",
+      "excellent": "ممتاز",
+      "veryGood": "جيد جداً",
+      "good": "جيد"
+    }
+  },
+  "Cookie": {
+    "consent": "نستخدم ملفات تعريف الارتباط لفهم كيفية استخدام الزوار لموقعنا ولقياس أداء تسويقنا. اختر تفضيلك أدناه — يمكنك تغييره لاحقاً من التذييل.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "rejectAll": "رفض الكل",
+    "acceptAll": "قبول الكل",
+    "settings": "إعدادات ملفات تعريف الارتباط"
+  }
+}

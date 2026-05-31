@@ -15,7 +15,7 @@ declare global {
 
 import Image from 'next/image';
 import { useState, useMemo } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import {
   getFixedScore,
   getScoreLabel,
@@ -49,6 +49,16 @@ function capitalizeFirst(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Map getScoreLabel()'s English label → message key. utils.ts stays the single
+// source of the score thresholds; this only routes the label through the locale
+// dictionary. Unknown labels fall back to the raw English (never breaks).
+const SCORE_LABEL_KEYS: Record<string, string> = {
+  Exceptional: 'exceptional',
+  Excellent: 'excellent',
+  'Very Good': 'veryGood',
+  Good: 'good',
+};
+
 export default function ProductCard({
   rank,
   asin,
@@ -61,10 +71,13 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
   const locale = useLocale();
+  const t = useTranslations('ProductCard');
 
   const isWinner = rank === 1;
   const score = getFixedScore(rank);
   const scoreInfo = getScoreLabel(score);
+  const scoreLabelKey = SCORE_LABEL_KEYS[scoreInfo.label];
+  const scoreLabel = scoreLabelKey ? t(`scoreLabels.${scoreLabelKey}`) : scoreInfo.label;
   const { shortTitle, restTitle } = splitTitle(title, locale);
   const brand = extractBrand(title);
   const stars = scoreToStars(score);
@@ -95,14 +108,14 @@ export default function ProductCard({
   // Default WWL points if none provided — capitalize first letter of each
   const displayWwl = (wwlPoints && wwlPoints.length > 0
     ? wwlPoints.slice(0, 4)
-    : ['Recommended product in this category']
+    : [t('defaultWwl')]
   ).map(capitalizeFirst);
 
   // ── Score Box (single source of truth, rendered in 2 responsive slots) ──
   const renderScoreBox = (additionalClasses: string = '') => (
     <div className={`bg-gray-50 rounded-xl p-4 text-center ${additionalClasses}`}>
       <div className={`text-4xl font-bold ${scoreInfo.color}`}>{score}</div>
-      <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreInfo.label}</div>
+      <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreLabel}</div>
 
       {/* Stars — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
       <div className="hidden flex justify-center mt-2">
@@ -127,7 +140,7 @@ export default function ProductCard({
 
       {isWinner && (
         <div className="text-xs text-orange-500 font-medium mt-2">
-          🔥 {interestedCount} interested
+          {t('interested', { count: interestedCount })}
         </div>
       )}
     </div>
@@ -143,7 +156,7 @@ export default function ProductCard({
             {isWinner && (
               <div className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-md mb-3 justify-center">
                 <span>🏆</span>
-                <span>Our Top Pick</span>
+                <span>{t('topPick')}</span>
               </div>
             )}
 
@@ -190,7 +203,7 @@ export default function ProductCard({
             {/* Discount & Prime Badges — always default text */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
-                DISCOUNTED TODAY
+                {t('discounted')}
               </span>
               {isPrime && (
                 <span className="border border-blue-500 text-blue-600 text-xs font-medium px-3 py-1 rounded">
@@ -201,7 +214,7 @@ export default function ProductCard({
 
             {/* WWL Section */}
             <div className="mb-4">
-              <h4 className="font-bold text-gray-800 mb-3">Why We Love It</h4>
+              <h4 className="font-bold text-gray-800 mb-3">{t('whyWeLoveIt')}</h4>
               <div className="space-y-2">
                 {displayWwl.map((point, idx) => (
                   <div key={idx} className="flex items-start gap-2">
@@ -222,13 +235,13 @@ export default function ProductCard({
                   onClick={() => setExpanded(!expanded)}
                   className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1"
                 >
-                  {expanded ? 'Show less' : 'Show more'}
+                  {expanded ? t('showLess') : t('showMore')}
                   <span>{expanded ? '∧' : '∨'}</span>
                 </button>
 
                 {expanded && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                    <h5 className="font-bold text-gray-700 mb-2">The Details:</h5>
+                    <h5 className="font-bold text-gray-700 mb-2">{t('details')}</h5>
                     <p className="text-gray-600 leading-relaxed whitespace-pre-line">{expandableText}</p>
                   </div>
                 )}
@@ -261,7 +274,7 @@ export default function ProductCard({
                 onClick={handleCtaClick}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105 shadow-lg text-center text-sm block"
               >
-                Show Offer
+                {t('showOffer')}
               </a>
             </div>
           </div>
