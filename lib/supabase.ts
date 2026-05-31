@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { sanitizeProductTitle } from './utils';
 
 // ============================================
 // SUPABASE CLIENT — thewinner.ae Database Queries
@@ -247,6 +248,7 @@ export async function getProductsForKeyword(keywordId: number): Promise<(Product
     .map(item => ({
       ...item.products,
       ...item,
+      title: sanitizeProductTitle(item.products?.title ?? ''),
       products: undefined
     }));
 }
