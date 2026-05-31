@@ -51,7 +51,7 @@ export default function Header() {
               </button>
 
               {/* Dropdown Menu */}
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full start-0 mt-2 w-56 bg-white rounded-xl shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="p-2">
                   {categories.map((cat) => (
                     <Link

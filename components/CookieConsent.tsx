@@ -107,7 +107,7 @@ export default function CookieConsent() {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-gray-300 text-center md:text-left max-w-2xl">
+        <p className="text-sm text-gray-300 text-center md:text-start max-w-2xl">
           We use cookies to understand how visitors use our site and to measure our marketing. Choose your preference below — you can change it later from the footer.{' '}
           <Link href="/privacy" className="underline hover:text-white whitespace-nowrap">
             Privacy Policy
