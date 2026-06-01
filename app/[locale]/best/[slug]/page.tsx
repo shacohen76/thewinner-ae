@@ -30,7 +30,7 @@ import {
 export const revalidate = 86400; // Cache keyword pages for 24 hours
 
 interface PageProps {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }
 
 // Generate metadata for SEO
@@ -67,7 +67,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     notFound();
   }
 
-  const products = await getProductsForKeyword(keyword.id);
+  const products = await getProductsForKeyword(keyword.id, params.locale);
   const currentYear = getCurrentYear();
 
   // Get BYG (Buying Guide) from qa_guide

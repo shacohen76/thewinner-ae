@@ -228,7 +228,10 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
 // Get products for a keyword
 // LIMIT: Returns max 10 products, ordered by rank
 // Buffer system: Scraper links 15 → Website shows 10 → Room for OOS/removals
-export async function getProductsForKeyword(keywordId: number): Promise<(Product & KeywordProduct)[]> {
+export async function getProductsForKeyword(
+  keywordId: number,
+  locale: string = 'en',
+): Promise<(Product & KeywordProduct)[]> {
   const { data, error } = await supabase
     .from('keyword_products')
     .select('*, products(*)')
@@ -241,8 +244,8 @@ export async function getProductsForKeyword(keywordId: number): Promise<(Product
     return [];
   }
 
-  // Filter out OOS products, then take top 10
-  return (data || [])
+  // Filter out OOS products, then take top 10 (English titles, sanitized).
+  const products = (data || [])
     .filter(item => item.products && !item.products.is_out_of_stock)
     .slice(0, 10)
     .map(item => ({
@@ -251,6 +254,36 @@ export async function getProductsForKeyword(keywordId: number): Promise<(Product
       title: sanitizeProductTitle(item.products?.title ?? ''),
       products: undefined
     }));
+
+  // INTL1 Phase 2C: for non-English locales, overlay translated product
+  // titles from product_translations (one shared table, `locale` column).
+  // Per-product fallback: keep the English title when no localized title
+  // exists (e.g. Creators API returned none). English path ('en') is
+  // untouched — it never runs this extra query.
+  if (locale !== 'en' && products.length > 0) {
+    const asins = products.map(p => p.asin).filter(Boolean);
+    const { data: translations, error: tErr } = await supabase
+      .from('product_translations')
+      .select('asin, title')
+      .eq('locale', locale)
+      .in('asin', asins);
+
+    if (tErr) {
+      console.error('Error fetching product translations:', tErr);
+    } else if (translations && translations.length > 0) {
+      const titleByAsin = new Map<string, string>();
+      for (const t of translations) {
+        const localized = sanitizeProductTitle(t.title ?? '');
+        if (localized) titleByAsin.set(t.asin, localized);
+      }
+      for (const p of products) {
+        const localized = titleByAsin.get(p.asin);
+        if (localized) p.title = localized;
+      }
+    }
+  }
+
+  return products;
 }
 
 // Search keywords
