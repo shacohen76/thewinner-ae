@@ -7,6 +7,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import ProductCard from './ProductCard';
 import ShareButton from './ShareButton';
 
@@ -31,6 +32,7 @@ type SortOption = 'rank' | 'price';
 
 export default function ProductList({ products }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
+  const t = useTranslations('ProductList');
 
   const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === 'price') {
@@ -45,8 +47,8 @@ export default function ProductList({ products }: ProductListProps) {
     return (
       <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
         <div className="text-6xl mb-4">🔍</div>
-        <h3 className="text-xl font-bold text-gray-800 mb-2">No products yet</h3>
-        <p className="text-gray-500">We&apos;re working on adding products to this category</p>
+        <h3 className="text-xl font-bold text-gray-800 mb-2">{t('emptyTitle')}</h3>
+        <p className="text-gray-500">{t('emptyBody')}</p>
       </div>
     );
   }
@@ -57,7 +59,7 @@ export default function ProductList({ products }: ProductListProps) {
       <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
         {/* Sort Controls — Left side (LTR) */}
         <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm px-3 py-2">
-          <span className="text-sm text-gray-500">Sort:</span>
+          <span className="text-sm text-gray-500">{t('sort')}</span>
           <button
             onClick={() => setSortBy('rank')}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
@@ -66,7 +68,7 @@ export default function ProductList({ products }: ProductListProps) {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Recommended
+            {t('recommended')}
           </button>
           <button
             onClick={() => setSortBy('price')}
@@ -76,7 +78,7 @@ export default function ProductList({ products }: ProductListProps) {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Lowest Price
+            {t('lowestPrice')}
           </button>
         </div>
 

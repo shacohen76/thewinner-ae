@@ -20,6 +20,7 @@
     "categories": "Categories",
     "popular": "Popular",
     "info": "Info",
+    "tagline": "The leading product comparison site for {country}. We help you find the perfect product.",
     "popularItems": {
       "portable-speakers": "Portable Speakers",
       "coffee-machines": "Coffee Machines",
@@ -58,5 +59,18 @@
     "rejectAll": "Reject All",
     "acceptAll": "Accept All",
     "settings": "Cookie Settings"
+  },
+  "ProductList": {
+    "sort": "Sort:",
+    "recommended": "Recommended",
+    "lowestPrice": "Lowest Price",
+    "emptyTitle": "No products yet",
+    "emptyBody": "We're working on adding products to this category"
+  },
+  "Share": {
+    "button": "Share",
+    "label": "Share this page",
+    "copied": "✓ Link copied!",
+    "copiedHint": "Now paste in WhatsApp and share with friends & family"
   }
 }
