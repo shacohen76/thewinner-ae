@@ -72,5 +72,11 @@
     "label": "Share this page",
     "copied": "✓ Link copied!",
     "copiedHint": "Now paste in WhatsApp and share with friends & family"
+  },
+  "BestPage": {
+    "quickPick": "Quick Pick",
+    "buyingGuide": "Buying Guide: {keyword}",
+    "tableOfContents": "Table of Contents",
+    "backToTop": "↑ Back to Top 10 {keyword}"
   }
 }

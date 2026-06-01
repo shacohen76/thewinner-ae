@@ -18,6 +18,8 @@ import {
   toTitleCase,
   CONFIG
 } from '@/lib/utils';
+import { generateArabicHeadline, generateArabicSubHeadline } from '@/lib/title-ar';
+import { getTranslations } from 'next-intl/server';
 
 // ============================================
 // Keyword Page — /best/[slug]
@@ -116,13 +118,24 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     rank: p.rank,
   }));
 
-  // Generate headline — Title Case
-  const mainHeadline = generateEnglishHeadline(keyword.keyword_text, currentYear);
+  // INTL1 slice 5: Arabic hero from the stored noun phrase (nounAr) via the
+  // native-confirmed templates. English path is unchanged when there's no ar
+  // translation (nounAr stays null → English generators).
+  const isAr = params.locale === 'ar';
+  const nounAr = (isAr && translation?.keyword_text) ? translation.keyword_text : null;
+  const headingName = nounAr ?? toTitleCase(keyword.keyword_text);
+  const mainHeadline = nounAr
+    ? generateArabicHeadline(nounAr, currentYear)
+    : generateEnglishHeadline(keyword.keyword_text, currentYear);
+  const subHeadline = nounAr
+    ? generateArabicSubHeadline(nounAr)
+    : generateSubHeadline(keyword.keyword_text);
+  const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
   return (
     <>
       {/* Breadcrumbs */}
-      <Breadcrumbs items={[{ label: toTitleCase(keyword.keyword_text) }]} />
+      <Breadcrumbs items={[{ label: headingName }]} />
 
       {/* Hero Section */}
       <section id="top" className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white py-12">
@@ -131,7 +144,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             {mainHeadline}
           </h1>
           <p className="text-blue-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            {generateSubHeadline(keyword.keyword_text)}
+            {subHeadline}
           </p>
         </div>
       </section>
@@ -145,7 +158,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       <section className="bg-gray-50 border-t">
         <div className="max-w-5xl mx-auto px-4 py-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center">
-            Quick Pick
+            {tBest('quickPick')}
           </h2>
           <p className="text-gray-600 text-center mb-6">
             {mainHeadline}
@@ -159,13 +172,13 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         <section className="bg-white border-t">
           <div className="max-w-5xl mx-auto px-4 py-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
-              Buying Guide: {toTitleCase(keyword.keyword_text)}
+              {tBest('buyingGuide', { keyword: headingName })}
             </h2>
 
             {/* Table of Contents */}
             <div className="bg-blue-50 rounded-xl p-6 mb-8 max-w-3xl mx-auto">
               <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <span>📋</span> Table of Contents
+                <span>📋</span> {tBest('tableOfContents')}
               </h3>
               <nav>
                 <ol className="space-y-2">
@@ -207,7 +220,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                 in the cached SSR HTML; <BackToTopLink> swaps the geo name
                 client-side post-hydration via tw_geo cookie. */}
             <div className="text-center mt-8">
-              <BackToTopLink keyword={toTitleCase(keyword.keyword_text)} />
+              <BackToTopLink keyword={headingName} />
             </div>
           </div>
         </section>

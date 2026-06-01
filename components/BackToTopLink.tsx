@@ -19,6 +19,7 @@
 // ============================================
 
 import { useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { getGeoConfig, GEO_COOKIE_NAME } from '@/lib/geo-config';
 
 // Matches geo-config.ts COUNTRY_NAMES['AE'].backToTopGeo — keep in sync.
@@ -30,6 +31,8 @@ interface BackToTopLinkProps {
 }
 
 export default function BackToTopLink({ keyword }: BackToTopLinkProps) {
+  const locale = useLocale();
+  const t = useTranslations('BestPage');
   const [geoName, setGeoName] = useState(DEFAULT_GEO);
 
   useEffect(() => {
@@ -41,6 +44,18 @@ export default function BackToTopLink({ keyword }: BackToTopLinkProps) {
       setGeoName(name);
     }
   }, []);
+
+  // /ar: fixed Arabic (geo names are English-only in geo-config, so no geo swap).
+  if (locale === 'ar') {
+    return (
+      <a
+        href="#top"
+        className="text-blue-600 hover:text-blue-800 hover:underline text-lg font-semibold"
+      >
+        {t('backToTop', { keyword })}
+      </a>
+    );
+  }
 
   return (
     <a

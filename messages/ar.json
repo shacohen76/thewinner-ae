@@ -72,5 +72,11 @@
     "label": "شارك هذه الصفحة",
     "copied": "✓ تم نسخ الرابط!",
     "copiedHint": "الآن الصقه في واتساب وشاركه مع الأصدقاء والعائلة"
+  },
+  "BestPage": {
+    "quickPick": "اختيار سريع",
+    "buyingGuide": "دليل الشراء: {keyword}",
+    "tableOfContents": "جدول المحتويات",
+    "backToTop": "↑ العودة إلى أفضل 10 {keyword}"
   }
 }
