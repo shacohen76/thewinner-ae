@@ -7,6 +7,7 @@ import BackToTopLink from '@/components/BackToTopLink';
 import {
   getKeywordBySlug,
   getProductsForKeyword,
+  getKeywordTranslation,
 } from '@/lib/supabase';
 import {
   generatePageTitle,
@@ -70,15 +71,20 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const products = await getProductsForKeyword(keyword.id, params.locale);
   const currentYear = getCurrentYear();
 
+  // INTL1 Phase 2C slice 4: prefer the translated buying guide for this locale,
+  // falling back to the English qa_guide when no localized row exists yet.
+  const translation = await getKeywordTranslation(keyword.id, params.locale);
+  const qaGuideSource = translation?.qa_guide ?? keyword.qa_guide;
+
   // Get BYG (Buying Guide) from qa_guide
   // Handle both JSON array and string formats
   let buyingGuide: { q: string; a: string }[] = [];
-  if (keyword.qa_guide) {
-    if (Array.isArray(keyword.qa_guide)) {
-      buyingGuide = keyword.qa_guide;
-    } else if (typeof keyword.qa_guide === 'string') {
+  if (qaGuideSource) {
+    if (Array.isArray(qaGuideSource)) {
+      buyingGuide = qaGuideSource;
+    } else if (typeof qaGuideSource === 'string') {
       try {
-        const parsed = JSON.parse(keyword.qa_guide);
+        const parsed = JSON.parse(qaGuideSource);
         if (Array.isArray(parsed)) {
           buyingGuide = parsed;
         }

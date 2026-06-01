@@ -255,35 +255,59 @@ export async function getProductsForKeyword(
       products: undefined
     }));
 
-  // INTL1 Phase 2C: for non-English locales, overlay translated product
-  // titles from product_translations (one shared table, `locale` column).
-  // Per-product fallback: keep the English title when no localized title
-  // exists (e.g. Creators API returned none). English path ('en') is
-  // untouched — it never runs this extra query.
+  // INTL1 Phase 2C: for non-English locales, overlay translated product fields
+  // from product_translations (one shared table, `locale` column):
+  //   • title       ← Creators API Arabic listing (slice 3)
+  //   • wwl_points   ← our LLM translation (slice 4)
+  // Per-FIELD fallback: keep the English value when a localized one is missing
+  // (a product may have an Arabic title but no Arabic WWL yet, or vice-versa).
+  // English path ('en') is untouched — it never runs this extra query.
   if (locale !== 'en' && products.length > 0) {
     const asins = products.map(p => p.asin).filter(Boolean);
     const { data: translations, error: tErr } = await supabase
       .from('product_translations')
-      .select('asin, title')
+      .select('asin, title, wwl_points')
       .eq('locale', locale)
       .in('asin', asins);
 
     if (tErr) {
       console.error('Error fetching product translations:', tErr);
     } else if (translations && translations.length > 0) {
-      const titleByAsin = new Map<string, string>();
-      for (const t of translations) {
-        const localized = sanitizeProductTitle(t.title ?? '');
-        if (localized) titleByAsin.set(t.asin, localized);
-      }
+      const byAsin = new Map(translations.map(t => [t.asin, t]));
       for (const p of products) {
-        const localized = titleByAsin.get(p.asin);
-        if (localized) p.title = localized;
+        const tr = byAsin.get(p.asin);
+        if (!tr) continue;
+        const localizedTitle = sanitizeProductTitle(tr.title ?? '');
+        if (localizedTitle) p.title = localizedTitle;
+        if (Array.isArray(tr.wwl_points) && tr.wwl_points.length > 0) {
+          p.wwl_points = tr.wwl_points;
+        }
       }
     }
   }
 
   return products;
+}
+
+// INTL1 Phase 2C slice 4: per-keyword translated copy (buying guide + noun phrase)
+// from keyword_translations. Returns null for English or when no localized row
+// exists yet — the caller falls back to the English keyword fields.
+export async function getKeywordTranslation(
+  keywordId: number,
+  locale: string,
+): Promise<{ keyword_text: string | null; qa_guide: unknown } | null> {
+  if (locale === 'en') return null;
+  const { data, error } = await supabase
+    .from('keyword_translations')
+    .select('keyword_text, qa_guide')
+    .eq('keyword_id', keywordId)
+    .eq('locale', locale)
+    .maybeSingle();
+  if (error) {
+    console.error('Error fetching keyword translation:', error);
+    return null;
+  }
+  return data ?? null;
 }
 
 // Search keywords
