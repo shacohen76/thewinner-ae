@@ -130,7 +130,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     <div className="flex items-center justify-end">
                       <span className="text-blue-600 text-sm font-medium flex items-center">
                         View Category
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 ms-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </span>

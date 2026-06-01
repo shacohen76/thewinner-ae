@@ -39,7 +39,7 @@ export default function ProductGallery({ products }: ProductGalleryProps) {
               className="flex-none w-64 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl"
             >
               <div className="relative">
-                <div className="absolute top-3 left-3 z-10 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                <div className="absolute top-3 start-3 z-10 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full">
                   #{product.rank}
                 </div>
 

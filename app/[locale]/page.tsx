@@ -126,7 +126,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
                   <p className="text-gray-500 text-sm mb-4">{comparison.description}</p>
                   <div className="flex items-center text-blue-600 font-medium text-sm">
                     View Comparison
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 ms-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

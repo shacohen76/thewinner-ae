@@ -107,7 +107,7 @@ export default function ShareButton() {
       {showTooltip && (
         <div
           className={`
-            absolute top-full mt-2 left-0 z-50
+            absolute top-full mt-2 start-0 z-50
             px-4 py-3 rounded-lg shadow-lg
             text-sm whitespace-nowrap
             ${copied
@@ -123,7 +123,7 @@ export default function ShareButton() {
           }
           <div
             className={`
-              absolute -top-2 left-4
+              absolute -top-2 start-4
               border-8 border-transparent
               ${copied ? 'border-b-green-600' : 'border-b-gray-800'}
             `}

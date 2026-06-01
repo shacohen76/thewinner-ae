@@ -184,7 +184,7 @@ export default function ProductCard({
                 </div>
 
                 {/* Rank Badge */}
-                <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center text-xl font-bold text-gray-400 border-2 border-gray-200 shadow">
+                <div className="absolute -bottom-2 -end-2 w-12 h-12 bg-white rounded-full flex items-center justify-center text-xl font-bold text-gray-400 border-2 border-gray-200 shadow">
                   {rankPadded}
                 </div>
               </div>

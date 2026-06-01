@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LTR Support (English site) */
-html {
+/* LTR Support — English html is always dir="ltr"; /ar is dir="rtl" and
+   inherits the UA's [dir="rtl"] → direction:rtl. Scoping this rule to
+   dir="ltr" keeps English byte-identical while letting /ar flip RTL. */
+html[dir="ltr"] {
   direction: ltr;
 }
 

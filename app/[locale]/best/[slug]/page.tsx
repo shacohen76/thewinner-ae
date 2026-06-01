@@ -192,7 +192,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                     </span>
                     {item.q}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed pl-9">{item.a}</p>
+                  <p className="text-gray-600 leading-relaxed ps-9">{item.a}</p>
                 </div>
               ))}
             </div>

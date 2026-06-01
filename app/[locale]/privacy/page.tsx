@@ -38,7 +38,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">2. Information We Collect</h2>
-              <ul className="list-disc list-inside space-y-2 ml-4">
+              <ul className="list-disc list-inside space-y-2 ms-4">
                 <li><strong>Technical information:</strong> IP address, browser type, device, operating system.</li>
                 <li><strong>Usage information:</strong> Pages viewed, links clicked.</li>
                 <li><strong>Cookies:</strong> Small files to improve your experience.</li>
@@ -48,7 +48,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">3. Use of Information</h2>
-              <ul className="list-disc list-inside space-y-2 ml-4">
+              <ul className="list-disc list-inside space-y-2 ms-4">
                 <li>Improving user experience</li>
                 <li>Traffic analysis</li>
                 <li>Marketing effectiveness tracking</li>
@@ -90,7 +90,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">European Economic Area &amp; United Kingdom (GDPR / UK GDPR)</h3>
               <p className="leading-relaxed mb-2">If you are located in the EEA or the UK, you have the right to:</p>
-              <ul className="list-disc list-inside space-y-1 ml-4">
+              <ul className="list-disc list-inside space-y-1 ms-4">
                 <li>access the personal data we hold about you;</li>
                 <li>request rectification or erasure of your personal data;</li>
                 <li>restrict or object to processing;</li>
@@ -104,7 +104,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">California Residents (CCPA / CPRA)</h3>
               <p className="leading-relaxed mb-2">If you are a California resident, you have the right to:</p>
-              <ul className="list-disc list-inside space-y-1 ml-4">
+              <ul className="list-disc list-inside space-y-1 ms-4">
                 <li>know what personal information we collect, sell, or share;</li>
                 <li>delete personal information we hold about you;</li>
                 <li>opt out of the &quot;sale&quot; or &quot;sharing&quot; of personal information (including the use of affiliate-tracking cookies for cross-context advertising);</li>

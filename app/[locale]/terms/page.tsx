@@ -76,7 +76,7 @@ export default function TermsPage({ params }: { params: { locale: string } }) {
 
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">6. Prohibited Use</h2>
-              <ul className="list-disc list-inside space-y-2 ml-4">
+              <ul className="list-disc list-inside space-y-2 ms-4">
                 <li>Illegal activity</li>
                 <li>Automated scraping (Web Scraping)</li>
                 <li>Attempting to breach security</li>
