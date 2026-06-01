@@ -90,6 +90,24 @@ export function middleware(request: NextRequest) {
     );
   }
 
+  // ─── INTL1 Phase 2C: restrict the /ar tree to the curated Arabic set ──────
+  // /admin + /review are English-only with exactly ONE route (no localization,
+  // ever) → permanent 308 to the prefix-less English path. /blog IS Arabic-
+  // bound but only in Phase 4 (roadmap §4.9) → temporary 307 until then.
+  // Stripping the leading "/ar" yields the English (prefix-less) equivalent.
+  // English URLs never start with "/ar", so they are untouched. The redirect
+  // runs BEFORE next-intl so these paths never resolve an /ar page.
+  const arPath = request.nextUrl.pathname;
+  const enOnlyForever =
+    arPath === '/ar/admin' || arPath.startsWith('/ar/admin/') ||
+    arPath === '/ar/review' || arPath.startsWith('/ar/review/');
+  const arDeferred = arPath === '/ar/blog' || arPath.startsWith('/ar/blog/');
+  if (enOnlyForever || arDeferred) {
+    const url = request.nextUrl.clone();
+    url.pathname = arPath.replace(/^\/ar/, '') || '/';
+    return NextResponse.redirect(url, enOnlyForever ? 308 : 307);
+  }
+
   // ─── INTL1 locale routing ────────────────────────────────────────────────
   // Let next-intl build the response (handles the "/" → "/en" rewrite). We
   // then attach the geo cookie to THIS response so both concerns coexist.
