@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { getKeywordsByCategory, MAIN_CATEGORIES, SUBCATEGORY_NAMES, isMainCategory, getMainCategoryForSubcat } from '@/lib/supabase';
 import { generateCategoryTitle, toTitleCase, CONFIG } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
 // ============================================
 // Category Page — /category/[slug]
@@ -18,7 +19,7 @@ import { generateCategoryTitle, toTitleCase, CONFIG } from '@/lib/utils';
 export const revalidate = 86400; // Cache category pages for 24 hours
 
 interface PageProps {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }
 
 // Gradient CSS for inline styles (Tailwind can't handle dynamic class names)
@@ -74,6 +75,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CategoryPage({ params }: PageProps) {
   const slug = params.slug;
 
+  // INTL1 slice 5b: localize category names + page chrome. Chrome strings go
+  // through t() in both locales (en values in messages are byte-exact); the
+  // category NAMES use the ar dictionary only, with English from the existing
+  // TS constants (English path unchanged).
+  const isAr = params.locale === 'ar';
+  const tPage = await getTranslations({ locale: params.locale, namespace: 'CategoryPage' });
+  const tCat = await getTranslations({ locale: params.locale, namespace: 'Categories' });
+  const tDesc = await getTranslations({ locale: params.locale, namespace: 'CategoryDesc' });
+  const tSub = await getTranslations({ locale: params.locale, namespace: 'Subcategories' });
+  const catLabel = (s: string, fallback: string) => (isAr ? tCat(s) : fallback);
+  const catDesc = (s: string, fallback: string) => (isAr ? tDesc(s) : fallback);
+  const subLabel = (s: string, fallback: string) => (isAr ? tSub(s) : fallback);
+
   // ── MODE 1: Main category → show subcategory cards ──
   if (isMainCategory(slug)) {
     const main = MAIN_CATEGORIES[slug];
@@ -86,7 +100,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
     return (
       <>
-        <Breadcrumbs items={[{ label: main.label }]} />
+        <Breadcrumbs items={[{ label: catLabel(slug, main.label) }]} />
 
         {/* Hero */}
         <section style={getGradientStyle(main.gradient)} className="text-white py-12">
@@ -96,19 +110,19 @@ export default async function CategoryPage({ params }: PageProps) {
                 {main.icon}
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold">{main.label}</h1>
-                <p className="text-white/80 mt-1">{activeSubs.length} subcategories</p>
+                <h1 className="text-3xl md:text-4xl font-bold">{catLabel(slug, main.label)}</h1>
+                <p className="text-white/80 mt-1">{tPage('subcategoriesCount', { count: activeSubs.length })}</p>
               </div>
             </div>
-            <p className="text-white/90 text-lg max-w-2xl mt-4">{main.description}</p>
+            <p className="text-white/90 text-lg max-w-2xl mt-4">{catDesc(slug, main.description)}</p>
           </div>
         </section>
 
         {/* Subcategory Cards */}
         <main className="max-w-6xl mx-auto px-4 py-12">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Choose a Subcategory</h2>
-            <p className="text-gray-500">Select a category to view product comparisons</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">{tPage('chooseSubcategory')}</h2>
+            <p className="text-gray-500">{tPage('chooseSubcategoryHint')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,11 +139,11 @@ export default async function CategoryPage({ params }: PageProps) {
                   </div>
                   <div className="p-5">
                     <h3 className="font-bold text-lg text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                      {sub.name}
+                      {subLabel(subcatSlug, sub.name)}
                     </h3>
                     <div className="flex items-center justify-end">
                       <span className="text-blue-600 text-sm font-medium flex items-center">
-                        View Category
+                        {tPage('viewCategory')}
                         <svg className="w-4 h-4 ms-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -145,7 +159,7 @@ export default async function CategoryPage({ params }: PageProps) {
         {/* Other Main Categories */}
         <section className="bg-white py-12 border-t">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">More Categories</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{tPage('moreCategories')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {otherMains.map((cat) => (
                 <Link
@@ -154,7 +168,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                 >
                   <span className="text-2xl">{cat.icon}</span>
-                  <span className="font-medium text-gray-700">{cat.label}</span>
+                  <span className="font-medium text-gray-700">{catLabel(cat.slug, cat.label)}</span>
                 </Link>
               ))}
             </div>
@@ -191,8 +205,8 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <>
       <Breadcrumbs items={[
-        ...(parent ? [{ label: parent.label, href: `/category/${parentSlug}` }] : []),
-        { label: subcat.name },
+        ...(parent ? [{ label: catLabel(parentSlug as string, parent.label), href: `/category/${parentSlug}` }] : []),
+        { label: subLabel(slug, subcat.name) },
       ]} />
 
       {/* Hero */}
@@ -203,12 +217,12 @@ export default async function CategoryPage({ params }: PageProps) {
               {subcat.icon}
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">{subcat.name}</h1>
-              <p className="text-white/80 mt-1">{keywords.length} product comparisons</p>
+              <h1 className="text-3xl md:text-4xl font-bold">{subLabel(slug, subcat.name)}</h1>
+              <p className="text-white/80 mt-1">{tPage('comparisonsCount', { count: keywords.length })}</p>
             </div>
           </div>
           <p className="text-white/90 text-lg max-w-2xl mt-4">
-            Product comparisons in {subcat.name} — find the best for you
+            {tPage('subcatIntro', { name: subLabel(slug, subcat.name) })}
           </p>
         </div>
       </section>
@@ -216,8 +230,8 @@ export default async function CategoryPage({ params }: PageProps) {
       {/* Keywords Grid */}
       <main className="max-w-6xl mx-auto px-4 py-12">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Comparisons in This Category</h2>
-          <p className="text-gray-500">Choose a comparison to see the top 10 best products</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">{tPage('comparisonsHere')}</h2>
+          <p className="text-gray-500">{tPage('comparisonsHereHint')}</p>
         </div>
 
         {keywords.length > 0 ? (
@@ -238,11 +252,11 @@ export default async function CategoryPage({ params }: PageProps) {
                   <p className="text-gray-500 text-sm mb-4">{kw.description}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-medium">
-                      10 products
+                      {tPage('products10')}
                     </span>
                     <span className="text-blue-600 text-sm font-medium flex items-center">
-                      View Comparison
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {tPage('viewComparison')}
+                      <svg className="w-4 h-4 ms-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </span>

@@ -7,6 +7,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import SearchBox from '@/components/SearchBox';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 
@@ -42,6 +43,8 @@ const popularSearches = [
 
 export default function HomePage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
+  // INTL1 slice 5b: localize the 8 category-card names (rest of home copy = page-copy workstream).
+  const tc = useTranslations('Categories');
 
   return (
     <>
@@ -93,7 +96,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
                   <span className="text-3xl">{cat.icon}</span>
                 </div>
                 <h3 className="font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
-                  {cat.name}
+                  {tc(cat.slug)}
                 </h3>
               </Link>
             ))}
