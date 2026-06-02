@@ -172,5 +172,44 @@
       "objective": { "title": "Fully Objective", "desc": "Our rankings are based on real performance, not advertising or marketing" },
       "savings": { "title": "Save Time & Money", "desc": "Instead of spending hours on research, get the answer in minutes and find the best deal" }
     }
+  },
+  "About": {
+    "title": "About {siteName}",
+    "subtitle": "The leading product comparison platform for the UAE",
+    "missionTitle": "Our Mission",
+    "mission": "At \"{siteName}\" we believe every consumer deserves reliable and objective information before making a purchase. Our mission is to save you hours of research and give you the bottom line — what are the best products in every category.",
+    "howWeWorkTitle": "How We Work",
+    "work": {
+      "research": { "title": "In-Depth Research", "desc": "We review hundreds of products and analyze technical specs, user reviews and sales data" },
+      "objective": { "title": "Objective Comparison", "desc": "Our rankings are based on real-world performance, not payments or advertising" },
+      "recommendations": { "title": "Clear Recommendations", "desc": "We explain simply why each product is recommended and who it's best suited for" }
+    },
+    "valuesTitle": "Our Values",
+    "values": {
+      "reliability": { "term": "Reliability", "desc": " — Our information is accurate and up-to-date. We don't recommend products we wouldn't buy ourselves." },
+      "transparency": { "term": "Transparency", "desc": " — We're open about how we earn. When you buy through our links, we may receive a commission." },
+      "consumerFirst": { "term": "Consumer First", "desc": " — Every decision we make is evaluated from your perspective — the consumers." }
+    },
+    "teamTitle": "Our Team",
+    "teamIntro": "Meet the expert reviewers behind our recommendations:",
+    "team": {
+      "alex": { "role": "Technology Expert", "bio": "Loves gadgets and gaming. Reviews computers, smartphones and gaming gear." },
+      "adham": { "role": "Home Appliances Expert", "bio": "Cooking and baking enthusiast. Reviews kitchen appliances, coffee machines and home electronics." },
+      "mariam": { "role": "Audio Expert", "bio": "Musician and sound enthusiast. Reviews speakers, headphones and audio systems." },
+      "fatima": { "role": "Beauty & Home Expert", "bio": "Interior design and beauty lover. Reviews beauty products, skincare and home accessories." },
+      "abdulla": { "role": "Sports & Fitness Expert", "bio": "Athlete and fitness trainer. Reviews smartwatches, fitness equipment and sports electronics." },
+      "sara": { "role": "Family & Kids Expert", "bio": "Mother of three. Reviews baby products, toys and family essentials." }
+    },
+    "disclosureTitle": "Disclosure",
+    "disclosure": "We work with premium partners to ensure great results for our users. We may receive a commission separately and never on the behalf of our users. The commissions we receive do not affect our rankings or recommendations — those are based solely on product quality and suitability for your needs. As an Amazon Associates we earn from qualifying purchases. Loyalty and trust above all, always."
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you!",
+    "emailTitle": "📧 Email",
+    "emailIntro": "For questions, suggestions or partnerships, send us an email:",
+    "suggestions": { "title": "💡 Suggestions", "desc": "Have an idea for a new category or a product we should add? We'd love to hear it!" },
+    "partnerships": { "title": "🤝 Partnerships", "desc": "Interested in a business partnership? Get in touch and we'll be happy to discuss." },
+    "report": { "title": "🐛 Report an Issue", "desc": "Found an error on the site or inaccurate information? Let us know and we'll fix it right away." }
   }
 }
