@@ -19,6 +19,7 @@ import {
   CONFIG
 } from '@/lib/utils';
 import { generateArabicHeadline, generateArabicSubHeadline } from '@/lib/title-ar';
+import { buildAlternates } from '@/lib/seo-alternates';
 import { getTranslations } from 'next-intl/server';
 
 // ============================================
@@ -47,13 +48,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: generatePageTitle(keyword.keyword_text),
     description: generatePageDescription(keyword.keyword_text),
-    alternates: {
-      canonical: `/best/${params.slug}`,
-      languages: {
-        'en-AE': `${CONFIG.canonicalUrl}/best/${params.slug}`,
-        'x-default': `${CONFIG.canonicalUrl}/best/${params.slug}`,
-      },
-    },
+    // INTL1 Phase 3: locale-aware self-canonical + reciprocal hreflang via the
+    // shared helper. With the allowlist empty this emits exactly the previous
+    // English cluster (en-AE + x-default, relative canonical) — a no-op — and
+    // makes the Arabic render self-canonicalize to its /ar URL.
+    alternates: buildAlternates(`/best/${params.slug}`, params.locale),
     openGraph: {
       title: generatePageTitle(keyword.keyword_text),
       description: generatePageDescription(keyword.keyword_text),
