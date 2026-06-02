@@ -140,5 +140,37 @@
     "comparisonsHereHint": "Choose a comparison to see the top 10 best products",
     "viewComparison": "View Comparison",
     "products10": "10 products"
+  },
+  "Home": {
+    "heroTitle": "Find The <hl>Winning</hl> Product For You",
+    "heroSub": "Smart and objective product comparison. We do the research — you pick the best.",
+    "popularSearchesLabel": "Popular searches:",
+    "searches": {
+      "portable-speakers": "Portable Speakers",
+      "coffee-machines": "Coffee Machines",
+      "washing-machines": "Washing Machines",
+      "earbuds": "Earbuds"
+    },
+    "browseByCategory": "Browse by Category",
+    "browseByCategorySub": "Choose a category and find the best products",
+    "popularComparisons": "Popular Comparisons",
+    "popularComparisonsSub": "The most requested comparisons by our users",
+    "comparisons": {
+      "portable-speakers": { "title": "10 Best Portable Speakers", "desc": "Comprehensive comparison of Bluetooth portable speakers for every budget" },
+      "coffee-machines": { "title": "10 Best Coffee Machines", "desc": "From capsule to professional espresso machines for your home" },
+      "washing-machines": { "title": "10 Best Washing Machines", "desc": "Recommended washing machines for every budget and need" },
+      "televisions": { "title": "10 Best Televisions", "desc": "4K, OLED, QLED — all the leading technologies compared" },
+      "earbuds": { "title": "10 Best Earbuds", "desc": "Wireless earbuds for music, calls, and active lifestyles" },
+      "hair-straightener": { "title": "10 Best Hair Straighteners", "desc": "Professional-grade hair straighteners for salon results at home" }
+    },
+    "viewComparison": "View Comparison",
+    "viewAllComparisons": "View All Comparisons",
+    "whyChooseUs": "Why Choose Us?",
+    "whyChooseUsSub": "We do the hard work for you",
+    "features": {
+      "research": { "title": "In-Depth Research", "desc": "We review and compare hundreds of products to find the very best in every category" },
+      "objective": { "title": "Fully Objective", "desc": "Our rankings are based on real performance, not advertising or marketing" },
+      "savings": { "title": "Save Time & Money", "desc": "Instead of spending hours on research, get the answer in minutes and find the best deal" }
+    }
   }
 }

@@ -43,8 +43,9 @@ const popularSearches = [
 
 export default function HomePage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
-  // INTL1 slice 5b: localize the 8 category-card names (rest of home copy = page-copy workstream).
   const tc = useTranslations('Categories');
+  // INTL1 page-copy: localize the home page body (hero, sections, cards, features).
+  const t = useTranslations('Home');
 
   return (
     <>
@@ -52,10 +53,10 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <section className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Find The <span className="text-yellow-300">Winning</span> Product For You
+            {t.rich('heroTitle', { hl: (chunks) => <span className="text-yellow-300">{chunks}</span> })}
           </h1>
           <p className="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            Smart and objective product comparison. We do the research — you pick the best.
+            {t('heroSub')}
           </p>
 
           {/* Smart Search Box */}
@@ -63,14 +64,14 @@ export default function HomePage({ params }: { params: { locale: string } }) {
 
           {/* Popular Searches */}
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <span className="text-blue-200 text-sm">Popular searches:</span>
+            <span className="text-blue-200 text-sm">{t('popularSearchesLabel')}</span>
             {popularSearches.map((search) => (
               <Link
                 key={search.slug}
                 href={`/best/${search.slug}`}
                 className="bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full text-sm transition-colors"
               >
-                {search.text}
+                {t(`searches.${search.slug}`)}
               </Link>
             ))}
           </div>
@@ -81,8 +82,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Browse by Category</h2>
-            <p className="text-gray-500 text-lg">Choose a category and find the best products</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{t('browseByCategory')}</h2>
+            <p className="text-gray-500 text-lg">{t('browseByCategorySub')}</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -108,8 +109,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Popular Comparisons</h2>
-            <p className="text-gray-500 text-lg">The most requested comparisons by our users</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{t('popularComparisons')}</h2>
+            <p className="text-gray-500 text-lg">{t('popularComparisonsSub')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -124,11 +125,11 @@ export default function HomePage({ params }: { params: { locale: string } }) {
                 </div>
                 <div className="p-6">
                   <h3 className="font-bold text-xl text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                    {comparison.title}
+                    {t(`comparisons.${comparison.slug}.title`)}
                   </h3>
-                  <p className="text-gray-500 text-sm mb-4">{comparison.description}</p>
+                  <p className="text-gray-500 text-sm mb-4">{t(`comparisons.${comparison.slug}.desc`)}</p>
                   <div className="flex items-center text-blue-600 font-medium text-sm">
-                    View Comparison
+                    {t('viewComparison')}
                     <svg className="w-4 h-4 ms-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -144,8 +145,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
               href="/category/appliances-main"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-colors shadow-lg"
             >
-              View All Comparisons
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {t('viewAllComparisons')}
+              <svg className="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -157,8 +158,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Why Choose Us?</h2>
-            <p className="text-gray-500 text-lg">We do the hard work for you</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{t('whyChooseUs')}</h2>
+            <p className="text-gray-500 text-lg">{t('whyChooseUsSub')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -166,9 +167,9 @@ export default function HomePage({ params }: { params: { locale: string } }) {
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
                 <span className="text-3xl">🔍</span>
               </div>
-              <h3 className="font-bold text-xl text-gray-800 mb-3">In-Depth Research</h3>
+              <h3 className="font-bold text-xl text-gray-800 mb-3">{t('features.research.title')}</h3>
               <p className="text-gray-500">
-                We review and compare hundreds of products to find the very best in every category
+                {t('features.research.desc')}
               </p>
             </div>
 
@@ -176,9 +177,9 @@ export default function HomePage({ params }: { params: { locale: string } }) {
               <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
                 <span className="text-3xl">⚖️</span>
               </div>
-              <h3 className="font-bold text-xl text-gray-800 mb-3">Fully Objective</h3>
+              <h3 className="font-bold text-xl text-gray-800 mb-3">{t('features.objective.title')}</h3>
               <p className="text-gray-500">
-                Our rankings are based on real performance, not advertising or marketing
+                {t('features.objective.desc')}
               </p>
             </div>
 
@@ -186,9 +187,9 @@ export default function HomePage({ params }: { params: { locale: string } }) {
               <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
                 <span className="text-3xl">💰</span>
               </div>
-              <h3 className="font-bold text-xl text-gray-800 mb-3">Save Time & Money</h3>
+              <h3 className="font-bold text-xl text-gray-800 mb-3">{t('features.savings.title')}</h3>
               <p className="text-gray-500">
-                Instead of spending hours on research, get the answer in minutes and find the best deal
+                {t('features.savings.desc')}
               </p>
             </div>
           </div>
