@@ -20,6 +20,7 @@
     "categories": "Categories",
     "popular": "Popular",
     "info": "Info",
+    "tagline": "The leading product comparison site for {country}. We help you find the perfect product.",
     "popularItems": {
       "portable-speakers": "Portable Speakers",
       "coffee-machines": "Coffee Machines",
@@ -58,5 +59,157 @@
     "rejectAll": "Reject All",
     "acceptAll": "Accept All",
     "settings": "Cookie Settings"
+  },
+  "ProductList": {
+    "sort": "Sort:",
+    "recommended": "Recommended",
+    "lowestPrice": "Lowest Price",
+    "emptyTitle": "No products yet",
+    "emptyBody": "We're working on adding products to this category"
+  },
+  "Share": {
+    "button": "Share",
+    "label": "Share this page",
+    "copied": "✓ Link copied!",
+    "copiedHint": "Now paste in WhatsApp and share with friends & family"
+  },
+  "BestPage": {
+    "quickPick": "Quick Pick",
+    "buyingGuide": "Buying Guide: {keyword}",
+    "tableOfContents": "Table of Contents",
+    "backToTop": "↑ Back to Top 10 {keyword}"
+  },
+  "CategoryDesc": {
+    "appliances-main": "Home appliances — refrigerators, washing machines, vacuum cleaners, air conditioners and more.",
+    "kitchen-main": "Everything for the kitchen — cooking appliances, coffee machines, kettles and more.",
+    "computers-main": "Laptops, phones, tablets, monitors, printers and accessories.",
+    "entertainment-main": "Televisions, speakers, headphones and audio equipment.",
+    "care-main": "Perfumes, makeup, hair care, skincare, and baby products.",
+    "hobbies-main": "Gaming, toys, sports, cameras and musical instruments.",
+    "home-main": "Furniture, bathroom, lighting, smart home, garden and power tools.",
+    "other-main": "Automotive, bags and more."
+  },
+  "Subcategories": {
+    "large-appliances": "Large Appliances",
+    "vacuum-cleaners": "Vacuum Cleaners",
+    "laundry": "Laundry",
+    "climate-control": "Climate Control",
+    "kitchen-appliances": "Kitchen Appliances",
+    "coffee-tea": "Coffee & Tea",
+    "laptops": "Laptops",
+    "desktops": "Desktops",
+    "phones-accessories": "Phones & Accessories",
+    "tablets": "Tablets",
+    "monitors": "Monitors",
+    "printers": "Printers",
+    "computer-accessories": "Computer Accessories",
+    "watches-wearables": "Watches & Wearables",
+    "tv-projectors": "TV & Projectors",
+    "speakers-audio": "Speakers & Audio",
+    "headphones-earbuds": "Headphones & Earbuds",
+    "perfumes-fragrances": "Perfumes & Fragrances",
+    "makeup": "Makeup",
+    "hair-care-styling": "Hair Care & Styling",
+    "skincare": "Skincare",
+    "personal-care": "Personal Care",
+    "baby-kids": "Baby & Kids",
+    "gaming": "Gaming",
+    "toys": "Toys",
+    "fitness-sports": "Fitness & Sports",
+    "cameras-photography": "Cameras & Photography",
+    "musical-instruments": "Musical Instruments",
+    "furniture": "Furniture",
+    "bathroom": "Bathroom",
+    "lighting": "Lighting",
+    "smart-home": "Smart Home",
+    "garden-outdoor": "Garden & Outdoor",
+    "power-tools": "Power Tools",
+    "automotive": "Automotive",
+    "bags-backpacks": "Bags & Backpacks",
+    "other": "Other"
+  },
+  "CategoryPage": {
+    "subcategoriesCount": "{count} subcategories",
+    "chooseSubcategory": "Choose a Subcategory",
+    "chooseSubcategoryHint": "Select a category to view product comparisons",
+    "viewCategory": "View Category",
+    "moreCategories": "More Categories",
+    "comparisonsCount": "{count} product comparisons",
+    "subcatIntro": "Product comparisons in {name} — find the best for you",
+    "comparisonsHere": "Comparisons in This Category",
+    "comparisonsHereHint": "Choose a comparison to see the top 10 best products",
+    "viewComparison": "View Comparison",
+    "products10": "10 products"
+  },
+  "Home": {
+    "heroTitle": "Find The <hl>Winning</hl> Product For You",
+    "heroSub": "Smart and objective product comparison. We do the research — you pick the best.",
+    "popularSearchesLabel": "Popular searches:",
+    "searches": {
+      "portable-speakers": "Portable Speakers",
+      "coffee-machines": "Coffee Machines",
+      "washing-machines": "Washing Machines",
+      "earbuds": "Earbuds"
+    },
+    "browseByCategory": "Browse by Category",
+    "browseByCategorySub": "Choose a category and find the best products",
+    "popularComparisons": "Popular Comparisons",
+    "popularComparisonsSub": "The most requested comparisons by our users",
+    "comparisons": {
+      "portable-speakers": { "title": "10 Best Portable Speakers", "desc": "Comprehensive comparison of Bluetooth portable speakers for every budget" },
+      "coffee-machines": { "title": "10 Best Coffee Machines", "desc": "From capsule to professional espresso machines for your home" },
+      "washing-machines": { "title": "10 Best Washing Machines", "desc": "Recommended washing machines for every budget and need" },
+      "televisions": { "title": "10 Best Televisions", "desc": "4K, OLED, QLED — all the leading technologies compared" },
+      "earbuds": { "title": "10 Best Earbuds", "desc": "Wireless earbuds for music, calls, and active lifestyles" },
+      "hair-straightener": { "title": "10 Best Hair Straighteners", "desc": "Professional-grade hair straighteners for salon results at home" }
+    },
+    "viewComparison": "View Comparison",
+    "viewAllComparisons": "View All Comparisons",
+    "whyChooseUs": "Why Choose Us?",
+    "whyChooseUsSub": "We do the hard work for you",
+    "features": {
+      "research": { "title": "In-Depth Research", "desc": "We review and compare hundreds of products to find the very best in every category" },
+      "objective": { "title": "Fully Objective", "desc": "Our rankings are based on real performance, not advertising or marketing" },
+      "savings": { "title": "Save Time & Money", "desc": "Instead of spending hours on research, get the answer in minutes and find the best deal" }
+    }
+  },
+  "About": {
+    "title": "About {siteName}",
+    "subtitle": "The leading product comparison platform for the UAE",
+    "missionTitle": "Our Mission",
+    "mission": "At \"{siteName}\" we believe every consumer deserves reliable and objective information before making a purchase. Our mission is to save you hours of research and give you the bottom line — what are the best products in every category.",
+    "howWeWorkTitle": "How We Work",
+    "work": {
+      "research": { "title": "In-Depth Research", "desc": "We review hundreds of products and analyze technical specs, user reviews and sales data" },
+      "objective": { "title": "Objective Comparison", "desc": "Our rankings are based on real-world performance, not payments or advertising" },
+      "recommendations": { "title": "Clear Recommendations", "desc": "We explain simply why each product is recommended and who it's best suited for" }
+    },
+    "valuesTitle": "Our Values",
+    "values": {
+      "reliability": { "term": "Reliability", "desc": " — Our information is accurate and up-to-date. We don't recommend products we wouldn't buy ourselves." },
+      "transparency": { "term": "Transparency", "desc": " — We're open about how we earn. When you buy through our links, we may receive a commission." },
+      "consumerFirst": { "term": "Consumer First", "desc": " — Every decision we make is evaluated from your perspective — the consumers." }
+    },
+    "teamTitle": "Our Team",
+    "teamIntro": "Meet the expert reviewers behind our recommendations:",
+    "team": {
+      "alex": { "role": "Technology Expert", "bio": "Loves gadgets and gaming. Reviews computers, smartphones and gaming gear." },
+      "adham": { "role": "Home Appliances Expert", "bio": "Cooking and baking enthusiast. Reviews kitchen appliances, coffee machines and home electronics." },
+      "mariam": { "role": "Audio Expert", "bio": "Musician and sound enthusiast. Reviews speakers, headphones and audio systems." },
+      "fatima": { "role": "Beauty & Home Expert", "bio": "Interior design and beauty lover. Reviews beauty products, skincare and home accessories." },
+      "abdulla": { "role": "Sports & Fitness Expert", "bio": "Athlete and fitness trainer. Reviews smartwatches, fitness equipment and sports electronics." },
+      "sara": { "role": "Family & Kids Expert", "bio": "Mother of three. Reviews baby products, toys and family essentials." }
+    },
+    "disclosureTitle": "Disclosure",
+    "disclosure": "We work with premium partners to ensure great results for our users. We may receive a commission separately and never on the behalf of our users. The commissions we receive do not affect our rankings or recommendations — those are based solely on product quality and suitability for your needs. As an Amazon Associates we earn from qualifying purchases. Loyalty and trust above all, always."
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you!",
+    "emailTitle": "📧 Email",
+    "emailIntro": "For questions, suggestions or partnerships, send us an email:",
+    "suggestions": { "title": "💡 Suggestions", "desc": "Have an idea for a new category or a product we should add? We'd love to hear it!" },
+    "partnerships": { "title": "🤝 Partnerships", "desc": "Interested in a business partnership? Get in touch and we'll be happy to discuss." },
+    "report": { "title": "🐛 Report an Issue", "desc": "Found an error on the site or inaccurate information? Let us know and we'll fix it right away." }
   }
 }

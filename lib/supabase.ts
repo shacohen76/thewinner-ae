@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { sanitizeProductTitle } from './utils';
 
 // ============================================
 // SUPABASE CLIENT — thewinner.ae Database Queries
@@ -227,7 +228,10 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
 // Get products for a keyword
 // LIMIT: Returns max 10 products, ordered by rank
 // Buffer system: Scraper links 15 → Website shows 10 → Room for OOS/removals
-export async function getProductsForKeyword(keywordId: number): Promise<(Product & KeywordProduct)[]> {
+export async function getProductsForKeyword(
+  keywordId: number,
+  locale: string = 'en',
+): Promise<(Product & KeywordProduct)[]> {
   const { data, error } = await supabase
     .from('keyword_products')
     .select('*, products(*)')
@@ -240,15 +244,70 @@ export async function getProductsForKeyword(keywordId: number): Promise<(Product
     return [];
   }
 
-  // Filter out OOS products, then take top 10
-  return (data || [])
+  // Filter out OOS products, then take top 10 (English titles, sanitized).
+  const products = (data || [])
     .filter(item => item.products && !item.products.is_out_of_stock)
     .slice(0, 10)
     .map(item => ({
       ...item.products,
       ...item,
+      title: sanitizeProductTitle(item.products?.title ?? ''),
       products: undefined
     }));
+
+  // INTL1 Phase 2C: for non-English locales, overlay translated product fields
+  // from product_translations (one shared table, `locale` column):
+  //   • title       ← Creators API Arabic listing (slice 3)
+  //   • wwl_points   ← our LLM translation (slice 4)
+  // Per-FIELD fallback: keep the English value when a localized one is missing
+  // (a product may have an Arabic title but no Arabic WWL yet, or vice-versa).
+  // English path ('en') is untouched — it never runs this extra query.
+  if (locale !== 'en' && products.length > 0) {
+    const asins = products.map(p => p.asin).filter(Boolean);
+    const { data: translations, error: tErr } = await supabase
+      .from('product_translations')
+      .select('asin, title, wwl_points')
+      .eq('locale', locale)
+      .in('asin', asins);
+
+    if (tErr) {
+      console.error('Error fetching product translations:', tErr);
+    } else if (translations && translations.length > 0) {
+      const byAsin = new Map(translations.map(t => [t.asin, t]));
+      for (const p of products) {
+        const tr = byAsin.get(p.asin);
+        if (!tr) continue;
+        const localizedTitle = sanitizeProductTitle(tr.title ?? '');
+        if (localizedTitle) p.title = localizedTitle;
+        if (Array.isArray(tr.wwl_points) && tr.wwl_points.length > 0) {
+          p.wwl_points = tr.wwl_points;
+        }
+      }
+    }
+  }
+
+  return products;
+}
+
+// INTL1 Phase 2C slice 4: per-keyword translated copy (buying guide + noun phrase)
+// from keyword_translations. Returns null for English or when no localized row
+// exists yet — the caller falls back to the English keyword fields.
+export async function getKeywordTranslation(
+  keywordId: number,
+  locale: string,
+): Promise<{ keyword_text: string | null; qa_guide: unknown } | null> {
+  if (locale === 'en') return null;
+  const { data, error } = await supabase
+    .from('keyword_translations')
+    .select('keyword_text, qa_guide')
+    .eq('keyword_id', keywordId)
+    .eq('locale', locale)
+    .maybeSingle();
+  if (error) {
+    console.error('Error fetching keyword translation:', error);
+    return null;
+  }
+  return data ?? null;
 }
 
 // Search keywords

@@ -138,6 +138,22 @@ export function generateSubHeadline(keyword: string): string {
 // TEXT UTILITIES
 // ============================================
 
+// Strip invisible characters that some Amazon product titles carry from scraping.
+// Removes zero-width & bidirectional control marks (U+200B/C/D zero-width, U+200E/F
+// LRM/RLM, U+FEFF BOM) — pure invisible cruft — and converts non-breaking spaces
+// (U+00A0) to a normal space (deleting them would fuse words, e.g. "KV7083 Silver").
+// Trims the ends. Pre-existing internal multi-spaces are left as-is to keep the change
+// scoped to titles that actually carry a bad char. Applied at the data layer so English
+// and Arabic both render clean and the title splitter operates on normalized text.
+// (INTL1 Phase 2C, slice 1 — user-approved global cleanup, 2026-05-31.)
+export function sanitizeProductTitle(title: string): string {
+  if (!title) return title;
+  return title
+    .replace(/[​‌‍‎‏﻿]/g, '')
+    .replace(/ /g, ' ')
+    .trim();
+}
+
 // Title Case: capitalize first letter of each word
 export function toTitleCase(text: string): string {
   return text

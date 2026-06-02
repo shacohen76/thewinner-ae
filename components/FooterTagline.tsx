@@ -23,6 +23,7 @@
 // ============================================
 
 import { useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { getGeoConfig, GEO_COOKIE_NAME } from '@/lib/geo-config';
 
 // Matches the Gulf default countryName for AE — keep in sync with
@@ -30,6 +31,8 @@ import { getGeoConfig, GEO_COOKIE_NAME } from '@/lib/geo-config';
 const DEFAULT_NAME = 'the UAE';
 
 export default function FooterTagline() {
+  const locale = useLocale();
+  const t = useTranslations('Footer');
   const [countryName, setCountryName] = useState(DEFAULT_NAME);
 
   useEffect(() => {
@@ -43,6 +46,12 @@ export default function FooterTagline() {
       setCountryName(name);
     }
   }, []);
+
+  // /ar: fixed Arabic tagline. geo-config country names are English-only, so we
+  // don't inject a dynamic country here. The English path below is unchanged.
+  if (locale === 'ar') {
+    return <p className="text-sm text-gray-400">{t('tagline')}</p>;
+  }
 
   return (
     <p className="text-sm text-gray-400">

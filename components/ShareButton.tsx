@@ -7,8 +7,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function ShareButton() {
+  const t = useTranslations('Share');
   const [copied, setCopied] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [glowActive, setGlowActive] = useState(true);
@@ -68,7 +70,7 @@ export default function ShareButton() {
           transition-all duration-200
           ${glowActive ? 'animate-glow' : ''}
         `}
-        aria-label="Share this page"
+        aria-label={t('label')}
       >
         {/* Share Arrow SVG — pointing right for LTR */}
         <svg
@@ -100,14 +102,14 @@ export default function ShareButton() {
           />
         </svg>
 
-        <span className="text-sm text-gray-600 font-medium">Share</span>
+        <span className="text-sm text-gray-600 font-medium">{t('button')}</span>
       </button>
 
       {/* Tooltip */}
       {showTooltip && (
         <div
           className={`
-            absolute top-full mt-2 left-0 z-50
+            absolute top-full mt-2 start-0 z-50
             px-4 py-3 rounded-lg shadow-lg
             text-sm whitespace-nowrap
             ${copied
@@ -118,12 +120,12 @@ export default function ShareButton() {
           role="tooltip"
         >
           {copied
-            ? <>✓ Link copied!<br />Now paste in WhatsApp and share with friends & family</>
-            : 'Share this page'
+            ? <>{t('copied')}<br />{t('copiedHint')}</>
+            : t('label')
           }
           <div
             className={`
-              absolute -top-2 left-4
+              absolute -top-2 start-4
               border-8 border-transparent
               ${copied ? 'border-b-green-600' : 'border-b-gray-800'}
             `}

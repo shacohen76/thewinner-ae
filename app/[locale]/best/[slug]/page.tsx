@@ -7,6 +7,7 @@ import BackToTopLink from '@/components/BackToTopLink';
 import {
   getKeywordBySlug,
   getProductsForKeyword,
+  getKeywordTranslation,
 } from '@/lib/supabase';
 import {
   generatePageTitle,
@@ -17,6 +18,8 @@ import {
   toTitleCase,
   CONFIG
 } from '@/lib/utils';
+import { generateArabicHeadline, generateArabicSubHeadline } from '@/lib/title-ar';
+import { getTranslations } from 'next-intl/server';
 
 // ============================================
 // Keyword Page — /best/[slug]
@@ -30,7 +33,7 @@ import {
 export const revalidate = 86400; // Cache keyword pages for 24 hours
 
 interface PageProps {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }
 
 // Generate metadata for SEO
@@ -67,18 +70,23 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     notFound();
   }
 
-  const products = await getProductsForKeyword(keyword.id);
+  const products = await getProductsForKeyword(keyword.id, params.locale);
   const currentYear = getCurrentYear();
+
+  // INTL1 Phase 2C slice 4: prefer the translated buying guide for this locale,
+  // falling back to the English qa_guide when no localized row exists yet.
+  const translation = await getKeywordTranslation(keyword.id, params.locale);
+  const qaGuideSource = translation?.qa_guide ?? keyword.qa_guide;
 
   // Get BYG (Buying Guide) from qa_guide
   // Handle both JSON array and string formats
   let buyingGuide: { q: string; a: string }[] = [];
-  if (keyword.qa_guide) {
-    if (Array.isArray(keyword.qa_guide)) {
-      buyingGuide = keyword.qa_guide;
-    } else if (typeof keyword.qa_guide === 'string') {
+  if (qaGuideSource) {
+    if (Array.isArray(qaGuideSource)) {
+      buyingGuide = qaGuideSource;
+    } else if (typeof qaGuideSource === 'string') {
       try {
-        const parsed = JSON.parse(keyword.qa_guide);
+        const parsed = JSON.parse(qaGuideSource);
         if (Array.isArray(parsed)) {
           buyingGuide = parsed;
         }
@@ -110,13 +118,24 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     rank: p.rank,
   }));
 
-  // Generate headline — Title Case
-  const mainHeadline = generateEnglishHeadline(keyword.keyword_text, currentYear);
+  // INTL1 slice 5: Arabic hero from the stored noun phrase (nounAr) via the
+  // native-confirmed templates. English path is unchanged when there's no ar
+  // translation (nounAr stays null → English generators).
+  const isAr = params.locale === 'ar';
+  const nounAr = (isAr && translation?.keyword_text) ? translation.keyword_text : null;
+  const headingName = nounAr ?? toTitleCase(keyword.keyword_text);
+  const mainHeadline = nounAr
+    ? generateArabicHeadline(nounAr, currentYear)
+    : generateEnglishHeadline(keyword.keyword_text, currentYear);
+  const subHeadline = nounAr
+    ? generateArabicSubHeadline(nounAr)
+    : generateSubHeadline(keyword.keyword_text);
+  const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
   return (
     <>
       {/* Breadcrumbs */}
-      <Breadcrumbs items={[{ label: toTitleCase(keyword.keyword_text) }]} />
+      <Breadcrumbs items={[{ label: headingName }]} />
 
       {/* Hero Section */}
       <section id="top" className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white py-12">
@@ -125,7 +144,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             {mainHeadline}
           </h1>
           <p className="text-blue-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            {generateSubHeadline(keyword.keyword_text)}
+            {subHeadline}
           </p>
         </div>
       </section>
@@ -139,7 +158,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       <section className="bg-gray-50 border-t">
         <div className="max-w-5xl mx-auto px-4 py-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center">
-            Quick Pick
+            {tBest('quickPick')}
           </h2>
           <p className="text-gray-600 text-center mb-6">
             {mainHeadline}
@@ -153,13 +172,13 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         <section className="bg-white border-t">
           <div className="max-w-5xl mx-auto px-4 py-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
-              Buying Guide: {toTitleCase(keyword.keyword_text)}
+              {tBest('buyingGuide', { keyword: headingName })}
             </h2>
 
             {/* Table of Contents */}
             <div className="bg-blue-50 rounded-xl p-6 mb-8 max-w-3xl mx-auto">
               <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <span>📋</span> Table of Contents
+                <span>📋</span> {tBest('tableOfContents')}
               </h3>
               <nav>
                 <ol className="space-y-2">
@@ -192,7 +211,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                     </span>
                     {item.q}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed pl-9">{item.a}</p>
+                  <p className="text-gray-600 leading-relaxed ps-9">{item.a}</p>
                 </div>
               ))}
             </div>
@@ -201,7 +220,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                 in the cached SSR HTML; <BackToTopLink> swaps the geo name
                 client-side post-hydration via tw_geo cookie. */}
             <div className="text-center mt-8">
-              <BackToTopLink keyword={toTitleCase(keyword.keyword_text)} />
+              <BackToTopLink keyword={headingName} />
             </div>
           </div>
         </section>
