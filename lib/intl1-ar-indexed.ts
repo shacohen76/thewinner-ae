@@ -24,7 +24,24 @@
 // ============================================
 
 export const AR_INDEXED_BEST_SLUGS: ReadonlySet<string> = new Set<string>([
-  // Phase 3 batch 1 — populated in PR 3.3 (the launch PR). Intentionally empty.
+  // ── Phase 3 BATCH 1 (launched 2026-06-03) ────────────────────────────────
+  // Top-traffic /best keywords (30-day sessions) that have full Arabic coverage
+  // (title + WWL + buying guide). Expand by adding slugs here after watching GSC.
+  'earbuds',
+  'tefal-iron',
+  'mobile-phones',
+  'laptops',
+  'nokia-phone',
+  'steam-irons',
+  'xiaomi-watches',
+  'air-fryers',
+  'gaming-laptops',
+  '100-inch-tv',
+  'breast-pumps',
+  'vibration-platform-machine',
+  'hair-straightener',
+  'laptop',
+  'tablets',
 ]);
 
 // True only for a /best/<slug> whose slug is in the allowlist. Slugs are stored
