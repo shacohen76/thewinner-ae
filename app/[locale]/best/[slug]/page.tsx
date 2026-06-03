@@ -18,7 +18,12 @@ import {
   toTitleCase,
   CONFIG
 } from '@/lib/utils';
-import { generateArabicHeadline, generateArabicSubHeadline } from '@/lib/title-ar';
+import {
+  generateArabicHeadline,
+  generateArabicSubHeadline,
+  generateArabicPageTitle,
+  generateArabicPageDescription,
+} from '@/lib/title-ar';
 import { buildAlternates } from '@/lib/seo-alternates';
 import { getTranslations } from 'next-intl/server';
 
@@ -45,18 +50,42 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Not Found' };
   }
 
+  const isAr = params.locale === 'ar';
+  // INTL1 Phase 3: locale-aware self-canonical + reciprocal hreflang via the
+  // shared helper (empty allowlist → byte-identical English; Arabic self-
+  // canonicalizes to its /ar URL). og:url follows the same locale rule.
+  const alternates = buildAlternates(`/best/${params.slug}`, params.locale);
+  const ogUrl = `${CONFIG.canonicalUrl}${isAr ? '/ar' : ''}/best/${params.slug}`;
+
+  // Arabic <title> + meta description from the pre-formed Arabic noun phrase
+  // (keyword_translations.keyword_text). Needed now that batched /ar/best pages
+  // are indexed — the title tag is what shows in Arabic search results.
+  // title.absolute bypasses the layout's "%s | The Winners" template (the
+  // Arabic generator already includes the brand → no double-brand). Falls back
+  // to the English title when no Arabic translation exists for this keyword.
+  if (isAr) {
+    const tr = await getKeywordTranslation(keyword.id, params.locale);
+    const nounAr = tr?.keyword_text?.trim();
+    if (nounAr) {
+      const arTitle = generateArabicPageTitle(nounAr, getCurrentYear());
+      const arDesc = generateArabicPageDescription(nounAr);
+      return {
+        title: { absolute: arTitle },
+        description: arDesc,
+        alternates,
+        openGraph: { title: arTitle, description: arDesc, url: ogUrl },
+      };
+    }
+  }
+
   return {
     title: generatePageTitle(keyword.keyword_text),
     description: generatePageDescription(keyword.keyword_text),
-    // INTL1 Phase 3: locale-aware self-canonical + reciprocal hreflang via the
-    // shared helper. With the allowlist empty this emits exactly the previous
-    // English cluster (en-AE + x-default, relative canonical) — a no-op — and
-    // makes the Arabic render self-canonicalize to its /ar URL.
-    alternates: buildAlternates(`/best/${params.slug}`, params.locale),
+    alternates,
     openGraph: {
       title: generatePageTitle(keyword.keyword_text),
       description: generatePageDescription(keyword.keyword_text),
-      url: `${CONFIG.canonicalUrl}/best/${params.slug}`,
+      url: ogUrl,
     },
   };
 }
