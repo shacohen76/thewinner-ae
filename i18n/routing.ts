@@ -36,6 +36,16 @@ export const routing = defineRouting({
   defaultLocale: 'en',
   // English prefix-less (rewrite); non-default locales get a /xx prefix.
   localePrefix: 'as-needed',
+  // INTL1 Phase 3: LANGUAGE IS A URL AXIS — never auto-pick a locale from the
+  // visitor's cookie or Accept-Language. With detection ON (the next-intl
+  // default), a `NEXT_LOCALE=ar` cookie (which next-intl sets the moment anyone
+  // visits /ar) makes EVERY prefix-less English URL 307-redirect to /ar — so
+  // once the language switcher links /ar, an English visitor who peeks at Arabic
+  // would get bounced to Arabic on all later English visits (and the "English"
+  // switcher itself). Disabling detection keeps prefix-less = always English and
+  // /ar reachable only by explicit URL, matching the project's decoupling rule
+  // (§10 / roadmap). Geo stays a SEPARATE axis via tw_geo + TrackingProvider.
+  localeDetection: false,
 });
 
 export type AppLocale = (typeof routing.locales)[number];
