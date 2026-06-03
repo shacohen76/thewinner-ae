@@ -92,8 +92,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     }));
+    // Dedupe by slug: the keywords table can hold >1 row for the same slug
+    // (e.g. casing variants), which would otherwise emit a duplicate /ar URL.
+    const seenArSlugs = new Set<string>();
     arKeywordPages = keywords
       .filter((keyword) => isArBestSlugIndexed(keyword.slug))
+      .filter((keyword) => {
+        const s = keyword.slug.toLowerCase();
+        if (seenArSlugs.has(s)) return false;
+        seenArSlugs.add(s);
+        return true;
+      })
       .map((keyword) => ({
         url: `${baseUrl}/ar/best/${encodeURIComponent(keyword.slug)}`,
         lastModified: new Date(),

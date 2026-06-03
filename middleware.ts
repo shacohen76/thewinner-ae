@@ -38,6 +38,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
+import { isArBestSlugIndexed } from '@/lib/intl1-ar-indexed';
 
 // next-intl locale router. Produces the (rewritten) response we mutate below.
 const intlMiddleware = createMiddleware(routing);
@@ -113,17 +114,25 @@ export function middleware(request: NextRequest) {
   // then attach the geo cookie to THIS response so both concerns coexist.
   const response = intlMiddleware(request);
 
-  // ─── INTL1 Phase 2: Arabic subtree is NOINDEX (private preview) ──────────
-  // The whole /ar/* tree is half-built during Phase 2 (English content in an
-  // RTL shell until the Arabic data path lands). We keep it OUT of search until
-  // Phase 3 flips indexing on deliberately. Setting X-Robots-Tag here — at the
-  // edge, on the ORIGINAL request path — is override-proof: it noindexes every
-  // /ar page regardless of that page's own metadata (e.g. /review sets
-  // robots:index, which would otherwise win). English is prefix-less ("/",
-  // "/best/…"), so its pathname NEVER starts with "/ar" → English is untouched.
+  // ─── INTL1 Phase 3: Arabic subtree is NOINDEX, EXCEPT the indexed batch ───
+  // The /ar/* tree defaults to noindex (it was a private preview through Phase
+  // 2C). Phase 3 turns indexing on ONE curated batch at a time: an
+  // /ar/best/<slug> whose slug is in the allowlist (lib/intl1-ar-indexed.ts) is
+  // ALLOWED to be indexed; everything else under /ar (home, category, about,
+  // and any non-allowlisted /best slug) stays noindex. Setting X-Robots-Tag
+  // here — at the edge, on the ORIGINAL request path — is override-proof: it
+  // beats any page's own metadata (e.g. /review sets robots:index). English is
+  // prefix-less ("/", "/best/…"), so its pathname NEVER starts with "/ar" →
+  // English is untouched. The allowlist is the SAME source the metadata helper
+  // (hreflang) and the sitemap read, so the three can never disagree. With the
+  // allowlist empty this is identical to the Phase 2 behavior (all /ar noindex).
   const path = request.nextUrl.pathname;
   if (path === '/ar' || path.startsWith('/ar/')) {
-    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    const bestMatch = /^\/ar\/best\/([^/]+)\/?$/.exec(path);
+    const isIndexedBestPage = bestMatch ? isArBestSlugIndexed(bestMatch[1]) : false;
+    if (!isIndexedBestPage) {
+      response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    }
   }
 
   // ─── GEOS1 geo cookie ───────────────────────────────────────────────────

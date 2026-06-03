@@ -9,6 +9,7 @@ import { Link } from '@/i18n/navigation';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { CONFIG } from '@/lib/utils';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Main categories — 8 groups linking to /category/{slug}.
 // Labels come from the Categories.{slug} message namespace (locale-aware).
@@ -80,6 +81,7 @@ export default function Header() {
 		<Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
 		  {t('blog')}
 		</Link>
+            <LanguageSwitcher />
           </nav>
 
           {/* Mobile Menu Button */}
@@ -135,6 +137,8 @@ export default function Header() {
 		>
 		  {t('blog')}
 		</Link>
+              <div className="border-t my-2" />
+              <LanguageSwitcher className="px-4 py-2" />
             </nav>
           </div>
         )}
