@@ -54,6 +54,7 @@ export type GeoProgram =
   | 'nl'   // amazon.nl       — Netherlands
   | 'au'   // amazon.com.au   — Australia
   | 'sg'   // amazon.sg       — Singapore
+  | 'jp'   // amazon.co.jp    — Japan
   | 'br';  // amazon.com.br   — Brazil
 
 /** All Amazon marketplace hostnames we route to. Used in TagAssignResponse,
@@ -75,6 +76,7 @@ export type AmazonDomain =
   | 'amazon.nl'
   | 'amazon.com.au'
   | 'amazon.sg'
+  | 'amazon.co.jp'
   | 'amazon.com.br';
 
 interface ProgramConfig {
@@ -130,6 +132,10 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: 'thewinnerca2-20' },
   au: { program: 'au', group: 'international', amazonDomain: 'amazon.com.au',  defaultTag: 'thewinnerau-22' },
   sg: { program: 'sg', group: 'international', amazonDomain: 'amazon.sg',      defaultTag: 'thewinnersg-22' },
+  // Japan — dedicated Amazon Associates account (amazon.co.jp), static tag.
+  // Added 2026-06-24 (Multi-country4). Previously JP fell through to the 'us'
+  // catch-all; now routed to its own store.
+  jp: { program: 'jp', group: 'international', amazonDomain: 'amazon.co.jp',   defaultTag: 'thewinnerjp-22' },
   br: { program: 'br', group: 'international', amazonDomain: 'amazon.com.br',  defaultTag: 'thewinnerbr-20' },
 
   // European programs — single static tag each.
@@ -195,6 +201,9 @@ const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
   AU: 'au',
   SG: 'sg',
   BR: 'br',
+  JP: 'jp',   // amazon.co.jp — dedicated program added 2026-06-24 (Multi-country4)
+  KR: 'jp',   // South Korea → amazon.co.jp (Global Store ships to KR; nearest
+              // dedicated store, far better than the us catch-all). 2026-06-24.
   NZ: 'au',   // New Zealand → amazon.com.au (Oceania Global Store)
 
   // ── Southeast Asia → amazon.sg regional hub ─────────────
@@ -203,8 +212,9 @@ const COUNTRY_PROGRAM: Record<string, GeoProgram> = {
 
   // All other countries → 'us' (default, see getProgram fallback).
   // Kept on 'us' deliberately: rest of South America (BR store is domestic-
-  // only), East Asia (KR/JP/TW/HK — no dedicated program), South Asia,
+  // only), East Asia (TW/HK — no dedicated program), South Asia,
   // Africa, non-Gulf Middle East, MX — amazon.com Global ships to all.
+  // (JP has its own dedicated program; KR routes to JP — see COUNTRY_PROGRAM above.)
 };
 
 // ============================================
@@ -332,7 +342,7 @@ export const ALL_PROGRAMS: GeoProgram[] = [
   'ae', 'sa',                            // Gulf (ae catch-all + sa dedicated)
   'uk', 'it', 'es', 'fr', 'pl', 'se', 'ie', 'be', 'nl',  // dedicated EU
   'de',                                  // EU catch-all
-  'ca', 'au', 'sg', 'br',                // dedicated INTL
+  'ca', 'au', 'sg', 'jp', 'br',          // dedicated INTL
   'us',                                  // INTL catch-all
 ];
 

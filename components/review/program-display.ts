@@ -19,7 +19,7 @@ import type { GeoProgram } from '@/lib/geo-config';
 export const REVIEW_PROGRAMS: Exclude<GeoProgram, 'ae'>[] = [
   'sa',  // Saudi Arabia (separate program in 'gulf' group, added 2026-05-27)
   'us', 'ca', 'de', 'uk', 'it', 'es', 'fr', 'pl',
-  'se', 'ie', 'be', 'nl', 'au', 'sg', 'br',
+  'se', 'ie', 'be', 'nl', 'au', 'sg', 'jp', 'br',
 ];
 
 /** Topics rendered for every program. Both slugs MUST exist in the
@@ -50,6 +50,7 @@ export const PROGRAM_FLAG: Record<Exclude<GeoProgram, 'ae'>, string> = {
   nl: '🇳🇱',
   au: '🇦🇺',
   sg: '🇸🇬',
+  jp: '🇯🇵',
   br: '🇧🇷',
 };
 
@@ -71,6 +72,7 @@ export const PROGRAM_COUNTRY_CODE: Record<Exclude<GeoProgram, 'ae'>, string> = {
   nl: 'NL',
   au: 'AU',
   sg: 'SG',
+  jp: 'JP',
   br: 'BR',
 };
 
