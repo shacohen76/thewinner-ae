@@ -25,19 +25,25 @@
 
 import type { Metadata } from 'next';
 import { CONFIG } from './utils';
-import { isArPathIndexed } from './intl1-ar-indexed';
 
 const toArPath = (path: string): string => (path === '/' ? '/ar' : `/ar${path}`);
 
-export function buildAlternates(path: string, locale: string): Metadata['alternates'] {
+// `arIndexed` = does an indexable Arabic version of this page exist (DB-driven:
+// the caller checks for an Arabic translation). When true we add the reciprocal
+// `ar` hreflang; when false the cluster is en-AE + x-default only (byte-identical
+// to the pre-Arabic English output). Never list a non-existent/noindex `ar`.
+export function buildAlternates(
+  path: string,
+  locale: string,
+  arIndexed = false,
+): Metadata['alternates'] {
   const base = CONFIG.canonicalUrl;
   const enAbs = path === '/' ? base : `${base}${path}`;
   const arAbs = `${base}${toArPath(path)}`;
 
-  // Order preserved as en-AE → (ar) → x-default. With an empty allowlist no `ar`
-  // key is added, so the cluster is identical to the prior inline blocks.
+  // Order preserved as en-AE → (ar) → x-default.
   const languages: Record<string, string> = { 'en-AE': enAbs };
-  if (isArPathIndexed(path)) {
+  if (arIndexed) {
     languages['ar'] = arAbs;
   }
   languages['x-default'] = enAbs;
