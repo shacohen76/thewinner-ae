@@ -310,6 +310,39 @@ export async function getKeywordTranslation(
   return data ?? null;
 }
 
+// INTL1 Phase 4 (DB-driven auto-index): the set of /best slugs that have an
+// Arabic translation (headline + buying guide). This REPLACES the baked
+// allowlist — the sitemap includes, and the /ar/best page sets robots:index
+// for, exactly these slugs. So translating a page (push to DB) makes it
+// indexable automatically, no deploy. Lowercased to match URL slugs.
+export async function getArTranslatedSlugs(): Promise<Set<string>> {
+  const slugs = new Set<string>();
+  let from = 0;
+  const page = 1000;
+  for (;;) {
+    const { data, error } = await supabase
+      .from('keyword_translations')
+      .select('keywords(slug)')
+      .eq('locale', 'ar')
+      .range(from, from + page - 1);
+    if (error) {
+      console.error('Error fetching ar translated slugs:', error);
+      break;
+    }
+    // supabase-js types the embedded relation as an array; at runtime a to-one
+    // FK returns a single object. Handle both.
+    const rows = (data ?? []) as any[];
+    for (const r of rows) {
+      const kw = r?.keywords;
+      const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
+      if (slug) slugs.add(slug.toLowerCase());
+    }
+    if (rows.length < page) break;
+    from += page;
+  }
+  return slugs;
+}
+
 // Search keywords
 export async function searchKeywords(query: string, limit: number = 6): Promise<Keyword[]> {
   const { data, error } = await supabase

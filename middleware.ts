@@ -38,7 +38,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
-import { isArBestSlugIndexed } from '@/lib/intl1-ar-indexed';
 
 // next-intl locale router. Produces the (rewritten) response we mutate below.
 const intlMiddleware = createMiddleware(routing);
@@ -114,23 +113,19 @@ export function middleware(request: NextRequest) {
   // then attach the geo cookie to THIS response so both concerns coexist.
   const response = intlMiddleware(request);
 
-  // ─── INTL1 Phase 3: Arabic subtree is NOINDEX, EXCEPT the indexed batch ───
-  // The /ar/* tree defaults to noindex (it was a private preview through Phase
-  // 2C). Phase 3 turns indexing on ONE curated batch at a time: an
-  // /ar/best/<slug> whose slug is in the allowlist (lib/intl1-ar-indexed.ts) is
-  // ALLOWED to be indexed; everything else under /ar (home, category, about,
-  // and any non-allowlisted /best slug) stays noindex. Setting X-Robots-Tag
-  // here — at the edge, on the ORIGINAL request path — is override-proof: it
-  // beats any page's own metadata (e.g. /review sets robots:index). English is
-  // prefix-less ("/", "/best/…"), so its pathname NEVER starts with "/ar" →
-  // English is untouched. The allowlist is the SAME source the metadata helper
-  // (hreflang) and the sitemap read, so the three can never disagree. With the
-  // allowlist empty this is identical to the Phase 2 behavior (all /ar noindex).
+  // ─── INTL1 Phase 4: Arabic subtree NOINDEX, EXCEPT /ar/best/* ─────────────
+  // Indexing is now DB-driven (no baked allowlist): an /ar/best/<slug> page
+  // decides its own robots in generateMetadata — INDEX if the keyword has an
+  // Arabic translation, else NOINDEX — so translating a page (push to DB) makes
+  // it indexable automatically, no deploy. We therefore let /ar/best/* through
+  // here (no edge header → the page's own robots meta is authoritative) and
+  // blanket-noindex the rest of /ar (home, category, about, …) which are not
+  // indexing targets. English is prefix-less, so its pathname never starts with
+  // "/ar" → English untouched.
   const path = request.nextUrl.pathname;
   if (path === '/ar' || path.startsWith('/ar/')) {
-    const bestMatch = /^\/ar\/best\/([^/]+)\/?$/.exec(path);
-    const isIndexedBestPage = bestMatch ? isArBestSlugIndexed(bestMatch[1]) : false;
-    if (!isIndexedBestPage) {
+    const isArBestPage = /^\/ar\/best\/[^/]+\/?$/.test(path);
+    if (!isArBestPage) {
       response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     }
   }

@@ -51,21 +51,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const isAr = params.locale === 'ar';
-  // INTL1 Phase 3: locale-aware self-canonical + reciprocal hreflang via the
-  // shared helper (empty allowlist → byte-identical English; Arabic self-
-  // canonicalizes to its /ar URL). og:url follows the same locale rule.
-  const alternates = buildAlternates(`/best/${params.slug}`, params.locale);
+  // INTL1 Phase 4 (DB-driven auto-index, no allowlist): does an Arabic
+  // translation exist for this keyword? This single DB check drives BOTH the
+  // reciprocal `ar` hreflang AND (on /ar) robots index/noindex — so translating
+  // a page (push to DB) makes its /ar/best page indexable automatically, no
+  // deploy. Per-field English fallback still applies when ar is missing.
+  const arTr = await getKeywordTranslation(keyword.id, 'ar');
+  const nounAr = arTr?.keyword_text?.trim() || null;
+  const arExists = !!nounAr;
+  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, arExists);
   const ogUrl = `${CONFIG.canonicalUrl}${isAr ? '/ar' : ''}/best/${params.slug}`;
 
-  // Arabic <title> + meta description from the pre-formed Arabic noun phrase
-  // (keyword_translations.keyword_text). Needed now that batched /ar/best pages
-  // are indexed — the title tag is what shows in Arabic search results.
-  // title.absolute bypasses the layout's "%s | The Winners" template (the
-  // Arabic generator already includes the brand → no double-brand). Falls back
-  // to the English title when no Arabic translation exists for this keyword.
   if (isAr) {
-    const tr = await getKeywordTranslation(keyword.id, params.locale);
-    const nounAr = tr?.keyword_text?.trim();
+    // Arabic page WITH a translation → Arabic <title>/desc + INDEX.
+    // title.absolute bypasses the layout's "%s | The Winners" template.
     if (nounAr) {
       const arTitle = generateArabicPageTitle(nounAr, getCurrentYear());
       const arDesc = generateArabicPageDescription(nounAr);
@@ -73,11 +72,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: { absolute: arTitle },
         description: arDesc,
         alternates,
+        robots: { index: true, follow: true },
         openGraph: { title: arTitle, description: arDesc, url: ogUrl },
       };
     }
+    // Arabic page with NO translation yet → English fallback content, NOINDEX
+    // (keep an untranslated /ar page out of search).
+    return {
+      title: generatePageTitle(keyword.keyword_text),
+      description: generatePageDescription(keyword.keyword_text),
+      alternates,
+      robots: { index: false, follow: true },
+      openGraph: {
+        title: generatePageTitle(keyword.keyword_text),
+        description: generatePageDescription(keyword.keyword_text),
+        url: ogUrl,
+      },
+    };
   }
 
+  // English — unchanged (no robots key → layout default index applies).
   return {
     title: generatePageTitle(keyword.keyword_text),
     description: generatePageDescription(keyword.keyword_text),

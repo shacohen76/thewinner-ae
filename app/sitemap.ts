@@ -6,10 +6,9 @@
 // ============================================
 
 import { MetadataRoute } from 'next';
-import { getAllKeywords, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getArTranslatedSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
-import { isArBestSlugIndexed } from '@/lib/intl1-ar-indexed';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = CONFIG.siteUrl;
@@ -73,15 +72,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic keyword pages from database
   let keywordPages: MetadataRoute.Sitemap = [];
 
-  // INTL1 Phase 3.2: Arabic /best pages. Discovery-only entries (hreflang lives
-  // in the page <link> tags, shipped in 3.1 — single source of truth). Uses the
-  // SAME per-domain host (baseUrl) as the English entries above, keeping each
-  // domain's sitemap internally self-sufficient (one GSC property per domain;
-  // cross-domain canonicalization to thewinners.ae is handled by the page
-  // canonical tags, exactly as the English entries already rely on).
-  // GATED on the indexing allowlist: only allowlisted slugs appear, so with the
-  // empty allowlist this stays EMPTY and the sitemap is byte-identical (no-op).
-  // Populated in PR 3.3 alongside the noindex flip.
+  // INTL1 Phase 4: Arabic /best pages. DB-driven (no allowlist) — include the
+  // /ar/best URL for every slug that has an Arabic translation, so translating a
+  // page (push to DB) adds it to the sitemap automatically, no deploy. Same
+  // per-domain host (baseUrl) as the English entries; hreflang lives in the page
+  // <link> tags. Same source the page robots + hreflang read, so they agree.
   let arKeywordPages: MetadataRoute.Sitemap = [];
 
   try {
@@ -92,11 +87,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     }));
+    const arSlugs = await getArTranslatedSlugs();
     // Dedupe by slug: the keywords table can hold >1 row for the same slug
     // (e.g. casing variants), which would otherwise emit a duplicate /ar URL.
     const seenArSlugs = new Set<string>();
     arKeywordPages = keywords
-      .filter((keyword) => isArBestSlugIndexed(keyword.slug))
+      .filter((keyword) => arSlugs.has(keyword.slug.toLowerCase()))
       .filter((keyword) => {
         const s = keyword.slug.toLowerCase();
         if (seenArSlugs.has(s)) return false;
