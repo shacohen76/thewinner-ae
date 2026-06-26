@@ -16,7 +16,17 @@ import { getTranslations } from 'next-intl/server';
 // Adapted from KSP: English LTR
 // ============================================
 
-export const revalidate = 86400; // Cache category pages for 24 hours
+// Cache for 7 days (was 24h) — fewer cold re-renders under crawl load.
+export const revalidate = 604800; // 7 days
+
+// Category slugs are a small fixed set (mains + subcats) — pre-render them all
+// (English) at build; no DB needed. Arabic (/ar) stays on-demand (noindex).
+export const dynamicParams = true;
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  if (params.locale !== 'en') return [];
+  const slugs = [...Object.keys(MAIN_CATEGORIES), ...Object.keys(SUBCATEGORY_NAMES)];
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface PageProps {
   params: { slug: string; locale: string };

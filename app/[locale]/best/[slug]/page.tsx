@@ -9,6 +9,7 @@ import {
   getProductsForKeyword,
   getKeywordTranslation,
   hasBuyingGuide,
+  getTopKeywordSlugs,
 } from '@/lib/supabase';
 import {
   generatePageTitle,
@@ -37,7 +38,23 @@ import { getTranslations } from 'next-intl/server';
 // Adapted from KSP: English LTR, ASIN-based, Amazon links.
 // ============================================
 
-export const revalidate = 86400; // Cache keyword pages for 24 hours
+// Cache for 7 days (was 24h). With generateStaticParams (top slugs pre-built at
+// build time) + dynamicParams (long tail on-demand), crawler/bot hits become CDN
+// cache hits instead of cold DB renders — the load pattern that exhausted Disk IO.
+export const revalidate = 604800; // 7 days
+
+// Slugs not pre-rendered below still render on first request, then cache.
+export const dynamicParams = true;
+
+// Pre-render the hottest English keyword pages at build. BOUNDED + English-only
+// (see getTopKeywordSlugs) so build cost stays tiny and constant regardless of
+// catalog size; Arabic (/ar) stays on-demand (noindex). Degrades to on-demand on
+// any data hiccup — never fails the build.
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  if (params.locale !== 'en') return [];
+  const slugs = await getTopKeywordSlugs(250);
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface PageProps {
   params: { slug: string; locale: string };
