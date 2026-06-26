@@ -424,3 +424,52 @@ export async function getPopularKeywords(limit: number = 6): Promise<Keyword[]> 
   }
   return data || [];
 }
+
+// ============================================
+// BUILD-TIME ONLY: top keyword slugs by recent traffic (for generateStaticParams)
+// ============================================
+// Pre-rendering the hottest keyword pages turns repeated crawler/bot hits into
+// CDN cache hits instead of cold DB renders — the exact load that exhausted the
+// Disk IO budget. Intentionally BOUNDED (default 250) and English-only so the
+// build cost stays tiny and predictable no matter how large the catalog grows
+// (10K today → 1M later) and never spikes the shared DB during a build. The long
+// tail keeps rendering on-demand via ISR (dynamicParams=true).
+//
+// Uses the service-role key (present in the build env) so it reads click_log
+// reliably regardless of RLS, and returns [] on ANY error so a data hiccup
+// degrades gracefully to on-demand rendering — it can never fail the build.
+export async function getTopKeywordSlugs(limit: number = 250): Promise<string[]> {
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !serviceKey) return [];
+
+    const admin = createClient(url, serviceKey);
+    const sinceIso = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    // Recent English /best landing pages. Arabic is "/ar/best/..." and is
+    // excluded by the prefix — Arabic stays on-demand (it's noindex anyway).
+    const { data, error } = await admin
+      .from('click_log')
+      .select('landing_page')
+      .like('landing_page', '/best/%')
+      .gte('created_at', sinceIso)
+      .limit(50000);
+
+    if (error || !data) return [];
+
+    const counts = new Map<string, number>();
+    for (const row of data) {
+      const lp = (row as { landing_page: string | null }).landing_page;
+      const m = lp ? lp.match(/^\/best\/([^/?#]+)/) : null;
+      if (m) counts.set(m[1], (counts.get(m[1]) || 0) + 1);
+    }
+
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([slug]) => slug);
+  } catch {
+    return [];
+  }
+}
