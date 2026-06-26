@@ -310,11 +310,31 @@ export async function getKeywordTranslation(
   return data ?? null;
 }
 
-// INTL1 Phase 4 (DB-driven auto-index): the set of /best slugs that have an
-// Arabic translation (headline + buying guide). This REPLACES the baked
+// Is an Arabic buying guide actually present (non-empty)? The translation flow
+// fills a page in stages — the noun first (qa_guide left empty), then the BYG.
+// A page is "ready to index" only once its editorial text (noun + BYG) is
+// Arabic; WWL can lag (English bullets fall back). qa_guide is a jsonb array of
+// {q,a}; an empty array (or null) means BYG not done yet.
+export function hasBuyingGuide(qa: unknown): boolean {
+  if (Array.isArray(qa)) return qa.length > 0;
+  if (typeof qa === 'string') {
+    const s = qa.trim();
+    if (!s || s === '[]') return false;
+    try {
+      const parsed = JSON.parse(s);
+      return Array.isArray(parsed) ? parsed.length > 0 : !!s;
+    } catch {
+      return !!s;
+    }
+  }
+  return false;
+}
+
+// INTL1 (DB-driven auto-index): the set of /best slugs READY to index = those
+// with an Arabic noun AND a non-empty Arabic BYG. This REPLACES the baked
 // allowlist — the sitemap includes, and the /ar/best page sets robots:index
-// for, exactly these slugs. So translating a page (push to DB) makes it
-// indexable automatically, no deploy. Lowercased to match URL slugs.
+// for, exactly these slugs. So a page indexes automatically once its noun+BYG
+// are published (Stage 1 + Stage 2), no deploy. Lowercased to match URL slugs.
 export async function getArTranslatedSlugs(): Promise<Set<string>> {
   const slugs = new Set<string>();
   let from = 0;
@@ -322,7 +342,7 @@ export async function getArTranslatedSlugs(): Promise<Set<string>> {
   for (;;) {
     const { data, error } = await supabase
       .from('keyword_translations')
-      .select('keywords(slug)')
+      .select('qa_guide, keywords(slug)')
       .eq('locale', 'ar')
       .range(from, from + page - 1);
     if (error) {
@@ -333,6 +353,7 @@ export async function getArTranslatedSlugs(): Promise<Set<string>> {
     // FK returns a single object. Handle both.
     const rows = (data ?? []) as any[];
     for (const r of rows) {
+      if (!hasBuyingGuide(r?.qa_guide)) continue; // need noun + BYG to index
       const kw = r?.keywords;
       const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
       if (slug) slugs.add(slug.toLowerCase());

@@ -8,6 +8,7 @@ import {
   getKeywordBySlug,
   getProductsForKeyword,
   getKeywordTranslation,
+  hasBuyingGuide,
 } from '@/lib/supabase';
 import {
   generatePageTitle,
@@ -51,20 +52,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const isAr = params.locale === 'ar';
-  // INTL1 Phase 4 (DB-driven auto-index, no allowlist): does an Arabic
-  // translation exist for this keyword? This single DB check drives BOTH the
-  // reciprocal `ar` hreflang AND (on /ar) robots index/noindex — so translating
-  // a page (push to DB) makes its /ar/best page indexable automatically, no
-  // deploy. Per-field English fallback still applies when ar is missing.
+  // INTL1 (DB-driven auto-index, no allowlist). Translation fills in stages:
+  // noun first (qa_guide empty), then BYG, then WWL. A page is READY TO INDEX
+  // only once its editorial text is Arabic = noun AND BYG present (WWL can lag,
+  // English bullets fall back). `arIndexed` drives BOTH the reciprocal `ar`
+  // hreflang AND (on /ar) robots index/noindex — so a page indexes
+  // automatically once noun+BYG are published, no deploy.
   const arTr = await getKeywordTranslation(keyword.id, 'ar');
   const nounAr = arTr?.keyword_text?.trim() || null;
-  const arExists = !!nounAr;
-  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, arExists);
+  const arIndexed = !!nounAr && hasBuyingGuide(arTr?.qa_guide);
+  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, arIndexed);
   const ogUrl = `${CONFIG.canonicalUrl}${isAr ? '/ar' : ''}/best/${params.slug}`;
 
   if (isAr) {
-    // Arabic page WITH a translation → Arabic <title>/desc + INDEX.
-    // title.absolute bypasses the layout's "%s | The Winners" template.
+    // The Arabic <title>/desc show as soon as the noun exists; but the page is
+    // INDEXED only when arIndexed (noun + BYG). title.absolute bypasses the
+    // layout's "%s | The Winners" template.
     if (nounAr) {
       const arTitle = generateArabicPageTitle(nounAr, getCurrentYear());
       const arDesc = generateArabicPageDescription(nounAr);
@@ -72,7 +75,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: { absolute: arTitle },
         description: arDesc,
         alternates,
-        robots: { index: true, follow: true },
+        robots: { index: arIndexed, follow: true },
         openGraph: { title: arTitle, description: arDesc, url: ogUrl },
       };
     }
