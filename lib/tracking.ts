@@ -251,10 +251,14 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   // unseen tags) are eligible. Reserve tags sit idle until maintainTagPool()
   // rotates them into the cohort. Within the eligible set, stable tags are
   // picked first (sharp 1-to-1 attribution); cohort is fallback.
+  // MULTIGEO: AE rotation pool only. `program='ae'` scopes this to the AE
+  // pool so SA/other-program gads tags (added later) are never assigned to an
+  // AE visitor. No-op today (all tags are program='ae'). See MULTIGEO spec.
   let { data: freeTag } = await getSupabaseAdmin()
     .from('tag_pool')
     .select('tag_id')
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+    .eq('program', 'ae')
     .eq('status', 'available')
     .or('is_stable.eq.true,seeding_cohort.eq.true')
     .order('is_stable', { ascending: false })            // stable first
@@ -268,6 +272,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
       .from('tag_pool')
       .select('tag_id, current_session')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', 'ae')   // MULTIGEO: steal only from the AE pool
       .eq('status', 'busy')
       .order('assigned_at', { ascending: true })
       .limit(1)
@@ -445,6 +450,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   const { count: cohortCount } = await sb
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
+    .eq('program', 'ae')   // MULTIGEO: AE cohort only
     .eq('seeding_cohort', true);
   const currentCohort = cohortCount || 0;
   const needed = targetSize - currentCohort;
@@ -455,6 +461,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', 'ae')   // MULTIGEO: top up AE cohort from AE reserve only
       .eq('is_stable', false)
       .eq('seeding_cohort', false)
       .eq('status', 'available')
@@ -477,6 +484,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+    .eq('program', 'ae')   // MULTIGEO: AE reserve health only
     .eq('is_stable', false)
     .eq('seeding_cohort', false);
   const reserveRemaining = reserveCount || 0;
