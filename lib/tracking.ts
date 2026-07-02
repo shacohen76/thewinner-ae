@@ -2,7 +2,7 @@
 // TRACKING UTILITIES — Server-side tag rotation
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-05-19 (AMZ12)
+// Last Modified: 2026-07-02 (tag-pool cron silent-write guard)
 //
 // Handles tag assignment, click logging, tag expiry, and pool maintenance.
 //
@@ -22,6 +22,18 @@
 //                      graduates stable cohort members, tops up cohort to size 5,
 //                      Telegram-alerts when reserve pool < 20. Called by the new
 //                      /api/cron/maintain-tag-pool cron every 15 min.
+//   2026-07-02  v3   Tag-pool cohort-cycling freeze fix. Root cause was NOT code:
+//                    the cron ran with a non-service_role key, so under RLS every
+//                    pool UPDATE silently no-op'd (0 rows, HTTP 200, no .error) —
+//                    promote/graduate/top-up never persisted. Hardening added:
+//                    - decodeKeyRole() guard: bail + Telegram CRITICAL if the key
+//                      is not service_role (the real, reliable signal).
+//                    - .error checked on every step, collected into errors[] and
+//                      Telegram-alerted (JS client returns errors in-band, never throws).
+//                    - silent-no-op canary on cohort top-up.
+//                    - steps 1 & 2 scoped to program='ae' + gads (MULTIGEO invariant).
+//                    - seedingCohortSize default 5 → 25 (right-size for traffic).
+//                    Fix itself is a Vercel env correction. See tag_pool_cohort_fix_handoff.md.
 //
 // Tightly coupled tables: public.tag_pool (with new columns is_stable, seeding_cohort)
 //                         public.click_log (sessions + ASIN clicks)
@@ -62,7 +74,11 @@ export const TRACKING_CONFIG = {
   // Cohort tags are picked only when all stable tags are busy. Once a cohort
   // tag crosses the 4-order threshold (snapshot.items_ordered >= 4) it becomes
   // stable and gets replaced by the next reserve tag via maintainTagPool().
-  seedingCohortSize: parseInt(process.env.SEEDING_COHORT_SIZE || '5'),
+  // 2026-07-02: default bumped 5 → 25 to track current (higher) AE gads traffic
+  // and let the working pool cycle up toward 200 (was starving the rotation).
+  // NOTE: if SEEDING_COHORT_SIZE is set in Vercel env it OVERRIDES this default —
+  // ensure it is unset (or =25) on both thewinner-ae and thewinners-ae.
+  seedingCohortSize: parseInt(process.env.SEEDING_COHORT_SIZE || '25'),
   // Alert threshold: when reserve_pool (unstable, not in cohort) drops below
   // this, the maintain-tag-pool cron sends a Telegram alert asking for more
   // tags to be created in Amazon.
@@ -98,6 +114,25 @@ async function sendTelegram(message: string): Promise<boolean> {
   } catch (e) {
     console.error('Telegram send failed:', e);
     return false;
+  }
+}
+
+// Decode the `role` claim from a Supabase JWT key WITHOUT verifying its signature
+// (we only read the public, non-secret payload claim — never log the key itself).
+// 2026-07-02: added to catch the silent misconfiguration that froze the tag pool —
+// SUPABASE_SERVICE_ROLE_KEY set to a non-service_role key. Under RLS (enabled on
+// tag_pool + amazon_purchase_snapshot ~2026-06-26) such a key can still READ but
+// every UPDATE silently affects 0 rows and STILL returns HTTP 200 with no .error,
+// so nothing persists and the failure is invisible. The key role is the reliable
+// signal (checking .error does not catch an RLS-filtered no-op UPDATE).
+// See Docs_MD/tag_pool_cohort_fix_handoff.md.
+function decodeKeyRole(jwt: string | undefined): string {
+  if (!jwt) return 'missing';
+  try {
+    const payload = JSON.parse(Buffer.from(jwt.split('.')[1] || '', 'base64').toString());
+    return payload.role || 'unknown';
+  } catch {
+    return 'unparseable';
   }
 }
 
@@ -406,58 +441,100 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
 // Idempotent — safe to call repeatedly. Returns counts for the cron response.
 
 export interface MaintainTagPoolResult {
+  ok: boolean;              // false when a config/write problem was detected (see errors)
+  key_role: string;         // decoded role of the service key — should be 'service_role'
   promoted_to_stable: number;
   graduated_from_cohort: number;
   cohort_added: number;
   cohort_size_now: number;
   reserve_remaining: number;
   alert_sent: boolean;
+  errors: string[];         // in-band Supabase errors per step (JS client returns, never throws)
 }
 
 export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   const sb = getSupabaseAdmin();
+  const errors: string[] = [];
+
+  // ── 0. GUARD: pool maintenance WRITES require a service_role key that bypasses RLS.
+  // 2026-07-02: root cause of the cohort-cycling freeze — the cron runtime was using a
+  // non-service_role key. With RLS on (tag_pool + amazon_purchase_snapshot, ~2026-06-26)
+  // reads still work but every UPDATE silently affects 0 rows and returns HTTP 200 with
+  // no .error, so promote/graduate/top-up never persist and the failure is invisible.
+  // The key ROLE is the reliable signal. If misconfigured: alert loudly and bail — a
+  // clearly-failing cron beats one that pretends to work. Fix is a Vercel env correction
+  // (SUPABASE_SERVICE_ROLE_KEY on thewinner-ae AND thewinners-ae), not code.
+  const keyRole = decodeKeyRole(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  console.log(`[maintainTagPool] key_role=${keyRole}`);
+  if (keyRole !== 'service_role') {
+    const msg =
+      `🔴 AMZ tag-pool cron MISCONFIGURED\n` +
+      `SUPABASE_SERVICE_ROLE_KEY role='${keyRole}' (expected 'service_role').\n` +
+      `Under RLS all pool writes silently fail — maintenance is DISABLED until the ` +
+      `env var is corrected in Vercel (both thewinner-ae and thewinners-ae) and redeployed.`;
+    console.error(msg);
+    const alertSent = await sendTelegram(msg);
+    return {
+      ok: false, key_role: keyRole, promoted_to_stable: 0, graduated_from_cohort: 0,
+      cohort_added: 0, cohort_size_now: 0, reserve_remaining: 0, alert_sent: alertSent,
+      errors: [msg],
+    };
+  }
 
   // ── 1. Promote tags whose cumulative order count ≥ 4 ──
-  // Fetch the eligible tag_ids from snapshot, then UPDATE tag_pool.
-  const { data: snapshotEligible } = await sb
+  // Fetch the eligible tag_ids from snapshot, then UPDATE tag_pool. Scoped to the AE
+  // gads rotation pool (2026-07-02): is_stable only governs gads rotation eligibility,
+  // so static tags (seo/direct/…) must not be flagged, and program='ae' preserves the
+  // MULTIGEO Step-1 invariant. No-op vs old behavior for AE assignment.
+  const { data: snapshotEligible, error: snapErr } = await sb
     .from('amazon_purchase_snapshot')
     .select('tag_id')
     .gte('items_ordered', 4);
+  if (snapErr) errors.push(`snapshot_read: ${snapErr.message}`);
   const eligibleIds = (snapshotEligible || []).map(r => r.tag_id);
 
   let promotedCount = 0;
   if (eligibleIds.length > 0) {
-    const { data: promoted } = await sb
+    const { data: promoted, error: promErr } = await sb
       .from('tag_pool')
       .update({ is_stable: true })
       .in('tag_id', eligibleIds)
+      .eq('program', 'ae')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('is_stable', false)
       .select('tag_id');
+    if (promErr) errors.push(`promote: ${promErr.message}`);
     promotedCount = promoted?.length || 0;
   }
 
   // ── 2. Graduate stable cohort members (they no longer need cohort lane) ──
-  const { data: graduated } = await sb
+  // 2026-07-02: scoped to program='ae' + gads to preserve the MULTIGEO invariant.
+  const { data: graduated, error: gradErr } = await sb
     .from('tag_pool')
     .update({ seeding_cohort: false })
+    .eq('program', 'ae')
+    .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('seeding_cohort', true)
     .eq('is_stable', true)
     .select('tag_id');
+  if (gradErr) errors.push(`graduate: ${gradErr.message}`);
   const graduatedCount = graduated?.length || 0;
 
   // ── 3. Top up cohort back to target size ──
   const targetSize = TRACKING_CONFIG.seedingCohortSize;
-  const { count: cohortCount } = await sb
+  const { count: cohortCount, error: cohortErr } = await sb
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
     .eq('program', 'ae')   // MULTIGEO: AE cohort only
+    .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('seeding_cohort', true);
+  if (cohortErr) errors.push(`cohort_count: ${cohortErr.message}`);
   const currentCohort = cohortCount || 0;
   const needed = targetSize - currentCohort;
 
   let addedCount = 0;
   if (needed > 0) {
-    const { data: candidates } = await sb
+    const { data: candidates, error: candErr } = await sb
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
@@ -467,27 +544,44 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       .eq('status', 'available')
       .order('tag_id', { ascending: true })   // deterministic: lowest tag_id first
       .limit(needed);
+    if (candErr) errors.push(`topup_candidates: ${candErr.message}`);
 
     if (candidates && candidates.length > 0) {
       const ids = candidates.map(r => r.tag_id);
-      const { data: added } = await sb
+      const { data: added, error: addErr } = await sb
         .from('tag_pool')
         .update({ seeding_cohort: true })
         .in('tag_id', ids)
         .select('tag_id');
+      if (addErr) errors.push(`topup_update: ${addErr.message}`);
       addedCount = added?.length || 0;
+      // Silent-no-op canary: we matched reserve candidates but wrote nothing and got
+      // no error → the classic RLS/permissions swallow. Surface it (2026-07-02).
+      if (addedCount === 0) {
+        errors.push(`topup_update: matched ${ids.length} candidates but 0 rows changed (silent no-op)`);
+      }
     }
   }
 
   // ── 4. Reserve health check + Telegram alert if low ──
-  const { count: reserveCount } = await sb
+  const { count: reserveCount, error: reserveErr } = await sb
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('program', 'ae')   // MULTIGEO: AE reserve health only
     .eq('is_stable', false)
     .eq('seeding_cohort', false);
+  if (reserveErr) errors.push(`reserve_count: ${reserveErr.message}`);
   const reserveRemaining = reserveCount || 0;
+
+  // ── 5. Surface any in-band errors loudly (2026-07-02) ──
+  // The Supabase JS client returns errors in { error } and never throws, so an
+  // unchecked step fails silently. Alert on any collected error so a future
+  // regression can't hide behind an HTTP 200 the way this bug did.
+  if (errors.length > 0) {
+    console.error('[maintainTagPool] step errors:', JSON.stringify(errors));
+    await sendTelegram(`🔴 AMZ tag-pool cron errors:\n${errors.join('\n')}`);
+  }
 
   let alertSent = false;
   if (reserveRemaining < TRACKING_CONFIG.poolLowThreshold) {
@@ -513,12 +607,15 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   }
 
   return {
+    ok: errors.length === 0,
+    key_role: keyRole,
     promoted_to_stable: promotedCount,
     graduated_from_cohort: graduatedCount,
     cohort_added: addedCount,
     cohort_size_now: currentCohort + addedCount,
     reserve_remaining: reserveRemaining,
     alert_sent: alertSent,
+    errors,
   };
 }
 

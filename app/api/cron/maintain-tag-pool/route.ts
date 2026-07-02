@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const result = await maintainTagPool();
+    // 2026-07-02: result now carries its own `ok` flag (false when a key/RLS/write
+    // problem was detected). Don't hardcode ok:true — let the real status surface.
     return NextResponse.json({
-      ok: true,
       ...result,
       timestamp: new Date().toISOString(),
     });
