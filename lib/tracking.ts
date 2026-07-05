@@ -22,6 +22,22 @@
 //                      graduates stable cohort members, tops up cohort to size 5,
 //                      Telegram-alerts when reserve pool < 20. Called by the new
 //                      /api/cron/maintain-tag-pool cron every 15 min.
+//   2026-07-05  v4   Tag-pool mechanics V2 (Decision 157) — flag-gated, OFF by default.
+//                    Reads program_pool_config (per-program tuning + mechanics_v2 flag).
+//                    When the flag is TRUE for the program, the AE gads path switches to
+//                    the 1-to-1 daily-attribution model:
+//                    - assignTag: soft-hold-on-assignment (soft_hold_minutes, not 4h) +
+//                      new priority (free stable LRU → free warming by last_clickout_at →
+//                      pull reserve into warming → steal oldest NON-committed busy).
+//                      Committed stables (is_stable AND clicked out within stable_pin) are
+//                      NEVER stolen — this kills the 814-orders-on-38-tags concentration.
+//                    - logAsinClick: commit-on-clickout — pin stable→stable_pin_hours,
+//                      warming→warming_pin_hours, and stamp tag_pool.last_clickout_at
+//                      (the only visible warming-progress signal).
+//                    - maintainTagPool: dynamic warming target W = (K−S)/m where K =
+//                      live daily clickouts, S = stable count (auto-scales with spend).
+//                    When the flag is FALSE (default) every path is byte-identical to v3.
+//                    See Docs_MD/tagpool_mechanics_impl_handoff.md + TAGPOOL_ATTRIBUTION_SPEC_v1_0.md.
 //   2026-07-02  v3   Tag-pool cohort-cycling freeze fix. Root cause was NOT code:
 //                    the cron ran with a non-service_role key, so under RLS every
 //                    pool UPDATE silently no-op'd (0 rows, HTTP 200, no .error) —
@@ -91,6 +107,57 @@ export const TRACKING_CONFIG = {
   // to keep rotating to accumulate orders and graduate to stable.
   asinHoldHours: parseInt(process.env.ASIN_HOLD_HOURS || '24'),
 };
+
+
+// ============================================
+// PROGRAM POOL CONFIG (mechanics V2 — Decision 157)
+// ============================================
+// Per-program pool tuning read from public.program_pool_config. The mechanics_v2
+// flag gates ALL V2 behavior: when false (default) the pool runs exact V1 logic;
+// when true, the program's gads path uses soft-hold-on-assignment + commit-on-
+// clickout + dynamic warming. Config lives in the DB so tuning (holds, pins, m,
+// threshold) is a SQL UPDATE with no redeploy — and the flag is a shared DB column
+// so one flip covers BOTH Vercel projects at once. See tagpool_mechanics_impl_handoff.md.
+//
+// 2026-07-05: added for V2. Falls back to null (⇒ V1 behavior) on any read error,
+// so a transient config-read failure can NEVER change AE money-path behavior.
+
+export interface PoolConfig {
+  program: string;
+  marketplace: string;
+  currency: string;
+  visibility_threshold: number;
+  soft_hold_minutes: number;
+  stable_pin_hours: number;
+  warming_pin_hours: number;
+  warming_target_m: number;
+  tag_prefix: string;
+  mechanics_v2: boolean;
+  enabled: boolean;
+}
+
+// Short in-process TTL cache: assignTag is on the hot path, so avoid a config read
+// per request. 30 s is well under the "watch for a day" rollout window, so a flag
+// flip still takes effect within ~30 s on each warm serverless instance.
+const _poolConfigCache = new Map<string, { value: PoolConfig | null; expires: number }>();
+const POOL_CONFIG_TTL_MS = 30_000;
+
+async function getPoolConfig(program: string): Promise<PoolConfig | null> {
+  const cached = _poolConfigCache.get(program);
+  if (cached && cached.expires > Date.now()) return cached.value;
+
+  const { data, error } = await getSupabaseAdmin()
+    .from('program_pool_config')
+    .select('*')
+    .eq('program', program)
+    .maybeSingle();
+
+  // On error OR missing row → null ⇒ caller runs V1 (AE-safe default). Never throw
+  // on the assignment hot path over a config read.
+  const value: PoolConfig | null = error || !data ? null : (data as PoolConfig);
+  _poolConfigCache.set(program, { value, expires: Date.now() + POOL_CONFIG_TTL_MS });
+  return value;
+}
 
 
 // ============================================
@@ -276,7 +343,17 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
     };
   }
 
-  // Google Ads (and other rotating sources) — find a free tag from pool
+  // Google Ads (and other rotating sources) — find a free tag from pool.
+  //
+  // 2026-07-05 (V2, Decision 157): if program_pool_config.mechanics_v2 is on for the
+  // AE pool, delegate to the 1-to-1 daily-attribution assignment. Flag off (default)
+  // ⇒ the V1 stable-first / steal-oldest logic below runs byte-identical. This is the
+  // only gads path (all non-'ae' programs already early-returned above), so program='ae'.
+  const poolConfig = await getPoolConfig('ae');
+  if (poolConfig?.mechanics_v2 && poolConfig.enabled) {
+    return assignGadsTagV2(req, sessionId, poolConfig);
+  }
+
   const holdHours = TRACKING_CONFIG.tagHoldHours;
   const expiresAt = new Date(Date.now() + holdHours * 60 * 60 * 1000).toISOString();
 
@@ -368,6 +445,151 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 }
 
 // ============================================
+// GADS ASSIGNMENT — V2 mechanics (flag-gated, Decision 157)
+// ============================================
+// Only reached when program_pool_config.mechanics_v2 = true for AE. Implements the
+// 1-to-1 daily-attribution model:
+//   - Assignment gives only a SOFT hold (soft_hold_minutes). The tag is not "spent"
+//     until a clickout (see logAsinClick), so no-clickout visitors free the tag fast.
+//   - Priority: (1) free stable LRU  (2) free warming, preferring warmers already in
+//     progress (last_clickout_at DESC) so they cross the threshold sooner  (3) pull a
+//     reserve tag into the warming lane on demand  (4) steal the oldest NON-committed
+//     busy tag — never a committed stable (is_stable AND clicked out within stable_pin).
+// MULTIGEO: every query scoped program='ae' + tag_type='gads'.
+async function assignGadsTagV2(
+  req: TagAssignRequest,
+  sessionId: string,
+  cfg: PoolConfig,
+): Promise<TagAssignResponse> {
+  const sb = getSupabaseAdmin();
+  const now = Date.now();
+  const expiresAt = new Date(now + cfg.soft_hold_minutes * 60 * 1000).toISOString();
+
+  // Priority 1: a free STABLE tag (LRU). Stables get first pick — one clean pin/day.
+  let { data: freeTag } = await sb
+    .from('tag_pool')
+    .select('tag_id')
+    .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+    .eq('program', 'ae')
+    .eq('status', 'available')
+    .eq('is_stable', true)
+    .order('assigned_at', { ascending: true, nullsFirst: true })
+    .limit(1)
+    .maybeSingle();
+
+  // Priority 2: a free WARMING tag. Prefer warmers with recent clickout progress
+  // (last_clickout_at DESC) so they accumulate orders and graduate sooner; LRU tie-break.
+  if (!freeTag) {
+    const { data } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', 'ae')
+      .eq('status', 'available')
+      .eq('seeding_cohort', true)
+      .eq('is_stable', false)
+      .order('last_clickout_at', { ascending: false, nullsFirst: false })
+      .order('assigned_at', { ascending: true, nullsFirst: true })
+      .limit(1)
+      .maybeSingle();
+    freeTag = data;
+  }
+
+  // Priority 3: pull a RESERVE tag into the warming lane on demand (dynamic top-up;
+  // maintainTagPool also tops warming up to W, but bursts can outrun the cron).
+  if (!freeTag) {
+    const { data: reserve } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', 'ae')
+      .eq('status', 'available')
+      .eq('is_stable', false)
+      .eq('seeding_cohort', false)
+      .order('tag_id', { ascending: true })   // deterministic: lowest tag_id first
+      .limit(1)
+      .maybeSingle();
+    if (reserve) {
+      const { data: promoted } = await sb
+        .from('tag_pool')
+        .update({ seeding_cohort: true })
+        .eq('tag_id', reserve.tag_id)
+        .select('tag_id')
+        .maybeSingle();
+      freeTag = promoted || reserve;
+    }
+  }
+
+  // Priority 4: steal the oldest NON-committed busy tag. A committed stable
+  // (is_stable AND last_clickout_at within stable_pin_hours) is protected — this is
+  // what kills the 814-orders-on-38-tags concentration. Fetch a small oldest-first
+  // batch and pick the first non-committed one in JS (avoids PostgREST timestamp
+  // or-filter quirks; steal is a rare safety net so the extra rows are cheap).
+  if (!freeTag) {
+    const committedCutoffMs = now - cfg.stable_pin_hours * 60 * 60 * 1000;
+    const { data: busyTags } = await sb
+      .from('tag_pool')
+      .select('tag_id, current_session, is_stable, last_clickout_at')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', 'ae')
+      .eq('status', 'busy')
+      .order('assigned_at', { ascending: true })
+      .limit(20);
+    const victim = (busyTags || []).find(
+      t => !(t.is_stable && t.last_clickout_at && new Date(t.last_clickout_at).getTime() > committedCutoffMs),
+    );
+    if (victim) {
+      freeTag = { tag_id: victim.tag_id };
+      // Expire the stolen session's click_log (it lost its tag; no attribution owed —
+      // a soft-held tag with no clickout never earned an order).
+      if (victim.current_session) {
+        await sb.from('click_log').update({ status: 'expired' }).eq('session_id', victim.current_session);
+      }
+    }
+  }
+
+  // Absolute fallback (shouldn't happen — 200 gads tags in the AE pool).
+  const assignedTag = freeTag?.tag_id || TRACKING_CONFIG.defaultTag;
+
+  // Mark the tag busy with the SOFT hold. releaseExpiredTags frees it after
+  // soft_hold_minutes if no clickout arrives; a clickout re-pins it (logAsinClick).
+  if (freeTag) {
+    await sb
+      .from('tag_pool')
+      .update({
+        status: 'busy',
+        current_session: sessionId,
+        assigned_at: new Date().toISOString(),
+        expires_at: expiresAt,
+      })
+      .eq('tag_id', assignedTag);
+  }
+
+  await sb.from('click_log').insert({
+    session_id: sessionId,
+    gclid: req.gclid || null,
+    fbclid: req.fbclid || null,
+    assigned_tag: assignedTag,
+    traffic_source: req.traffic_source,
+    landing_page: req.landing_page || null,
+    user_agent: req.user_agent || null,
+    ip_country: req.ip_country || null,
+    user_id: req.user_id || null,
+    site: req.site || null,
+    as_name: req.as_name || null,
+    as_number: req.as_number ?? null,
+  });
+
+  return {
+    session_id: sessionId,
+    assigned_tag: assignedTag,
+    expires_at: expiresAt,
+    amazon_domain: 'amazon.ae',
+    geo_group: 'gulf',
+  };
+}
+
+// ============================================
 // CLICK LOGGING (ASIN append)
 // ============================================
 
@@ -400,8 +622,38 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
     })
     .eq('session_id', sessionId);
 
-  // High-intent attribution lock: extend the tag's hold IF and ONLY IF
-  // this session currently holds a STABLE tag. Cohort/reserve tags must
+  const nowIso = new Date().toISOString();
+
+  // 2026-07-05 (V2, Decision 157): commit-on-clickout. When mechanics_v2 is on, a
+  // clickout is the moment a tag is "spent" — pin it (stable → stable_pin_hours,
+  // warming → warming_pin_hours) AND stamp last_clickout_at, the only visible
+  // warming-progress signal (Amazon hides sub-threshold tags). Two scoped UPDATEs so
+  // each tier gets its own pin. Flag off ⇒ the V1 stable-only 24h extension below runs
+  // byte-identical.
+  const cfg = await getPoolConfig('ae');
+  if (cfg?.mechanics_v2 && cfg.enabled) {
+    const sb = getSupabaseAdmin();
+    const stablePinIso = new Date(Date.now() + cfg.stable_pin_hours * 60 * 60 * 1000).toISOString();
+    const warmingPinIso = new Date(Date.now() + cfg.warming_pin_hours * 60 * 60 * 1000).toISOString();
+    // Stable held tag → long pin.
+    await sb
+      .from('tag_pool')
+      .update({ expires_at: stablePinIso, last_clickout_at: nowIso })
+      .eq('current_session', sessionId)
+      .eq('is_stable', true)
+      .gt('expires_at', nowIso);
+    // Warming held tag → short pin (keeps warmers rotating while still crediting the click).
+    await sb
+      .from('tag_pool')
+      .update({ expires_at: warmingPinIso, last_clickout_at: nowIso })
+      .eq('current_session', sessionId)
+      .eq('is_stable', false)
+      .gt('expires_at', nowIso);
+    return !error;
+  }
+
+  // ── V1 (flag off) ── High-intent attribution lock: extend the tag's hold IF and
+  // ONLY IF this session currently holds a STABLE tag. Cohort/reserve tags must
   // keep rotating per their original 4h hold so they can accumulate orders
   // and graduate. The filters below make this a no-op for cohort/reserve.
   //
@@ -411,7 +663,6 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
   //
   // Rolling: each ASIN click resets expires_at to now + ASIN_HOLD_HOURS,
   // so high-engagement visitors keep the tag bound through their session.
-  const nowIso = new Date().toISOString();
   const asinExpiresIso = new Date(
     Date.now() + TRACKING_CONFIG.asinHoldHours * 60 * 60 * 1000
   ).toISOString();
@@ -450,6 +701,11 @@ export interface MaintainTagPoolResult {
   reserve_remaining: number;
   alert_sent: boolean;
   errors: string[];         // in-band Supabase errors per step (JS client returns, never throws)
+  // V2 observability (Decision 157) — present only when mechanics_v2 is on for AE.
+  mechanics_v2?: boolean;
+  warming_target?: number;  // W = ceil((K−S)/m)
+  k_clickouts?: number;     // live daily clickouts
+  s_stable?: number;        // stable count
 }
 
 export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
@@ -481,15 +737,21 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     };
   }
 
-  // ── 1. Promote tags whose cumulative order count ≥ 4 ──
+  // ── 0b. V2 config (Decision 157). Flag off ⇒ V1 fixed cohort + threshold 4. ──
+  const cfg = await getPoolConfig('ae');
+  const v2 = cfg?.mechanics_v2 === true && cfg.enabled === true;
+  const promoteThreshold = v2 ? cfg!.visibility_threshold : 4;
+
+  // ── 1. Promote tags whose cumulative order count ≥ threshold ──
   // Fetch the eligible tag_ids from snapshot, then UPDATE tag_pool. Scoped to the AE
   // gads rotation pool (2026-07-02): is_stable only governs gads rotation eligibility,
   // so static tags (seo/direct/…) must not be flagged, and program='ae' preserves the
   // MULTIGEO Step-1 invariant. No-op vs old behavior for AE assignment.
+  // 2026-07-05: threshold is config-driven under V2 (visibility_threshold), still 4 in V1.
   const { data: snapshotEligible, error: snapErr } = await sb
     .from('amazon_purchase_snapshot')
     .select('tag_id')
-    .gte('items_ordered', 4);
+    .gte('items_ordered', promoteThreshold);
   if (snapErr) errors.push(`snapshot_read: ${snapErr.message}`);
   const eligibleIds = (snapshotEligible || []).map(r => r.tag_id);
 
@@ -520,8 +782,36 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   if (gradErr) errors.push(`graduate: ${gradErr.message}`);
   const graduatedCount = graduated?.length || 0;
 
-  // ── 3. Top up cohort back to target size ──
-  const targetSize = TRACKING_CONFIG.seedingCohortSize;
+  // ── 3. Top up cohort (warming lane) back to target size ──
+  // V1: fixed TRACKING_CONFIG.seedingCohortSize.
+  // V2 (2026-07-05): dynamic warming target W = (K − S) / m, where
+  //   K = live daily clickouts (gads sessions with a clickout, last 24h),
+  //   S = stable count, m = warming_target_m. Auto-scales with spend; drives stable
+  //   toward ≈ daily clickouts so every clickout pins 1-to-1. On-demand pulls in
+  //   assignGadsTagV2 can push warming above W between crons — then needed ≤ 0, no-op.
+  let targetSize = TRACKING_CONFIG.seedingCohortSize;
+  let kClickouts = 0;
+  let sStable = 0;
+  if (v2 && cfg) {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { count: kCount, error: kErr } = await sb
+      .from('click_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('traffic_source', 'gads')
+      .not('clicked_asins', 'is', null)
+      .gt('created_at', since);
+    if (kErr) errors.push(`k_clickouts: ${kErr.message}`);
+    const { count: sCount, error: sErr } = await sb
+      .from('tag_pool')
+      .select('*', { count: 'exact', head: true })
+      .eq('program', 'ae')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('is_stable', true);
+    if (sErr) errors.push(`s_stable: ${sErr.message}`);
+    kClickouts = kCount || 0;
+    sStable = sCount || 0;
+    targetSize = Math.max(0, Math.ceil((kClickouts - sStable) / cfg.warming_target_m));
+  }
   const { count: cohortCount, error: cohortErr } = await sb
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
@@ -616,6 +906,10 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     reserve_remaining: reserveRemaining,
     alert_sent: alertSent,
     errors,
+    mechanics_v2: v2,
+    warming_target: v2 ? targetSize : undefined,
+    k_clickouts: v2 ? kClickouts : undefined,
+    s_stable: v2 ? sStable : undefined,
   };
 }
 
