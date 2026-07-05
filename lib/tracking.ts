@@ -697,6 +697,7 @@ export interface MaintainTagPoolResult {
   promoted_to_stable: number;
   graduated_from_cohort: number;
   cohort_added: number;
+  cohort_removed: number;   // V2 trim: warming demoted back to reserve to converge to W
   cohort_size_now: number;
   reserve_remaining: number;
   alert_sent: boolean;
@@ -732,8 +733,8 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     const alertSent = await sendTelegram(msg);
     return {
       ok: false, key_role: keyRole, promoted_to_stable: 0, graduated_from_cohort: 0,
-      cohort_added: 0, cohort_size_now: 0, reserve_remaining: 0, alert_sent: alertSent,
-      errors: [msg],
+      cohort_added: 0, cohort_removed: 0, cohort_size_now: 0, reserve_remaining: 0,
+      alert_sent: alertSent, errors: [msg],
     };
   }
 
@@ -798,7 +799,11 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       .from('click_log')
       .select('*', { count: 'exact', head: true })
       .eq('traffic_source', 'gads')
-      .not('clicked_asins', 'is', null)
+      // 2026-07-05 FIX (Decision 164): clicked_asins DEFAULTS to '{}' (empty array),
+      // never NULL — so `is not null` counted EVERY gads session (click-in) as a
+      // clickout and inflated K ~4× (e.g. 319 vs 78), pushing W=(K−S)/m from ~10 to
+      // ~71 and over-provisioning warming. Count only REAL clickouts (non-empty array).
+      .neq('clicked_asins', '{}')
       .gt('created_at', since);
     if (kErr) errors.push(`k_clickouts: ${kErr.message}`);
     const { count: sCount, error: sErr } = await sb
@@ -853,6 +858,40 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     }
   }
 
+  // ── 3b. Trim warming DOWN to W (V2 only) — 2026-07-05 (Decision 164) ──
+  // On-demand reserve→warming pulls (assignGadsTagV2 priority 3) grow warming but never
+  // shrink it, and the K-inflation bug (fixed above) had over-pulled. Without a trim,
+  // warming ratchets up and dilutes graduation (clickouts spread thin across too many
+  // warmers). Demote the excess back to reserve so the pool concentrates toward stable.
+  // ONLY demote idle, no-progress warmers (available + last_clickout_at IS NULL) — never
+  // a busy tag or a warmer that has clicked out (that one is in-progress toward ≥4 orders).
+  let removedCount = 0;
+  if (v2 && needed < 0) {
+    const excess = -needed;
+    const { data: demoteCands, error: demoteCandErr } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('program', 'ae')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('seeding_cohort', true)
+      .eq('is_stable', false)
+      .eq('status', 'available')
+      .is('last_clickout_at', null)
+      .order('tag_id', { ascending: false })   // mirror top-up (lowest-first) — trim highest-first
+      .limit(excess);
+    if (demoteCandErr) errors.push(`trim_candidates: ${demoteCandErr.message}`);
+    if (demoteCands && demoteCands.length > 0) {
+      const ids = demoteCands.map(r => r.tag_id);
+      const { data: demoted, error: demErr } = await sb
+        .from('tag_pool')
+        .update({ seeding_cohort: false })
+        .in('tag_id', ids)
+        .select('tag_id');
+      if (demErr) errors.push(`trim_update: ${demErr.message}`);
+      removedCount = demoted?.length || 0;
+    }
+  }
+
   // ── 4. Reserve health check + Telegram alert if low ──
   const { count: reserveCount, error: reserveErr } = await sb
     .from('tag_pool')
@@ -890,7 +929,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     alertSent = await sendTelegram(
       `🟡 AMZ tag pool LOW\n` +
       `Reserve gads tags: ${reserveRemaining} (threshold: ${TRACKING_CONFIG.poolLowThreshold})\n` +
-      `Cohort: ${currentCohort + addedCount}/${targetSize}\n` +
+      `Cohort: ${currentCohort + addedCount - removedCount}/${targetSize}\n` +
       `Action: create more tracking IDs in Amazon Associates ${nextNumeric}, ` +
       `then INSERT them into tag_pool with tag_type='gads'.`
     );
@@ -902,7 +941,8 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     promoted_to_stable: promotedCount,
     graduated_from_cohort: graduatedCount,
     cohort_added: addedCount,
-    cohort_size_now: currentCohort + addedCount,
+    cohort_removed: removedCount,
+    cohort_size_now: currentCohort + addedCount - removedCount,
     reserve_remaining: reserveRemaining,
     alert_sent: alertSent,
     errors,
