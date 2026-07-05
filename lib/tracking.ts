@@ -32,7 +32,7 @@
 //                      Committed stables (is_stable AND clicked out within stable_pin) are
 //                      NEVER stolen — this kills the 814-orders-on-38-tags concentration.
 //                    - logAsinClick: commit-on-clickout — pin stable→stable_pin_hours,
-//                      warming→warming_pin_hours, and stamp tag_pool.last_clickout_at
+//                      warming→warming_pin_minutes, and stamp tag_pool.last_clickout_at
 //                      (the only visible warming-progress signal).
 //                    - maintainTagPool: dynamic warming target W = (K−S)/m where K =
 //                      live daily clickouts, S = stable count (auto-scales with spend).
@@ -129,7 +129,7 @@ export interface PoolConfig {
   visibility_threshold: number;
   soft_hold_minutes: number;
   stable_pin_hours: number;
-  warming_pin_hours: number;
+  warming_pin_minutes: number;
   warming_target_m: number;
   tag_prefix: string;
   mechanics_v2: boolean;
@@ -626,7 +626,7 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
 
   // 2026-07-05 (V2, Decision 157): commit-on-clickout. When mechanics_v2 is on, a
   // clickout is the moment a tag is "spent" — pin it (stable → stable_pin_hours,
-  // warming → warming_pin_hours) AND stamp last_clickout_at, the only visible
+  // warming → warming_pin_minutes) AND stamp last_clickout_at, the only visible
   // warming-progress signal (Amazon hides sub-threshold tags). Two scoped UPDATEs so
   // each tier gets its own pin. Flag off ⇒ the V1 stable-only 24h extension below runs
   // byte-identical.
@@ -634,7 +634,7 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
   if (cfg?.mechanics_v2 && cfg.enabled) {
     const sb = getSupabaseAdmin();
     const stablePinIso = new Date(Date.now() + cfg.stable_pin_hours * 60 * 60 * 1000).toISOString();
-    const warmingPinIso = new Date(Date.now() + cfg.warming_pin_hours * 60 * 60 * 1000).toISOString();
+    const warmingPinIso = new Date(Date.now() + cfg.warming_pin_minutes * 60 * 1000).toISOString();
     // Stable held tag → long pin.
     await sb
       .from('tag_pool')
