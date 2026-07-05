@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS public.program_pool_config (
   visibility_threshold INT  NOT NULL DEFAULT 4,    -- orders for a tag to graduate to stable (per-market)
   soft_hold_minutes    INT  NOT NULL DEFAULT 10,   -- assignment hold before clickout (fast churn)
   stable_pin_hours     INT  NOT NULL DEFAULT 24,   -- pin duration after a stable tag's clickout
-  warming_pin_hours    INT  NOT NULL DEFAULT 4,    -- pin duration after a warming tag's clickout
+  warming_pin_minutes  INT  NOT NULL DEFAULT 20,   -- pin after a warming tag's clickout (sub-hour: cover one session, keep cycling)
   warming_target_m     INT  NOT NULL DEFAULT 4,    -- warming pool target W = (K - S) / m
   tag_prefix           TEXT NOT NULL,
   mechanics_v2         BOOL NOT NULL DEFAULT false, -- THE FLAG (off = exact V1 behavior)
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS public.program_pool_config (
 -- AE row, flag OFF (AE stays byte-identical until flipped on the shared DB).
 INSERT INTO public.program_pool_config
   (program, marketplace, currency, visibility_threshold, soft_hold_minutes,
-   stable_pin_hours, warming_pin_hours, warming_target_m, tag_prefix, mechanics_v2)
-VALUES ('ae', 'amazon.ae', 'AED', 4, 10, 24, 4, 4, 'twnrae', false)
+   stable_pin_hours, warming_pin_minutes, warming_target_m, tag_prefix, mechanics_v2)
+VALUES ('ae', 'amazon.ae', 'AED', 4, 10, 24, 20, 4, 'twnrae', false)
 ON CONFLICT (program) DO NOTHING;
 
 -- Warming-progress signal: set on clickout. The ONLY visible signal for sub-threshold
