@@ -225,80 +225,99 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
   return data;
 }
 
-// JP-3 (2026-07-06): the CATALOG axis. Each Amazon storefront has its own
-// listings, keyed (asin, marketplace). This map records each storefront's
-// NATIVE title language — the locale whose title already IS products.title, so
-// no overlay query is needed. AE listings are English; JP listings are
-// Japanese. Applying the product_translations overlay only when the requested
-// locale differs from the storefront's native language keeps the AE English
-// path byte-identical (ae+en → skip, exactly as before) while letting a JP
-// storefront show its English overlay on /best (jp+en → apply) and its Japanese
-// base title on /ja (jp+ja → skip). Unknown marketplaces default to English.
+// CONTENT-BY-ASIN model (2026-07-06, "max generalization"): a product's CONTENT
+// (title, WWL, image, …) is ONE row per asin — the English base — SHARED by every
+// program. `marketplace` is only a MEMBERSHIP axis on keyword_products (which
+// asins a program shows) + the derived link; it is NOT part of product identity.
+// This map records which storefronts are NON-English-native (their catalog was
+// scraped in another language), so on an English page we know to pull the English
+// overlay for their asins. English-native storefronts (ae/us/uk/sg/nl/…) skip the
+// overlay — English IS the base — keeping the hot AE path a single content read.
 const MARKETPLACE_NATIVE_LOCALE: Record<string, string> = { ae: 'en', jp: 'ja' };
 
-// Get products for a keyword
-// LIMIT: Returns max 10 products, ordered by rank
-// Buffer system: Scraper links 15 → Website shows 10 → Room for OOS/removals
+// Get products for a keyword.
+// LIMIT: Returns max 10 products, ordered by rank.
+// Buffer system: Scraper links 15 → Website shows 10 → room for OOS/removals.
+//
+// Reads in three steps so product CONTENT can be shared across programs:
+//   1. MEMBERSHIP — keyword_products for THIS program (marketplace) → the asins.
+//   2. CONTENT    — products by asin (NOT by marketplace). Schema-agnostic: while
+//      the legacy per-market rows still exist a shared asin may return >1 row, so
+//      we pick the canonical one (prefer 'ae' = the English base). After the DB
+//      collapse there is exactly one row per asin and the pick is a no-op.
+//   3. OVERLAY    — the requested language by (asin, locale), when the program is
+//      not English-native for that locale.
 export async function getProductsForKeyword(
   keywordId: number,
   locale: string = 'en',
-  marketplace: string = 'ae', // JP-3: which storefront catalog to serve (geo-driven)
+  marketplace: string = 'ae', // which program's catalog membership to serve (geo-driven)
 ): Promise<(Product & KeywordProduct)[]> {
-  const { data, error } = await supabase
+  // 1) MEMBERSHIP — which asins this program ranks for the keyword.
+  const { data: links, error } = await supabase
     .from('keyword_products')
-    .select('*, products(*)')
+    .select('asin, rank, price_at_scrape, scraped_at, validated_at')
     .eq('keyword_id', keywordId)
-    // JP-3 (2026-07-06): scope to ONE storefront's catalog. Without this filter
-    // a keyword that has both AE and JP links returns BOTH sets interleaved by
-    // rank — the JP pilot rows leaked Japanese products into the live AE render
-    // for 14 keywords. Default 'ae' keeps every existing AE page byte-identical;
-    // the composite FK (asin, marketplace) guarantees the embedded product row
-    // is same-storefront too.
     .eq('marketplace', marketplace)
     .order('rank')
     .limit(15); // Fetch 15 (buffer), will filter to 10
 
   if (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching keyword_products:', error);
     return [];
   }
+  const linkRows = links || [];
+  const asins = Array.from(new Set(linkRows.map(l => l.asin).filter(Boolean)));
+  if (asins.length === 0) return [];
 
-  // Filter out OOS products, then take top 10 (English titles, sanitized).
-  const products = (data || [])
-    .filter(item => item.products && !item.products.is_out_of_stock)
+  // 2) CONTENT — shared product rows by asin. Canonical pick (prefer 'ae' English
+  // base) covers the transition window where a shared asin still has per-market
+  // rows; post-collapse each asin has one row and this just returns it.
+  const { data: prodRows, error: pErr } = await supabase
+    .from('products')
+    .select('*')
+    .in('asin', asins);
+
+  if (pErr) {
+    console.error('Error fetching products:', pErr);
+    return [];
+  }
+  const canonical = new Map<string, Product>();
+  for (const p of (prodRows || []) as (Product & { marketplace?: string })[]) {
+    const cur = canonical.get(p.asin) as (Product & { marketplace?: string }) | undefined;
+    if (!cur || (p.marketplace === 'ae' && cur.marketplace !== 'ae')) {
+      canonical.set(p.asin, p);
+    }
+  }
+
+  // Join membership (rank order) + content; drop OOS; take top 10; sanitize title.
+  const products = linkRows
+    .map(l => {
+      const p = canonical.get(l.asin);
+      return p ? { ...(p as Product), ...l } : null;
+    })
+    .filter((p): p is Product & KeywordProduct => !!p && !p.is_out_of_stock)
     .slice(0, 10)
-    .map(item => ({
-      ...item.products,
-      ...item,
-      title: sanitizeProductTitle(item.products?.title ?? ''),
-      products: undefined
-    }));
+    .map(p => ({ ...p, title: sanitizeProductTitle(p.title ?? '') }));
 
-  // INTL1 Phase 2C: overlay translated product fields from product_translations
-  // (one shared table, keyed (asin, marketplace, locale)):
-  //   • title       ← the storefront's listing in `locale` (AE Arabic / JP English)
-  //   • wwl_points   ← our LLM translation (slice 4)
-  // Per-FIELD fallback: keep the base value when a localized one is missing
-  // (a product may have a localized title but no localized WWL yet, or vice-versa).
-  // JP-3 (2026-07-06): the overlay runs when the requested locale differs from
-  // the storefront's NATIVE language (see MARKETPLACE_NATIVE_LOCALE) — so AE/en
-  // still skips it (byte-identical), AE/ar applies the Arabic listing, JP/en
-  // applies the English overlay onto the Japanese base, and JP/ja skips it. The
-  // query is scoped to the SAME marketplace so overlays never cross storefronts.
+  // 3) OVERLAY — apply the requested language when this program isn't English-
+  // native for it. AE/en skips (English is the base → hot path stays one read);
+  // AE/ar applies the Arabic listing; JP/en applies the English render onto the
+  // Japanese-base JP asins; JP/ja skips (Japanese is the base). The overlay is
+  // read by (asin, locale) — content is shared by asin, not per marketplace.
   const nativeLocale = MARKETPLACE_NATIVE_LOCALE[marketplace] ?? 'en';
   if (locale !== nativeLocale && products.length > 0) {
-    const asins = products.map(p => p.asin).filter(Boolean);
+    const pa = products.map(p => p.asin).filter(Boolean);
     const { data: translations, error: tErr } = await supabase
       .from('product_translations')
       .select('asin, title, wwl_points')
-      .eq('marketplace', marketplace)
       .eq('locale', locale)
-      .in('asin', asins);
+      .in('asin', pa);
 
     if (tErr) {
       console.error('Error fetching product translations:', tErr);
     } else if (translations && translations.length > 0) {
-      const byAsin = new Map(translations.map(t => [t.asin, t]));
+      const byAsin = new Map<string, { title: string | null; wwl_points: unknown }>();
+      for (const t of translations) if (!byAsin.has(t.asin)) byAsin.set(t.asin, t);
       for (const p of products) {
         const tr = byAsin.get(p.asin);
         if (!tr) continue;
