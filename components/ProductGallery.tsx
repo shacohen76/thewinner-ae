@@ -7,6 +7,7 @@
 
 import Image from 'next/image';
 import { buildAffiliateUrl } from '@/lib/utils';
+import { useGeoCatalog } from './GeoCatalog';
 
 interface Product {
   asin: string;
@@ -19,7 +20,11 @@ interface ProductGalleryProps {
   products: Product[];
 }
 
-export default function ProductGallery({ products }: ProductGalleryProps) {
+export default function ProductGallery({ products: ssrProducts }: ProductGalleryProps) {
+  // JP-3: prefer the geo-swapped catalog (e.g. JP) when present; else SSR (AE).
+  const { gallery } = useGeoCatalog();
+  const products = gallery ?? ssrProducts;
+
   if (products.length === 0) return null;
 
   return (

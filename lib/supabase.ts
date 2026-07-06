@@ -225,17 +225,36 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
   return data;
 }
 
+// JP-3 (2026-07-06): the CATALOG axis. Each Amazon storefront has its own
+// listings, keyed (asin, marketplace). This map records each storefront's
+// NATIVE title language — the locale whose title already IS products.title, so
+// no overlay query is needed. AE listings are English; JP listings are
+// Japanese. Applying the product_translations overlay only when the requested
+// locale differs from the storefront's native language keeps the AE English
+// path byte-identical (ae+en → skip, exactly as before) while letting a JP
+// storefront show its English overlay on /best (jp+en → apply) and its Japanese
+// base title on /ja (jp+ja → skip). Unknown marketplaces default to English.
+const MARKETPLACE_NATIVE_LOCALE: Record<string, string> = { ae: 'en', jp: 'ja' };
+
 // Get products for a keyword
 // LIMIT: Returns max 10 products, ordered by rank
 // Buffer system: Scraper links 15 → Website shows 10 → Room for OOS/removals
 export async function getProductsForKeyword(
   keywordId: number,
   locale: string = 'en',
+  marketplace: string = 'ae', // JP-3: which storefront catalog to serve (geo-driven)
 ): Promise<(Product & KeywordProduct)[]> {
   const { data, error } = await supabase
     .from('keyword_products')
     .select('*, products(*)')
     .eq('keyword_id', keywordId)
+    // JP-3 (2026-07-06): scope to ONE storefront's catalog. Without this filter
+    // a keyword that has both AE and JP links returns BOTH sets interleaved by
+    // rank — the JP pilot rows leaked Japanese products into the live AE render
+    // for 14 keywords. Default 'ae' keeps every existing AE page byte-identical;
+    // the composite FK (asin, marketplace) guarantees the embedded product row
+    // is same-storefront too.
+    .eq('marketplace', marketplace)
     .order('rank')
     .limit(15); // Fetch 15 (buffer), will filter to 10
 
@@ -255,18 +274,24 @@ export async function getProductsForKeyword(
       products: undefined
     }));
 
-  // INTL1 Phase 2C: for non-English locales, overlay translated product fields
-  // from product_translations (one shared table, `locale` column):
-  //   • title       ← Creators API Arabic listing (slice 3)
+  // INTL1 Phase 2C: overlay translated product fields from product_translations
+  // (one shared table, keyed (asin, marketplace, locale)):
+  //   • title       ← the storefront's listing in `locale` (AE Arabic / JP English)
   //   • wwl_points   ← our LLM translation (slice 4)
-  // Per-FIELD fallback: keep the English value when a localized one is missing
-  // (a product may have an Arabic title but no Arabic WWL yet, or vice-versa).
-  // English path ('en') is untouched — it never runs this extra query.
-  if (locale !== 'en' && products.length > 0) {
+  // Per-FIELD fallback: keep the base value when a localized one is missing
+  // (a product may have a localized title but no localized WWL yet, or vice-versa).
+  // JP-3 (2026-07-06): the overlay runs when the requested locale differs from
+  // the storefront's NATIVE language (see MARKETPLACE_NATIVE_LOCALE) — so AE/en
+  // still skips it (byte-identical), AE/ar applies the Arabic listing, JP/en
+  // applies the English overlay onto the Japanese base, and JP/ja skips it. The
+  // query is scoped to the SAME marketplace so overlays never cross storefronts.
+  const nativeLocale = MARKETPLACE_NATIVE_LOCALE[marketplace] ?? 'en';
+  if (locale !== nativeLocale && products.length > 0) {
     const asins = products.map(p => p.asin).filter(Boolean);
     const { data: translations, error: tErr } = await supabase
       .from('product_translations')
       .select('asin, title, wwl_points')
+      .eq('marketplace', marketplace)
       .eq('locale', locale)
       .in('asin', asins);
 
