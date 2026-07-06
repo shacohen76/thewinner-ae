@@ -69,6 +69,11 @@ function isSearchBot(userAgent: string | null): boolean {
   return ALLOWED_BOT_PATTERNS.some(p => userAgent.includes(p));
 }
 
+// INTL1 JP Phase 2 (2026-07-06): the non-English locale URL prefixes (['ar','ja'])
+// derived from routing so adding a locale needs no edit here. English is the
+// default and prefix-less, so its paths never start with one of these.
+const LOCALIZED_PREFIXES: string[] = routing.locales.filter((l) => l !== routing.defaultLocale);
+
 export function middleware(request: NextRequest) {
   const country = request.headers.get('x-vercel-ip-country') || '';
   const userAgent = request.headers.get('user-agent') || '';
@@ -90,22 +95,27 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  // ─── INTL1 Phase 2C: restrict the /ar tree to the curated Arabic set ──────
+  // ─── INTL1 Phase 2C: restrict a localized tree to the curated best-page set ──
   // /admin + /review are English-only with exactly ONE route (no localization,
-  // ever) → permanent 308 to the prefix-less English path. /blog IS Arabic-
+  // ever) → permanent 308 to the prefix-less English path. /blog IS localization-
   // bound but only in Phase 4 (roadmap §4.9) → temporary 307 until then.
-  // Stripping the leading "/ar" yields the English (prefix-less) equivalent.
-  // English URLs never start with "/ar", so they are untouched. The redirect
-  // runs BEFORE next-intl so these paths never resolve an /ar page.
-  const arPath = request.nextUrl.pathname;
-  const enOnlyForever =
-    arPath === '/ar/admin' || arPath.startsWith('/ar/admin/') ||
-    arPath === '/ar/review' || arPath.startsWith('/ar/review/');
-  const arDeferred = arPath === '/ar/blog' || arPath.startsWith('/ar/blog/');
-  if (enOnlyForever || arDeferred) {
-    const url = request.nextUrl.clone();
-    url.pathname = arPath.replace(/^\/ar/, '') || '/';
-    return NextResponse.redirect(url, enOnlyForever ? 308 : 307);
+  // Stripping the leading "/<locale>" yields the English (prefix-less) equivalent.
+  // English URLs never start with a locale prefix, so they are untouched. The
+  // redirect runs BEFORE next-intl so these paths never resolve a localized page.
+  // INTL1 JP Phase 2 (2026-07-06): applies to every non-English prefix (ar, ja, …).
+  const reqPath = request.nextUrl.pathname;
+  const localeSeg = reqPath.split('/')[1];
+  if (LOCALIZED_PREFIXES.includes(localeSeg)) {
+    const rest = reqPath.slice(localeSeg.length + 1); // strip "/<locale>" → "/admin" | "" | …
+    const enOnlyForever =
+      rest === '/admin' || rest.startsWith('/admin/') ||
+      rest === '/review' || rest.startsWith('/review/');
+    const deferred = rest === '/blog' || rest.startsWith('/blog/');
+    if (enOnlyForever || deferred) {
+      const url = request.nextUrl.clone();
+      url.pathname = rest || '/';
+      return NextResponse.redirect(url, enOnlyForever ? 308 : 307);
+    }
   }
 
   // ─── INTL1 locale routing ────────────────────────────────────────────────
@@ -113,19 +123,21 @@ export function middleware(request: NextRequest) {
   // then attach the geo cookie to THIS response so both concerns coexist.
   const response = intlMiddleware(request);
 
-  // ─── INTL1 Phase 4: Arabic subtree NOINDEX, EXCEPT /ar/best/* ─────────────
-  // Indexing is now DB-driven (no baked allowlist): an /ar/best/<slug> page
-  // decides its own robots in generateMetadata — INDEX if the keyword has an
-  // Arabic translation, else NOINDEX — so translating a page (push to DB) makes
-  // it indexable automatically, no deploy. We therefore let /ar/best/* through
-  // here (no edge header → the page's own robots meta is authoritative) and
-  // blanket-noindex the rest of /ar (home, category, about, …) which are not
-  // indexing targets. English is prefix-less, so its pathname never starts with
-  // "/ar" → English untouched.
+  // ─── INTL1 Phase 4: localized subtree NOINDEX, EXCEPT /<locale>/best/* ─────
+  // Indexing is now DB-driven (no baked allowlist): a /<locale>/best/<slug> page
+  // decides its own robots in generateMetadata — INDEX if the keyword has a
+  // translation (noun + BYG) in that locale, else NOINDEX — so translating a page
+  // (push to DB) makes it indexable automatically, no deploy. We therefore let
+  // /<locale>/best/* through here (no edge header → the page's own robots meta is
+  // authoritative) and blanket-noindex the rest of the localized tree (home,
+  // category, about, …) which are not indexing targets. English is prefix-less,
+  // so its pathname never starts with a locale prefix → English untouched.
+  // INTL1 JP Phase 2 (2026-07-06): generalized from ar-only to every non-English prefix.
   const path = request.nextUrl.pathname;
-  if (path === '/ar' || path.startsWith('/ar/')) {
-    const isArBestPage = /^\/ar\/best\/[^/]+\/?$/.test(path);
-    if (!isArBestPage) {
+  const seg = path.split('/')[1];
+  if (LOCALIZED_PREFIXES.includes(seg)) {
+    const isLocalizedBestPage = new RegExp(`^/${seg}/best/[^/]+/?$`).test(path);
+    if (!isLocalizedBestPage) {
       response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     }
   }

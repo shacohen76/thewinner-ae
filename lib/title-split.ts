@@ -136,12 +136,89 @@ function splitArabicTitle(fullTitle: string): SplitTitle {
   return applySoftCap(t, null);
 }
 
+// ─── Japanese (INTL1 JP Phase 2, 2026-07-06) ─────────────────────────────────
+// Japanese has no case and uses full-width punctuation; amazon.co.jp titles are
+// long and often space- or 、-separated, frequently with a 【…】 tag prefix.
+// Mirror the Arabic rule with Japanese delimiters and a CJK-tuned cap (Japanese
+// characters are information-dense, so a shorter headline reads cleanly).
+
+const JA_MIN_PREFIX = 5; // don't make a headline shorter than this
+const JA_SOFT_CAP = 34; // soft max headline length; longer gets a smart break
+
+// Clean break candidates for capping: full/half-width comma, full-width pipe, or
+// a spaced dash/pipe (half- or full-width space). Bare spaces are handled as a
+// last-resort word boundary in applyJaSoftCap.
+const JA_BREAK_RE = /([、，,｜])|((?:\s|　)+[-–—|]\s*)/g;
+
+// If `short` exceeds JA_SOFT_CAP, move the overflow into the read-more. Prefer
+// the LAST clean delimiter at >= JA_MIN_PREFIX and <= JA_SOFT_CAP; else the last
+// (half/full-width) space before the cap; else a hard cut.
+function applyJaSoftCap(short: string, rest: string | null): SplitTitle {
+  if (short.length <= JA_SOFT_CAP) return { shortTitle: short, restTitle: rest };
+
+  let headEnd = -1;
+  let tailStart = -1;
+  for (const m of Array.from(short.matchAll(JA_BREAK_RE))) {
+    const end = m.index ?? 0; // headline ends BEFORE the delimiter
+    if (end >= JA_MIN_PREFIX && end <= JA_SOFT_CAP) {
+      headEnd = end;
+      tailStart = end + m[0].length; // skip the delimiter (and its spaces)
+    } else if (end > JA_SOFT_CAP) {
+      break; // matches are in order; past the cap
+    }
+  }
+
+  let head: string;
+  let tail: string;
+  if (headEnd >= JA_MIN_PREFIX) {
+    head = short.substring(0, headEnd).trim();
+    tail = short.substring(tailStart).trim();
+  } else {
+    const sp = Math.max(short.lastIndexOf(' ', JA_SOFT_CAP), short.lastIndexOf('　', JA_SOFT_CAP));
+    if (sp >= JA_MIN_PREFIX) {
+      head = short.substring(0, sp).trim();
+      tail = short.substring(sp + 1).trim();
+    } else {
+      head = short.substring(0, JA_SOFT_CAP).trim();
+      tail = short.substring(JA_SOFT_CAP).trim();
+    }
+  }
+
+  const restTitle = [tail, rest].filter(Boolean).join(' ') || null;
+  return { shortTitle: head, restTitle };
+}
+
+function splitJapaneseTitle(fullTitle: string): SplitTitle {
+  const t = (fullTitle || '').trim();
+  if (!t) return { shortTitle: t, restTitle: null };
+
+  // (1) First full/half-width comma or full-width pipe at >= JA_MIN_PREFIX.
+  const seps = ['、', '，', ',', '｜'].map((c) => t.indexOf(c)).filter((i) => i >= JA_MIN_PREFIX);
+  if (seps.length > 0) {
+    const idx = Math.min(...seps);
+    return applyJaSoftCap(t.substring(0, idx).trim(), t.substring(idx + 1).trim() || null);
+  }
+
+  // (2) Spaced dash/pipe: " - ", " – ", " — ", " | " (half- or full-width space).
+  const spacedBreak = t.match(/^([\s\S]{5,}?)(?:\s|　)+[-–—|]\s*([\s\S]*)/);
+  if (spacedBreak) {
+    return applyJaSoftCap(spacedBreak[1].trim(), spacedBreak[2].trim() || null);
+  }
+
+  // (3) Fallback: long, delimiter-less title → whole thing is the headline, then
+  //     the smart cap pulls any overflow into the read-more.
+  return applyJaSoftCap(t, null);
+}
+
 // ─── Dispatcher ──────────────────────────────────────────────────────────────
 
 /**
  * Locale-aware title split. English (default) is byte-identical to the original
- * ProductCard rule; 'ar' uses the validated Arabic rule with the soft cap.
+ * ProductCard rule; 'ar' uses the validated Arabic rule with the soft cap; 'ja'
+ * uses the Japanese full-width-aware rule (INTL1 JP Phase 2).
  */
 export function splitTitle(fullTitle: string, locale: string): SplitTitle {
-  return locale === 'ar' ? splitArabicTitle(fullTitle) : splitEnglishTitle(fullTitle);
+  if (locale === 'ar') return splitArabicTitle(fullTitle);
+  if (locale === 'ja') return splitJapaneseTitle(fullTitle);
+  return splitEnglishTitle(fullTitle);
 }

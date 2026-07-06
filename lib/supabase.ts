@@ -374,12 +374,15 @@ export function hasBuyingGuide(qa: unknown): boolean {
   return false;
 }
 
-// INTL1 (DB-driven auto-index): the set of /best slugs READY to index = those
-// with an Arabic noun AND a non-empty Arabic BYG. This REPLACES the baked
-// allowlist — the sitemap includes, and the /ar/best page sets robots:index
-// for, exactly these slugs. So a page indexes automatically once its noun+BYG
-// are published (Stage 1 + Stage 2), no deploy. Lowercased to match URL slugs.
-export async function getArTranslatedSlugs(): Promise<Set<string>> {
+// INTL1 (DB-driven auto-index): the set of /best slugs READY to index for a
+// given locale = those with a noun AND a non-empty BYG in that locale. This
+// REPLACES the baked allowlist — the sitemap includes, and the /<locale>/best
+// page sets robots:index for, exactly these slugs. So a page indexes
+// automatically once its noun+BYG are published (Stage 1 + Stage 2), no deploy.
+// Lowercased to match URL slugs.
+// INTL1 JP Phase 2 (2026-07-06): parameterized by `locale` (was ar-only) so /ja
+// reuses the identical gate. Callers pass 'ar' or 'ja'.
+export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
   const slugs = new Set<string>();
   let from = 0;
   const page = 1000;
@@ -387,10 +390,10 @@ export async function getArTranslatedSlugs(): Promise<Set<string>> {
     const { data, error } = await supabase
       .from('keyword_translations')
       .select('qa_guide, keywords(slug)')
-      .eq('locale', 'ar')
+      .eq('locale', locale)
       .range(from, from + page - 1);
     if (error) {
-      console.error('Error fetching ar translated slugs:', error);
+      console.error(`Error fetching ${locale} translated slugs:`, error);
       break;
     }
     // supabase-js types the embedded relation as an array; at runtime a to-one

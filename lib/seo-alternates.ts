@@ -21,35 +21,46 @@
 // is emitted RELATIVE so it resolves against `metadataBase` (the English
 // canonical host) exactly as the previous inline blocks did. With the allowlist
 // empty, the English output is byte-identical to before → PR 3.1 is a no-op.
+//
+// INTL1 JP Phase 2 (2026-07-06): generalized from a single `arIndexed` boolean to
+// an `indexedLocales` list so EACH non-English page (ar, ja, …) that is indexable
+// gets a reciprocal hreflang. The EN output stays byte-identical while no `ja`
+// pages are indexed yet — 'ja' only joins the cluster once its noun+BYG land.
 // ============================================
 
 import type { Metadata } from 'next';
 import { CONFIG } from './utils';
 
-const toArPath = (path: string): string => (path === '/' ? '/ar' : `/ar${path}`);
+// Prefix-less English path → the localized path for `locale` (e.g. '/ar/best/x').
+const toLocalePath = (path: string, locale: string): string =>
+  path === '/' ? `/${locale}` : `/${locale}${path}`;
 
-// `arIndexed` = does an indexable Arabic version of this page exist (DB-driven:
-// the caller checks for an Arabic translation). When true we add the reciprocal
-// `ar` hreflang; when false the cluster is en-AE + x-default only (byte-identical
-// to the pre-Arabic English output). Never list a non-existent/noindex `ar`.
+// `indexedLocales` = the non-English locales whose version of THIS page is
+// indexable (DB-driven: the caller checks each locale's translation for
+// noun + BYG). We add a reciprocal hreflang for each; a locale that is not
+// indexed is NEVER listed ("no return tags" for noindex pages). With the list
+// empty the cluster is en-AE + x-default only — byte-identical to the pre-i18n
+// English output.
 export function buildAlternates(
   path: string,
   locale: string,
-  arIndexed = false,
+  indexedLocales: string[] = [],
 ): Metadata['alternates'] {
   const base = CONFIG.canonicalUrl;
   const enAbs = path === '/' ? base : `${base}${path}`;
-  const arAbs = `${base}${toArPath(path)}`;
 
-  // Order preserved as en-AE → (ar) → x-default.
+  // Order preserved as en-AE → (localized…) → x-default. The hreflang key is the
+  // plain locale code (ar, ja); en uses the region-qualified 'en-AE'.
   const languages: Record<string, string> = { 'en-AE': enAbs };
-  if (arIndexed) {
-    languages['ar'] = arAbs;
+  for (const loc of indexedLocales) {
+    languages[loc] = `${base}${toLocalePath(path, loc)}`;
   }
   languages['x-default'] = enAbs;
 
   return {
-    canonical: locale === 'ar' ? toArPath(path) : path,
+    // Self-canonical per locale: English → prefix-less path; any localized page
+    // → its own /<locale> URL. NEVER localized → English (that de-indexes it).
+    canonical: locale === 'en' ? path : toLocalePath(path, locale),
     languages,
   };
 }

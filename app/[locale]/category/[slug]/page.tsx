@@ -86,17 +86,19 @@ export default async function CategoryPage({ params }: PageProps) {
   const slug = params.slug;
 
   // INTL1 slice 5b: localize category names + page chrome. Chrome strings go
-  // through t() in both locales (en values in messages are byte-exact); the
-  // category NAMES use the ar dictionary only, with English from the existing
+  // through t() in every locale (en values in messages are byte-exact); the
+  // category NAMES use the localized dictionary, with English from the existing
   // TS constants (English path unchanged).
-  const isAr = params.locale === 'ar';
+  // INTL1 JP Phase 2 (2026-07-06): was ar-only; now any non-English locale
+  // (ja, …) uses its own dictionary for category/subcategory names.
+  const isLocalized = params.locale !== 'en';
   const tPage = await getTranslations({ locale: params.locale, namespace: 'CategoryPage' });
   const tCat = await getTranslations({ locale: params.locale, namespace: 'Categories' });
   const tDesc = await getTranslations({ locale: params.locale, namespace: 'CategoryDesc' });
   const tSub = await getTranslations({ locale: params.locale, namespace: 'Subcategories' });
-  const catLabel = (s: string, fallback: string) => (isAr ? tCat(s) : fallback);
-  const catDesc = (s: string, fallback: string) => (isAr ? tDesc(s) : fallback);
-  const subLabel = (s: string, fallback: string) => (isAr ? tSub(s) : fallback);
+  const catLabel = (s: string, fallback: string) => (isLocalized ? tCat(s) : fallback);
+  const catDesc = (s: string, fallback: string) => (isLocalized ? tDesc(s) : fallback);
+  const subLabel = (s: string, fallback: string) => (isLocalized ? tSub(s) : fallback);
 
   // ── MODE 1: Main category → show subcategory cards ──
   if (isMainCategory(slug)) {

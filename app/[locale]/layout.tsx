@@ -84,12 +84,13 @@ export const metadata: Metadata = {
   },
 };
 
-// Locale → <html> attributes. Phase 1 only ships `en`; `ar` is pre-mapped so
-// Phase 2 (RTL Arabic) is a one-line array change in i18n/routing.ts with no
-// edit here.
+// Locale → <html> attributes. `ar` is RTL; `ja` is LTR (JP Phase 2, 2026-07-06 —
+// lang 'ja', dir 'ltr', no RTL work). Adding a locale is one array entry here +
+// one in i18n/routing.ts.
 const LOCALE_HTML: Record<string, { lang: string; dir: 'ltr' | 'rtl' }> = {
   en: { lang: 'en-AE', dir: 'ltr' },
   ar: { lang: 'ar-AE', dir: 'rtl' },
+  ja: { lang: 'ja', dir: 'ltr' },
 };
 
 // Statically pre-render the document shell for every configured locale.

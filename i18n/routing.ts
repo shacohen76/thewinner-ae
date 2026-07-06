@@ -32,7 +32,11 @@ export const routing = defineRouting({
   // 'ar' is served under /ar/* and is NOINDEX during Phase 2 (enforced by an
   // X-Robots-Tag header in middleware.ts, not per-page metadata, so the whole
   // /ar subtree is private regardless of any page's own robots). Add 'pt', … later.
-  locales: ['en', 'ar'],
+  // INTL1 JP Phase 2 (2026-07-06): Japanese ('ja') added — SAME pattern as 'ar'
+  // (served under /ja/*, LTR, DB-driven auto-index gated on ja noun+BYG; the
+  // whole /ja subtree is noindex EXCEPT /ja/best/* per middleware). Language is a
+  // URL axis over the geo-driven JP catalog (catalog = f(geo), language = f(URL)).
+  locales: ['en', 'ar', 'ja'],
   defaultLocale: 'en',
   // English prefix-less (rewrite); non-default locales get a /xx prefix.
   localePrefix: 'as-needed',

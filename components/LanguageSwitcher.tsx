@@ -27,6 +27,13 @@ import { routing } from '@/i18n/routing';
 const LANGUAGE_NAMES: Record<string, string> = {
   en: 'English',
   ar: 'العربية',
+  ja: '日本語', // INTL1 JP Phase 2 (2026-07-06)
+};
+
+// Localized "Change language" for the globe button's aria-label; English default.
+const CHANGE_LANGUAGE_LABEL: Record<string, string> = {
+  ar: 'تغيير اللغة',
+  ja: '言語を変更',
 };
 
 export default function LanguageSwitcher({ className = '' }: { className?: string }) {
@@ -62,7 +69,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open}
-        aria-label={locale === 'ar' ? 'تغيير اللغة' : 'Change language'}
+        aria-label={CHANGE_LANGUAGE_LABEL[locale] ?? 'Change language'}
         className="flex items-center text-gray-600 hover:text-blue-600 transition-colors p-1"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
