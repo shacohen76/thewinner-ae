@@ -6,6 +6,7 @@
 // ============================================
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { buildAffiliateUrl } from '@/lib/utils';
 import { useGeoCatalog } from './GeoCatalog';
 
@@ -24,6 +25,10 @@ export default function ProductGallery({ products: ssrProducts }: ProductGallery
   // JP-3: prefer the geo-swapped catalog (e.g. JP) when present; else SSR (AE).
   const { gallery } = useGeoCatalog();
   const products = gallery ?? ssrProducts;
+  // INTL1 JP Phase 2 (2026-07-06): localize the carousel heading (was hardcoded
+  // English "Quick Pick", which leaked onto /ar and /ja). English value in
+  // messages is byte-exact, so en output is unchanged.
+  const t = useTranslations('BestPage');
 
   if (products.length === 0) return null;
 
@@ -31,7 +36,7 @@ export default function ProductGallery({ products: ssrProducts }: ProductGallery
     <section className="bg-gray-50 border-t py-12">
       <div className="max-w-6xl mx-auto px-4 overflow-hidden">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
-          Quick Pick
+          {t('quickPick')}
         </h2>
 
         <div className="carousel-scroll flex gap-4 pb-4">

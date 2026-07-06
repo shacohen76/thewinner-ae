@@ -27,6 +27,12 @@ import {
   generateArabicPageTitle,
   generateArabicPageDescription,
 } from '@/lib/title-ar';
+import {
+  generateJapaneseHeadline,
+  generateJapaneseSubHeadline,
+  generateJapanesePageTitle,
+  generateJapanesePageDescription,
+} from '@/lib/title-ja';
 import { buildAlternates } from '@/lib/seo-alternates';
 import { getTranslations } from 'next-intl/server';
 
@@ -69,20 +75,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Not Found' };
   }
 
-  const isAr = params.locale === 'ar';
   // INTL1 (DB-driven auto-index, no allowlist). Translation fills in stages:
   // noun first (qa_guide empty), then BYG, then WWL. A page is READY TO INDEX
-  // only once its editorial text is Arabic = noun AND BYG present (WWL can lag,
-  // English bullets fall back). `arIndexed` drives BOTH the reciprocal `ar`
-  // hreflang AND (on /ar) robots index/noindex — so a page indexes
-  // automatically once noun+BYG are published, no deploy.
-  const arTr = await getKeywordTranslation(keyword.id, 'ar');
+  // only once its editorial text is localized = noun AND BYG present (WWL can
+  // lag, English bullets fall back). We compute this for EVERY non-English locale
+  // (ar, ja) because the reciprocal hreflang cluster is emitted identically on
+  // every version of the page; on a localized page the same flag also drives its
+  // own robots index/noindex. So a page indexes automatically once noun+BYG are
+  // published, no deploy.
+  // INTL1 JP Phase 2 (2026-07-06): added the parallel `ja` lookup + generic dispatch.
+  const [arTr, jaTr] = await Promise.all([
+    getKeywordTranslation(keyword.id, 'ar'),
+    getKeywordTranslation(keyword.id, 'ja'),
+  ]);
   const nounAr = arTr?.keyword_text?.trim() || null;
+  const nounJa = jaTr?.keyword_text?.trim() || null;
   const arIndexed = !!nounAr && hasBuyingGuide(arTr?.qa_guide);
-  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, arIndexed);
-  const ogUrl = `${CONFIG.canonicalUrl}${isAr ? '/ar' : ''}/best/${params.slug}`;
+  const jaIndexed = !!nounJa && hasBuyingGuide(jaTr?.qa_guide);
+  const indexedLocales = [
+    ...(arIndexed ? ['ar'] : []),
+    ...(jaIndexed ? ['ja'] : []),
+  ];
+  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, indexedLocales);
+  const localePrefix = params.locale === 'en' ? '' : `/${params.locale}`;
+  const ogUrl = `${CONFIG.canonicalUrl}${localePrefix}/best/${params.slug}`;
 
-  if (isAr) {
+  // Localized page (any non-English locale) with NO noun yet → English fallback
+  // content, NOINDEX (keep an untranslated localized page out of search).
+  const englishFallbackNoindex = (): Metadata => ({
+    title: generatePageTitle(keyword.keyword_text),
+    description: generatePageDescription(keyword.keyword_text),
+    alternates,
+    robots: { index: false, follow: true },
+    openGraph: {
+      title: generatePageTitle(keyword.keyword_text),
+      description: generatePageDescription(keyword.keyword_text),
+      url: ogUrl,
+    },
+  });
+
+  if (params.locale === 'ar') {
     // The Arabic <title>/desc show as soon as the noun exists; but the page is
     // INDEXED only when arIndexed (noun + BYG). title.absolute bypasses the
     // layout's "%s | The Winners" template.
@@ -97,19 +129,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         openGraph: { title: arTitle, description: arDesc, url: ogUrl },
       };
     }
-    // Arabic page with NO translation yet → English fallback content, NOINDEX
-    // (keep an untranslated /ar page out of search).
-    return {
-      title: generatePageTitle(keyword.keyword_text),
-      description: generatePageDescription(keyword.keyword_text),
-      alternates,
-      robots: { index: false, follow: true },
-      openGraph: {
-        title: generatePageTitle(keyword.keyword_text),
-        description: generatePageDescription(keyword.keyword_text),
-        url: ogUrl,
-      },
-    };
+    return englishFallbackNoindex();
+  }
+
+  if (params.locale === 'ja') {
+    // Japanese <title>/desc show once the noun exists; INDEXED only when
+    // jaIndexed (noun + BYG). Same gate as Arabic — no per-page deploy.
+    if (nounJa) {
+      const jaTitle = generateJapanesePageTitle(nounJa, getCurrentYear());
+      const jaDesc = generateJapanesePageDescription(nounJa);
+      return {
+        title: { absolute: jaTitle },
+        description: jaDesc,
+        alternates,
+        robots: { index: jaIndexed, follow: true },
+        openGraph: { title: jaTitle, description: jaDesc, url: ogUrl },
+      };
+    }
+    return englishFallbackNoindex();
   }
 
   // English — unchanged (no robots key → layout default index applies).
@@ -181,18 +218,26 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     rank: p.rank,
   }));
 
-  // INTL1 slice 5: Arabic hero from the stored noun phrase (nounAr) via the
-  // native-confirmed templates. English path is unchanged when there's no ar
-  // translation (nounAr stays null → English generators).
-  const isAr = params.locale === 'ar';
-  const nounAr = (isAr && translation?.keyword_text) ? translation.keyword_text : null;
-  const headingName = nounAr ?? toTitleCase(keyword.keyword_text);
-  const mainHeadline = nounAr
-    ? generateArabicHeadline(nounAr, currentYear)
-    : generateEnglishHeadline(keyword.keyword_text, currentYear);
-  const subHeadline = nounAr
-    ? generateArabicSubHeadline(nounAr)
-    : generateSubHeadline(keyword.keyword_text);
+  // INTL1 slice 5 / JP Phase 2 (2026-07-06): localized hero from the stored noun
+  // phrase via the native-confirmed templates, dispatched by locale. English path
+  // is unchanged when there's no localized translation (noun stays null → English
+  // generators). `translation` above was fetched for params.locale.
+  const noun = (params.locale !== 'en' && translation?.keyword_text)
+    ? translation.keyword_text
+    : null;
+  const headingName = noun ?? toTitleCase(keyword.keyword_text);
+  let mainHeadline: string;
+  let subHeadline: string;
+  if (noun && params.locale === 'ja') {
+    mainHeadline = generateJapaneseHeadline(noun, currentYear);
+    subHeadline = generateJapaneseSubHeadline(noun);
+  } else if (noun && params.locale === 'ar') {
+    mainHeadline = generateArabicHeadline(noun, currentYear);
+    subHeadline = generateArabicSubHeadline(noun);
+  } else {
+    mainHeadline = generateEnglishHeadline(keyword.keyword_text, currentYear);
+    subHeadline = generateSubHeadline(keyword.keyword_text);
+  }
   const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
   return (

@@ -6,7 +6,7 @@
 // ============================================
 
 import { MetadataRoute } from 'next';
-import { getAllKeywords, getArTranslatedSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 
@@ -72,12 +72,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic keyword pages from database
   let keywordPages: MetadataRoute.Sitemap = [];
 
-  // INTL1 Phase 4: Arabic /best pages. DB-driven (no allowlist) — include the
-  // /ar/best URL for every slug that has an Arabic translation, so translating a
-  // page (push to DB) adds it to the sitemap automatically, no deploy. Same
-  // per-domain host (baseUrl) as the English entries; hreflang lives in the page
-  // <link> tags. Same source the page robots + hreflang read, so they agree.
-  let arKeywordPages: MetadataRoute.Sitemap = [];
+  // INTL1: localized /best pages. DB-driven (no allowlist) — include the
+  // /<locale>/best URL for every slug that has a translation (noun + BYG) in that
+  // locale, so translating a page (push to DB) adds it to the sitemap
+  // automatically, no deploy. Same per-domain host (baseUrl) as the English
+  // entries; hreflang lives in the page <link> tags. Same source the page
+  // robots + hreflang read, so they agree.
+  // INTL1 JP Phase 2 (2026-07-06): generalized from ar-only to a locale list so
+  // /ja is emitted the same way. Add a locale here when it launches.
+  const INDEXABLE_LOCALES = ['ar', 'ja'];
+  let localizedKeywordPages: MetadataRoute.Sitemap = [];
 
   try {
     const keywords = await getAllKeywords();
@@ -87,24 +91,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     }));
-    const arSlugs = await getArTranslatedSlugs();
-    // Dedupe by slug: the keywords table can hold >1 row for the same slug
-    // (e.g. casing variants), which would otherwise emit a duplicate /ar URL.
-    const seenArSlugs = new Set<string>();
-    arKeywordPages = keywords
-      .filter((keyword) => arSlugs.has(keyword.slug.toLowerCase()))
-      .filter((keyword) => {
-        const s = keyword.slug.toLowerCase();
-        if (seenArSlugs.has(s)) return false;
-        seenArSlugs.add(s);
-        return true;
-      })
-      .map((keyword) => ({
-        url: `${baseUrl}/ar/best/${encodeURIComponent(keyword.slug)}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-      }));
+
+    for (const locale of INDEXABLE_LOCALES) {
+      const slugs = await getTranslatedSlugs(locale);
+      // Dedupe by slug: the keywords table can hold >1 row for the same slug
+      // (e.g. casing variants), which would otherwise emit a duplicate URL.
+      const seen = new Set<string>();
+      const pages = keywords
+        .filter((keyword) => slugs.has(keyword.slug.toLowerCase()))
+        .filter((keyword) => {
+          const s = keyword.slug.toLowerCase();
+          if (seen.has(s)) return false;
+          seen.add(s);
+          return true;
+        })
+        .map((keyword) => ({
+          url: `${baseUrl}/${locale}/best/${encodeURIComponent(keyword.slug)}`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.9,
+        }));
+      localizedKeywordPages = [...localizedKeywordPages, ...pages];
+    }
   } catch (error) {
     console.error('Error fetching keywords for sitemap:', error);
   }
@@ -118,5 +126,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages, ...arKeywordPages, ...blogPages];
+  return [...staticPages, ...mainCategoryPages, ...subcategoryPages, ...keywordPages, ...localizedKeywordPages, ...blogPages];
 }

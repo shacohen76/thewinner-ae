@@ -45,8 +45,10 @@ export default function BackToTopLink({ keyword }: BackToTopLinkProps) {
     }
   }, []);
 
-  // /ar: fixed Arabic (geo names are English-only in geo-config, so no geo swap).
-  if (locale === 'ar') {
+  // Localized (non-English) locales: use the translated "back to top" string with
+  // NO geo swap (geo names are English-only in geo-config). INTL1 JP Phase 2
+  // (2026-07-06): was ar-only; now covers ja and any future locale.
+  if (locale !== 'en') {
     return (
       <a
         href="#top"

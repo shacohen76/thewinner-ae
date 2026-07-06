@@ -1,0 +1,215 @@
+{
+  "Nav": {
+    "categories": "カテゴリー",
+    "about": "私たちについて",
+    "contact": "お問い合わせ",
+    "blog": "ブログ",
+    "home": "ホーム"
+  },
+  "Categories": {
+    "appliances-main": "家電",
+    "kitchen-main": "キッチン・コーヒー",
+    "computers-main": "パソコン・スマホ",
+    "entertainment-main": "テレビ・オーディオ",
+    "care-main": "美容・ケア・ファミリー",
+    "hobbies-main": "ホビー・レジャー",
+    "home-main": "ホーム・ガーデン",
+    "other-main": "その他"
+  },
+  "Footer": {
+    "categories": "カテゴリー",
+    "popular": "人気",
+    "info": "情報",
+    "tagline": "製品比較のリーディングサイト。あなたにぴったりの製品選びをお手伝いします。",
+    "popularItems": {
+      "portable-speakers": "ポータブルスピーカー",
+      "coffee-machines": "コーヒーメーカー",
+      "washing-machines": "洗濯機",
+      "televisions": "テレビ"
+    },
+    "about": "私たちについて",
+    "blog": "ブログ",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "disclosure": "免責事項: 当サイトは、ユーザーに最良の結果を提供するため、優良なパートナーと提携しています。当サイトは、ユーザーに代わってではなく別途、手数料を受け取る場合があります。Amazonアソシエイトとして、当サイトは適格販売により収入を得ています。何よりも、常に誠実さと信頼を第一に考えています。",
+    "copyright": "© {year} {siteName} — {tagline}。無断転載を禁じます。",
+    "trademark": "Amazonおよびそのロゴは、Amazon.com, Inc.またはその関連会社の商標です。"
+  },
+  "ProductCard": {
+    "topPick": "一番のおすすめ",
+    "discounted": "本日限定セール",
+    "whyWeLoveIt": "おすすめの理由",
+    "details": "詳細:",
+    "showMore": "もっと見る",
+    "showLess": "閉じる",
+    "showOffer": "価格を見る",
+    "interested": "🔥 {count}人が注目",
+    "defaultWwl": "このカテゴリーのおすすめ製品",
+    "scoreLabels": {
+      "exceptional": "極めて優秀",
+      "excellent": "優秀",
+      "veryGood": "とても良い",
+      "good": "良い"
+    }
+  },
+  "Cookie": {
+    "consent": "当サイトでは、訪問者のご利用状況を把握し、マーケティングの効果を測定するためにCookieを使用しています。以下からご希望をお選びください。設定はフッターからいつでも変更できます。",
+    "privacyPolicy": "プライバシーポリシー",
+    "rejectAll": "すべて拒否",
+    "acceptAll": "すべて許可",
+    "settings": "Cookie設定"
+  },
+  "ProductList": {
+    "sort": "並び替え:",
+    "recommended": "おすすめ順",
+    "lowestPrice": "価格の安い順",
+    "emptyTitle": "製品がまだありません",
+    "emptyBody": "このカテゴリーに製品を追加しています"
+  },
+  "Share": {
+    "button": "共有",
+    "label": "このページを共有",
+    "copied": "✓ リンクをコピーしました！",
+    "copiedHint": "LINEなどに貼り付けて、友達や家族に共有しましょう"
+  },
+  "BestPage": {
+    "quickPick": "クイックピック",
+    "buyingGuide": "購入ガイド: {keyword}",
+    "tableOfContents": "目次",
+    "backToTop": "↑ {keyword}のトップ10に戻る"
+  },
+  "CategoryDesc": {
+    "appliances-main": "冷蔵庫、洗濯機、掃除機、エアコンなどの家電。",
+    "kitchen-main": "調理家電、コーヒーメーカー、電気ケトルなど、キッチンのすべて。",
+    "computers-main": "ノートパソコン、スマホ、タブレット、モニター、プリンター、アクセサリー。",
+    "entertainment-main": "テレビ、スピーカー、ヘッドホン、オーディオ機器。",
+    "care-main": "香水、メイク、ヘアケア、スキンケア、ベビー用品。",
+    "hobbies-main": "ゲーム、おもちゃ、スポーツ、カメラ、楽器。",
+    "home-main": "家具、バスルーム、照明、スマートホーム、ガーデン、電動工具。",
+    "other-main": "車用品、バッグなど。"
+  },
+  "Subcategories": {
+    "large-appliances": "大型家電",
+    "vacuum-cleaners": "掃除機",
+    "laundry": "洗濯",
+    "climate-control": "空調",
+    "kitchen-appliances": "キッチン家電",
+    "coffee-tea": "コーヒー・お茶",
+    "laptops": "ノートパソコン",
+    "desktops": "デスクトップパソコン",
+    "phones-accessories": "スマホ・アクセサリー",
+    "tablets": "タブレット",
+    "monitors": "モニター",
+    "printers": "プリンター",
+    "computer-accessories": "パソコンアクセサリー",
+    "watches-wearables": "腕時計・ウェアラブル",
+    "tv-projectors": "テレビ・プロジェクター",
+    "speakers-audio": "スピーカー・オーディオ",
+    "headphones-earbuds": "ヘッドホン・イヤホン",
+    "perfumes-fragrances": "香水・フレグランス",
+    "makeup": "メイク",
+    "hair-care-styling": "ヘアケア・スタイリング",
+    "skincare": "スキンケア",
+    "personal-care": "パーソナルケア",
+    "baby-kids": "ベビー・キッズ",
+    "gaming": "ゲーム",
+    "toys": "おもちゃ",
+    "fitness-sports": "フィットネス・スポーツ",
+    "cameras-photography": "カメラ・写真",
+    "musical-instruments": "楽器",
+    "furniture": "家具",
+    "bathroom": "バスルーム",
+    "lighting": "照明",
+    "smart-home": "スマートホーム",
+    "garden-outdoor": "ガーデン・アウトドア",
+    "power-tools": "電動工具",
+    "automotive": "車用品",
+    "bags-backpacks": "バッグ・リュック",
+    "other": "その他"
+  },
+  "CategoryPage": {
+    "subcategoriesCount": "{count}個のサブカテゴリー",
+    "chooseSubcategory": "サブカテゴリーを選ぶ",
+    "chooseSubcategoryHint": "カテゴリーを選んで製品比較を見る",
+    "viewCategory": "カテゴリーを見る",
+    "moreCategories": "その他のカテゴリー",
+    "comparisonsCount": "{count}件の製品比較",
+    "subcatIntro": "{name}の製品比較 — あなたに最適な一台を見つけましょう",
+    "comparisonsHere": "このカテゴリーの比較",
+    "comparisonsHereHint": "比較を選んで、おすすめトップ10を見る",
+    "viewComparison": "比較を見る",
+    "products10": "製品10選"
+  },
+  "Home": {
+    "heroTitle": "あなたにぴったりの<hl>ベスト</hl>製品を見つけよう",
+    "heroSub": "スマートで客観的な製品比較。リサーチは私たちが、選ぶのはあなた。",
+    "popularSearchesLabel": "人気の検索:",
+    "searches": {
+      "portable-speakers": "ポータブルスピーカー",
+      "coffee-machines": "コーヒーメーカー",
+      "washing-machines": "洗濯機",
+      "earbuds": "イヤホン"
+    },
+    "browseByCategory": "カテゴリーから探す",
+    "browseByCategorySub": "カテゴリーを選んで、ベスト製品を見つけよう",
+    "popularComparisons": "人気の比較",
+    "popularComparisonsSub": "ユーザーに最もよく見られている比較",
+    "comparisons": {
+      "portable-speakers": { "title": "ポータブルスピーカーのおすすめ10選", "desc": "あらゆる予算に対応するBluetoothポータブルスピーカーを徹底比較" },
+      "coffee-machines": { "title": "コーヒーメーカーのおすすめ10選", "desc": "カプセル式から本格エスプレッソマシンまで、ご家庭に最適な一台" },
+      "washing-machines": { "title": "洗濯機のおすすめ10選", "desc": "あらゆる予算とニーズに合ったおすすめ洗濯機" },
+      "televisions": { "title": "テレビのおすすめ10選", "desc": "4K・OLED・QLED — 主要な技術をすべて比較" },
+      "earbuds": { "title": "イヤホンのおすすめ10選", "desc": "音楽・通話・アクティブなライフスタイルに最適なワイヤレスイヤホン" },
+      "hair-straightener": { "title": "ヘアアイロンのおすすめ10選", "desc": "自宅でサロン級の仕上がりを叶えるプロ仕様のヘアアイロン" }
+    },
+    "viewComparison": "比較を見る",
+    "viewAllComparisons": "すべての比較を見る",
+    "whyChooseUs": "選ばれる理由",
+    "whyChooseUsSub": "面倒なリサーチは私たちにお任せ",
+    "features": {
+      "research": { "title": "徹底的なリサーチ", "desc": "何百もの製品をレビュー・比較し、各カテゴリーで本当に優れた製品を見つけます" },
+      "objective": { "title": "完全に客観的", "desc": "私たちのランキングは、広告やマーケティングではなく実際の性能に基づいています" },
+      "savings": { "title": "時間とお金を節約", "desc": "何時間もリサーチする代わりに、数分で答えが分かり、最安値も見つかります" }
+    }
+  },
+  "About": {
+    "title": "{siteName}について",
+    "subtitle": "製品比較のリーディングプラットフォーム",
+    "missionTitle": "私たちのミッション",
+    "mission": "「{siteName}」は、すべての消費者が購入前に信頼できる客観的な情報を得るべきだと考えています。私たちの使命は、何時間ものリサーチを省き、各カテゴリーで最も優れた製品という結論をお届けすることです。",
+    "howWeWorkTitle": "私たちの取り組み方",
+    "work": {
+      "research": { "title": "徹底的なリサーチ", "desc": "何百もの製品をレビューし、技術仕様・ユーザーレビュー・販売データを分析します" },
+      "objective": { "title": "客観的な比較", "desc": "私たちのランキングは、支払いや広告ではなく実際の性能に基づいています" },
+      "recommendations": { "title": "明確なおすすめ", "desc": "なぜその製品をおすすめするのか、どんな人に向いているのかを分かりやすく説明します" }
+    },
+    "valuesTitle": "私たちの価値観",
+    "values": {
+      "reliability": { "term": "信頼性", "desc": " — 私たちの情報は正確で最新です。自分たちが買わない製品はおすすめしません。" },
+      "transparency": { "term": "透明性", "desc": " — 私たちがどのように収益を得ているかを公開しています。当サイトのリンク経由でご購入いただくと、手数料を受け取る場合があります。" },
+      "consumerFirst": { "term": "消費者第一", "desc": " — 私たちのすべての決定は、消費者であるあなたの視点から評価されています。" }
+    },
+    "teamTitle": "私たちのチーム",
+    "teamIntro": "おすすめの裏にいる専門レビュアーをご紹介します:",
+    "team": {
+      "alex": { "role": "テクノロジー担当", "bio": "ガジェットとゲームが大好き。パソコン、スマートフォン、ゲーム機器をレビューします。" },
+      "adham": { "role": "家電担当", "bio": "料理とお菓子作りが趣味。キッチン家電、コーヒーメーカー、家庭用電子機器をレビューします。" },
+      "mariam": { "role": "オーディオ担当", "bio": "ミュージシャンで音響好き。スピーカー、ヘッドホン、オーディオシステムをレビューします。" },
+      "fatima": { "role": "美容・ホーム担当", "bio": "インテリアと美容が大好き。美容製品、スキンケア、ホームアクセサリーをレビューします。" },
+      "abdulla": { "role": "スポーツ・フィットネス担当", "bio": "アスリートでフィットネストレーナー。スマートウォッチ、フィットネス器具、スポーツ電子機器をレビューします。" },
+      "sara": { "role": "ファミリー・キッズ担当", "bio": "3児の母。ベビー用品、おもちゃ、家族向け必需品をレビューします。" }
+    },
+    "disclosureTitle": "免責事項",
+    "disclosure": "当サイトは、ユーザーに最良の結果を提供するため、優良なパートナーと提携しています。当サイトは、ユーザーに代わってではなく別途、手数料を受け取る場合があります。受け取る手数料は、当サイトのランキングやおすすめに影響しません。それらは製品の品質と、あなたのニーズへの適合性のみに基づいています。Amazonアソシエイトとして、当サイトは適格販売により収入を得ています。何よりも、常に誠実さと信頼を第一に考えています。"
+  },
+  "Contact": {
+    "title": "お問い合わせ",
+    "subtitle": "ぜひご意見をお聞かせください！",
+    "emailTitle": "📧 メール",
+    "emailIntro": "ご質問・ご提案・提携については、メールでお問い合わせください:",
+    "suggestions": { "title": "💡 ご提案", "desc": "新しいカテゴリーや追加すべき製品のアイデアはありますか？ぜひお聞かせください！" },
+    "partnerships": { "title": "🤝 提携", "desc": "ビジネス提携にご興味がありますか？お気軽にご連絡ください。" },
+    "report": { "title": "🐛 問題を報告", "desc": "サイトの不具合や情報の誤りを見つけましたか？お知らせいただければ、すぐに修正します。" }
+  }
+}

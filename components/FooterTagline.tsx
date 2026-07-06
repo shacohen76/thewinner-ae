@@ -47,9 +47,10 @@ export default function FooterTagline() {
     }
   }, []);
 
-  // /ar: fixed Arabic tagline. geo-config country names are English-only, so we
-  // don't inject a dynamic country here. The English path below is unchanged.
-  if (locale === 'ar') {
+  // Localized (non-English) locales: fixed translated tagline. geo-config country
+  // names are English-only, so we don't inject a dynamic country here. The English
+  // path below is unchanged. INTL1 JP Phase 2 (2026-07-06): was ar-only → any non-en.
+  if (locale !== 'en') {
     return <p className="text-sm text-gray-400">{t('tagline')}</p>;
   }
 
