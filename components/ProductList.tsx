@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import ProductCard from './ProductCard';
 import ShareButton from './ShareButton';
+import { useGeoCatalog } from './GeoCatalog';
 
 interface Product {
   asin: string;
@@ -30,9 +31,14 @@ interface ProductListProps {
 
 type SortOption = 'rank' | 'price';
 
-export default function ProductList({ products }: ProductListProps) {
+export default function ProductList({ products: ssrProducts }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
+
+  // JP-3: if the visitor's storefront catalog was swapped in (e.g. JP), render
+  // that; otherwise use the SSR (AE) products. `list` is null for AE/crawlers.
+  const { list } = useGeoCatalog();
+  const products = list ?? ssrProducts;
 
   const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === 'price') {

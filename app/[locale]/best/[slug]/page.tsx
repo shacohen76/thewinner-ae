@@ -4,6 +4,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
 import BackToTopLink from '@/components/BackToTopLink';
+import GeoCatalogProvider from '@/components/GeoCatalog';
 import {
   getKeywordBySlug,
   getProductsForKeyword,
@@ -195,7 +196,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
   return (
-    <>
+    // JP-3: GeoCatalogProvider swaps the product SET client-side for visitors
+    // whose storefront has its own catalog (e.g. JP → amazon.co.jp products).
+    // AE visitors + crawlers get null → the SSR AE catalog stands, unchanged.
+    <GeoCatalogProvider slug={slug} locale={params.locale}>
       {/* Breadcrumbs */}
       <Breadcrumbs items={[{ label: headingName }]} />
 
@@ -308,6 +312,6 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           }}
         />
       )}
-    </>
+    </GeoCatalogProvider>
   );
 }
