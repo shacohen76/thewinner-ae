@@ -10,6 +10,7 @@ import {
   getProductsForKeyword,
   getKeywordTranslation,
   hasBuyingGuide,
+  getKeywordMarketplaceCount,
   getTopKeywordSlugs,
 } from '@/lib/supabase';
 import {
@@ -91,7 +92,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const nounAr = arTr?.keyword_text?.trim() || null;
   const nounJa = jaTr?.keyword_text?.trim() || null;
   const arIndexed = !!nounAr && hasBuyingGuide(arTr?.qa_guide);
-  const jaIndexed = !!nounJa && hasBuyingGuide(jaTr?.qa_guide);
+  // INTL1 JP (2026-07-09): a /ja page indexes only if it ALSO has a JP catalog.
+  // Without JP products a JP visitor gets dead amazon.co.jp links (the AE catalog
+  // falls back), so keep those pages out of the index. AE-catalog locales (ar→ae)
+  // need no such gate — the AE catalog is always present. Only query when a ja
+  // translation exists (the only indexing candidates).
+  const jaCatalogCount = nounJa ? await getKeywordMarketplaceCount(keyword.id, 'jp') : 0;
+  const jaIndexed = !!nounJa && hasBuyingGuide(jaTr?.qa_guide) && jaCatalogCount >= 1;
   const indexedLocales = [
     ...(arIndexed ? ['ar'] : []),
     ...(jaIndexed ? ['ja'] : []),
