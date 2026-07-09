@@ -34,6 +34,13 @@ import { getGeoProgram } from '@/lib/geo-config';
 // API route's allowlist. AE is the SSR default and is never fetched here.
 const CATALOG_MARKETPLACES = new Set(['jp']);
 
+// INTL1 JP (2026-07-09): locales that PIN to a specific storefront catalog —
+// "language follows URL". A /ja page shows the JP catalog to EVERY visitor,
+// regardless of geo (a Japanese page should never show AE products). Non-pinned
+// locales (en, ar) keep following tw_geo. Extend as native programs launch:
+// pl → 'pl', pt → 'br'.
+const LOCALE_CATALOG: Record<string, string> = { ja: 'jp' };
+
 export interface SwapListItem {
   asin: string;
   title: string;
@@ -84,7 +91,10 @@ export default function GeoCatalogProvider({
   const [value, setValue] = useState<SwapValue>({ list: null, gallery: null });
 
   useEffect(() => {
-    const program = readGeoProgram();
+    // A localized page pins to its language's catalog (LOCALE_CATALOG); otherwise
+    // the catalog follows the visitor's geo (tw_geo) as before — so a JP-geo
+    // visitor on the English /best still gets JP products.
+    const program = LOCALE_CATALOG[locale] ?? readGeoProgram();
     // Default storefront (AE) or one with no catalog → keep the SSR products.
     if (program === 'ae' || !CATALOG_MARKETPLACES.has(program)) return;
 
