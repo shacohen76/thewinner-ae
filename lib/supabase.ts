@@ -233,7 +233,8 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
 // scraped in another language), so on an English page we know to pull the English
 // overlay for their asins. English-native storefronts (ae/us/uk/sg/nl/…) skip the
 // overlay — English IS the base — keeping the hot AE path a single content read.
-const MARKETPLACE_NATIVE_LOCALE: Record<string, string> = { ae: 'en', jp: 'ja' };
+// (Removed MARKETPLACE_NATIVE_LOCALE 2026-07-09 — the overlay now skips only the
+// true ae+en base; see getProductsForKeyword step 3.)
 
 // Get products for a keyword.
 // LIMIT: Returns max 10 products, ordered by rank.
@@ -299,13 +300,19 @@ export async function getProductsForKeyword(
     .slice(0, 10)
     .map(p => ({ ...p, title: sanitizeProductTitle(p.title ?? '') }));
 
-  // 3) OVERLAY — apply the requested language when this program isn't English-
-  // native for it. AE/en skips (English is the base → hot path stays one read);
-  // AE/ar applies the Arabic listing; JP/en applies the English render onto the
-  // Japanese-base JP asins; JP/ja skips (Japanese is the base). The overlay is
-  // read by (asin, locale) — content is shared by asin, not per marketplace.
-  const nativeLocale = MARKETPLACE_NATIVE_LOCALE[marketplace] ?? 'en';
-  if (locale !== nativeLocale && products.length > 0) {
+  // 3) OVERLAY — apply the requested language for every render EXCEPT the TRUE
+  // base (AE English), where products.* already IS the content so we skip and keep
+  // the AE hot path to one read (byte-identical to before).
+  // INTL1 JP (2026-07-09): was `locale !== marketplaceNative`, which wrongly SKIPPED
+  // the overlay for jp+ja (ja is jp-native). But a JP product's base wwl_points is
+  // ENGLISH (the shared base, needed by the English /best page shown to JP-geo
+  // visitors) — the Japanese WWL lives only in product_translations(asin,'ja'). So
+  // jp+ja MUST read its ja overlay: title (Japanese, for shared asins; absent for
+  // JP-only asins → keeps the Japanese base title) + wwl (Japanese). Skipping only
+  // the ae+en base keeps AE unchanged while /ja gets Japanese WWL. AE/ar and JP/en
+  // already ran the overlay and are unaffected.
+  const isBaseRender = marketplace === 'ae' && locale === 'en';
+  if (!isBaseRender && products.length > 0) {
     const pa = products.map(p => p.asin).filter(Boolean);
     const { data: translations, error: tErr } = await supabase
       .from('product_translations')
