@@ -381,6 +381,26 @@ export function hasBuyingGuide(qa: unknown): boolean {
   return false;
 }
 
+// INTL1 JP (2026-07-09): how many products a program (marketplace) lists for a
+// keyword. Used to gate /ja indexing on JP-catalog presence: a /ja page with no JP
+// products gives JP visitors dead amazon.co.jp links, so it must NOT be indexed.
+export async function getKeywordMarketplaceCount(keywordId: number, marketplace: string): Promise<number> {
+  // Data-length (not head+count): mirrors getProductsForKeyword's read exactly, so it
+  // behaves identically under RLS/anon and avoids the head:true count quirk. We only
+  // need to know presence (>=1), so a small cap is enough.
+  const { data, error } = await supabase
+    .from('keyword_products')
+    .select('asin')
+    .eq('keyword_id', keywordId)
+    .eq('marketplace', marketplace)
+    .limit(15);
+  if (error) {
+    console.error('Error counting keyword_products:', error);
+    return 0;
+  }
+  return (data ?? []).length;
+}
+
 // INTL1 (DB-driven auto-index): the set of /best slugs READY to index for a
 // given locale = those with a noun AND a non-empty BYG in that locale. This
 // REPLACES the baked allowlist — the sitemap includes, and the /<locale>/best

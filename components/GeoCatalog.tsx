@@ -107,9 +107,16 @@ export default function GeoCatalogProvider({
         if (!res.ok) return;
         const data = await res.json();
         const products: any[] = Array.isArray(data?.products) ? data.products : [];
-        // Empty catalog for this keyword → keep the SSR AE products (no worse
-        // than today; JP catalog coverage grows as Step B fills the full 1K).
-        if (cancelled || products.length === 0) return;
+        if (cancelled) return;
+        // INTL1 JP (2026-07-09): this geo has a catalog dimension (jp) but NO products
+        // for this keyword. Do NOT keep the SSR AE products — their affiliate links
+        // resolve to amazon.co.jp/dp/{AE-asin}, which 404 for a JP visitor (dead
+        // cross-marketplace links). Show NO products instead (graceful empty state);
+        // these pages are also kept out of the index by the metadata catalog gate.
+        if (products.length === 0) {
+          setValue({ list: [], gallery: [] });
+          return;
+        }
 
         setValue({
           list: products.map((p) => ({
