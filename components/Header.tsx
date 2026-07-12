@@ -84,20 +84,27 @@ export default function Header() {
             <LanguageSwitcher />
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-gray-600"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          {/* Mobile controls — language switcher + menu button.
+              ML 2.4 (2026-07-12): the globe was ONLY inside the collapsed
+              hamburger menu, so it never showed in the mobile header bar
+              (bug: "language button doesn't show on mobile"). Surface it here,
+              always visible next to the hamburger, mirroring desktop. */}
+          <div className="flex items-center gap-1 md:hidden">
+            <LanguageSwitcher />
+            <button
+              className="p-2 text-gray-600"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -137,8 +144,8 @@ export default function Header() {
 		>
 		  {t('blog')}
 		</Link>
-              <div className="border-t my-2" />
-              <LanguageSwitcher className="px-4 py-2" />
+              {/* ML 2.4 (2026-07-12): language switcher moved to the always-visible
+                  mobile header bar (above) — no longer buried inside this menu. */}
             </nav>
           </div>
         )}
