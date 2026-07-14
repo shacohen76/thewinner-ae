@@ -32,7 +32,9 @@ import { getGeoProgram } from '@/lib/geo-config';
 
 // Storefronts that actually have a swap-able catalog. Keep in sync with the
 // API route's allowlist. AE is the SSR default and is never fetched here.
-const CATALOG_MARKETPLACES = new Set(['jp']);
+// 2026-07-14 (ML 2.5): 'us' added — US-geo visitors on /best now swap in the US
+// catalog (amazon.com products + thewinnerusa-20 links via TrackingProvider).
+const CATALOG_MARKETPLACES = new Set(['jp', 'us']);
 
 // INTL1 JP (2026-07-09): locales that PIN to a specific storefront catalog —
 // "language follows URL". A /ja page shows the JP catalog to EVERY visitor,
