@@ -19,7 +19,9 @@ import { getKeywordBySlug, getProductsForKeyword } from '@/lib/supabase';
 
 // Only marketplaces that actually HAVE a catalog to swap in. AE is the SSR
 // default (never fetched here). Extend as JP-6 generalizes to us/uk/de.
-const CATALOG_MARKETPLACES = new Set(['jp']);
+// 2026-07-14 (ML 2.5): 'us' added — US catalog live in Supabase (marketplace='us',
+// 200-kw pilot, English content + WWL). Keep in sync with GeoCatalog.tsx.
+const CATALOG_MARKETPLACES = new Set(['jp', 'us']);
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
