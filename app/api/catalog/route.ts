@@ -21,7 +21,9 @@ import { getKeywordBySlug, getProductsForKeyword } from '@/lib/supabase';
 // default (never fetched here). Extend as JP-6 generalizes to us/uk/de.
 // 2026-07-14 (ML 2.5): 'us' added — US catalog live in Supabase (marketplace='us',
 // 200-kw pilot, English content + WWL). Keep in sync with GeoCatalog.tsx.
-const CATALOG_MARKETPLACES = new Set(['jp', 'us']);
+// 2026-07-16 (ML 2.6): 'uk' added — UK canary of the EN-fleet rollout complete:
+// 27,920 memberships / 1,998 kw / 22,461 ASINs / 100% WWL (amazon.co.uk catalog).
+const CATALOG_MARKETPLACES = new Set(['jp', 'us', 'uk']);
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
