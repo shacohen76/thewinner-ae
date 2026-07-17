@@ -16,16 +16,24 @@ import { getTranslations } from 'next-intl/server';
 // Adapted from KSP: English LTR
 // ============================================
 
-// Cache for 7 days (was 24h) — fewer cold re-renders under crawl load.
-export const revalidate = 604800; // 7 days
+// ML 3 (2026-07-17): 7 days → 6 hours. If a category ever caches empty, it now
+// self-heals within hours instead of a week. Category pages are few (45) and rarely
+// change, so the extra regenerations are negligible (~dozens/hour worst case).
+export const revalidate = 21600; // 6 hours
 
-// Category slugs are a small fixed set (mains + subcats) — pre-render them all
-// (English) at build; no DB needed. Arabic (/ar) stays on-demand (noindex).
+// ML 3 (2026-07-17): render category pages ON-DEMAND (was: prerender all 45 at
+// build). Prerendering hammered the DB concurrently at build, and the BIG
+// subcategories (large-appliances / kitchen-appliances = 664 rows, sorted)
+// intermittently hit the Postgres statement timeout → readWithRetry degraded them
+// to empty → ONE random big category baked blank on every build (toys, then
+// large-appliances — whack-a-mole). On-demand renders each on first request at
+// RUNTIME, where there's no build-concurrency contention (the ~300ms query
+// succeeds) and readWithRetry THROWS (not degrades) on a real error, so an empty is
+// never cached. dynamicParams=true already serves every slug on demand; the long-
+// tail /best pages have run this way since launch, so it's the proven pattern.
 export const dynamicParams = true;
-export async function generateStaticParams({ params }: { params: { locale: string } }) {
-  if (params.locale !== 'en') return [];
-  const slugs = [...Object.keys(MAIN_CATEGORIES), ...Object.keys(SUBCATEGORY_NAMES)];
-  return slugs.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  return [];
 }
 
 interface PageProps {
