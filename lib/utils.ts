@@ -48,20 +48,12 @@ export function scoreToStars(score: number): number {
 // AFFILIATE URL BUILDER
 // ============================================
 
-export function buildAffiliateUrl(
-  asin: string,
-  _productTitle?: string,
-  gclid?: string | null,
-  _fbclid?: string | null
-): string {
-  // Defaults match pre-GEOS1 behavior: amazon.ae + UAE direct tag.
-  // Used by (a) the SSR render path (no window), (b) the catch-block fallback,
-  // and (c) pre-GEOS1 sessions where amazon_domain wasn't stored.
-  //
-  // Once the client hydrates AND TrackingProvider's first /api/tag-assign
-  // round-trip completes, sessionStorage carries both `assigned_tag` and
-  // `amazon_domain`. Subsequent renders pick them up here, so non-Gulf
-  // visitors see the right marketplace URL with no DOM rewrite needed.
+// Resolve the visitor's Amazon marketplace domain + affiliate tag from the
+// TrackingProvider session (sessionStorage). Defaults to amazon.ae + the UAE
+// direct tag for SSR, pre-GEOS1 sessions, or when storage is unavailable.
+// Shared by buildAffiliateUrl (product /dp link) and buildAffiliateSearchUrl
+// (ML 3 search fallback) so both always route to the SAME store + tag.
+function readSessionTagDomain(): { tag: string; domain: string } {
   let tag = CONFIG.amazonTag;
   let domain = 'amazon.ae';
 
@@ -77,8 +69,51 @@ export function buildAffiliateUrl(
       // sessionStorage unavailable — use defaults
     }
   }
+  return { tag, domain };
+}
 
+export function buildAffiliateUrl(
+  asin: string,
+  _productTitle?: string,
+  gclid?: string | null,
+  _fbclid?: string | null
+): string {
+  // Defaults match pre-GEOS1 behavior: amazon.ae + UAE direct tag.
+  // Used by (a) the SSR render path (no window), (b) the catch-block fallback,
+  // and (c) pre-GEOS1 sessions where amazon_domain wasn't stored.
+  //
+  // Once the client hydrates AND TrackingProvider's first /api/tag-assign
+  // round-trip completes, sessionStorage carries both `assigned_tag` and
+  // `amazon_domain`. Subsequent renders pick them up here, so non-Gulf
+  // visitors see the right marketplace URL with no DOM rewrite needed.
+  const { tag, domain } = readSessionTagDomain();
   return `https://www.${domain}/dp/${asin}?tag=${tag}`;
+}
+
+// ML 3 (2026-07-17) — never-empty geo fallback.
+// When a US/UK/JP visitor lands on a keyword their storefront has NO catalog
+// for, GeoCatalog keeps the AE product cards (so the page is never empty) but
+// flags searchFallback: the /dp/{ae-asin} link would 404 cross-marketplace, so
+// each card instead points to an Amazon SEARCH on the visitor's own store —
+// a working, relevant, commission-eligible link. Reuses the SAME session
+// domain+tag as buildAffiliateUrl, so store and tag always match (Associates-
+// compliant). Query is the product's cleaned title (brand + type).
+export function buildAffiliateSearchUrl(query: string): string {
+  const { tag, domain } = readSessionTagDomain();
+  const k = encodeURIComponent((query || '').trim());
+  return `https://www.${domain}/s?k=${k}&tag=${tag}`;
+}
+
+// ML 3 (2026-07-17): turn a scraped product title into a clean Amazon SEARCH
+// query for the never-empty fallback. A full title ("Beko Turkish Coffee
+// Machine, 580W, CookSense2 …, 5 Cups - TKM2341W") is far too specific and
+// often returns ZERO hits on another marketplace, so we keep only the part
+// before the first comma/pipe (the human product name = brand + type) and cap
+// it to a few words. Result: relevant results on the visitor's own store.
+export function cleanSearchQuery(title: string): string {
+  if (!title) return '';
+  const head = title.split(/[,|]/)[0].replace(/\s+/g, ' ').trim();
+  return head.split(' ').slice(0, 7).join(' ');
 }
 
 // ============================================

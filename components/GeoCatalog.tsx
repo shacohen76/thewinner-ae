@@ -67,9 +67,14 @@ interface SwapValue {
   // null = "use the SSR (AE) products" — the default until/unless a swap lands.
   list: SwapListItem[] | null;
   gallery: SwapGalleryItem[] | null;
+  // ML 3 (2026-07-17): true when we are SHOWING the AE fallback catalog to a
+  // storefront-catalog visitor (us/uk/jp) because their store has no products
+  // for this keyword. Consumers keep the AE cards but render Amazon SEARCH
+  // links (the AE /dp/{asin} would 404 cross-marketplace). Never true for AE.
+  searchFallback: boolean;
 }
 
-const GeoCatalogContext = createContext<SwapValue>({ list: null, gallery: null });
+const GeoCatalogContext = createContext<SwapValue>({ list: null, gallery: null, searchFallback: false });
 
 /** Consumed by ProductList / ProductGallery — returns swapped catalog or nulls. */
 export function useGeoCatalog(): SwapValue {
@@ -92,7 +97,7 @@ export default function GeoCatalogProvider({
   locale: string;
   children: ReactNode;
 }) {
-  const [value, setValue] = useState<SwapValue>({ list: null, gallery: null });
+  const [value, setValue] = useState<SwapValue>({ list: null, gallery: null, searchFallback: false });
 
   useEffect(() => {
     // A localized page pins to its language's catalog (LOCALE_CATALOG); otherwise
@@ -112,17 +117,23 @@ export default function GeoCatalogProvider({
         const data = await res.json();
         const products: any[] = Array.isArray(data?.products) ? data.products : [];
         if (cancelled) return;
-        // INTL1 JP (2026-07-09): this geo has a catalog dimension (jp) but NO products
-        // for this keyword. Do NOT keep the SSR AE products — their affiliate links
-        // resolve to amazon.co.jp/dp/{AE-asin}, which 404 for a JP visitor (dead
-        // cross-marketplace links). Show NO products instead (graceful empty state);
-        // these pages are also kept out of the index by the metadata catalog gate.
+        // This storefront (us/uk/jp) has a catalog dimension but NO products for
+        // this keyword.
+        // ML 3 (2026-07-17) — CHANGED from showing an empty page. Previously we
+        // set {list: [], gallery: []} → ProductList rendered the empty state,
+        // which left ~88% of keywords blank for us/uk/jp visitors ("we can't
+        // afford empty listings"). Now we KEEP the SSR AE products (list/gallery
+        // stay null → consumers fall back to the AE catalog) and flag
+        // searchFallback so each card links to an Amazon SEARCH on the visitor's
+        // own store instead of the dead /dp/{AE-asin} cross-marketplace link.
+        // The metadata catalog gate still keeps these pages out of the index.
         if (products.length === 0) {
-          setValue({ list: [], gallery: [] });
+          setValue({ list: null, gallery: null, searchFallback: true });
           return;
         }
 
         setValue({
+          searchFallback: false,
           list: products.map((p) => ({
             asin: p.asin,
             title: p.title,

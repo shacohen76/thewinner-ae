@@ -7,7 +7,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { buildAffiliateUrl } from '@/lib/utils';
+import { buildAffiliateUrl, buildAffiliateSearchUrl, cleanSearchQuery } from '@/lib/utils';
 import { useGeoCatalog } from './GeoCatalog';
 
 interface Product {
@@ -23,7 +23,10 @@ interface ProductGalleryProps {
 
 export default function ProductGallery({ products: ssrProducts }: ProductGalleryProps) {
   // JP-3: prefer the geo-swapped catalog (e.g. JP) when present; else SSR (AE).
-  const { gallery } = useGeoCatalog();
+  // ML 3 (2026-07-17): searchFallback → we're showing AE cards to a us/uk/jp
+  // visitor whose store lacks this keyword; link to an Amazon search on their
+  // store (title) instead of the dead /dp/{AE-asin}.
+  const { gallery, searchFallback } = useGeoCatalog();
   const products = gallery ?? ssrProducts;
   // INTL1 JP Phase 2 (2026-07-06): localize the carousel heading (was hardcoded
   // English "Quick Pick", which leaked onto /ar and /ja). English value in
@@ -43,7 +46,9 @@ export default function ProductGallery({ products: ssrProducts }: ProductGallery
           {products.map((product) => (
             <a
               key={product.asin}
-              href={buildAffiliateUrl(product.asin, product.title)}
+              href={searchFallback
+                ? buildAffiliateSearchUrl(cleanSearchQuery(product.title))
+                : buildAffiliateUrl(product.asin, product.title)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-none w-64 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl"
