@@ -110,9 +110,13 @@ export default function ProductCard({
   // keyword their store lacks), these AE cards' /dp/{asin} would 404 on the
   // visitor's marketplace. searchFallback → link to an Amazon SEARCH on their
   // store instead (brand + product name), which resolves + earns commission.
-  const { searchFallback } = useGeoCatalog();
+  const { searchFallback, keywordEn } = useGeoCatalog();
+  // English pages search the specific product title; localized pages (ar/ja)
+  // search the English keyword instead — the Arabic/Japanese title is a poor
+  // query on most stores. (ML 3, 2026-07-17)
+  const searchText = locale === 'en' ? cleanSearchQuery(title) : (keywordEn || cleanSearchQuery(title));
   const amazonUrl = searchFallback
-    ? buildAffiliateSearchUrl(cleanSearchQuery(title))
+    ? buildAffiliateSearchUrl(searchText)
     : buildAffiliateUrl(asin, title);
 
   // Default WWL points if none provided — capitalize first letter of each

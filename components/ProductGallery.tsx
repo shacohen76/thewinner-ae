@@ -6,7 +6,7 @@
 // ============================================
 
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { buildAffiliateUrl, buildAffiliateSearchUrl, cleanSearchQuery } from '@/lib/utils';
 import { useGeoCatalog } from './GeoCatalog';
 
@@ -26,8 +26,9 @@ export default function ProductGallery({ products: ssrProducts }: ProductGallery
   // ML 3 (2026-07-17): searchFallback → we're showing AE cards to a us/uk/jp
   // visitor whose store lacks this keyword; link to an Amazon search on their
   // store (title) instead of the dead /dp/{AE-asin}.
-  const { gallery, searchFallback } = useGeoCatalog();
+  const { gallery, searchFallback, keywordEn } = useGeoCatalog();
   const products = gallery ?? ssrProducts;
+  const locale = useLocale();
   // INTL1 JP Phase 2 (2026-07-06): localize the carousel heading (was hardcoded
   // English "Quick Pick", which leaked onto /ar and /ja). English value in
   // messages is byte-exact, so en output is unchanged.
@@ -47,7 +48,7 @@ export default function ProductGallery({ products: ssrProducts }: ProductGallery
             <a
               key={product.asin}
               href={searchFallback
-                ? buildAffiliateSearchUrl(cleanSearchQuery(product.title))
+                ? buildAffiliateSearchUrl(locale === 'en' ? cleanSearchQuery(product.title) : (keywordEn || cleanSearchQuery(product.title)))
                 : buildAffiliateUrl(product.asin, product.title)}
               target="_blank"
               rel="noopener noreferrer"
