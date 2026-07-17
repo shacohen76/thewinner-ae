@@ -192,19 +192,41 @@ export async function getCategories(): Promise<Category[]> {
   return data || [];
 }
 
-// Get keywords by category (subcat slug) — single FK join query
-export async function getKeywordsByCategory(categorySlug: string): Promise<Keyword[]> {
-  const { data, error } = await supabase
-    .from('keywords')
-    .select('*, categories!inner(slug)')
-    .eq('categories.slug', categorySlug)
-    .order('keyword_text');
+// Get keywords by category (subcat slug) — single FK join query.
+// ML 3 (2026-07-17): retry transient read failures, then THROW (never silently
+// return []). Previously a swallowed error made the category page render its
+// "Coming Soon" empty state, which ISR then CACHED for 7 days — freezing an entire
+// category empty for every visitor on that edge (the bug behind the empty
+// kitchen-appliances / coffee-tea pages). Throwing keeps a failed render OUT of the
+// cache: Next serves the last good copy (background revalidation) or retries on the
+// next request, instead of caching emptiness. Retries absorb the common transient
+// blip so a healthy DB is unaffected.
+export async function getKeywordsByCategory(
+  categorySlug: string,
+): Promise<Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]> {
+  let lastError: { message?: string } | null = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    // ML 3 (2026-07-17): select ONLY the columns the category page uses
+    // (keyword_text + slug). The old `select('*')` pulled the heavy `qa_guide`
+    // JSONB (buying-guide Q&A) for every row — on large categories (664/321 rows)
+    // that blew past the Postgres statement timeout (error 57014), which was the
+    // actual cause of the empty kitchen-appliances / coffee-tea pages.
+    const { data, error } = await supabase
+      .from('keywords')
+      .select('id, keyword_text, slug, categories!inner(slug)')
+      .eq('categories.slug', categorySlug)
+      .order('keyword_text');
 
-  if (error) {
-    console.error('Error fetching keywords:', error);
-    return [];
+    if (!error) return (data as unknown as Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]) || [];
+
+    lastError = error;
+    console.error(`Error fetching keywords for "${categorySlug}" (attempt ${attempt}/3):`, error);
+    if (attempt < 3) await new Promise((r) => setTimeout(r, 150 * attempt));
   }
-  return data || [];
+  // All attempts errored → throw so this render is not cached as empty.
+  throw new Error(
+    `getKeywordsByCategory("${categorySlug}") failed after 3 attempts: ${lastError?.message ?? 'unknown error'}`,
+  );
 }
 
 // Get keyword by slug
