@@ -36,21 +36,35 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ products: [] });
   }
 
-  const keyword = await getKeywordBySlug(slug);
-  if (!keyword) {
-    return NextResponse.json({ products: [] });
-  }
+  // ML 3 (2026-07-17): getKeywordBySlug / getProductsForKeyword now THROW on a
+  // persistent DB error (so the SSR /best page never caches an empty listing).
+  // This route must stay resilient instead: catch and return an UNCACHED empty so
+  // the client keeps the AE cards + search-fallback (working links) and recovers on
+  // the next request — never a cached-empty catalog response.
+  try {
+    const keyword = await getKeywordBySlug(slug);
+    if (!keyword) {
+      // Genuine miss — cacheable empty.
+      return NextResponse.json({ products: [] });
+    }
 
-  const products = await getProductsForKeyword(keyword.id, locale, mkt);
+    const products = await getProductsForKeyword(keyword.id, locale, mkt);
 
-  return NextResponse.json(
-    { products },
-    {
-      headers: {
-        // Deterministic per (slug, mkt, locale) → cache at the edge. SWR keeps it
-        // warm; a catalog update (new scrape → migrate) shows within the window.
-        'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+    return NextResponse.json(
+      { products },
+      {
+        headers: {
+          // Deterministic per (slug, mkt, locale) → cache at the edge. SWR keeps it
+          // warm; a catalog update (new scrape → migrate) shows within the window.
+          'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        },
       },
-    },
-  );
+    );
+  } catch (e) {
+    console.error('catalog route read failed:', e);
+    return NextResponse.json(
+      { products: [] },
+      { headers: { 'Cache-Control': 'no-store' } }, // transient error — do NOT cache
+    );
+  }
 }

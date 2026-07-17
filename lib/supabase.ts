@@ -14,6 +14,34 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// ML 3 (2026-07-17): run a Supabase read with retries, then THROW on persistent
+// failure instead of swallowing the error and returning empty. A swallowed read
+// error on /best (getProductsForKeyword) or getKeywordBySlug renders an empty
+// listing / 404 that ISR then CACHES for 7 days — a transient DB blip becoming a
+// week-long dead page (the same class of bug that emptied the category pages, and
+// what cost real money). Throwing keeps the failed render OUT of the cache: Next
+// serves the last good copy (background revalidation) or retries next request.
+// The happy path is unchanged — returns on attempt 1. IMPORTANT: this throws only
+// on an actual DB ERROR, never on a legitimate empty result (some keywords truly
+// have 0 products), so genuinely-empty pages still render normally. Callers that
+// must stay resilient (the /api/catalog route) catch this and return an uncached
+// empty so the client search-fallback engages.
+async function readWithRetry<T>(
+  label: string,
+  run: () => PromiseLike<{ data: T | null; error: { message?: string } | null }>,
+  attempts = 3,
+): Promise<T | null> {
+  let lastError: { message?: string } | null = null;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const { data, error } = await run();
+    if (!error) return data;
+    lastError = error;
+    console.error(`${label} failed (attempt ${attempt}/${attempts}):`, error);
+    if (attempt < attempts) await new Promise((r) => setTimeout(r, 150 * attempt));
+  }
+  throw new Error(`${label} failed after ${attempts} attempts: ${lastError?.message ?? 'unknown error'}`);
+}
+
 // ============================================
 // DATABASE TYPES
 // ============================================
@@ -234,17 +262,18 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
   // Slugs are always lowercase
   const normalizedSlug = slug.toLowerCase();
 
-  const { data, error } = await supabase
-    .from('keywords')
-    .select('id, keyword_text, slug, category_id, qa_guide, validation_status, scraped_at')
-    .eq('slug', normalizedSlug)
-    .single();
-
-  if (error) {
-    console.error('Error fetching keyword:', error);
-    return null;
-  }
-  return data;
+  // ML 3 (2026-07-17): maybeSingle (was single) so a genuinely-missing slug returns
+  // null WITHOUT an error (a real 404), while a transient DB error is retried and
+  // then THROWN by readWithRetry. Previously a blip returned null → the page called
+  // notFound() → a 404 got cached for a REAL keyword. Now only genuinely-missing
+  // slugs 404; transient failures are not cached.
+  return readWithRetry<Keyword>('getKeywordBySlug', () =>
+    supabase
+      .from('keywords')
+      .select('id, keyword_text, slug, category_id, qa_guide, validation_status, scraped_at')
+      .eq('slug', normalizedSlug)
+      .maybeSingle(),
+  );
 }
 
 // CONTENT-BY-ASIN model (2026-07-06, "max generalization"): a product's CONTENT
@@ -276,34 +305,36 @@ export async function getProductsForKeyword(
   marketplace: string = 'ae', // which program's catalog membership to serve (geo-driven)
 ): Promise<(Product & KeywordProduct)[]> {
   // 1) MEMBERSHIP — which asins this program ranks for the keyword.
-  const { data: links, error } = await supabase
-    .from('keyword_products')
-    .select('asin, rank, price_at_scrape, scraped_at, validated_at')
-    .eq('keyword_id', keywordId)
-    .eq('marketplace', marketplace)
-    .order('rank')
-    .limit(15); // Fetch 15 (buffer), will filter to 10
+  // ML 3 (2026-07-17): retry-then-throw on a real DB error (readWithRetry) so a
+  // transient blip can't render an empty listing that ISR caches for 7 days. A
+  // legitimate empty result (0 asins — some keywords genuinely have no products)
+  // still returns [] normally below; only ERRORS throw.
+  const links = await readWithRetry<
+    Pick<KeywordProduct, 'asin' | 'rank' | 'price_at_scrape' | 'scraped_at' | 'validated_at'>[]
+  >(`getProductsForKeyword.membership(kw=${keywordId},mkt=${marketplace})`, () =>
+    supabase
+      .from('keyword_products')
+      .select('asin, rank, price_at_scrape, scraped_at, validated_at')
+      .eq('keyword_id', keywordId)
+      .eq('marketplace', marketplace)
+      .order('rank')
+      .limit(15), // Fetch 15 (buffer), will filter to 10
+  );
 
-  if (error) {
-    console.error('Error fetching keyword_products:', error);
-    return [];
-  }
   const linkRows = links || [];
   const asins = Array.from(new Set(linkRows.map(l => l.asin).filter(Boolean)));
-  if (asins.length === 0) return [];
+  if (asins.length === 0) return []; // legitimate empty (not an error) — render graceful empty state
 
   // 2) CONTENT — shared product rows by asin. Canonical pick (prefer 'ae' English
   // base) covers the transition window where a shared asin still has per-market
   // rows; post-collapse each asin has one row and this just returns it.
-  const { data: prodRows, error: pErr } = await supabase
-    .from('products')
-    .select('*')
-    .in('asin', asins);
+  // ML 3 (2026-07-17): same retry-then-throw guard as the membership read — a
+  // transient failure here must not cache an empty listing.
+  const prodRows = await readWithRetry<(Product & { marketplace?: string })[]>(
+    `getProductsForKeyword.content(kw=${keywordId})`,
+    () => supabase.from('products').select('*').in('asin', asins),
+  );
 
-  if (pErr) {
-    console.error('Error fetching products:', pErr);
-    return [];
-  }
   const canonical = new Map<string, Product>();
   for (const p of (prodRows || []) as (Product & { marketplace?: string })[]) {
     const cur = canonical.get(p.asin) as (Product & { marketplace?: string }) | undefined;
