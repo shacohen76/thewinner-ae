@@ -14,6 +14,40 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// ML 3 (2026-07-17): during `next build` (static prerender) we must NEVER throw on
+// a read failure — a transient statement-timeout under build-time DB concurrency
+// would fail the ENTIRE deploy (this is exactly what broke PR #46's builds). At
+// build we degrade gracefully instead (return null → caller renders empty/404,
+// which ISR self-heals at runtime). At RUNTIME we still throw so a failed render
+// is not cached empty for 7 days.
+const IS_BUILD_PHASE = process.env.NEXT_PHASE === 'phase-production-build';
+
+// Run a Supabase read with retries. On persistent failure: THROW at runtime (keeps
+// the failed render out of the ISR cache — Next serves the last good copy / retries
+// next request), DEGRADE to null at build (never fail the deploy). The happy path is
+// unchanged (returns on attempt 1). This reacts only to actual DB ERRORS — a
+// legitimate empty result is returned as-is, so genuinely-empty pages render
+// normally. The /api/catalog route also catches the runtime throw → uncached empty.
+async function readWithRetry<T>(
+  label: string,
+  run: () => PromiseLike<{ data: T | null; error: { message?: string } | null }>,
+  attempts = 3,
+): Promise<T | null> {
+  let lastError: { message?: string } | null = null;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const { data, error } = await run();
+    if (!error) return data;
+    lastError = error;
+    console.error(`${label} failed (attempt ${attempt}/${attempts}):`, error);
+    if (attempt < attempts) await new Promise((r) => setTimeout(r, 150 * attempt));
+  }
+  if (IS_BUILD_PHASE) {
+    console.error(`${label} failed after ${attempts} attempts (build phase — degrading, not failing build):`, lastError?.message);
+    return null;
+  }
+  throw new Error(`${label} failed after ${attempts} attempts: ${lastError?.message ?? 'unknown error'}`);
+}
+
 // ============================================
 // DATABASE TYPES
 // ============================================
@@ -192,19 +226,30 @@ export async function getCategories(): Promise<Category[]> {
   return data || [];
 }
 
-// Get keywords by category (subcat slug) — single FK join query
-export async function getKeywordsByCategory(categorySlug: string): Promise<Keyword[]> {
-  const { data, error } = await supabase
-    .from('keywords')
-    .select('*, categories!inner(slug)')
-    .eq('categories.slug', categorySlug)
-    .order('keyword_text');
-
-  if (error) {
-    console.error('Error fetching keywords:', error);
-    return [];
-  }
-  return data || [];
+// Get keywords by category (subcat slug) — single FK join query.
+// ML 3 (2026-07-17): the REAL fix for the empty kitchen-appliances / coffee-tea
+// pages is the narrowed SELECT below — the old `select('*')` pulled the heavy
+// `qa_guide` JSONB for every row (664/321 rows), blowing past the Postgres
+// statement timeout (57014); selecting only the columns the page uses runs in
+// ~300ms. readWithRetry adds resilience on top: retry a transient blip, then throw
+// at RUNTIME (so a failed render isn't cached empty) but degrade at BUILD (so a
+// build-time timeout under concurrency doesn't fail the deploy).
+export async function getKeywordsByCategory(
+  categorySlug: string,
+): Promise<Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]> {
+  const rows = await readWithRetry<Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]>(
+    `getKeywordsByCategory("${categorySlug}")`,
+    () =>
+      supabase
+        .from('keywords')
+        .select('id, keyword_text, slug, categories!inner(slug)')
+        .eq('categories.slug', categorySlug)
+        .order('keyword_text') as unknown as PromiseLike<{
+        data: Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[] | null;
+        error: { message?: string } | null;
+      }>,
+  );
+  return rows || [];
 }
 
 // Get keyword by slug
@@ -212,17 +257,21 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
   // Slugs are always lowercase
   const normalizedSlug = slug.toLowerCase();
 
-  const { data, error } = await supabase
-    .from('keywords')
-    .select('id, keyword_text, slug, category_id, qa_guide, validation_status, scraped_at')
-    .eq('slug', normalizedSlug)
-    .single();
-
-  if (error) {
-    console.error('Error fetching keyword:', error);
-    return null;
-  }
-  return data;
+  // ML 3 (2026-07-17): use limit(1) + first row — NOT single()/maybeSingle().
+  // Some slugs have DUPLICATE rows in the table (e.g. asus-vivobook has 2), and
+  // single()/maybeSingle() ERROR on multiple rows — under readWithRetry that threw
+  // and FAILED THE BUILD. limit(1) resolves duplicates to one keyword (lowest id)
+  // and returns null only for genuinely-missing slugs (real 404). Only an actual DB
+  // error is retried → thrown at runtime (not cached) / degraded at build.
+  const rows = await readWithRetry<Keyword[]>('getKeywordBySlug', () =>
+    supabase
+      .from('keywords')
+      .select('id, keyword_text, slug, category_id, qa_guide, validation_status, scraped_at')
+      .eq('slug', normalizedSlug)
+      .order('id')
+      .limit(1),
+  );
+  return rows && rows.length > 0 ? rows[0] : null;
 }
 
 // CONTENT-BY-ASIN model (2026-07-06, "max generalization"): a product's CONTENT
@@ -254,34 +303,36 @@ export async function getProductsForKeyword(
   marketplace: string = 'ae', // which program's catalog membership to serve (geo-driven)
 ): Promise<(Product & KeywordProduct)[]> {
   // 1) MEMBERSHIP — which asins this program ranks for the keyword.
-  const { data: links, error } = await supabase
-    .from('keyword_products')
-    .select('asin, rank, price_at_scrape, scraped_at, validated_at')
-    .eq('keyword_id', keywordId)
-    .eq('marketplace', marketplace)
-    .order('rank')
-    .limit(15); // Fetch 15 (buffer), will filter to 10
+  // ML 3 (2026-07-17): retry-then-throw on a real DB error (readWithRetry) so a
+  // transient blip can't render an empty listing that ISR caches for 7 days. A
+  // legitimate empty result (0 asins — some keywords genuinely have no products)
+  // still returns [] normally below; only ERRORS throw.
+  const links = await readWithRetry<
+    Pick<KeywordProduct, 'asin' | 'rank' | 'price_at_scrape' | 'scraped_at' | 'validated_at'>[]
+  >(`getProductsForKeyword.membership(kw=${keywordId},mkt=${marketplace})`, () =>
+    supabase
+      .from('keyword_products')
+      .select('asin, rank, price_at_scrape, scraped_at, validated_at')
+      .eq('keyword_id', keywordId)
+      .eq('marketplace', marketplace)
+      .order('rank')
+      .limit(15), // Fetch 15 (buffer), will filter to 10
+  );
 
-  if (error) {
-    console.error('Error fetching keyword_products:', error);
-    return [];
-  }
   const linkRows = links || [];
   const asins = Array.from(new Set(linkRows.map(l => l.asin).filter(Boolean)));
-  if (asins.length === 0) return [];
+  if (asins.length === 0) return []; // legitimate empty (not an error) — render graceful empty state
 
   // 2) CONTENT — shared product rows by asin. Canonical pick (prefer 'ae' English
   // base) covers the transition window where a shared asin still has per-market
   // rows; post-collapse each asin has one row and this just returns it.
-  const { data: prodRows, error: pErr } = await supabase
-    .from('products')
-    .select('*')
-    .in('asin', asins);
+  // ML 3 (2026-07-17): same retry-then-throw guard as the membership read — a
+  // transient failure here must not cache an empty listing.
+  const prodRows = await readWithRetry<(Product & { marketplace?: string })[]>(
+    `getProductsForKeyword.content(kw=${keywordId})`,
+    () => supabase.from('products').select('*').in('asin', asins),
+  );
 
-  if (pErr) {
-    console.error('Error fetching products:', pErr);
-    return [];
-  }
   const canonical = new Map<string, Product>();
   for (const p of (prodRows || []) as (Product & { marketplace?: string })[]) {
     const cur = canonical.get(p.asin) as (Product & { marketplace?: string }) | undefined;

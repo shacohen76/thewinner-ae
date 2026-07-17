@@ -196,6 +196,12 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound();
   }
 
+  // ML 3 (2026-07-17): the empty-category bug is fixed at the source — the narrowed
+  // SELECT in getKeywordsByCategory no longer times out, and readWithRetry throws at
+  // RUNTIME on a real DB error (so a failed render isn't cached) while degrading at
+  // BUILD. So no page-level throw here: a genuine 0 (rare) still renders "Coming
+  // Soon" below, and transient errors are handled in the query, not by failing the
+  // whole prerender.
   const dbKeywords = await getKeywordsByCategory(slug);
   const keywords = dbKeywords.map(kw => ({
     text: toTitleCase(kw.keyword_text),
