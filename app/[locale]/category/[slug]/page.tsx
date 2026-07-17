@@ -196,18 +196,13 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound();
   }
 
+  // ML 3 (2026-07-17): the empty-category bug is fixed at the source — the narrowed
+  // SELECT in getKeywordsByCategory no longer times out, and readWithRetry throws at
+  // RUNTIME on a real DB error (so a failed render isn't cached) while degrading at
+  // BUILD. So no page-level throw here: a genuine 0 (rare) still renders "Coming
+  // Soon" below, and transient errors are handled in the query, not by failing the
+  // whole prerender.
   const dbKeywords = await getKeywordsByCategory(slug);
-
-  // ML 3 (2026-07-17): `slug` is a KNOWN subcategory here (unknown slugs already
-  // notFound() above), and every known subcategory has keywords in the DB. So 0
-  // rows is a transient read anomaly (e.g. an RLS/timeout returning empty WITHOUT
-  // an error), not a genuinely empty category. Throw so this empty render is NOT
-  // baked into the 7-day ISR cache as "Coming Soon" — the next request retries.
-  // (This is what froze kitchen-appliances / coffee-tea empty for a whole edge.)
-  if (dbKeywords.length === 0) {
-    throw new Error(`Category "${slug}" returned 0 keywords unexpectedly; refusing to cache an empty render`);
-  }
-
   const keywords = dbKeywords.map(kw => ({
     text: toTitleCase(kw.keyword_text),
     slug: kw.slug,
