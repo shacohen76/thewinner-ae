@@ -21,12 +21,15 @@ import {
   getScoreLabel,
   scoreToStars,
   buildAffiliateUrl,
+  buildAffiliateSearchUrl,
+  cleanSearchQuery,
   extractBrand,
   formatNumber,
   getTrackingParams
 } from '@/lib/utils';
 import { splitTitle } from '@/lib/title-split';
 import { logAsinClickBeacon } from '@/components/TrackingProvider';
+import { useGeoCatalog } from '@/components/GeoCatalog';
 
 interface ProductCardProps {
   rank: number;
@@ -102,8 +105,19 @@ export default function ProductCard({
     logAsinClickBeacon(asin);
   };
 
-  // Build Amazon URL — TrackingProvider rewrites the tag dynamically
-  const amazonUrl = buildAffiliateUrl(asin, title);
+  // Build Amazon URL — TrackingProvider rewrites the tag dynamically.
+  // ML 3 (2026-07-17): in the never-empty geo fallback (us/uk/jp visitor on a
+  // keyword their store lacks), these AE cards' /dp/{asin} would 404 on the
+  // visitor's marketplace. searchFallback → link to an Amazon SEARCH on their
+  // store instead (brand + product name), which resolves + earns commission.
+  const { searchFallback, keywordEn } = useGeoCatalog();
+  // English pages search the specific product title; localized pages (ar/ja)
+  // search the English keyword instead — the Arabic/Japanese title is a poor
+  // query on most stores. (ML 3, 2026-07-17)
+  const searchText = locale === 'en' ? cleanSearchQuery(title) : (keywordEn || cleanSearchQuery(title));
+  const amazonUrl = searchFallback
+    ? buildAffiliateSearchUrl(searchText)
+    : buildAffiliateUrl(asin, title);
 
   // Default WWL points if none provided — capitalize first letter of each
   const displayWwl = (wwlPoints && wwlPoints.length > 0
