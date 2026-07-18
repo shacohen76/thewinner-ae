@@ -23,7 +23,11 @@ import { getKeywordBySlug, getProductsForKeyword } from '@/lib/supabase';
 // 200-kw pilot, English content + WWL). Keep in sync with GeoCatalog.tsx.
 // 2026-07-16 (ML 2.6): 'uk' added — UK canary of the EN-fleet rollout complete:
 // 27,920 memberships / 1,998 kw / 22,461 ASINs / 100% WWL (amazon.co.uk catalog).
-const CATALOG_MARKETPLACES = new Set(['jp', 'us', 'uk']);
+// 2026-07-18 (ML 2.6 Wave 1): ca+ie+au+sg added — EN fleet complete. Each harvested
+// (Creators API), relevance-validated (junk pruned), and WWL'd to ~99%:
+//   ca 27,654 memberships / 1,976 kw / 99.0% WWL   au 27,520 / 1,967 / 98.7%
+//   ie 23,136 / 1,935 / 98.8% (thin store)         sg 23,982 / 1,858 / 98.6% (thin store)
+const CATALOG_MARKETPLACES = new Set(['jp', 'us', 'uk', 'ca', 'ie', 'au', 'sg']);
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;

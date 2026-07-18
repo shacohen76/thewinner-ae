@@ -36,7 +36,12 @@ import { getGeoProgram } from '@/lib/geo-config';
 // catalog (amazon.com products + thewinnerusa-20 links via TrackingProvider).
 // 2026-07-16 (ML 2.6): 'uk' added — GB-geo visitors swap in the UK catalog
 // (amazon.co.uk products + thewinneruk-21 links). UK canary of the EN-fleet rollout.
-const CATALOG_MARKETPLACES = new Set(['jp', 'us', 'uk']);
+// 2026-07-18 (ML 2.6 Wave 1): ca+ie+au+sg added — EN fleet complete. CA/IE/AU/SG geo
+// visitors now swap in their own store's catalog (amazon.ca / .ie / .com.au / .sg with
+// thewinnerca2-20 / thewinnerir-21 / thewinnerau-22 / thewinnersg-22 via TrackingProvider).
+// IE+SG are thin stores: ~240/283 keywords fall under 5 products → ML3 searchFallback
+// keeps those pages useful (AE cards + Amazon-search links) instead of rendering empty.
+const CATALOG_MARKETPLACES = new Set(['jp', 'us', 'uk', 'ca', 'ie', 'au', 'sg']);
 
 // INTL1 JP (2026-07-09): locales that PIN to a specific storefront catalog —
 // "language follows URL". A /ja page shows the JP catalog to EVERY visitor,
