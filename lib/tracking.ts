@@ -57,7 +57,10 @@
 // ============================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { getGeoConfig, GeoGroup, AmazonDomain } from './geo-config';
+import { getGeoConfig, getProgramConfig, GeoGroup, GeoProgram, AmazonDomain } from './geo-config';
+// MULTIGEO lang-split (2026-07-20): the locale list lives in the router config,
+// so the static-tag language axis can never drift from the URL language axis.
+import { routing } from '@/i18n/routing';
 
 // Server-side Supabase client (uses service role key for writes to tag_pool)
 // Lazy-initialized to avoid build-time errors when env vars are missing
@@ -203,17 +206,118 @@ function decodeKeyRole(jwt: string | undefined): string {
   }
 }
 
-// Static tag mapping — traffic source → first matching tag
-// These don't rotate, one tag per source type
-async function getStaticTag(trafficSource: string): Promise<string> {
-  const { data } = await getSupabaseAdmin()
+// ============================================
+// STATIC TAG RESOLUTION — program × source × language
+// ============================================
+// 2026-07-20 (MULTIGEO lang-split, Step 2): getStaticTag was program- AND
+// language-blind — it returned one AE tag per traffic_source, and every non-AE
+// program returned its single geo-config defaultTag regardless of source or
+// page language. So we could not see WHICH LANGUAGE PAGES CONVERT PER GEO
+// (30d before this shipped: 32,112 seo clicks collapsing into a few storetags).
+// See Docs_MD/multigeo_lang_split_tags_roadmap.md.
+//
+// Tag convention (frozen with the user 2026-07-11):
+//   twnr{program}{source}{locale}-{suffix}
+//     seo               → carries the URL-folder locale (twnraeseoen-21, twnrjpseoja-22)
+//     direct/chatgpt/fb → language-blind                (twnraedirect-21)
+//     gads              → rotation pool / paid marker — NOT resolved here
+//
+// ── The 3-tier fallback chain ──
+//   1. NEW convention — (program, tag_type=source, locale). seo-family only.
+//   2. LEGACY tier    — (program, tag_type=source), locale ignored. Only AE has
+//                       such rows today, so this is what KEEPS THE LIVE AE TAGS
+//                       WORKING until the new AE rows are seeded (Step 3).
+//                       Remove only after AE is migrated + verified.
+//   3. STORETAG       — the program's catch-all (see storeTagFor).
+//
+// ── NO-OP GUARANTEE (Step 2) ──
+// With zero `locale` rows seeded, tier 1 never hits. AE resolves via tier 2 to
+// exactly the tags it returns today; every non-AE program has NO tag_pool rows
+// at all (the pool is AE-only) so it resolves via tier 3 to exactly its current
+// defaultTag. Seeding a row later flips only that one (program, source, locale)
+// segment; deleting the row reverts it.
+
+/** Sources whose tag carries a page language. Everything else is language-blind. */
+const LOCALE_BEARING_SOURCES = new Set(['seo']);
+
+/**
+ * Normalize a detected traffic_source to the source used in the tag.
+ * `bing` is treated as seo for tagging (agreed 2026-07-11, interim — revisit if
+ * paid Bing/msclkid ever needs its own tag). Verified zero-impact: bing had
+ * 0 clicks in the 30 days before this shipped.
+ */
+function normalizeSource(trafficSource: string): string {
+  return trafficSource === 'bing' ? 'seo' : trafficSource;
+}
+
+/**
+ * The program's catch-all tag (tier 3).
+ * AE deliberately keeps TRACKING_CONFIG.defaultTag (env-overridable via
+ * DEFAULT_TAG) so this refactor is byte-identical to the pre-Step-2 AE
+ * fallback; every other program uses its geo-config storetag, which is exactly
+ * what the geo-static branch returned before.
+ */
+function storeTagFor(program: GeoProgram): string {
+  return program === 'ae'
+    ? TRACKING_CONFIG.defaultTag
+    : getProgramConfig(program).defaultTag;
+}
+
+/**
+ * Derive the page language from the landing path. Language is a URL axis
+ * (INTL1): English is prefix-less, every other locale is served under /{locale}.
+ * '/ar/best/x' → 'ar' · '/ja' → 'ja' · '/best/x' → 'en'.
+ * Reads i18n/routing.ts so the locale list can never drift from the router.
+ */
+export function deriveLocale(landingPage: string | null | undefined): string {
+  if (!landingPage) return routing.defaultLocale;
+  const firstSegment = landingPage.split('/')[1] || '';
+  return (routing.locales as readonly string[]).includes(firstSegment)
+    ? firstSegment
+    : routing.defaultLocale;
+}
+
+/**
+ * Resolve the static (non-rotating) tag for a visitor.
+ * @param program        the visitor's Amazon program (geo axis)
+ * @param trafficSource  detected source (seo/direct/chatgpt/fb/bing/other…)
+ * @param locale         the page language (URL axis)
+ */
+async function getStaticTag(
+  program: GeoProgram,
+  trafficSource: string,
+  locale: string
+): Promise<string> {
+  const source = normalizeSource(trafficSource);
+  const sb = getSupabaseAdmin();
+
+  // Tier 1 — NEW convention: the language-split row for this exact page language.
+  if (LOCALE_BEARING_SOURCES.has(source)) {
+    const { data } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('program', program)
+      .eq('tag_type', source)
+      .eq('locale', locale)
+      .order('tag_id', { ascending: true })   // deterministic if ever >1
+      .limit(1)
+      .maybeSingle();
+    if (data?.tag_id) return data.tag_id;
+  }
+
+  // Tier 2 — LEGACY compatibility (locale ignored). AE-only rows today.
+  const { data: legacy } = await sb
     .from('tag_pool')
     .select('tag_id')
-    .eq('tag_type', trafficSource)
+    .eq('program', program)
+    .eq('tag_type', source)
+    .order('tag_id', { ascending: true })
     .limit(1)
-    .single();
+    .maybeSingle();
+  if (legacy?.tag_id) return legacy.tag_id;
 
-  return data?.tag_id || TRACKING_CONFIG.defaultTag;
+  // Tier 3 — STORETAG.
+  return storeTagFor(program);
 }
 
 // ============================================
@@ -281,7 +385,18 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   if (geos1Enabled) {
     const geoConfig = getGeoConfig(req.ip_country);
     if (geoConfig.program !== 'ae') {
-      const assignedTag = geoConfig.defaultTag;
+      // MULTIGEO lang-split (2026-07-20): was a flat `geoConfig.defaultTag` for
+      // EVERY source and language. Now resolved by (program × source × locale)
+      // so non-AE geos become measurable too. NO-OP until tags are seeded: the
+      // pool holds no non-AE rows, so tiers 1–2 miss and tier 3 returns this
+      // program's storetag — i.e. geoConfig.defaultTag, exactly as before.
+      // (gads also lands here and falls through to the storetag, unchanged;
+      // seeding non-AE gads rows later activates the Step-4 paid marker.)
+      const assignedTag = await getStaticTag(
+        geoConfig.program,
+        req.traffic_source,
+        deriveLocale(req.landing_page)
+      );
 
       // Log the session — click_log still captures everything, with the
       // program-specific tag in assigned_tag. ip_country tells us the geo.
@@ -316,7 +431,15 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 
   // Static sources get static tags (no rotation)
   if (TRACKING_CONFIG.staticTagTypes.includes(req.traffic_source)) {
-    const staticTag = await getStaticTag(req.traffic_source);
+    // MULTIGEO lang-split (2026-07-20): AE now resolves by program × source ×
+    // page language. NO-OP today — no AE `locale` rows are seeded, so tier 1
+    // misses and tier 2 returns the same legacy AE tag as before
+    // (seo → twnraeseo01-21, direct → twnraedirect01-21, other_geo → twnraeggeo01-21).
+    const staticTag = await getStaticTag(
+      'ae',
+      req.traffic_source,
+      deriveLocale(req.landing_page)
+    );
 
     // Log the session (even for static tags — useful for analytics)
     await getSupabaseAdmin().from('click_log').insert({
