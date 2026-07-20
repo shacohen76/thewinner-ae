@@ -224,10 +224,13 @@ function decodeKeyRole(jwt: string | undefined): string {
 //
 // ── The 3-tier fallback chain ──
 //   1. NEW convention — (program, tag_type=source, locale). seo-family only.
-//   2. LEGACY tier    — (program, tag_type=source), locale ignored. Only AE has
-//                       such rows today, so this is what KEEPS THE LIVE AE TAGS
+//   2. LANGUAGE-BLIND  — (program, tag_type=source) WHERE locale IS NULL. Serves
+//                       direct/chatgpt/yt/fb/gads (which carry no language) AND
+//                       the AE legacy rows, which is what KEEPS THE LIVE AE TAGS
 //                       WORKING until the new AE rows are seeded (Step 3).
-//                       Remove only after AE is migrated + verified.
+//                       NOTE: it must NOT match per-language rows — otherwise a
+//                       locale miss lands on a sibling language's tag instead of
+//                       the storetag. See the fix note on the query itself.
 //   3. STORETAG       — the program's catch-all (see storeTagFor).
 //
 // ── NO-OP GUARANTEE (Step 2) ──
@@ -305,16 +308,35 @@ async function getStaticTag(
     if (data?.tag_id) return data.tag_id;
   }
 
-  // Tier 2 — LEGACY compatibility (locale ignored). AE-only rows today.
-  const { data: legacy } = await sb
+  // Tier 2 — LANGUAGE-BLIND row for this source (locale IS NULL).
+  //
+  // 2026-07-20 FIX: this used to match on (program, tag_type) with locale
+  // IGNORED. That was fine while AE was the only program and had a single
+  // language-blind legacy `seo` row — but once per-language rows were seeded
+  // (SA seo/en + seo/ar, JP seo/ja + seo/en + seo/zh), a locale MISS fell into
+  // an arbitrary SIBLING LANGUAGE tag (whichever sorted first) instead of the
+  // storetag. Observed: (sa, seo, ja) → twnrsaseoar-21 (Arabic tag on a
+  // Japanese page) and (jp, seo, ar) → twnrjpseoen-22. That silently
+  // mislabels language attribution — corrupting the exact metric this
+  // subsystem exists to produce.
+  //
+  // Restricting tier 2 to `locale IS NULL` makes it mean what it always
+  // should have: "the language-blind tag for this source". Effects:
+  //   • AE legacy rows (twnraeseo01-21, twnraedirect01-21 — locale NULL) still
+  //     match → AE remains byte-identical.
+  //   • direct / chatgpt / yt / fb / gads (locale NULL) still match.
+  //   • per-language rows are TIER-1 ONLY, so an unmatched locale correctly
+  //     falls through to the storetag (tier 3), as designed.
+  const { data: languageBlind } = await sb
     .from('tag_pool')
     .select('tag_id')
     .eq('program', program)
     .eq('tag_type', source)
+    .is('locale', null)
     .order('tag_id', { ascending: true })
     .limit(1)
     .maybeSingle();
-  if (legacy?.tag_id) return legacy.tag_id;
+  if (languageBlind?.tag_id) return languageBlind.tag_id;
 
   // Tier 3 — STORETAG.
   return storeTagFor(program);
