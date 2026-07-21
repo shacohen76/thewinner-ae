@@ -83,18 +83,44 @@ function isBotClient(): boolean {
 // TRAFFIC SOURCE DETECTION
 // ============================================
 
+// MULTIGEO Step 2.5 (2026-07-20): added YouTube + sub-affiliate detection.
+// Precedence (agreed with owner): gclid → utm_sub → utm_source(yt) → click-ids
+// (fbclid/msclkid) → referrer. gclid stays HIGHEST so the paid Google-Ads
+// reconciliation pipeline is never shadowed by a UTM. The returned string is
+// the tag_type looked up in tag_pool (getStaticTag), so 'yt'/'sub01' must match
+// the seeded tag_type exactly. See Docs_MD/multigeo_lang_split_tags_roadmap.md.
 function detectTrafficSource(): string {
   if (typeof window === 'undefined') return 'direct';
 
   const params = new URLSearchParams(window.location.search);
 
+  // 1) Google Ads — highest priority, protects offline-conversion attribution.
   if (params.get('gclid')) return 'gads';
+
+  // 2) Sub-affiliate — another creator's traffic, identifiable ONLY by utm_sub
+  //    (no referrer signal exists for it). STRICT validation: utm_sub is
+  //    attacker-controllable, so we accept only the exact `subNN` shape and
+  //    ignore anything else — e.g. `utm_sub=gads` must NEVER route a visitor
+  //    into the paid rotation pool. The value doubles as the tag_type
+  //    (tag_pool row twnr{prog}sub01 has tag_type='sub01').
+  const utmSub = (params.get('utm_sub') || '').toLowerCase();
+  if (/^sub\d{2}$/.test(utmSub)) return utmSub;
+
+  // 3) YouTube — our own links carry utm_source=yt|youtube (reliable even from
+  //    the YouTube app, which frequently sends no referrer). Referrer is a
+  //    fallback below for when the UTM is stripped.
+  const utmSource = (params.get('utm_source') || '').toLowerCase();
+  if (utmSource === 'yt' || utmSource === 'youtube') return 'yt';
+
+  // 4) Other paid click-ids.
   if (params.get('fbclid')) return 'fb';
   if (params.get('msclkid')) return 'bing';
 
+  // 5) Referrer-based detection (fallback).
   const ref = document.referrer.toLowerCase();
   if (!ref || ref.includes('thewinner.ae') || ref.includes('thewinners.ae')) return 'direct';
   if (ref.includes('google.') || ref.includes('bing.') || ref.includes('yahoo.') || ref.includes('duckduckgo.')) return 'seo';
+  if (ref.includes('youtube.') || ref.includes('youtu.be')) return 'yt';   // UTM-dropped YouTube fallback
   if (ref.includes('facebook.') || ref.includes('instagram.') || ref.includes('fb.')) return 'fb';
   if (ref.includes('chat.openai.') || ref.includes('chatgpt.') || ref.includes('claude.ai') || ref.includes('perplexity.')) return 'chatgpt';
 

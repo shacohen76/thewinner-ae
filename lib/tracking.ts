@@ -451,8 +451,23 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
     // existing logic below. Behavior identical to pre-GEOS1.
   }
 
-  // Static sources get static tags (no rotation)
-  if (TRACKING_CONFIG.staticTagTypes.includes(req.traffic_source)) {
+  // Static sources get static tags (no rotation).
+  //
+  // MULTIGEO Step 2.5 (2026-07-20): INVERTED the gate — "only gads rotates;
+  // everything else is static" — instead of matching against the closed
+  // staticTagTypes allowlist. Why: this is the AE path (all non-AE programs
+  // early-returned above). The old allowlist was a landmine — any NEW source
+  // (yt, sub01, …) not added to it would fall through to the AE PAID ROTATION
+  // POOL and consume a real gads tag, corrupting paid attribution. Inverting
+  // means new channels are safe by default: adding a source = detect it + seed
+  // a tag, never a routing-code change.
+  //
+  // Proven no-op for existing traffic: detectTrafficSource only ever emits
+  // gads/fb/bing/seo/chatgpt/direct/other (+ new yt/subNN), and every one of
+  // those except 'gads' was already in staticTagTypes — so the set of sources
+  // that reach the rotation pool is unchanged (still exactly 'gads').
+  // (staticTagTypes is kept as documentation of the known static sources.)
+  if (req.traffic_source !== TRACKING_CONFIG.gadsTagType) {
     // MULTIGEO lang-split (2026-07-20): AE now resolves by program × source ×
     // page language. NO-OP today — no AE `locale` rows are seeded, so tier 1
     // misses and tier 2 returns the same legacy AE tag as before
