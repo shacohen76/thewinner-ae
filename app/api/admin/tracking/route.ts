@@ -72,9 +72,18 @@ export async function GET(request: NextRequest) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
   // Date range from query params (default: last 7 days)
-  // "1" = today only, "2" = yesterday + today, etc.
+  // "1" = today only, "7" = last 7 days (all include today, open-ended to now).
   const daysBack = parseInt(request.nextUrl.searchParams.get('days') || '7');
-  const since = getDubaiStartOfDay(daysBack - 1); // -1 because "1 day" = today = 0 days back
+  // MG5 (2026-07-28): optional single-day mode. mode='yesterday' isolates the
+  // prior Dubai day [yesterday 00:00, today 00:00); every other preset stays
+  // open-ended to now (until = null → the aggregation coalesces it to +infinity).
+  const mode = request.nextUrl.searchParams.get('mode') || '';
+  let since = getDubaiStartOfDay(daysBack - 1); // -1 because "1 day" = today = 0 days back
+  let until: string | null = null;
+  if (mode === 'yesterday') {
+    since = getDubaiStartOfDay(1);   // yesterday 00:00 Dubai
+    until = getDubaiStartOfDay(0);   // today 00:00 Dubai (exclusive)
+  }
 
   // GEOS1: 5-state geo filter + optional country drilldown.
   //   geo = 'all' | 'gulf' | 'europe' | 'intl'   (default: 'all')
@@ -108,6 +117,9 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(500);
 
+    // MG5: single-day mode caps the sessions list at the day boundary too.
+    if (until) sessionsQuery = sessionsQuery.lt('created_at', until);
+
     if (countryFilter) {
       sessionsQuery = sessionsQuery.eq('ip_country', countryFilter);
     } else if (geoFilter === 'gulf') {
@@ -127,11 +139,11 @@ export async function GET(request: NextRequest) {
       // (program, source, language) and fix the AE-only tag-count contamination.
       supabase.from('tag_pool').select('tag_id,tag_type,status,assigned_at,expires_at,is_stable,seeding_cohort,program,locale'),
       // Read-only aggregation over the FULL range, bot-excluded (Phase 2).
-      supabase.rpc('admin_tracking_rollup', { p_since: since, p_in: pIn, p_not_in: pNotIn }),
+      supabase.rpc('admin_tracking_rollup', { p_since: since, p_in: pIn, p_not_in: pNotIn, p_until: until }),
       sessionsQuery,
       // MG5: language-split source — click side (by_tag) + money side (purchases)
       // per tag, GLOBAL (program is the geo axis here; purchases are by tag, not IP).
-      supabase.rpc('admin_lang_split', { p_since: since }),
+      supabase.rpc('admin_lang_split', { p_since: since, p_until: until }),
     ]);
 
     const tagPool = tagPoolRes.data || [];
@@ -358,7 +370,7 @@ export async function GET(request: NextRequest) {
       meta: {
         total_sessions: totals.sessions,
         totals: totals,
-        date_range: { from: since, to: new Date().toISOString(), days: daysBack },
+        date_range: { from: since, to: until || new Date().toISOString(), days: daysBack, mode: mode || 'rolling' },
         geo_filter: geoFilter,
         country_filter: countryFilter || null,
         timezone: 'Asia/Dubai (UTC+4)',

@@ -247,13 +247,26 @@ function geoFilterToGroup(f: GeoFilter): GeoGroup | null {
   return f;
 }
 
+// MG5 (2026-07-28): date-range presets. 'today'/'yesterday' are single Dubai
+// days (yesterday sends mode=yesterday → server caps the window at today 00:00);
+// the rest are open-ended rolling windows ending at now. days = span sent to the API.
+type RangePreset = 'today' | 'yesterday' | '7' | '14' | '30';
+const RANGE_META: Record<RangePreset, { days: number; mode: string; label: string }> = {
+  today:     { days: 1,  mode: 'today',     label: 'Today' },
+  yesterday: { days: 1,  mode: 'yesterday', label: 'Yesterday' },
+  '7':       { days: 7,  mode: 'rolling',   label: 'Last 7 days' },
+  '14':      { days: 14, mode: 'rolling',   label: 'Last 14 days' },
+  '30':      { days: 30, mode: 'rolling',   label: 'Last 30 days' },
+};
+
 export default function AdminTracking() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [data, setData] = useState<TrackingData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [days, setDays] = useState(7);
+  const [range, setRange] = useState<RangePreset>('7');
+  const rangeMeta = RANGE_META[range];
   // GEOS1: 5-state geo filter + per-country drilldown. Country overrides geo.
   const [geoFilter, setGeoFilter] = useState<GeoFilter>('all');
   const [countryFilter, setCountryFilter] = useState<string>('');
@@ -275,7 +288,7 @@ export default function AdminTracking() {
     setError('');
     try {
       // GEOS1: send geo + country params. Country overrides geo server-side.
-      const url = `/api/admin/tracking?key=${encodeURIComponent(key)}&days=${days}&geo=${geoFilter}${countryFilter ? `&country=${countryFilter}` : ''}`;
+      const url = `/api/admin/tracking?key=${encodeURIComponent(key)}&days=${rangeMeta.days}&mode=${rangeMeta.mode}&geo=${geoFilter}${countryFilter ? `&country=${countryFilter}` : ''}`;
       const res = await fetch(url);
       if (res.status === 401) {
         setError('Wrong password');
@@ -292,11 +305,11 @@ export default function AdminTracking() {
       setError('Failed to fetch data');
     }
     setLoading(false);
-  }, [password, days, geoFilter, countryFilter]);
+  }, [password, range, geoFilter, countryFilter]);
 
   useEffect(() => {
     if (authenticated && password) fetchData();
-  }, [days, geoFilter, countryFilter, authenticated]);
+  }, [range, geoFilter, countryFilter, authenticated]);
 
   // Login screen
   if (!authenticated) {
@@ -355,18 +368,17 @@ export default function AdminTracking() {
           <div>
             <h1 className="text-lg font-bold text-white">{new URL(CONFIG.siteUrl).hostname} — Tracking</h1>
             <p className="text-xs text-gray-500 mt-0.5">
-              {meta.total_sessions} sessions · {days}d range · Updated {meta.generated_at ? timeAgo(meta.generated_at) : '—'}
+              {meta.total_sessions} sessions · {rangeMeta.label} · Updated {meta.generated_at ? timeAgo(meta.generated_at) : '—'}
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <select value={days} onChange={e => setDays(Number(e.target.value))}
+            <select value={range} onChange={e => setRange(e.target.value as RangePreset)}
               className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5 outline-none">
-              <option value={1}>Today</option>
-              <option value={2}>Yesterday + Today</option>
-              <option value={3}>3 days</option>
-              <option value={7}>7 days</option>
-              <option value={14}>14 days</option>
-              <option value={30}>30 days</option>
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="7">Last 7 days</option>
+              <option value="14">Last 14 days</option>
+              <option value="30">Last 30 days</option>
             </select>
             {/* GEOS1: 5-state geo filter pill. Selecting a group clears country. */}
             <div className="flex items-center gap-0.5 bg-gray-900 border border-gray-700 rounded-lg p-0.5">
@@ -664,7 +676,7 @@ export default function AdminTracking() {
                 <h2 className="text-sm font-semibold text-gray-300 mb-1">Which language converts, per geo</h2>
                 <p className="text-xs text-gray-500 leading-relaxed">
                   Every Amazon tag resolved to <span className="text-gray-300">program × source × language</span> via the tag pool.
-                  Sessions &amp; clicks are the selected <span className="text-gray-300">{days}d</span> range (bot-excluded, all geos);
+                  Sessions &amp; clicks are the selected <span className="text-gray-300">{rangeMeta.label}</span> window (bot-excluded, all geos);
                   orders &amp; revenue are by tag over the same window (Amazon <span className="text-amber-400">reports purchases with a lag</span>, so
                   the language-split tags seeded 2026-07-20 fill in over the coming weeks).
                   Revenue is in each program&apos;s <span className="text-gray-300">marketplace currency</span> — never summed across programs.
