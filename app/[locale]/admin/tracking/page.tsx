@@ -14,7 +14,7 @@
 //       admin-mockup.html for the approved design.
 // ============================================
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import { CONFIG } from '@/lib/utils';
 import { ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 
@@ -44,6 +44,22 @@ interface TagPoolEntry {
   // GEOS1: AMZ12 tier flags — used by "Currently busy" tier badges
   is_stable?: boolean;
   seeding_cohort?: boolean;
+  // MG5: program (all 18) + language token (seo tags carry it; NULL otherwise)
+  program?: string;
+  locale?: string | null;
+}
+
+// MG5: one row per (program × source × language) — the "which language converts
+// per geo" money view. sessions/clicks are click-side; orders/revenue are money-side.
+interface LangSplitRow {
+  program: string;
+  source: string;
+  locale: string;
+  sessions: number;
+  clicks: number;
+  with_gclid: number;
+  orders: number;
+  revenue: number;
 }
 
 interface DailyStat {
@@ -134,6 +150,8 @@ interface TrackingData {
   // Phase 2: accurate, bot-excluded full-range aggregates.
   source_breakdown?: Record<string, number>;
   top_pages?: [string, { visits: number; clicks: number }][];
+  // MG5: program × source × language money view (global).
+  lang_split?: LangSplitRow[];
   meta: {
     total_sessions: number;
     totals?: { sessions: number; with_gclid: number; with_clicks: number; total_asins: number; bots_excluded: number };
@@ -239,7 +257,7 @@ export default function AdminTracking() {
   // GEOS1: 5-state geo filter + per-country drilldown. Country overrides geo.
   const [geoFilter, setGeoFilter] = useState<GeoFilter>('all');
   const [countryFilter, setCountryFilter] = useState<string>('');
-  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users'>('overview');
+  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users' | 'languages'>('overview');
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
 
   // Check localStorage for saved password
@@ -315,7 +333,10 @@ export default function AdminTracking() {
 
   // Computed
   const { tag_pool, sessions, daily_stats, meta, by_geo, top_countries, by_program } = data;
-  const gadsTags = tag_pool.filter(t => t.tag_type === 'gads');
+  // MG5 (2026-07-24): the rotation pool is AE-only. Each non-AE program now has a
+  // single static 'gads' marker tag; scope the busy/utilization gauge to AE so it
+  // still measures the actual rotating pool (was over-counting the 17 static markers).
+  const gadsTags = tag_pool.filter(t => t.tag_type === 'gads' && (t.program === 'ae' || t.program === undefined));
   const busyTags = gadsTags.filter(t => t.status === 'busy');
 
   // Phase 2: Overview headline numbers come from accurate, bot-excluded
@@ -400,7 +421,7 @@ export default function AdminTracking() {
       {/* Tabs */}
       <div className="border-b border-gray-800 px-4 md:px-6">
         <div className="max-w-7xl mx-auto flex gap-1 pt-2">
-          {(['overview', 'funnel', 'sessions', 'users', 'tags'] as const).map(t => (
+          {(['overview', 'funnel', 'languages', 'sessions', 'users', 'tags'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${tab === t ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
               {t === 'tags' ? 'Tag Pool' : t.charAt(0).toUpperCase() + t.slice(1)}
@@ -621,6 +642,111 @@ export default function AdminTracking() {
             </div>
           </>
         )}
+
+        {/* LANGUAGES — MG5: which language converts, per geo (program × source × language) */}
+        {tab === 'languages' && (() => {
+          const langSplit = data.lang_split || [];
+          // Group rows by program; order programs by total sessions (revenue is
+          // per-marketplace currency, so it can't rank programs against each other).
+          const byProg: Record<string, LangSplitRow[]> = {};
+          for (const r of langSplit) (byProg[r.program] ||= []).push(r);
+          const progOrder = Object.keys(byProg).sort((a, b) => {
+            const ses = (p: string) => byProg[p].reduce((s, r) => s + r.sessions, 0);
+            return ses(b) - ses(a);
+          });
+          const fmt = (n: number) => n.toLocaleString('en-US');
+          const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+          const totalOrders = langSplit.reduce((s, r) => s + r.orders, 0);
+          const langRows = langSplit.filter(r => r.locale !== '-').length;
+          return (
+            <>
+              <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 mb-4">
+                <h2 className="text-sm font-semibold text-gray-300 mb-1">Which language converts, per geo</h2>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Every Amazon tag resolved to <span className="text-gray-300">program × source × language</span> via the tag pool.
+                  Sessions &amp; clicks are the selected <span className="text-gray-300">{days}d</span> range (bot-excluded, all geos);
+                  orders &amp; revenue are by tag over the same window (Amazon <span className="text-amber-400">reports purchases with a lag</span>, so
+                  the language-split tags seeded 2026-07-20 fill in over the coming weeks).
+                  Revenue is in each program&apos;s <span className="text-gray-300">marketplace currency</span> — never summed across programs.
+                  <span className="text-gray-600"> gads is the paid rotation pool and is language-blind by design (shown as <span className="font-mono">—</span>).</span>
+                </p>
+              </div>
+
+              {langSplit.length === 0 ? (
+                <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 text-center text-gray-600 text-sm">
+                  No tagged traffic in this range.
+                </div>
+              ) : (
+                <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                  <div className="p-4 border-b border-gray-800 flex items-center justify-between flex-wrap gap-2">
+                    <h2 className="text-sm font-semibold text-gray-300">By program · source · language</h2>
+                    <span className="text-[11px] text-gray-500">{progOrder.length} programs · {langRows} language-split rows · {fmt(totalOrders)} orders in range</span>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead className="bg-gray-800/50 text-gray-400">
+                        <tr>
+                          <th className="text-left px-3 py-2">Source</th>
+                          <th className="text-left px-3 py-2">Lang</th>
+                          <th className="text-right px-3 py-2">Sessions</th>
+                          <th className="text-right px-3 py-2">AMZ Clicks</th>
+                          <th className="text-right px-3 py-2">Click-CR</th>
+                          <th className="text-right px-3 py-2">Orders</th>
+                          <th className="text-right px-3 py-2">Revenue</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-800/60 text-gray-300">
+                        {progOrder.map(prog => {
+                          const rows = [...byProg[prog]].sort((a, b) =>
+                            b.revenue - a.revenue || b.sessions - a.sessions);
+                          const sub = rows.reduce((s, r) => ({
+                            sessions: s.sessions + r.sessions, clicks: s.clicks + r.clicks,
+                            orders: s.orders + r.orders, revenue: s.revenue + r.revenue,
+                          }), { sessions: 0, clicks: 0, orders: 0, revenue: 0 });
+                          const subCr = sub.sessions > 0 ? `${((sub.clicks / sub.sessions) * 100).toFixed(1)}%` : '—';
+                          return (
+                            <Fragment key={prog}>
+                              {/* Program subtotal header */}
+                              <tr className="bg-gray-800/40">
+                                <td className="px-3 py-2 font-mono text-white uppercase font-bold" colSpan={2}>{prog}</td>
+                                <td className="px-3 py-2 text-right text-blue-300 font-medium">{fmt(sub.sessions)}</td>
+                                <td className="px-3 py-2 text-right text-emerald-300 font-medium">{fmt(sub.clicks)}</td>
+                                <td className="px-3 py-2 text-right text-amber-300">{subCr}</td>
+                                <td className="px-3 py-2 text-right text-emerald-300 font-medium">{sub.orders > 0 ? fmt(sub.orders) : '—'}</td>
+                                <td className="px-3 py-2 text-right text-emerald-300 font-medium">{sub.revenue > 0 ? money(sub.revenue) : '—'}</td>
+                              </tr>
+                              {rows.map(r => {
+                                const cr = r.sessions > 0 ? `${((r.clicks / r.sessions) * 100).toFixed(1)}%` : '—';
+                                const isLang = r.locale !== '-';
+                                return (
+                                  <tr key={`${prog}-${r.source}-${r.locale}`} className="hover:bg-gray-800/30">
+                                    <td className="px-3 py-2 pl-6">
+                                      <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-medium ${SRC_BG[r.source] || SRC_BG.other}`}>{r.source}</span>
+                                    </td>
+                                    <td className="px-3 py-2">
+                                      {isLang
+                                        ? <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-indigo-900/60 text-indigo-300 uppercase">{r.locale}</span>
+                                        : <span className="text-gray-600 font-mono">—</span>}
+                                    </td>
+                                    <td className="px-3 py-2 text-right text-gray-300">{fmt(r.sessions)}</td>
+                                    <td className="px-3 py-2 text-right text-gray-300">{r.clicks > 0 ? fmt(r.clicks) : '—'}</td>
+                                    <td className="px-3 py-2 text-right text-gray-500">{cr}</td>
+                                    <td className="px-3 py-2 text-right text-emerald-400 font-medium">{r.orders > 0 ? fmt(r.orders) : '—'}</td>
+                                    <td className="px-3 py-2 text-right text-emerald-400 font-medium">{r.revenue > 0 ? money(r.revenue) : '—'}</td>
+                                  </tr>
+                                );
+                              })}
+                            </Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* SESSIONS */}
         {tab === 'sessions' && (

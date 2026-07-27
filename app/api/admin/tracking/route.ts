@@ -121,17 +121,23 @@ export async function GET(request: NextRequest) {
         .not('ip_country', 'is', null);
     }
 
-    const [tagPoolRes, rollupRes, sessionsRes] = await Promise.all([
+    const [tagPoolRes, rollupRes, sessionsRes, langSplitRes] = await Promise.all([
       // Tag pool status (incl. AMZ12 tier flags for the busy-tag badges).
-      supabase.from('tag_pool').select('tag_id,tag_type,status,assigned_at,expires_at,is_stable,seeding_cohort'),
+      // MG5 (2026-07-24): +program,+locale so the panel can resolve each tag to
+      // (program, source, language) and fix the AE-only tag-count contamination.
+      supabase.from('tag_pool').select('tag_id,tag_type,status,assigned_at,expires_at,is_stable,seeding_cohort,program,locale'),
       // Read-only aggregation over the FULL range, bot-excluded (Phase 2).
       supabase.rpc('admin_tracking_rollup', { p_since: since, p_in: pIn, p_not_in: pNotIn }),
       sessionsQuery,
+      // MG5: language-split source — click side (by_tag) + money side (purchases)
+      // per tag, GLOBAL (program is the geo axis here; purchases are by tag, not IP).
+      supabase.rpc('admin_lang_split', { p_since: since }),
     ]);
 
     const tagPool = tagPoolRes.data || [];
     const rollup: any = rollupRes.data || {};
     const sessionsRaw: any[] = sessionsRes.data || [];
+    const langSplitRaw: any = langSplitRes.data || {};
 
     // Annotate each displayed session with its geo group.
     const sessions = sessionsRaw.map((s: any) => ({
@@ -193,13 +199,13 @@ export async function GET(request: NextRequest) {
       progAgg[p].sessions += c.sessions;
       progAgg[p].clicks += c.with_clicks;
     }
-    const UAE_TAG_TYPES = new Set(['gads', 'seo', 'direct', 'seo_reserve', 'other_geo']);
     const byProgram: Record<GeoProgram, any> = {} as any;
     ALL_PROGRAMS.forEach((prog) => {
       const cfg = getProgramConfig(prog);
-      const tagsForProgram = prog === 'ae'
-        ? tagPool.filter((t: any) => UAE_TAG_TYPES.has(t.tag_type)).length
-        : tagPool.filter((t: any) => t.tag_id === cfg.defaultTag).length;
+      // MG5 (2026-07-24): count tags by the tag_pool.program column (populated for
+      // all 18 programs) instead of the old AE-only tag_type heuristic, which
+      // cross-counted the new non-AE tags into AE and under-counted the rest.
+      const tagsForProgram = tagPool.filter((t: any) => t.program === prog).length;
       byProgram[prog] = {
         group: cfg.group,
         amazonDomain: cfg.amazonDomain,
@@ -292,6 +298,49 @@ export async function GET(request: NextRequest) {
 
     const totals = rollup.totals || { sessions: 0, with_gclid: 0, with_clicks: 0, total_asins: 0, bots_excluded: 0 };
 
+    // ── lang_split: sessions/clicks/purchases by program × source × locale (MG5) ──
+    // The money view this project exists to produce: join the click side
+    // (langSplit.by_tag) + the money side (langSplit.purchases) to tag_pool so each
+    // Amazon tag resolves to (program, tag_type=source, locale). gads tags are
+    // language-blind (locale NULL) → paid rows aggregate onto one per-program row.
+    // Tags no longer in the pool (retired) fall into an '(unmapped)' bucket.
+    const tagMeta: Record<string, { program: string; source: string; locale: string | null }> = {};
+    for (const t of tagPool as any[]) {
+      tagMeta[t.tag_id] = { program: t.program, source: t.tag_type, locale: t.locale ?? null };
+    }
+    interface SplitRow {
+      program: string; source: string; locale: string;
+      sessions: number; clicks: number; with_gclid: number; orders: number; revenue: number;
+    }
+    const splitMap: Record<string, SplitRow> = {};
+    const getSplit = (tagId: string): SplitRow => {
+      const m = tagMeta[tagId];
+      const program = m?.program || '(unmapped)';
+      const source = m?.source || '(unmapped)';
+      const locale = m?.locale || '-';
+      const key = `${program}|${source}|${locale}`;
+      if (!splitMap[key]) {
+        splitMap[key] = { program, source, locale, sessions: 0, clicks: 0, with_gclid: 0, orders: 0, revenue: 0 };
+      }
+      return splitMap[key];
+    };
+    for (const r of (langSplitRaw.by_tag || [])) {
+      if (!r.assigned_tag) continue;
+      const row = getSplit(r.assigned_tag);
+      row.sessions += r.sessions || 0;
+      row.clicks += r.with_clicks || 0;
+      row.with_gclid += r.with_gclid || 0;
+    }
+    for (const p of (langSplitRaw.purchases || [])) {
+      if (!p.tag_id) continue;
+      const row = getSplit(p.tag_id);
+      row.orders += p.orders || 0;
+      row.revenue += Number(p.revenue) || 0;
+    }
+    const lang_split = Object.values(splitMap)
+      .map((r) => ({ ...r, revenue: Math.round(r.revenue * 100) / 100 }))
+      .sort((a, b) => b.revenue - a.revenue || b.sessions - a.sessions);
+
     return NextResponse.json({
       tag_pool: tagPool,
       sessions: sessions,
@@ -304,6 +353,8 @@ export async function GET(request: NextRequest) {
       // Phase 2 additions (accurate, bot-excluded full-range aggregates):
       source_breakdown: source_breakdown,
       top_pages: top_pages,
+      // MG5: program × source × language money view (global — see lang_split note).
+      lang_split: lang_split,
       meta: {
         total_sessions: totals.sessions,
         totals: totals,
