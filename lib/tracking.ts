@@ -407,6 +407,28 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   if (geos1Enabled) {
     const geoConfig = getGeoConfig(req.ip_country);
     if (geoConfig.program !== 'ae') {
+      // MG7 (2026-07-28) — non-AE GADS ROTATION (SA first). A rotation-enabled
+      // non-AE program routes its gads traffic to its OWN rotation pool for
+      // 1-to-1 GCLID attribution, mirroring AE. Gated entirely by
+      // program_pool_config: a program rotates ONLY when it has an `enabled` row
+      // with `mechanics_v2=true`. Until SA's config row is seeded, getPoolConfig
+      // returns null → this whole branch is a NO-OP and SA gads falls through to
+      // the static storetag exactly as today (the deploy-before-seed gate).
+      // assignGadsTagV2 is the SAME money-path used by AE, parameterized by
+      // cfg.program + routing so AE stays byte-identical.
+      // See Docs_MD/MULTIGEO_GADS_ATTRIBUTION_SPEC_v1_0.md §5.2.
+      if (req.traffic_source === TRACKING_CONFIG.gadsTagType) {
+        const poolCfg = await getPoolConfig(geoConfig.program);
+        if (poolCfg?.mechanics_v2 && poolCfg.enabled) {
+          return assignGadsTagV2(req, sessionId, poolCfg, {
+            domain: geoConfig.amazonDomain,
+            group: geoConfig.group,
+            fallbackTag: geoConfig.defaultTag,
+          });
+        }
+        // Not rotation-enabled → fall through to the static storetag (unchanged).
+      }
+
       // MULTIGEO lang-split (2026-07-20): was a flat `geoConfig.defaultTag` for
       // EVERY source and language. Now resolved by (program × source × locale)
       // so non-AE geos become measurable too. NO-OP until tags are seeded: the
@@ -615,11 +637,20 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 //     progress (last_clickout_at DESC) so they cross the threshold sooner  (3) pull a
 //     reserve tag into the warming lane on demand  (4) steal the oldest NON-committed
 //     busy tag — never a committed stable (is_stable AND clicked out within stable_pin).
-// MULTIGEO: every query scoped program='ae' + tag_type='gads'.
+// MULTIGEO: every query scoped program=cfg.program + tag_type='gads'.
+// MG7 (2026-07-28): parameterized by cfg.program + routing so SA (and any future
+// rotation program) reuses this EXACT money-path. AE calls it with cfg.program='ae'
+// and the default AE routing → byte-identical to before (the literal 'ae' the
+// queries used is now cfg.program, which is 'ae' for AE).
 async function assignGadsTagV2(
   req: TagAssignRequest,
   sessionId: string,
   cfg: PoolConfig,
+  routing: { domain: AmazonDomain; group: GeoGroup; fallbackTag: string } = {
+    domain: 'amazon.ae',
+    group: 'gulf',
+    fallbackTag: TRACKING_CONFIG.defaultTag,
+  },
 ): Promise<TagAssignResponse> {
   const sb = getSupabaseAdmin();
   const now = Date.now();
@@ -630,7 +661,7 @@ async function assignGadsTagV2(
     .from('tag_pool')
     .select('tag_id')
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-    .eq('program', 'ae')
+    .eq('program', cfg.program)
     .eq('status', 'available')
     .eq('is_stable', true)
     .order('assigned_at', { ascending: true, nullsFirst: true })
@@ -644,7 +675,7 @@ async function assignGadsTagV2(
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-      .eq('program', 'ae')
+      .eq('program', cfg.program)
       .eq('status', 'available')
       .eq('seeding_cohort', true)
       .eq('is_stable', false)
@@ -662,7 +693,7 @@ async function assignGadsTagV2(
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-      .eq('program', 'ae')
+      .eq('program', cfg.program)
       .eq('status', 'available')
       .eq('is_stable', false)
       .eq('seeding_cohort', false)
@@ -691,7 +722,7 @@ async function assignGadsTagV2(
       .from('tag_pool')
       .select('tag_id, current_session, is_stable, last_clickout_at')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-      .eq('program', 'ae')
+      .eq('program', cfg.program)
       .eq('status', 'busy')
       .order('assigned_at', { ascending: true })
       .limit(20);
@@ -708,8 +739,9 @@ async function assignGadsTagV2(
     }
   }
 
-  // Absolute fallback (shouldn't happen — 200 gads tags in the AE pool).
-  const assignedTag = freeTag?.tag_id || TRACKING_CONFIG.defaultTag;
+  // Absolute fallback (shouldn't happen — AE pool has 200+ gads tags; SA is seeded
+  // before rotation is enabled). Uses the program's own storetag, not AE's.
+  const assignedTag = freeTag?.tag_id || routing.fallbackTag;
 
   // Mark the tag busy with the SOFT hold. releaseExpiredTags frees it after
   // soft_hold_minutes if no clickout arrives; a clickout re-pins it (logAsinClick).
@@ -744,8 +776,8 @@ async function assignGadsTagV2(
     session_id: sessionId,
     assigned_tag: assignedTag,
     expires_at: expiresAt,
-    amazon_domain: 'amazon.ae',
-    geo_group: 'gulf',
+    amazon_domain: routing.domain,
+    geo_group: routing.group,
   };
 }
 
@@ -790,7 +822,18 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
   // warming-progress signal (Amazon hides sub-threshold tags). Two scoped UPDATEs so
   // each tier gets its own pin. Flag off ⇒ the V1 stable-only 24h extension below runs
   // byte-identical.
-  const cfg = await getPoolConfig('ae');
+  // MG7 (2026-07-28): resolve the session's program from the rotation tag it
+  // holds, so commit-on-clickout uses THAT program's V2 config (SA pins with SA's
+  // config, AE with AE's). Static sessions hold no rotation tag (no current_session
+  // row) → program undefined → cfg null → the V2 commit block is skipped and the
+  // V1 fallback runs, whose UPDATE was already a no-op for them. AE rotation
+  // sessions resolve program='ae' → getPoolConfig('ae') → byte-identical to before.
+  const { data: heldTag } = await getSupabaseAdmin()
+    .from('tag_pool')
+    .select('program')
+    .eq('current_session', sessionId)
+    .maybeSingle();
+  const cfg = heldTag?.program ? await getPoolConfig(heldTag.program) : null;
   if (cfg?.mechanics_v2 && cfg.enabled) {
     const sb = getSupabaseAdmin();
     const stablePinIso = new Date(Date.now() + cfg.stable_pin_hours * 60 * 60 * 1000).toISOString();
@@ -852,6 +895,7 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
 // Idempotent — safe to call repeatedly. Returns counts for the cron response.
 
 export interface MaintainTagPoolResult {
+  program: string;          // MG7: which rotation program this result is for ('ae','sa',…)
   ok: boolean;              // false when a config/write problem was detected (see errors)
   key_role: string;         // decoded role of the service key — should be 'service_role'
   promoted_to_stable: number;
@@ -869,11 +913,9 @@ export interface MaintainTagPoolResult {
   s_stable?: number;        // stable count
 }
 
-export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
-  const sb = getSupabaseAdmin();
-  const errors: string[] = [];
-
-  // ── 0. GUARD: pool maintenance WRITES require a service_role key that bypasses RLS.
+export async function maintainTagPool(): Promise<MaintainTagPoolResult & { programs: MaintainTagPoolResult[] }> {
+  // ── 0. GUARD (run ONCE for all programs): pool maintenance WRITES require a
+  // service_role key that bypasses RLS.
   // 2026-07-02: root cause of the cohort-cycling freeze — the cron runtime was using a
   // non-service_role key. With RLS on (tag_pool + amazon_purchase_snapshot, ~2026-06-26)
   // reads still work but every UPDATE silently affects 0 rows and returns HTTP 200 with
@@ -891,15 +933,50 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       `env var is corrected in Vercel (both thewinner-ae and thewinners-ae) and redeployed.`;
     console.error(msg);
     const alertSent = await sendTelegram(msg);
-    return {
-      ok: false, key_role: keyRole, promoted_to_stable: 0, graduated_from_cohort: 0,
+    const bail: MaintainTagPoolResult = {
+      program: 'ae', ok: false, key_role: keyRole, promoted_to_stable: 0, graduated_from_cohort: 0,
       cohort_added: 0, cohort_removed: 0, cohort_size_now: 0, reserve_remaining: 0,
       alert_sent: alertSent, errors: [msg],
     };
+    return { ...bail, programs: [bail] };
   }
 
+  // ── MG7 (2026-07-28): enumerate enabled rotation programs and maintain each.
+  // AE is ALWAYS maintained (sacred), whether or not its config row is read; SA
+  // and any future program join once their program_pool_config row has
+  // enabled=true. On a config-read error, fall back to AE-only so a transient
+  // failure can never stall AE maintenance. ──
+  const sbEnum = getSupabaseAdmin();
+  let programs: string[] = ['ae'];
+  const { data: cfgRows, error: cfgErr } = await sbEnum
+    .from('program_pool_config')
+    .select('program')
+    .eq('enabled', true);
+  if (!cfgErr && cfgRows && cfgRows.length > 0) {
+    programs = cfgRows.map((r: { program: string }) => r.program);
+    if (!programs.includes('ae')) programs.unshift('ae');
+  }
+
+  const results: MaintainTagPoolResult[] = [];
+  for (const program of programs) {
+    results.push(await maintainTagPoolForProgram(program, keyRole));
+  }
+  // Top-level fields mirror AE for back-compat with existing log parsers; the
+  // `programs` array carries the full per-program breakdown (AE, SA, …).
+  const ae = results.find(r => r.program === 'ae') || results[0];
+  return { ...ae, key_role: keyRole, ok: results.every(r => r.ok), programs: results };
+}
+
+// ── Per-program pool maintenance (MG7). This is the original single-program
+// routine with every `program='ae'` literal parameterized to `program`. AE calls
+// it with program='ae' → byte-identical to before. Assumes the service_role guard
+// in the wrapper already passed. ──
+async function maintainTagPoolForProgram(program: string, keyRole: string): Promise<MaintainTagPoolResult> {
+  const sb = getSupabaseAdmin();
+  const errors: string[] = [];
+
   // ── 0b. V2 config (Decision 157). Flag off ⇒ V1 fixed cohort + threshold 4. ──
-  const cfg = await getPoolConfig('ae');
+  const cfg = await getPoolConfig(program);
   const v2 = cfg?.mechanics_v2 === true && cfg.enabled === true;
   const promoteThreshold = v2 ? cfg!.visibility_threshold : 4;
 
@@ -922,7 +999,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       .from('tag_pool')
       .update({ is_stable: true })
       .in('tag_id', eligibleIds)
-      .eq('program', 'ae')
+      .eq('program', program)
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('is_stable', false)
       .select('tag_id');
@@ -935,7 +1012,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   const { data: graduated, error: gradErr } = await sb
     .from('tag_pool')
     .update({ seeding_cohort: false })
-    .eq('program', 'ae')
+    .eq('program', program)
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('seeding_cohort', true)
     .eq('is_stable', true)
@@ -969,7 +1046,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     const { count: sCount, error: sErr } = await sb
       .from('tag_pool')
       .select('*', { count: 'exact', head: true })
-      .eq('program', 'ae')
+      .eq('program', program)
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('is_stable', true);
     if (sErr) errors.push(`s_stable: ${sErr.message}`);
@@ -980,7 +1057,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
   const { count: cohortCount, error: cohortErr } = await sb
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
-    .eq('program', 'ae')   // MULTIGEO: AE cohort only
+    .eq('program', program)   // MG7: this program's cohort only
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
     .eq('seeding_cohort', true);
   if (cohortErr) errors.push(`cohort_count: ${cohortErr.message}`);
@@ -993,7 +1070,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-      .eq('program', 'ae')   // MULTIGEO: top up AE cohort from AE reserve only
+      .eq('program', program)   // MG7: top up this program's cohort from its own reserve
       .eq('is_stable', false)
       .eq('seeding_cohort', false)
       .eq('status', 'available')
@@ -1031,7 +1108,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     const { data: demoteCands, error: demoteCandErr } = await sb
       .from('tag_pool')
       .select('tag_id')
-      .eq('program', 'ae')
+      .eq('program', program)
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('seeding_cohort', true)
       .eq('is_stable', false)
@@ -1057,7 +1134,7 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     .from('tag_pool')
     .select('*', { count: 'exact', head: true })
     .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-    .eq('program', 'ae')   // MULTIGEO: AE reserve health only
+    .eq('program', program)   // MG7: this program's reserve health only
     .eq('is_stable', false)
     .eq('seeding_cohort', false);
   if (reserveErr) errors.push(`reserve_count: ${reserveErr.message}`);
@@ -1072,30 +1149,41 @@ export async function maintainTagPool(): Promise<MaintainTagPoolResult> {
     await sendTelegram(`🔴 AMZ tag-pool cron errors:\n${errors.join('\n')}`);
   }
 
+  // MG7: AE keeps its reserve alert threshold (poolLowThreshold, 20). A newly-
+  // seeded program (SA) starts with a small pool and grows on demand, so it uses
+  // a low seed-phase threshold to avoid 15-min "pool low" spam until the operator
+  // scales it up. The suggestion query is scoped to THIS program's gads prefix.
+  const lowThreshold = program === 'ae'
+    ? TRACKING_CONFIG.poolLowThreshold
+    : Math.min(TRACKING_CONFIG.poolLowThreshold, 3);
+  const tagPrefix = cfg?.tag_prefix || `twnr${program}`;
   let alertSent = false;
-  if (reserveRemaining < TRACKING_CONFIG.poolLowThreshold) {
+  if (reserveRemaining < lowThreshold) {
     // Find the highest currently-known tag_id to suggest a starting number
     const { data: highest } = await sb
       .from('tag_pool')
       .select('tag_id')
-      .like('tag_id', 'twnrae%-21')
+      .eq('program', program)
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .like('tag_id', `${tagPrefix}%`)
       .order('tag_id', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
     const nextNumeric = highest?.tag_id
       ? `(highest current: ${highest.tag_id})`
       : '';
 
     alertSent = await sendTelegram(
-      `🟡 AMZ tag pool LOW\n` +
-      `Reserve gads tags: ${reserveRemaining} (threshold: ${TRACKING_CONFIG.poolLowThreshold})\n` +
+      `🟡 AMZ tag pool LOW [${program.toUpperCase()}]\n` +
+      `Reserve gads tags: ${reserveRemaining} (threshold: ${lowThreshold})\n` +
       `Cohort: ${currentCohort + addedCount - removedCount}/${targetSize}\n` +
-      `Action: create more tracking IDs in Amazon Associates ${nextNumeric}, ` +
-      `then INSERT them into tag_pool with tag_type='gads'.`
+      `Action: create more ${tagPrefix} tracking IDs in Amazon Associates ${nextNumeric}, ` +
+      `then INSERT them into tag_pool with program='${program}', tag_type='gads'.`
     );
   }
 
   return {
+    program,
     ok: errors.length === 0,
     key_role: keyRole,
     promoted_to_stable: promotedCount,
