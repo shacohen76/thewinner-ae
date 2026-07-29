@@ -1032,17 +1032,32 @@ async function maintainTagPoolForProgram(program: string, keyRole: string): Prom
   let sStable = 0;
   if (v2 && cfg) {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const { count: kCount, error: kErr } = await sb
-      .from('click_log')
-      .select('*', { count: 'exact', head: true })
-      .eq('traffic_source', 'gads')
-      // 2026-07-05 FIX (Decision 164): clicked_asins DEFAULTS to '{}' (empty array),
-      // never NULL — so `is not null` counted EVERY gads session (click-in) as a
-      // clickout and inflated K ~4× (e.g. 319 vs 78), pushing W=(K−S)/m from ~10 to
-      // ~71 and over-provisioning warming. Count only REAL clickouts (non-empty array).
-      .neq('clicked_asins', '{}')
-      .gt('created_at', since);
-    if (kErr) errors.push(`k_clickouts: ${kErr.message}`);
+    // MG7 (2026-07-29): K must be THIS program's clickouts, not global. The old
+    // query counted gads clickouts across ALL programs, so a low-volume geo (SA/JP)
+    // inherited AE's huge K and over-provisioned its warming lane (e.g. every SA tag
+    // warming instead of ~1–2). Scope K by the program's OWN gads tags — a gads
+    // clickout always lands on one of them. AE is essentially unchanged (its gads
+    // clicks get AE gads tags); it just no longer counts the few SA/JP clickouts.
+    const { data: progGadsTags } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('program', program)
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType);
+    const progTagIds = (progGadsTags || []).map(r => r.tag_id);
+    let kCount = 0;
+    if (progTagIds.length > 0) {
+      const { count, error: kErr } = await sb
+        .from('click_log')
+        .select('*', { count: 'exact', head: true })
+        .eq('traffic_source', 'gads')
+        .in('assigned_tag', progTagIds)
+        // Real clickouts only: clicked_asins DEFAULTS to '{}' (never NULL), so
+        // counting non-empty arrays avoids inflating K with click-ins (Decision 164).
+        .neq('clicked_asins', '{}')
+        .gt('created_at', since);
+      if (kErr) errors.push(`k_clickouts: ${kErr.message}`);
+      kCount = count || 0;
+    }
     const { count: sCount, error: sErr } = await sb
       .from('tag_pool')
       .select('*', { count: 'exact', head: true })
@@ -1050,7 +1065,7 @@ async function maintainTagPoolForProgram(program: string, keyRole: string): Prom
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('is_stable', true);
     if (sErr) errors.push(`s_stable: ${sErr.message}`);
-    kClickouts = kCount || 0;
+    kClickouts = kCount;
     sStable = sCount || 0;
     targetSize = Math.max(0, Math.ceil((kClickouts - sStable) / cfg.warming_target_m));
   }

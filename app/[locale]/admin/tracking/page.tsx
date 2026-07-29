@@ -352,6 +352,32 @@ export default function AdminTracking() {
   const gadsTags = tag_pool.filter(t => t.tag_type === 'gads' && (t.program === 'ae' || t.program === undefined));
   const busyTags = gadsTags.filter(t => t.status === 'busy');
 
+  // MG7 (2026-07-29): per-program rotation pools. A program has a REAL rotation
+  // pool when it has >1 gads tag; the single-marker programs (one static gads tag)
+  // are excluded. Scales automatically as programs are enabled (AE, SA, JP, US, …)
+  // — no code change per program.
+  const gadsByProgram: Record<string, TagPoolEntry[]> = {};
+  for (const t of tag_pool) {
+    if (t.tag_type !== 'gads') continue;
+    const p = t.program || 'ae';
+    (gadsByProgram[p] ||= []).push(t);
+  }
+  const rotationPools = Object.entries(gadsByProgram)
+    .filter(([, tags]) => tags.length > 1)
+    .map(([program, tags]) => ({
+      program,
+      total: tags.length,
+      stable: tags.filter(t => t.is_stable).length,
+      warming: tags.filter(t => t.seeding_cohort && !t.is_stable).length,
+      reserve: tags.filter(t => !t.is_stable && !t.seeding_cohort).length,
+      busy: tags.filter(t => t.status === 'busy').length,
+    }))
+    .sort((a, b) => b.total - a.total);
+  // Busy gads tags across ALL rotation programs (not just AE) — for the live list.
+  const rotationBusyTags = tag_pool.filter(t =>
+    t.tag_type === 'gads' && t.status === 'busy' &&
+    (gadsByProgram[t.program || 'ae']?.length ?? 0) > 1);
+
   // Phase 2: Overview headline numbers come from accurate, bot-excluded
   // full-range aggregates (server-side GROUP BY), NOT the capped `sessions`
   // display list. The `sessions`/`users` arrays remain a recent sample for
@@ -826,8 +852,8 @@ export default function AdminTracking() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               {[
                 { label: 'Total Tags', value: tag_pool.length, color: '#3b82f6' },
-                { label: 'Gads Pool', value: `${busyTags.length} busy / ${gadsTags.length}`, color: '#14b8a6' },
-                { label: 'Utilization', value: `${gadsTags.length > 0 ? ((busyTags.length / gadsTags.length) * 100).toFixed(0) : 0}%`, color: '#f59e0b' },
+                { label: 'AE Gads Pool', value: `${busyTags.length} busy / ${gadsTags.length}`, color: '#14b8a6' },
+                { label: 'AE Utilization', value: `${gadsTags.length > 0 ? ((busyTags.length / gadsTags.length) * 100).toFixed(0) : 0}%`, color: '#f59e0b' },
                 { label: 'Static Tags', value: tag_pool.filter(t => t.tag_type !== 'gads').length, color: '#a855f7' },
               ].map(s => (
                 <div key={s.label} className="bg-gray-900 rounded-xl p-4 border border-gray-800">
@@ -837,14 +863,50 @@ export default function AdminTracking() {
               ))}
             </div>
 
-            {busyTags.length > 0 && (
+            {/* MG7 (2026-07-29): rotation pools by program (AE, SA, JP, US, …). */}
+            {rotationPools.length > 0 && (
+              <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden mb-4">
+                <div className="p-4 border-b border-gray-800">
+                  <h2 className="text-sm font-semibold text-gray-300">Rotation pools by program</h2>
+                  <span className="text-[11px] text-gray-500">gads rotation pools — stable / warming / reserve / busy. Auto-lists every program with a real pool.</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead className="bg-gray-800/50 text-gray-400">
+                      <tr>
+                        <th className="text-left px-3 py-2">Program</th>
+                        <th className="text-right px-3 py-2">Stable</th>
+                        <th className="text-right px-3 py-2">Warming</th>
+                        <th className="text-right px-3 py-2">Reserve</th>
+                        <th className="text-right px-3 py-2">Busy</th>
+                        <th className="text-right px-3 py-2">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rotationPools.map(p => (
+                        <tr key={p.program} className="border-t border-gray-800">
+                          <td className="px-3 py-2 font-mono uppercase text-teal-400">{p.program}</td>
+                          <td className="px-3 py-2 text-right text-emerald-300">{p.stable}</td>
+                          <td className="px-3 py-2 text-right text-blue-300">{p.warming}</td>
+                          <td className="px-3 py-2 text-right text-gray-400">{p.reserve}</td>
+                          <td className="px-3 py-2 text-right text-amber-300">{p.busy}</td>
+                          <td className="px-3 py-2 text-right text-gray-300 font-semibold">{p.total}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {rotationBusyTags.length > 0 && (
               <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-sm font-semibold text-gray-400">Currently busy ({busyTags.length})</h2>
+                  <h2 className="text-sm font-semibold text-gray-400">Currently busy ({rotationBusyTags.length})</h2>
                   <span className="text-[10px] text-amber-400 italic">Stable tags after ASIN clickout: hold extends to 24h (rolling)</span>
                 </div>
                 <div className="space-y-1.5">
-                  {busyTags.map(t => {
+                  {rotationBusyTags.map(t => {
                     // GEOS1: detect ASIN-extended hold. The base hold is 4h
                     // (TAG_HOLD_HOURS); the ASIN extension is 24h. If the gap
                     // between assigned_at and expires_at is > 6h, the tag was
@@ -856,6 +918,7 @@ export default function AdminTracking() {
                     return (
                       <div key={t.tag_id} className="flex items-center gap-4 text-sm flex-wrap">
                         <span className="font-mono text-xs text-teal-400 w-36">{t.tag_id}</span>
+                        <span className="text-[9px] px-1 py-0.5 rounded bg-gray-800 text-gray-400 font-mono uppercase">{t.program || 'ae'}</span>
                         {t.is_stable ? (
                           <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/60 text-emerald-300 font-medium">stable</span>
                         ) : t.seeding_cohort ? (
