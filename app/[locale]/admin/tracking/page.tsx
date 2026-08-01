@@ -272,6 +272,11 @@ export default function AdminTracking() {
   const [countryFilter, setCountryFilter] = useState<string>('');
   const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users' | 'languages'>('overview');
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
+  // MG4.3 (2026-08-01): Tag Pool tab program scope so each program's pool
+  // health / utilization / busy can be trusted individually (not just the AE
+  // aggregate). 'all' = every real rotation pool combined. Client-side only —
+  // the /api/admin/tracking payload already returns the full tag_pool.
+  const [poolProgram, setPoolProgram] = useState<string>('all');
 
   // Check localStorage for saved password
   useEffect(() => {
@@ -373,10 +378,17 @@ export default function AdminTracking() {
       busy: tags.filter(t => t.status === 'busy').length,
     }))
     .sort((a, b) => b.total - a.total);
-  // Busy gads tags across ALL rotation programs (not just AE) — for the live list.
-  const rotationBusyTags = tag_pool.filter(t =>
-    t.tag_type === 'gads' && t.status === 'busy' &&
-    (gadsByProgram[t.program || 'ae']?.length ?? 0) > 1);
+  // MG4.3 (2026-08-01): scope the pool / utilization / busy views to the
+  // selected program. 'all' = every rotation pool combined. The selector only
+  // offers programs that have a REAL pool (>1 gads tag) — same set as the
+  // rotation-pools table — so per-program numbers are always meaningful.
+  const poolPrograms = rotationPools.map(p => p.program);
+  const poolScoped = (t: TagPoolEntry) =>
+    (gadsByProgram[t.program || 'ae']?.length ?? 0) > 1 &&
+    (poolProgram === 'all' || (t.program || 'ae') === poolProgram);
+  const poolGadsTags = tag_pool.filter(t => t.tag_type === 'gads' && poolScoped(t));
+  const poolBusyTags = poolGadsTags.filter(t => t.status === 'busy');
+  const poolLabel = poolProgram === 'all' ? 'Rotation' : poolProgram.toUpperCase();
 
   // Phase 2: Overview headline numbers come from accurate, bot-excluded
   // full-range aggregates (server-side GROUP BY), NOT the capped `sessions`
@@ -849,11 +861,29 @@ export default function AdminTracking() {
         {/* TAG POOL */}
         {tab === 'tags' && (
           <>
+            {/* MG4.3 (2026-08-01): program scope for the pool / utilization /
+                busy views. Lets the operator trust each program's pool on its
+                own instead of the AE-only aggregate. Auto-lists every program
+                with a real rotation pool. */}
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
+              <span className="text-xs text-gray-500 uppercase tracking-wide">Pool program</span>
+              <select
+                value={poolProgram}
+                onChange={e => setPoolProgram(e.target.value)}
+                className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5 outline-none focus:border-blue-500">
+                <option value="all">All rotation pools</option>
+                {poolPrograms.map(p => (
+                  <option key={p} value={p}>{p.toUpperCase()}</option>
+                ))}
+              </select>
+              <span className="text-[11px] text-gray-500">scopes the Gads Pool / Utilization cards and the busy list below</span>
+            </div>
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               {[
                 { label: 'Total Tags', value: tag_pool.length, color: '#3b82f6' },
-                { label: 'AE Gads Pool', value: `${busyTags.length} busy / ${gadsTags.length}`, color: '#14b8a6' },
-                { label: 'AE Utilization', value: `${gadsTags.length > 0 ? ((busyTags.length / gadsTags.length) * 100).toFixed(0) : 0}%`, color: '#f59e0b' },
+                { label: `${poolLabel} Gads Pool`, value: `${poolBusyTags.length} busy / ${poolGadsTags.length}`, color: '#14b8a6' },
+                { label: `${poolLabel} Utilization`, value: `${poolGadsTags.length > 0 ? ((poolBusyTags.length / poolGadsTags.length) * 100).toFixed(0) : 0}%`, color: '#f59e0b' },
                 { label: 'Static Tags', value: tag_pool.filter(t => t.tag_type !== 'gads').length, color: '#a855f7' },
               ].map(s => (
                 <div key={s.label} className="bg-gray-900 rounded-xl p-4 border border-gray-800">
@@ -884,7 +914,10 @@ export default function AdminTracking() {
                     </thead>
                     <tbody>
                       {rotationPools.map(p => (
-                        <tr key={p.program} className="border-t border-gray-800">
+                        // MG4.3: highlight the row matching the selected pool scope.
+                        <tr key={p.program}
+                          className={`border-t border-gray-800 cursor-pointer hover:bg-gray-800/40 ${poolProgram === p.program ? 'bg-blue-900/20' : ''}`}
+                          onClick={() => setPoolProgram(poolProgram === p.program ? 'all' : p.program)}>
                           <td className="px-3 py-2 font-mono uppercase text-teal-400">{p.program}</td>
                           <td className="px-3 py-2 text-right text-emerald-300">{p.stable}</td>
                           <td className="px-3 py-2 text-right text-blue-300">{p.warming}</td>
@@ -899,14 +932,14 @@ export default function AdminTracking() {
               </div>
             )}
 
-            {rotationBusyTags.length > 0 && (
+            {poolBusyTags.length > 0 && (
               <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-sm font-semibold text-gray-400">Currently busy ({rotationBusyTags.length})</h2>
+                  <h2 className="text-sm font-semibold text-gray-400">Currently busy ({poolBusyTags.length})</h2>
                   <span className="text-[10px] text-amber-400 italic">Stable tags after ASIN clickout: hold extends to 24h (rolling)</span>
                 </div>
                 <div className="space-y-1.5">
-                  {rotationBusyTags.map(t => {
+                  {poolBusyTags.map(t => {
                     // GEOS1: detect ASIN-extended hold. The base hold is 4h
                     // (TAG_HOLD_HOURS); the ASIN extension is 24h. If the gap
                     // between assigned_at and expires_at is > 6h, the tag was
