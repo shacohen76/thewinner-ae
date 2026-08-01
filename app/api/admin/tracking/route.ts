@@ -133,11 +133,36 @@ export async function GET(request: NextRequest) {
         .not('ip_country', 'is', null);
     }
 
+    // MG4.5 (2026-08-01): fetch the FULL tag_pool via pagination. PostgREST caps an
+    // unbounded select at 1000 rows; tag_pool now exceeds that (~2000+ across all
+    // programs), so a single select silently dropped every tag past row 1000. That
+    // made the per-program panel undercount — e.g. JP showed 0 warming / 93 total
+    // vs the real 7 / 100, AE 277 vs 301 — because the dropped rows were the
+    // recently-created (higher tag_id) warming tags. Loop .range() until a short page
+    // returns so counts are complete regardless of how many programs/tags exist.
+    // Read-only, admin-only endpoint; does NOT touch rotation/assignment logic.
+    const fetchAllTagPool = async () => {
+      const cols = 'tag_id,tag_type,status,assigned_at,expires_at,is_stable,seeding_cohort,program,locale';
+      const pageSize = 1000;
+      const all: any[] = [];
+      for (let from = 0; ; from += pageSize) {
+        const { data, error } = await supabase
+          .from('tag_pool')
+          .select(cols)
+          .order('tag_id', { ascending: true })
+          .range(from, from + pageSize - 1);
+        if (error) return { data: all, error };
+        all.push(...(data || []));
+        if (!data || data.length < pageSize) break;
+      }
+      return { data: all, error: null };
+    };
+
     const [tagPoolRes, rollupRes, sessionsRes, langSplitRes] = await Promise.all([
       // Tag pool status (incl. AMZ12 tier flags for the busy-tag badges).
       // MG5 (2026-07-24): +program,+locale so the panel can resolve each tag to
       // (program, source, language) and fix the AE-only tag-count contamination.
-      supabase.from('tag_pool').select('tag_id,tag_type,status,assigned_at,expires_at,is_stable,seeding_cohort,program,locale'),
+      fetchAllTagPool(),
       // Read-only aggregation over the FULL range, bot-excluded (Phase 2).
       supabase.rpc('admin_tracking_rollup', { p_since: since, p_in: pIn, p_not_in: pNotIn, p_until: until }),
       sessionsQuery,
