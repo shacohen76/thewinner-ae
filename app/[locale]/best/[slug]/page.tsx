@@ -178,6 +178,21 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   }
 
   const products = await getProductsForKeyword(keyword.id, params.locale);
+
+  // 2026-08-24 GUARD (post organic-collapse incident, 2026-08-21): never bake an EMPTY
+  // English /best page into the 7-day ISR cache. getProductsForKeyword already
+  // retry-then-throws on a real DB error, so an empty array here means a genuine
+  // 0-membership render. A thin/empty 200 that ISR caches for 7 days is exactly what
+  // tanked organic on 2026-08-21 — a mid-migrate empty got baked and Googlebot dropped
+  // the mass-changed pages, collapsing impressions ~40K/day -> ~0. 404 the empty page
+  // instead: honest for a truly-empty page, and it can never be served as a thin
+  // indexable page. Localized (ar/ja) untranslated pages already noindex in
+  // generateMetadata, so scope this to the indexable English base. Pairs with
+  // amz_revalidate_v1.py GUARD 1 (never revalidate a slug below --min-products).
+  if (params.locale === 'en' && products.length === 0) {
+    notFound();
+  }
+
   const currentYear = getCurrentYear();
 
   // INTL1 Phase 2C slice 4: prefer the translated buying guide for this locale,
