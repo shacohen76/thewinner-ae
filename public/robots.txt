@@ -1,10 +1,14 @@
-# Robots.txt for thewinner.ae
+# Robots.txt — thewinners.ae (canonical domain).
+# 2026-08-25: was hardcoded to "thewinner.ae" and pointed the Sitemap at the mirror
+# domain. Both thewinners.ae and the thewinner.ae mirror serve this same static file;
+# pointing both at the canonical sitemap consolidates crawl signals to thewinners.ae
+# (the mirror already rel=canonical + hreflang to thewinners.ae).
 
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://thewinner.ae/sitemap.xml
+# Sitemap (canonical domain)
+Sitemap: https://thewinners.ae/sitemap.xml
 
 # Disallow admin/api routes
 Disallow: /api/
