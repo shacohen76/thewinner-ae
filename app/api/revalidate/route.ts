@@ -20,7 +20,7 @@
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,6 +65,12 @@ export async function POST(request: NextRequest) {
       revalidatePath(path);
       revalidated.push(path);
     }
+    // 2026-08-25 (rerank-11): also purge the per-market catalog data served by
+    // /api/catalog (tag `catalog:<slug>`). Without this, revalidatePath refreshed
+    // only the AE SSR page shell while the non-AE geo lists (us/uk/ca/ie/au/sg/jp)
+    // kept serving the OLD cached order — the stale-after-migrate bug. One tag purge
+    // clears every (mkt, locale) variant of this slug at once.
+    revalidateTag(`catalog:${slug}`);
   }
 
   return NextResponse.json({
