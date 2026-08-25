@@ -510,24 +510,38 @@ export async function getAllKeywords() {
     return [] as { slug: string }[];
   }
 
-  // Supabase default limit is 1,000 rows — paginate to get all
+  // Supabase default limit is 1,000 rows — paginate to get all.
+  // 2026-08-25 (rerank-11): two correctness fixes for the sitemap split —
+  //   (1) ORDER BY id: range() pagination WITHOUT a stable sort can skip or duplicate
+  //       rows across pages (PostgREST order is otherwise unspecified). Ordering makes
+  //       every call return the identical, complete set — so the sitemap INDEX chunk
+  //       count and the chunk reads agree (they disagreed before → dropped URLs).
+  //   (2) retry a failing page, then THROW instead of silently returning a partial list
+  //       (the old `break`-on-error truncated the sitemap on any transient DB blip).
   const allKeywords: { slug: string }[] = [];
   const PAGE_SIZE = 1000;
   let from = 0;
 
   while (true) {
-    const { data, error } = await supabase
-      .from('keywords')
-      .select('slug')
-      .range(from, from + PAGE_SIZE - 1);
-
-    if (error) {
-      console.error('Error fetching keywords (sitemap pagination):', error);
-      break;
+    let data: { slug: string }[] | null = null;
+    let lastErr: { message?: string } | null = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const res = await supabase
+        .from('keywords')
+        .select('slug, id')
+        .order('id', { ascending: true })
+        .range(from, from + PAGE_SIZE - 1);
+      if (!res.error) { data = res.data as { slug: string }[]; lastErr = null; break; }
+      lastErr = res.error;
+      console.error(`getAllKeywords page @${from} attempt ${attempt} failed:`, res.error);
+      await new Promise((r) => setTimeout(r, 200 * attempt));
     }
-
+    if (lastErr) {
+      // never silently truncate — a partial sitemap silently drops thousands of URLs
+      throw new Error(`getAllKeywords failed at offset ${from}: ${lastErr.message ?? 'unknown'}`);
+    }
     if (!data || data.length === 0) break;
-    allKeywords.push(...data);
+    allKeywords.push(...data.map((r) => ({ slug: r.slug })));
     if (data.length < PAGE_SIZE) break;
     from += PAGE_SIZE;
   }

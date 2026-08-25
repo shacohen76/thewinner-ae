@@ -170,6 +170,9 @@ export function middleware(request: NextRequest) {
 // Apply to all routes except API, static assets and Next.js internals.
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon|icon|apple-touch|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$).*)',
+    // 2026-08-25: exclude the `sitemap` PREFIX (not just sitemap.xml) so generateSitemaps'
+    // child routes /sitemap/0.xml, /sitemap/1.xml … are NOT rewritten by next-intl (that
+    // rewrite → /en/sitemap/0.xml → 404 broke the split sitemap in prod).
+    '/((?!api|_next/static|_next/image|favicon|icon|apple-touch|robots.txt|sitemap|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$).*)',
   ],
 };
