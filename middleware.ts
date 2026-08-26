@@ -36,7 +36,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS } from '@/lib/geo-config';
+import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS, resolveCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
 
 // next-intl locale router. Produces the (rewritten) response we mutate below.
@@ -74,6 +74,18 @@ function isSearchBot(userAgent: string | null): boolean {
 // default and prefix-less, so its paths never start with one of these.
 const LOCALIZED_PREFIXES: string[] = routing.locales.filter((l) => l !== routing.defaultLocale);
 
+// ─── per-geo static /best (2026-08-26, feat/per-geo-static-best) ─────────────
+// The market segment (ae|us|uk|ca|ie|au|sg|jp) is INTERNAL — injected by the
+// interceptor's rewrite so Next caches one static variant per (locale×market×slug).
+// It must never be a public/crawlable URL (duplicate content), so a request that
+// arrives WITH one is 308'd back to the canonical market-less path. Group $1 = the
+// "/best" (or "/ar/best") prefix, group $2 = the trailing "/" or end.
+const BEST_MARKET_LEAK_RE = /^(\/(?:ar\/|ja\/)?best)\/(?:ae|us|uk|ca|ie|au|sg|jp)(\/|$)/;
+// A PUBLIC /best request = exactly one segment after "best" (the slug), optional
+// locale prefix, not already market-segmented. Group $1 = ar|ja (undefined for en),
+// group $2 = slug.
+const BEST_PUBLIC_RE = /^\/(?:(ar|ja)\/)?best\/([^/]+)\/?$/;
+
 export function middleware(request: NextRequest) {
   const country = request.headers.get('x-vercel-ip-country') || '';
   const userAgent = request.headers.get('user-agent') || '';
@@ -93,6 +105,19 @@ export function middleware(request: NextRequest) {
     url.hostname = 'thewinners.ae';
     url.port = '';
     return NextResponse.redirect(url, 301);
+  }
+
+  // ─── per-geo static /best: strip a leaked internal market segment (2026-08-26) ──
+  // The /best interceptor below rewrites the public /best/<slug> to an INTERNAL
+  // /<locale>/best/<market>/<slug>. Internally-rewritten requests never carry the
+  // market in request.nextUrl.pathname, so a market segment HERE means the URL was
+  // requested directly from the outside (crawler, hand-typed, stale link). 308 it
+  // back to the canonical market-less path so the per-market paths never index.
+  // Runs before any rewrite so these never resolve a page.
+  if (BEST_MARKET_LEAK_RE.test(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = request.nextUrl.pathname.replace(BEST_MARKET_LEAK_RE, '$1$2');
+    return NextResponse.redirect(url, 308);
   }
 
   // ─── Geo-blocking (legacy, disabled) — short-circuits before routing ─────
@@ -132,6 +157,49 @@ export function middleware(request: NextRequest) {
       url.pathname = rest || '/';
       return NextResponse.redirect(url, enOnlyForever ? 308 : 307);
     }
+  }
+
+  // ─── per-geo static /best interceptor (2026-08-26, feat/per-geo-static-best) ──
+  // Kill the client-side catalog "flicker": instead of SSRing ONE shared AE catalog
+  // and swapping the visitor's market in after hydration (retired GeoCatalog), we
+  // REWRITE the public /best/<slug> to an INTERNAL /<locale>/best/<market>/<slug>.
+  // Next then caches one STATIC ISR variant per (locale × market × slug), so the
+  // visitor gets their own catalog in the first byte. The market lives ONLY in the
+  // rewrite target — the public URL stays /best/<slug> (canonical); the guard above
+  // 308s away any market that leaks into a public URL.
+  //
+  // We bypass intlMiddleware for these paths and rewrite by hand, adding the
+  // /<locale> prefix ourselves (mirroring next-intl's "/"→"/en" rewrite). The
+  // [locale] route param + the layout's setRequestLocale(locale) still resolve
+  // next-intl messages (these pages are statically rendered, where setRequestLocale
+  // — not a middleware header — is the supported locale source). The GEOS1 cookie
+  // is attached to THIS response, identical to the normal flow below.
+  const bestMatch = request.nextUrl.pathname.match(BEST_PUBLIC_RE);
+  if (bestMatch) {
+    const locale = LOCALIZED_PREFIXES.includes(bestMatch[1]) ? bestMatch[1] : routing.defaultLocale;
+    const slug = bestMatch[2];
+    const market = resolveCatalogMarket(country, locale, isBot);
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}/best/${market}/${slug}`;
+    const response = NextResponse.rewrite(url);
+
+    // GEOS1 geo cookie — same policy as the normal flow below.
+    const geos1Enabled = process.env.GEOS1_ENABLED === 'true';
+    if (geos1Enabled && !isBot && country) {
+      response.cookies.set({
+        name: GEO_COOKIE_NAME,
+        value: country,
+        maxAge: GEO_COOKIE_MAX_AGE_SECONDS,
+        path: '/',
+        sameSite: 'lax',
+        secure: request.nextUrl.protocol === 'https:',
+        httpOnly: false,
+      });
+    } else if (!geos1Enabled && request.cookies.has(GEO_COOKIE_NAME)) {
+      response.cookies.delete(GEO_COOKIE_NAME);
+    }
+
+    return response;
   }
 
   // ─── INTL1 locale routing ────────────────────────────────────────────────

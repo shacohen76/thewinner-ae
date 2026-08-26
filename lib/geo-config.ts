@@ -315,6 +315,37 @@ export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
   return PROGRAMS[getGeoProgram(countryCode)].group;
 }
 
+// ============================================
+// CATALOG AXIS — per-geo static /best variants (2026-08-26, feat/per-geo-static-best)
+// ============================================
+// The /best/[slug] page is rendered ONCE per (locale × market × slug) as a static
+// ISR variant; middleware rewrites the public /best/<slug> to the internal
+// /<locale>/best/<market>/<slug>. These are the SSOT for which market a visitor
+// gets (retires the client-side GeoCatalog swap).
+
+/** Marketplaces that have their own catalog membership rows (keyword_products.
+ *  marketplace). INCLUDES 'ae' here (unlike the old GeoCatalog client copy which
+ *  excluded it, since AE was the SSR default there). Every OTHER program
+ *  (de/fr/sa/…) renders the AE catalog with search-links (searchFallback). */
+export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp']);
+
+/** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
+ *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
+ *  from GeoCatalog.tsx. Non-pinned locales (en, ar) follow the visitor's geo. */
+export const LOCALE_CATALOG: Record<string, string> = { ja: 'jp' };
+
+/** Resolve which market's catalog a request renders. Pure — safe from middleware.
+ *   • A pinned locale (ja→jp) overrides geo for all visitors.
+ *   • Crawlers pin to 'ae' (owner-approved) so indexable HTML is always the AE
+ *     catalog and every geo shares one canonical indexed page.
+ *   • Otherwise the visitor's program, if it has a catalog bucket; else 'ae'. */
+export function resolveCatalogMarket(country: string, locale: string, isBot: boolean): string {
+  if (LOCALE_CATALOG[locale]) return LOCALE_CATALOG[locale];   // ja → jp, pin all visitors
+  if (isBot) return 'ae';                                       // crawler default = AE (owner-approved)
+  const program = getGeoProgram(country);                       // existing export
+  return CATALOG_MARKETPLACES.has(program) ? program : 'ae';
+}
+
 /** Full geo config — program + group + domain + tag + display strings.
  *  Always returns a valid config. Unknown countries get 'us' program with
  *  generic 'your country' / 'your region' fallback names. */

@@ -8,7 +8,6 @@
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { buildAffiliateUrl, buildAffiliateSearchUrl, cleanSearchQuery } from '@/lib/utils';
-import { useGeoCatalog } from './GeoCatalog';
 
 interface Product {
   asin: string;
@@ -19,15 +18,16 @@ interface Product {
 
 interface ProductGalleryProps {
   products: Product[];
+  // 2026-08-26 (feat/per-geo-static-best): catalog chosen server-side (params.market)
+  // — `products` is already the per-geo set (retired the client GeoCatalog swap).
+  // ML 3 (2026-07-17): searchFallback → AE cards shown to a non-AE market whose store
+  // lacks this keyword; link to an Amazon search on their store instead of a dead
+  // /dp/{AE-asin}. keywordEn = the English query for localized pages.
+  searchFallback?: boolean;
+  keywordEn?: string;
 }
 
-export default function ProductGallery({ products: ssrProducts }: ProductGalleryProps) {
-  // JP-3: prefer the geo-swapped catalog (e.g. JP) when present; else SSR (AE).
-  // ML 3 (2026-07-17): searchFallback → we're showing AE cards to a us/uk/jp
-  // visitor whose store lacks this keyword; link to an Amazon search on their
-  // store (title) instead of the dead /dp/{AE-asin}.
-  const { gallery, searchFallback, keywordEn } = useGeoCatalog();
-  const products = gallery ?? ssrProducts;
+export default function ProductGallery({ products, searchFallback, keywordEn }: ProductGalleryProps) {
   const locale = useLocale();
   // INTL1 JP Phase 2 (2026-07-06): localize the carousel heading (was hardcoded
   // English "Quick Pick", which leaked onto /ar and /ja). English value in
