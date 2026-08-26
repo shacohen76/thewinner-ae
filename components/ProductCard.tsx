@@ -92,7 +92,15 @@ export default function ProductCard({
   const brand = extractBrand(title);
   const stars = scoreToStars(score);
   const rankPadded = rank.toString().padStart(2, '0');
-  const interestedCount = useMemo(() => Math.floor(Math.random() * 9) + 1, []);
+  // 2026-08-26 (SSR restore): deterministic 1-9 seeded by ASIN. Was Math.random(),
+  // harmless while the page client-rendered, but now that the page renders
+  // server-side the server and client would pick different numbers -> hydration
+  // mismatch on the winner card. Seeding by ASIN keeps SSR and client identical.
+  const interestedCount = useMemo(() => {
+    let h = 0;
+    for (let i = 0; i < asin.length; i++) h = (Math.imul(h, 31) + asin.charCodeAt(i)) | 0;
+    return (Math.abs(h) % 9) + 1;
+  }, [asin]);
 
   // Combine restTitle and description for the expandable section
   const expandableText = [restTitle, description].filter(Boolean).join('\n\n');
