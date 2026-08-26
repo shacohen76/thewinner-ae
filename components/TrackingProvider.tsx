@@ -23,7 +23,7 @@
 // ============================================
 
 import { useEffect, useCallback } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { CONFIG } from '@/lib/utils';
 import { getGeoGroup, type GeoGroup, type AmazonDomain } from '@/lib/geo-config';
 
@@ -289,7 +289,13 @@ function getUserId(): string | null {
 
 export default function TrackingProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // 2026-08-26 (SSR restore): removed `const searchParams = useSearchParams()`.
+  // Its value was never read (every query-string read uses window.location.search);
+  // it only sat in the init-effect deps below. useSearchParams() forces the whole
+  // page to BAILOUT_TO_CLIENT_SIDE_RENDERING → empty SSR HTML (no <h1>/products for
+  // Bing / AI / social crawlers, and a blank->content flash). Dropping it restores
+  // full server rendering. Tracking is unaffected: all work runs in effects on the
+  // global DOM / sessionStorage / window.location, not the React tree.
 
   const initTagRotation = useCallback(async () => {
     if (typeof window === 'undefined') return;
@@ -371,7 +377,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [pathname, searchParams, initTagRotation]);
+  }, [pathname, initTagRotation]);
 
   // Also rewrite links when new content loads (e.g., after client-side navigation).
   // Skip for bots — keep rendered indexing aligned with cached UAE HTML.

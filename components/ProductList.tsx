@@ -34,6 +34,16 @@ interface ProductListProps {
   keywordEn?: string;
 }
 
+// 2026-08-26 (SSR restore): deterministic fake "review count" (500-5500) seeded by
+// ASIN. Was Math.floor(Math.random()*5000)+500 at the call site, which mismatched
+// between server and client once the page began server-rendering (React #425
+// hydration text mismatch). Stable per product keeps SSR and client identical.
+function seededReviewCount(asin: string): number {
+  let h = 0;
+  for (let i = 0; i < asin.length; i++) h = (Math.imul(h, 31) + asin.charCodeAt(i)) | 0;
+  return 500 + (Math.abs(h) % 5001); // 500..5500
+}
+
 type SortOption = 'rank' | 'price';
 
 export default function ProductList({ products, searchFallback, keywordEn }: ProductListProps) {
@@ -106,7 +116,7 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
             isPrime={product.is_prime}
             searchFallback={searchFallback}
             keywordEn={keywordEn}
-            reviewCount={Math.floor(Math.random() * 5000) + 500}
+            reviewCount={seededReviewCount(product.asin)}
           />
         ))}
       </div>
