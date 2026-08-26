@@ -79,6 +79,22 @@ export function middleware(request: NextRequest) {
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = isSearchBot(userAgent);
 
+  // ─── 301 the legacy mirror thewinner.ae → canonical thewinners.ae (2026-08-26) ──
+  // thewinner.ae is a duplicate mirror that already rel=canonical'd + hreflang'd to
+  // thewinners.ae. A 301 is STRONGER than a canonical (Google obeys it) and permanently
+  // consolidates all crawl/link signals onto the one canonical domain. Both domains run
+  // this same code (separate Vercel projects), so we detect the mirror by Host and
+  // permanent-redirect every path (query preserved). Applies to bots too — that's how
+  // Google migrates the signals. Runs FIRST so a mirror hit never reaches geo/locale.
+  const host = (request.headers.get('host') || '').toLowerCase();
+  if (host === 'thewinner.ae' || host === 'www.thewinner.ae') {
+    const url = request.nextUrl.clone();
+    url.protocol = 'https';
+    url.hostname = 'thewinners.ae';
+    url.port = '';
+    return NextResponse.redirect(url, 301);
+  }
+
   // ─── Geo-blocking (legacy, disabled) — short-circuits before routing ─────
   // A blocked visitor must never reach a rendered page, so this runs first.
   if (GEO_BLOCKING_ENABLED && !isBot && BLOCKED_COUNTRIES.has(country)) {
