@@ -4,7 +4,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
 import BackToTopLink from '@/components/BackToTopLink';
-import GeoCatalogProvider from '@/components/GeoCatalog';
+import { unstable_cache } from 'next/cache';
 import {
   getKeywordBySlug,
   getProductsForKeyword,
@@ -38,12 +38,18 @@ import { buildAlternates } from '@/lib/seo-alternates';
 import { getTranslations } from 'next-intl/server';
 
 // ============================================
-// Keyword Page — /best/[slug]
+// Keyword Page — /best/[slug] (internal route /[locale]/best/[market]/[slug])
 // ============================================
 // Created: 2026-03-19
 // Main product comparison page. Shows top 10 products
 // for a keyword with WWL points, buying guide, FAQ schema.
 // Adapted from KSP: English LTR, ASIN-based, Amazon links.
+//
+// 2026-08-26 (feat/per-geo-static-best): the [market] segment was injected between
+// best/ and [slug]. The PUBLIC URL stays /best/<slug>; middleware rewrites it to
+// /<locale>/best/<market>/<slug> so Next caches one STATIC ISR variant per
+// (locale × market × slug). The visitor's catalog now renders server-side in the
+// first byte — the client-side GeoCatalog swap (and its flicker) is retired.
 // ============================================
 
 // Cache for 7 days (was 24h). With generateStaticParams (top slugs pre-built at
@@ -58,14 +64,18 @@ export const dynamicParams = true;
 // (see getTopKeywordSlugs) so build cost stays tiny and constant regardless of
 // catalog size; Arabic (/ar) stays on-demand (noindex). Degrades to on-demand on
 // any data hiccup — never fails the build.
+// 2026-08-26 (feat/per-geo-static-best): with the [market] segment we prebuild ONLY
+// the AE variant (market:'ae') of the top English slugs — the indexable catalog
+// (bots pin to 'ae'). Every OTHER (market, locale) builds on-demand via
+// dynamicParams, so build cost stays 250 pages, not 250×8.
 export async function generateStaticParams({ params }: { params: { locale: string } }) {
   if (params.locale !== 'en') return [];
   const slugs = await getTopKeywordSlugs(250);
-  return slugs.map((slug) => ({ slug }));
+  return slugs.map((slug) => ({ market: 'ae', slug }));
 }
 
 interface PageProps {
-  params: { slug: string; locale: string };
+  params: { slug: string; locale: string; market: string };
 }
 
 // Generate metadata for SEO
@@ -110,7 +120,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Localized page (any non-English locale) with NO noun yet → English fallback
   // content, NOINDEX (keep an untranslated localized page out of search).
   const englishFallbackNoindex = (): Metadata => ({
-    title: generatePageTitle(keyword.keyword_text),
+    // 2026-08-26: title.absolute bypasses the layout's "%s | The Winners" template.
+    // generatePageTitle already appends the brand, so a plain string would double it
+    // ("… | The Winners | The Winners"). Mirrors the ar/ja returns.
+    title: { absolute: generatePageTitle(keyword.keyword_text) },
     description: generatePageDescription(keyword.keyword_text),
     alternates,
     robots: { index: false, follow: true },
@@ -158,7 +171,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // English — unchanged (no robots key → layout default index applies).
   return {
-    title: generatePageTitle(keyword.keyword_text),
+    // 2026-08-26: title.absolute bypasses the layout's "%s | The Winners" template —
+    // generatePageTitle already appends the brand, so a plain string doubled it
+    // ("… | The Winners | The Winners"). OG title below keeps the plain value (OG
+    // does not use the template). Same treatment as the ar/ja returns.
+    title: { absolute: generatePageTitle(keyword.keyword_text) },
     description: generatePageDescription(keyword.keyword_text),
     alternates,
     openGraph: {
@@ -177,7 +194,31 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     notFound();
   }
 
-  const products = await getProductsForKeyword(keyword.id, params.locale);
+  // 2026-08-26 (feat/per-geo-static-best): the product SET is now server-rendered
+  // per market (was a client swap). Wrap ONLY the products read in a TAGGED
+  // unstable_cache — key includes market+locale so each variant caches separately,
+  // and the shared tag `catalog:<slug>` lets /api/revalidate purge EVERY variant of
+  // a slug in one call (mirrors app/api/catalog/route.ts). getProductsForKeyword
+  // still retry-then-THROWS on a real DB error; a throw is NOT cached (propagates),
+  // so the empty-guard below still only fires on a genuine 0-membership render.
+  // searchFallback: a non-AE market with no native products falls back to the AE
+  // catalog rendered with Amazon SEARCH links (never a dead cross-marketplace /dp).
+  const { products, searchFallback } = await unstable_cache(
+    async () => {
+      let products = await getProductsForKeyword(keyword.id, params.locale, params.market);
+      let searchFallback = false;
+      if (params.market !== 'ae' && products.length === 0) {
+        products = await getProductsForKeyword(keyword.id, params.locale, 'ae');
+        searchFallback = true;
+      }
+      return { products, searchFallback };
+    },
+    ['catalog', slug, params.market, params.locale],
+    { tags: [`catalog:${slug}`], revalidate: 604800 },
+  )();
+
+  // English keyword for the searchFallback query (slugs are always English).
+  const keywordEn = slug.replace(/-/g, ' ').trim();
 
   // 2026-08-24 GUARD (post organic-collapse incident, 2026-08-21): never bake an EMPTY
   // English /best page into the 7-day ISR cache. getProductsForKeyword already
@@ -263,10 +304,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
   return (
-    // JP-3: GeoCatalogProvider swaps the product SET client-side for visitors
-    // whose storefront has its own catalog (e.g. JP → amazon.co.jp products).
-    // AE visitors + crawlers get null → the SSR AE catalog stands, unchanged.
-    <GeoCatalogProvider slug={slug} locale={params.locale}>
+    // 2026-08-26 (feat/per-geo-static-best): the product SET is now chosen server-side
+    // by params.market (middleware-injected per geo), so there is no client swap and
+    // no provider wrapper — the correct catalog is in the SSR HTML. searchFallback +
+    // keywordEn are passed to the consumers (was React context from GeoCatalog).
+    <>
       {/* Breadcrumbs */}
       <Breadcrumbs items={[{ label: headingName }]} />
 
@@ -284,7 +326,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
-        <ProductList products={productsForList} />
+        <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} />
       </main>
 
       {/* Product Gallery Section */}
@@ -298,7 +340,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           </p>
         </div>
       </section>
-      <ProductGallery products={galleryProducts} />
+      <ProductGallery products={galleryProducts} searchFallback={searchFallback} keywordEn={keywordEn} />
 
       {/* Buying Guide Section with TOC */}
       {buyingGuide.length > 0 && (
@@ -379,6 +421,6 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           }}
         />
       )}
-    </GeoCatalogProvider>
+    </>
   );
 }

@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import ProductCard from './ProductCard';
 import ShareButton from './ShareButton';
-import { useGeoCatalog } from './GeoCatalog';
 
 interface Product {
   asin: string;
@@ -27,18 +26,19 @@ interface Product {
 
 interface ProductListProps {
   products: Product[];
+  // 2026-08-26 (feat/per-geo-static-best): the per-geo catalog is now chosen
+  // server-side (params.market), so `products` is already the correct set — the
+  // client GeoCatalog swap is retired. searchFallback/keywordEn come down as props
+  // (were React context) and thread to each card's Amazon link decision.
+  searchFallback?: boolean;
+  keywordEn?: string;
 }
 
 type SortOption = 'rank' | 'price';
 
-export default function ProductList({ products: ssrProducts }: ProductListProps) {
+export default function ProductList({ products, searchFallback, keywordEn }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
-
-  // JP-3: if the visitor's storefront catalog was swapped in (e.g. JP), render
-  // that; otherwise use the SSR (AE) products. `list` is null for AE/crawlers.
-  const { list } = useGeoCatalog();
-  const products = list ?? ssrProducts;
 
   const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === 'price') {
@@ -104,6 +104,8 @@ export default function ProductList({ products: ssrProducts }: ProductListProps)
             imageUrl={product.image_url}
             wwlPoints={product.wwl_points}
             isPrime={product.is_prime}
+            searchFallback={searchFallback}
+            keywordEn={keywordEn}
             reviewCount={Math.floor(Math.random() * 5000) + 500}
           />
         ))}

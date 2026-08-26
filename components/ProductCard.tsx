@@ -29,7 +29,6 @@ import {
 } from '@/lib/utils';
 import { splitTitle } from '@/lib/title-split';
 import { logAsinClickBeacon } from '@/components/TrackingProvider';
-import { useGeoCatalog } from '@/components/GeoCatalog';
 
 interface ProductCardProps {
   rank: number;
@@ -40,6 +39,12 @@ interface ProductCardProps {
   wwlPoints?: string[] | null;
   isPrime?: boolean;
   reviewCount?: number;
+  // 2026-08-26 (feat/per-geo-static-best): passed down from the server page (was
+  // read from the retired GeoCatalog context). searchFallback → this AE card is
+  // shown to a non-AE market lacking the keyword, so link to an Amazon SEARCH on the
+  // visitor's store; keywordEn = English query used on localized (ar/ja) pages.
+  searchFallback?: boolean;
+  keywordEn?: string;
 }
 
 // Title splitting (headline + "Show more" tail) now lives in the locale-aware
@@ -71,6 +76,8 @@ export default function ProductCard({
   wwlPoints,
   isPrime = false,
   reviewCount = 0,
+  searchFallback = false,
+  keywordEn = '',
 }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
   const locale = useLocale();
@@ -110,7 +117,8 @@ export default function ProductCard({
   // keyword their store lacks), these AE cards' /dp/{asin} would 404 on the
   // visitor's marketplace. searchFallback → link to an Amazon SEARCH on their
   // store instead (brand + product name), which resolves + earns commission.
-  const { searchFallback, keywordEn } = useGeoCatalog();
+  // searchFallback/keywordEn are now props from the server page (2026-08-26,
+  // feat/per-geo-static-best; was the retired GeoCatalog React context).
   // English pages search the specific product title; localized pages (ar/ja)
   // search the English keyword instead — the Arabic/Japanese title is a poor
   // query on most stores. (ML 3, 2026-07-17)
