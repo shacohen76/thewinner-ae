@@ -57,7 +57,7 @@ export interface Product {
   title: string;
   brand: string | null;
   image_url: string | null;
-  product_url: string | null;
+  // product_url dropped 2026-08-27 — never read (links built from /dp/{asin} + tag); column removed from Supabase
   description: string | null;
   bullet_points: string[] | null;
   wwl_points: string[] | null;

@@ -17,6 +17,7 @@ interface Product {
   description: string | null;
   image_url: string | null;
   wwl_points: string[] | null;
+  bullet_points: string[] | null;   // 2026-08-28: feature specs (Creators API) → "…for Nerds"
   rank: number;
   price_at_scrape: string | null;
   is_on_discount: boolean;
@@ -113,6 +114,7 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
             description={product.description}
             imageUrl={product.image_url}
             wwlPoints={product.wwl_points}
+            bulletPoints={product.bullet_points}
             isPrime={product.is_prime}
             searchFallback={searchFallback}
             keywordEn={keywordEn}

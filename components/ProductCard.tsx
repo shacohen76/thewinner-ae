@@ -37,6 +37,7 @@ interface ProductCardProps {
   description?: string | null;
   imageUrl?: string | null;
   wwlPoints?: string[] | null;
+  bulletPoints?: string[] | null;   // 2026-08-28: product feature specs (Creators API) → "…for Nerds"
   isPrime?: boolean;
   reviewCount?: number;
   // 2026-08-26 (feat/per-geo-static-best): passed down from the server page (was
@@ -67,6 +68,27 @@ const SCORE_LABEL_KEYS: Record<string, string> = {
   Good: 'good',
 };
 
+// Rank-based WWL fallback (2026-08-28) — shown ONLY when a product has no generated
+// wwl_points. 3 points per position (rank 1..15). PLACEHOLDER COPY — reword + i18n later
+// (owner will finalize wording). Rank >15 or missing falls back to t('defaultWwl').
+const FALLBACK_WWL_BY_RANK: Record<number, string[]> = {
+  1:  ['Our top pick', 'Loved by buyers', 'Great all-rounder'],
+  2:  ['A close runner-up', 'Strong value', 'A shopper favorite'],
+  3:  ['A solid choice', 'Nicely balanced', 'Well reviewed'],
+  4:  ['Reliable pick', 'Good for the price', 'Consistently rated'],
+  5:  ['A dependable option', 'Fair value', 'A safe bet'],
+  6:  ['Worth a look', 'Good everyday value', 'Well liked'],
+  7:  ['A capable pick', 'Fair price', 'Practical choice'],
+  8:  ['Decent option', 'Reasonable value', 'Popular pick'],
+  9:  ['Budget-friendly', 'Covers the basics', 'Easy on the wallet'],
+  10: ['Honorable mention', 'A handy backup', 'Nice for the price'],
+  11: ['A backup pick', 'Does the basics', 'Value-minded'],
+  12: ['Still in the running', 'Simple and handy', 'Value pick'],
+  13: ['A no-frills option', 'Gets it done', 'Easy pick'],
+  14: ['Budget alternative', 'Simple and cheap', 'Price-focused pick'],
+  15: ['A value option', 'Keeps it simple', 'Most budget pick'],
+};
+
 export default function ProductCard({
   rank,
   asin,
@@ -74,6 +96,7 @@ export default function ProductCard({
   description,
   imageUrl,
   wwlPoints,
+  bulletPoints,
   isPrime = false,
   reviewCount = 0,
   searchFallback = false,
@@ -104,6 +127,8 @@ export default function ProductCard({
 
   // Combine restTitle and description for the expandable section
   const expandableText = [restTitle, description].filter(Boolean).join('\n\n');
+  // 2026-08-28: product feature specs (Creators API) → "The Fun Details - For Nerds"
+  const displayBullets = (bulletPoints ?? []).filter(Boolean).slice(0, 3);
 
   const handleCtaClick = () => {
     if (typeof window !== 'undefined' && window.dataLayer) {
@@ -135,10 +160,11 @@ export default function ProductCard({
     ? buildAffiliateSearchUrl(searchText)
     : buildAffiliateUrl(asin, title);
 
-  // Default WWL points if none provided — capitalize first letter of each
+  // WWL points; when a product has none, fall back to the rank-based placeholder set
+  // (3 points for this position), else the single generic default. (2026-08-28)
   const displayWwl = (wwlPoints && wwlPoints.length > 0
     ? wwlPoints.slice(0, 4)
-    : [t('defaultWwl')]
+    : (FALLBACK_WWL_BY_RANK[rank] ?? [t('defaultWwl')])
   ).map(capitalizeFirst);
 
   // ── Score Box (single source of truth, rendered in 2 responsive slots) ──
@@ -257,8 +283,8 @@ export default function ProductCard({
               </div>
             </div>
 
-            {/* Expand Button — shows rest of title + description */}
-            {expandableText && (
+            {/* Expand Button — shows rest of title + description + "…for Nerds" specs */}
+            {(expandableText || displayBullets.length > 0) && (
               <>
                 <button
                 id="read-more"
@@ -271,8 +297,23 @@ export default function ProductCard({
 
                 {expanded && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                    <h5 className="font-bold text-gray-700 mb-2">{t('details')}</h5>
-                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{expandableText}</p>
+                    {expandableText && (
+                      <>
+                        <h5 className="font-bold text-gray-700 mb-2">{t('details')}</h5>
+                        <p className="text-gray-600 leading-relaxed whitespace-pre-line">{expandableText}</p>
+                      </>
+                    )}
+                    {displayBullets.length > 0 && (
+                      <div className={expandableText ? 'mt-4' : ''}>
+                        {/* i18n later (owner 2026-08-28) */}
+                        <h5 className="font-bold text-gray-700 mb-2">The Fun Details - For Nerds</h5>
+                        <ol className="list-decimal pl-5 space-y-1 text-gray-600 leading-relaxed">
+                          {displayBullets.map((b, i) => (
+                            <li key={i}>{b}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
                   </div>
                 )}
               </>
