@@ -266,6 +266,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     description: p.description,
     image_url: p.image_url,
     wwl_points: p.wwl_points,
+    bullet_points: p.bullet_points,   // 2026-08-28: feature specs → "…for Nerds"
     rank: p.rank,
     price_at_scrape: p.price_at_scrape,
     is_on_discount: p.is_on_discount || false,
