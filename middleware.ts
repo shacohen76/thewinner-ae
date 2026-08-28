@@ -69,6 +69,30 @@ function isSearchBot(userAgent: string | null): boolean {
   return ALLOWED_BOT_PATTERNS.some(p => userAgent.includes(p));
 }
 
+// ─── Abusive scraper / headless-automation UAs — hard-blocked (2026-08-28) ───
+// Added after an overnight bot flood (Aug 27 21:00 → Aug 28 07:00 UTC, ~10K
+// "direct" sessions) crawled the entire /best/ catalog from a global scatter of
+// non-target countries (BR/IN/AR/MX/PK/VN…, AE only ~160). ~745 of them self-
+// identified as "Lightpanda" — a headless browser purpose-built for AI-agent
+// scraping — so we 403 it (and other known headless-automation UAs) at the edge
+// before any page render or click_log write. NOTE: the bulk of that flood spoofed
+// real desktop Chrome/Firefox UAs and can't be caught here — Vercel WAF / Bot
+// Management (or the disabled geo-block) is the defense for those.
+const BLOCKED_BOT_PATTERNS = [
+  'Lightpanda',
+  'HeadlessChrome',
+  'PhantomJS',
+  'python-requests',
+  'Scrapy',
+  'Go-http-client',
+  'node-fetch',
+];
+
+function isBlockedBot(userAgent: string | null): boolean {
+  if (!userAgent) return false;
+  return BLOCKED_BOT_PATTERNS.some(p => userAgent.includes(p));
+}
+
 // INTL1 JP Phase 2 (2026-07-06): the non-English locale URL prefixes (['ar','ja'])
 // derived from routing so adding a locale needs no edit here. English is the
 // default and prefix-less, so its paths never start with one of these.
@@ -90,6 +114,20 @@ export function middleware(request: NextRequest) {
   const country = request.headers.get('x-vercel-ip-country') || '';
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = isSearchBot(userAgent);
+
+  // ─── Abusive-scraper hard block (2026-08-28) ─────────────────────────────
+  // Runs FIRST so a known headless-automation UA (Lightpanda et al.) is 403'd
+  // before any redirect, rewrite, render, or client-side click_log write. Cheap
+  // edge short-circuit. The `!isBot` guard makes the ALLOWED search/social/AI
+  // crawler list authoritative: a UA on that list is NEVER blocked, even if a
+  // blocked substring ever appeared inside it — so Googlebot et al. are safe by
+  // construction, not just because today's tokens happen not to overlap.
+  if (isBlockedBot(userAgent) && !isBot) {
+    return new NextResponse('Forbidden', {
+      status: 403,
+      headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' },
+    });
+  }
 
   // ─── 301 the legacy mirror thewinner.ae → canonical thewinners.ae (2026-08-26) ──
   // thewinner.ae is a duplicate mirror that already rel=canonical'd + hreflang'd to
