@@ -367,21 +367,25 @@ export async function getProductsForKeyword(
     const pa = products.map(p => p.asin).filter(Boolean);
     const { data: translations, error: tErr } = await supabase
       .from('product_translations')
-      .select('asin, title, wwl_points')
+      .select('asin, title, wwl_points, bullet_points')
       .eq('locale', locale)
       .in('asin', pa);
 
     if (tErr) {
       console.error('Error fetching product translations:', tErr);
     } else {
-      // (2026-08-28) A FOREIGN-language page (ar/ja) must never leak the English
-      // base WWL: use the product's localized wwl_points when present, else CLEAR
-      // it so ProductCard renders the locale-aware rank fallback (generic, but
-      // in-language). English renders on non-AE markets (locale==='en') keep the
-      // real English base WWL — only foreign locales blank. Title stays localized
-      // whenever a translation row exists.
+      // (2026-08-28) A FOREIGN-language page (ar/ja) must never leak English base
+      // content: for both WWL and the "for Nerds" specs (bullet_points), use the
+      // product's localized value when present, else CLEAR it. WWL then renders the
+      // locale-aware rank fallback; specs simply hide until the localized backfill
+      // (product_translations.bullet_points) lands. English renders on non-AE
+      // markets (locale==='en') keep the real English base values untouched. Title
+      // stays localized whenever a translation row exists.
       const isForeign = locale !== 'en';
-      const byAsin = new Map<string, { title: string | null; wwl_points: unknown }>();
+      const byAsin = new Map<
+        string,
+        { title: string | null; wwl_points: unknown; bullet_points: unknown }
+      >();
       for (const t of translations ?? []) if (!byAsin.has(t.asin)) byAsin.set(t.asin, t);
       for (const p of products) {
         const tr = byAsin.get(p.asin);
@@ -395,6 +399,13 @@ export async function getProductsForKeyword(
           p.wwl_points = tr!.wwl_points as string[];
         } else if (isForeign) {
           p.wwl_points = [];
+        }
+        const hasLocalizedBullets =
+          !!tr && Array.isArray(tr.bullet_points) && tr.bullet_points.length > 0;
+        if (hasLocalizedBullets) {
+          p.bullet_points = tr!.bullet_points as string[];
+        } else if (isForeign) {
+          p.bullet_points = [];
         }
       }
     }
