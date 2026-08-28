@@ -118,9 +118,11 @@ export function middleware(request: NextRequest) {
   // ─── Abusive-scraper hard block (2026-08-28) ─────────────────────────────
   // Runs FIRST so a known headless-automation UA (Lightpanda et al.) is 403'd
   // before any redirect, rewrite, render, or client-side click_log write. Cheap
-  // edge short-circuit; legitimate search crawlers are on the ALLOWED list and
-  // never match here.
-  if (isBlockedBot(userAgent)) {
+  // edge short-circuit. The `!isBot` guard makes the ALLOWED search/social/AI
+  // crawler list authoritative: a UA on that list is NEVER blocked, even if a
+  // blocked substring ever appeared inside it — so Googlebot et al. are safe by
+  // construction, not just because today's tokens happen not to overlap.
+  if (isBlockedBot(userAgent) && !isBot) {
     return new NextResponse('Forbidden', {
       status: 403,
       headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' },
