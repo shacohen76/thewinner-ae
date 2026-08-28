@@ -69,24 +69,61 @@ const SCORE_LABEL_KEYS: Record<string, string> = {
 };
 
 // Rank-based WWL fallback (2026-08-28) — shown ONLY when a product has no generated
-// wwl_points. 3 points per position (rank 1..15). PLACEHOLDER COPY — reword + i18n later
-// (owner will finalize wording). Rank >15 or missing falls back to t('defaultWwl').
-const FALLBACK_WWL_BY_RANK: Record<number, string[]> = {
-  1:  ['Our top pick', 'Loved by buyers', 'Great all-rounder'],
-  2:  ['A close runner-up', 'Strong value', 'A shopper favorite'],
-  3:  ['A solid choice', 'Nicely balanced', 'Well reviewed'],
-  4:  ['Reliable pick', 'Good for the price', 'Consistently rated'],
-  5:  ['A dependable option', 'Fair value', 'A safe bet'],
-  6:  ['Worth a look', 'Good everyday value', 'Well liked'],
-  7:  ['A capable pick', 'Fair price', 'Practical choice'],
-  8:  ['Decent option', 'Reasonable value', 'Popular pick'],
-  9:  ['Budget-friendly', 'Covers the basics', 'Easy on the wallet'],
-  10: ['Honorable mention', 'A handy backup', 'Nice for the price'],
-  11: ['A backup pick', 'Does the basics', 'Value-minded'],
-  12: ['Still in the running', 'Simple and handy', 'Value pick'],
-  13: ['A no-frills option', 'Gets it done', 'Easy pick'],
-  14: ['Budget alternative', 'Simple and cheap', 'Price-focused pick'],
-  15: ['A value option', 'Keeps it simple', 'Most budget pick'],
+// wwl_points. 3 short/light points per position (rank 1..15), per locale so /ar and
+// /ja never leak English. PLACEHOLDER COPY (owner will finalize real per-rank wording).
+// Rank >15 or missing locale → English map → t('defaultWwl').
+const FALLBACK_WWL_BY_RANK: Record<string, Record<number, string[]>> = {
+  en: {
+    1:  ['Our top pick', 'Loved by buyers', 'Great all-rounder'],
+    2:  ['A close runner-up', 'Strong value', 'A shopper favorite'],
+    3:  ['A solid choice', 'Nicely balanced', 'Well reviewed'],
+    4:  ['Reliable pick', 'Good for the price', 'Consistently rated'],
+    5:  ['A dependable option', 'Fair value', 'A safe bet'],
+    6:  ['Worth a look', 'Good everyday value', 'Well liked'],
+    7:  ['A capable pick', 'Fair price', 'Practical choice'],
+    8:  ['Decent option', 'Reasonable value', 'Popular pick'],
+    9:  ['Budget-friendly', 'Covers the basics', 'Easy on the wallet'],
+    10: ['Honorable mention', 'A handy backup', 'Nice for the price'],
+    11: ['A backup pick', 'Does the basics', 'Value-minded'],
+    12: ['Still in the running', 'Simple and handy', 'Value pick'],
+    13: ['A no-frills option', 'Gets it done', 'Easy pick'],
+    14: ['Budget alternative', 'Simple and cheap', 'Price-focused pick'],
+    15: ['A value option', 'Keeps it simple', 'Most budget pick'],
+  },
+  ar: {
+    1:  ['اختيارنا الأول', 'المفضّل لدى المشترين', 'خيار متكامل رائع'],
+    2:  ['الوصيف عن قرب', 'قيمة قوية', 'مفضّل لدى المتسوّقين'],
+    3:  ['خيار موثوق', 'متوازن بشكل جيد', 'تقييمات إيجابية'],
+    4:  ['خيار يُعتمد عليه', 'مناسب مقابل السعر', 'تقييم ثابت'],
+    5:  ['خيار يُوثق به', 'قيمة عادلة', 'خيار آمن'],
+    6:  ['يستحق النظر', 'قيمة يومية جيدة', 'محبوب'],
+    7:  ['خيار كفؤ', 'سعر عادل', 'خيار عملي'],
+    8:  ['خيار لا بأس به', 'قيمة معقولة', 'خيار شائع'],
+    9:  ['مناسب للميزانية', 'يغطّي الأساسيات', 'خفيف على الجيب'],
+    10: ['يستحق التنويه', 'بديل مفيد', 'جيّد مقابل السعر'],
+    11: ['خيار احتياطي', 'يؤدّي الأساسيات', 'يراعي القيمة'],
+    12: ['ما زال منافساً', 'بسيط وعملي', 'خيار اقتصادي'],
+    13: ['خيار بلا تعقيد', 'يُنجز المهمّة', 'خيار سهل'],
+    14: ['بديل اقتصادي', 'بسيط وميسور', 'خيار موفّر'],
+    15: ['خيار موفّر', 'يبقيه بسيطاً', 'الأوفر سعراً'],
+  },
+  ja: {
+    1:  ['一番のおすすめ', '購入者に人気', 'オールラウンドな逸品'],
+    2:  ['僅差の次点', '高いコスパ', '買い物客に人気'],
+    3:  ['堅実な選択', 'バランス良好', '高評価'],
+    4:  ['信頼できる一品', '価格以上の価値', '安定した評価'],
+    5:  ['頼れる選択肢', '妥当な価値', '安心の選択'],
+    6:  ['一見の価値あり', '普段使いに好適', '評判が良い'],
+    7:  ['実力派の一品', '手頃な価格', '実用的な選択'],
+    8:  ['まずまずの選択', '納得の価値', '人気の一品'],
+    9:  ['予算に優しい', '基本を押さえる', '財布に優しい'],
+    10: ['注目の一品', '手軽な予備候補', '価格の割に良い'],
+    11: ['予備の選択肢', '基本はこなす', 'コスパ重視'],
+    12: ['まだ健闘中', 'シンプルで便利', 'お値打ち品'],
+    13: ['飾らない選択', '役目を果たす', '手軽な一品'],
+    14: ['低価格の代替', 'シンプルで安価', '価格重視の一品'],
+    15: ['お値打ちの選択', 'シンプルさを維持', '最も低価格'],
+  },
 };
 
 export default function ProductCard({
@@ -164,7 +201,7 @@ export default function ProductCard({
   // (3 points for this position), else the single generic default. (2026-08-28)
   const displayWwl = (wwlPoints && wwlPoints.length > 0
     ? wwlPoints.slice(0, 4)
-    : (FALLBACK_WWL_BY_RANK[rank] ?? [t('defaultWwl')])
+    : ((FALLBACK_WWL_BY_RANK[locale] ?? FALLBACK_WWL_BY_RANK.en)[rank] ?? [t('defaultWwl')])
   ).map(capitalizeFirst);
 
   // ── Score Box (single source of truth, rendered in 2 responsive slots) ──

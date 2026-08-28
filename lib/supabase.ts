@@ -373,16 +373,28 @@ export async function getProductsForKeyword(
 
     if (tErr) {
       console.error('Error fetching product translations:', tErr);
-    } else if (translations && translations.length > 0) {
+    } else {
+      // (2026-08-28) A FOREIGN-language page (ar/ja) must never leak the English
+      // base WWL: use the product's localized wwl_points when present, else CLEAR
+      // it so ProductCard renders the locale-aware rank fallback (generic, but
+      // in-language). English renders on non-AE markets (locale==='en') keep the
+      // real English base WWL — only foreign locales blank. Title stays localized
+      // whenever a translation row exists.
+      const isForeign = locale !== 'en';
       const byAsin = new Map<string, { title: string | null; wwl_points: unknown }>();
-      for (const t of translations) if (!byAsin.has(t.asin)) byAsin.set(t.asin, t);
+      for (const t of translations ?? []) if (!byAsin.has(t.asin)) byAsin.set(t.asin, t);
       for (const p of products) {
         const tr = byAsin.get(p.asin);
-        if (!tr) continue;
-        const localizedTitle = sanitizeProductTitle(tr.title ?? '');
-        if (localizedTitle) p.title = localizedTitle;
-        if (Array.isArray(tr.wwl_points) && tr.wwl_points.length > 0) {
-          p.wwl_points = tr.wwl_points;
+        if (tr) {
+          const localizedTitle = sanitizeProductTitle(tr.title ?? '');
+          if (localizedTitle) p.title = localizedTitle;
+        }
+        const hasLocalizedWwl =
+          !!tr && Array.isArray(tr.wwl_points) && tr.wwl_points.length > 0;
+        if (hasLocalizedWwl) {
+          p.wwl_points = tr!.wwl_points as string[];
+        } else if (isForeign) {
+          p.wwl_points = [];
         }
       }
     }
