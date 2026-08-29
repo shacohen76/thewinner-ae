@@ -68,63 +68,86 @@ const SCORE_LABEL_KEYS: Record<string, string> = {
   Good: 'good',
 };
 
-// Rank-based WWL fallback (2026-08-28) — shown ONLY when a product has no generated
-// wwl_points. 3 short/light points per position (rank 1..15), per locale so /ar and
-// /ja never leak English. PLACEHOLDER COPY (owner will finalize real per-rank wording).
-// Rank >15 or missing locale → English map → t('defaultWwl').
-const FALLBACK_WWL_BY_RANK: Record<string, Record<number, string[]>> = {
+// Rank-batched WWL fallback (2026-08-29, owner copy) — shown ONLY when a product has no
+// generated wwl_points. Renders ONE line per product, chosen deterministically from the
+// rank's batch by an ASIN hash: same product always shows the same line (SSR === client,
+// so NO hydration mismatch — never Math.random), but the line varies across products.
+// Locale-keyed (en/ar/ja) so /ar /ja never leak English. Batches: rank 1 = top; 2–3 = mid;
+// ≥4 = low (covers 4–10 and any 11–15 that render).
+type FallbackBatch = 'top' | 'mid' | 'low';
+const FALLBACK_WWL: Record<string, Record<FallbackBatch, string[]>> = {
   en: {
-    1:  ['Our top pick', 'Loved by buyers', 'Great all-rounder'],
-    2:  ['A close runner-up', 'Strong value', 'A shopper favorite'],
-    3:  ['A solid choice', 'Nicely balanced', 'Well reviewed'],
-    4:  ['Reliable pick', 'Good for the price', 'Consistently rated'],
-    5:  ['A dependable option', 'Fair value', 'A safe bet'],
-    6:  ['Worth a look', 'Good everyday value', 'Well liked'],
-    7:  ['A capable pick', 'Fair price', 'Practical choice'],
-    8:  ['Decent option', 'Reasonable value', 'Popular pick'],
-    9:  ['Budget-friendly', 'Covers the basics', 'Easy on the wallet'],
-    10: ['Honorable mention', 'A handy backup', 'Nice for the price'],
-    11: ['A backup pick', 'Does the basics', 'Value-minded'],
-    12: ['Still in the running', 'Simple and handy', 'Value pick'],
-    13: ['A no-frills option', 'Gets it done', 'Easy pick'],
-    14: ['Budget alternative', 'Simple and cheap', 'Price-focused pick'],
-    15: ['A value option', 'Keeps it simple', 'Most budget pick'],
+    top: [
+      'It is the real winner',
+      'Tested and verified to earn its rank',
+      "It's probably the safest choice",
+      'Most buyers keep picking it',
+    ],
+    mid: [
+      'Strong competitor and a real choice',
+      "It won't leave you disappointed",
+      'A genuinely good alternative',
+      'Totally worth the consideration',
+    ],
+    low: [
+      'Still worth the look',
+      'It will get the job done',
+      'Can also be a fit',
+    ],
   },
   ar: {
-    1:  ['اختيارنا الأول', 'المفضّل لدى المشترين', 'خيار متكامل رائع'],
-    2:  ['الوصيف عن قرب', 'قيمة قوية', 'مفضّل لدى المتسوّقين'],
-    3:  ['خيار موثوق', 'متوازن بشكل جيد', 'تقييمات إيجابية'],
-    4:  ['خيار يُعتمد عليه', 'مناسب مقابل السعر', 'تقييم ثابت'],
-    5:  ['خيار يُوثق به', 'قيمة عادلة', 'خيار آمن'],
-    6:  ['يستحق النظر', 'قيمة يومية جيدة', 'محبوب'],
-    7:  ['خيار كفؤ', 'سعر عادل', 'خيار عملي'],
-    8:  ['خيار لا بأس به', 'قيمة معقولة', 'خيار شائع'],
-    9:  ['مناسب للميزانية', 'يغطّي الأساسيات', 'خفيف على الجيب'],
-    10: ['يستحق التنويه', 'بديل مفيد', 'جيّد مقابل السعر'],
-    11: ['خيار احتياطي', 'يؤدّي الأساسيات', 'يراعي القيمة'],
-    12: ['ما زال منافساً', 'بسيط وعملي', 'خيار اقتصادي'],
-    13: ['خيار بلا تعقيد', 'يُنجز المهمّة', 'خيار سهل'],
-    14: ['بديل اقتصادي', 'بسيط وميسور', 'خيار موفّر'],
-    15: ['خيار موفّر', 'يبقيه بسيطاً', 'الأوفر سعراً'],
+    top: [
+      'الفائز الحقيقي بلا منازع',
+      'مُختبَر ومؤكَّد أنه يستحق مرتبته',
+      'الخيار الأكثر أماناً على الأرجح',
+      'الأكثر اختياراً من قبل المشترين',
+    ],
+    mid: [
+      'منافس قوي وخيار جدير بالثقة',
+      'لن يخيّب ظنك',
+      'بديل جيد بحق',
+      'يستحق التفكير فيه تماماً',
+    ],
+    low: [
+      'لا يزال يستحق النظر',
+      'سيؤدي الغرض المطلوب',
+      'قد يكون مناسباً أيضاً',
+    ],
   },
   ja: {
-    1:  ['一番のおすすめ', '購入者に人気', 'オールラウンドな逸品'],
-    2:  ['僅差の次点', '高いコスパ', '買い物客に人気'],
-    3:  ['堅実な選択', 'バランス良好', '高評価'],
-    4:  ['信頼できる一品', '価格以上の価値', '安定した評価'],
-    5:  ['頼れる選択肢', '妥当な価値', '安心の選択'],
-    6:  ['一見の価値あり', '普段使いに好適', '評判が良い'],
-    7:  ['実力派の一品', '手頃な価格', '実用的な選択'],
-    8:  ['まずまずの選択', '納得の価値', '人気の一品'],
-    9:  ['予算に優しい', '基本を押さえる', '財布に優しい'],
-    10: ['注目の一品', '手軽な予備候補', '価格の割に良い'],
-    11: ['予備の選択肢', '基本はこなす', 'コスパ重視'],
-    12: ['まだ健闘中', 'シンプルで便利', 'お値打ち品'],
-    13: ['飾らない選択', '役目を果たす', '手軽な一品'],
-    14: ['低価格の代替', 'シンプルで安価', '価格重視の一品'],
-    15: ['お値打ちの選択', 'シンプルさを維持', '最も低価格'],
+    top: [
+      'まさに本命の実力者',
+      '順位に見合う実力を検証済み',
+      'おそらく最も無難な選択',
+      '多くの購入者が選び続ける一品',
+    ],
+    mid: [
+      '実力派の有力候補',
+      '期待を裏切らない一品',
+      '本当に良い代替案',
+      '検討する価値は十分',
+    ],
+    low: [
+      'まだ見る価値あり',
+      '役目はしっかり果たす',
+      '選択肢の一つになり得る',
+    ],
   },
 };
+
+function fallbackBatch(rank: number): FallbackBatch {
+  if (rank <= 1) return 'top';
+  if (rank <= 3) return 'mid';
+  return 'low';
+}
+
+// Deterministic per-ASIN pick — one line, stable across SSR/hydration, spread across products.
+function pickFallbackWwl(asin: string, rank: number, locale: string): string[] {
+  const opts = (FALLBACK_WWL[locale] ?? FALLBACK_WWL.en)[fallbackBatch(rank)];
+  let h = 0;
+  for (let i = 0; i < asin.length; i++) h = (Math.imul(h, 31) + asin.charCodeAt(i)) | 0;
+  return [opts[Math.abs(h) % opts.length]];
+}
 
 export default function ProductCard({
   rank,
@@ -201,7 +224,7 @@ export default function ProductCard({
   // (3 points for this position), else the single generic default. (2026-08-28)
   const displayWwl = (wwlPoints && wwlPoints.length > 0
     ? wwlPoints.slice(0, 4)
-    : ((FALLBACK_WWL_BY_RANK[locale] ?? FALLBACK_WWL_BY_RANK.en)[rank] ?? [t('defaultWwl')])
+    : pickFallbackWwl(asin, rank, locale)
   ).map(capitalizeFirst);
 
   // ── Score Box (single source of truth, rendered in 2 responsive slots) ──
