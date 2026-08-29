@@ -12,8 +12,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { assignTag } from '@/lib/tracking';
+import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
 
-// Bot user agents that should NOT get tracking sessions
+// Bot user agents that should NOT get tracking sessions.
+// Crawler/automation patterns live here; the SPOOFED-browser signatures (junk
+// bots that mimic a real Chrome/Firefox UA) are shared with the admin analytics
+// reads via lib/bot-signatures.ts so the ingest guard and the panel can never
+// drift out of sync — that drift is exactly what let the Aug-2026 wave inflate
+// the dashboard (the rollup only knew the old 'Chrome/145' signature).
 const BOT_PATTERNS = [
   'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'AdsBot', 'Mediapartners-Google',
   'Google-Adwords-DisplayAds', 'pageburst',
@@ -21,13 +27,9 @@ const BOT_PATTERNS = [
   'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
   'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
   'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
-  // Spoofed-browser junk bots (GEOS2 2026-05-25). These mimic a real Chrome UA
-  // so they slipped past the patterns above and were polluting click_log
-  // (~1k rows/week, mostly datacenter Singapore). We match the EXACT impossible
-  // Chrome version (real stable ≈133; 145.0.0.0 does not exist) so there is
-  // zero false-positive risk on real users. Add new exact signatures here if it
-  // rotates — do NOT switch to a version range (real Chrome would grow into it).
-  'Chrome/145.0.0.0',
+  // Spoofed-browser junk bots — frozen residential-proxy UA pool. See
+  // lib/bot-signatures.ts for the full rationale + how to add signatures.
+  ...SPOOFED_BROWSER_BOT_UAS,
 ];
 
 // Pages that should not create tracking sessions
