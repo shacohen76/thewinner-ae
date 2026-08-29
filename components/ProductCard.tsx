@@ -149,6 +149,13 @@ function pickFallbackWwl(asin: string, rank: number, locale: string): string[] {
   return [opts[Math.abs(h) % opts.length]];
 }
 
+// "The Fun Details - For Nerds" section heading, localized (2026-08-29).
+const FOR_NERDS_HEADING: Record<string, string> = {
+  en: 'The Fun Details - For Nerds',
+  ar: 'التفاصيل الممتعة — لعشّاق التفاصيل',
+  ja: 'マニア向けの豆知識',
+};
+
 export default function ProductCard({
   rank,
   asin,
@@ -366,7 +373,7 @@ export default function ProductCard({
                     {displayBullets.length > 0 && (
                       <div className={expandableText ? 'mt-4' : ''}>
                         {/* i18n later (owner 2026-08-28) */}
-                        <h5 className="font-bold text-gray-700 mb-2">The Fun Details - For Nerds</h5>
+                        <h5 className="font-bold text-gray-700 mb-2">{FOR_NERDS_HEADING[locale] ?? FOR_NERDS_HEADING.en}</h5>
                         <ol className="list-decimal pl-5 space-y-1 text-gray-600 leading-relaxed">
                           {displayBullets.map((b, i) => (
                             <li key={i}>{b}</li>
