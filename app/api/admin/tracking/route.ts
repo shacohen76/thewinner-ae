@@ -23,6 +23,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getGeoGroup, getGeoProgram, getProgramConfig, ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
+import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
 
 // Country lists for DB-side filtering. Mirror lib/geo-config.ts membership.
 // Kept here as plain arrays (not Sets) so Supabase .in() can consume them.
@@ -109,13 +110,18 @@ export async function GET(request: NextRequest) {
 
   try {
     // Capped recent rows for the Sessions tab + the Users list (display only).
-    // Bot-excluded (the confirmed impossible Chrome/145 signature) + geo filter.
+    // Bot-excluded via the shared spoofed-browser signatures + geo filter.
     let sessionsQuery = supabase.from('click_log')
       .select('session_id,gclid,assigned_tag,traffic_source,landing_page,clicked_asins,click_timestamps,user_agent,ip_country,created_at,last_activity,status,user_id,site')
       .gte('created_at', since)
-      .not('user_agent', 'ilike', '%Chrome/145.0.0.0%')
       .order('created_at', { ascending: false })
       .limit(500);
+
+    // Exclude every known spoofed-browser bot signature (lib/bot-signatures.ts).
+    // Kept in sync with the ingest guard (/api/tag-assign) and the SQL rollup.
+    for (const sig of SPOOFED_BROWSER_BOT_UAS) {
+      sessionsQuery = sessionsQuery.not('user_agent', 'ilike', `%${sig}%`);
+    }
 
     // MG5: single-day mode caps the sessions list at the day boundary too.
     if (until) sessionsQuery = sessionsQuery.lt('created_at', until);
