@@ -492,6 +492,11 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
       .from('keyword_translations')
       .select('qa_guide, keywords(slug)')
       .eq('locale', locale)
+      // 2026-08-30: stable sort is REQUIRED for range() pagination — without it PostgREST
+      // returns rows in unspecified order and pages silently skip/duplicate rows, so the
+      // set came back short & non-deterministically (same bug getAllKeywords documents).
+      // keyword_id is unique within a locale, so it's a stable total order.
+      .order('keyword_id', { ascending: true })
       .range(from, from + page - 1);
     if (error) {
       console.error(`Error fetching ${locale} translated slugs:`, error);
@@ -525,6 +530,11 @@ export async function getMarketplaceSlugs(marketplace: string): Promise<Set<stri
       .from('keyword_products')
       .select('keywords(slug)')
       .eq('marketplace', marketplace)
+      // 2026-08-30: stable sort REQUIRED for range() pagination (see getTranslatedSlugs).
+      // Without it the JP sitemap undercounted non-deterministically (~1,192–1,493 instead
+      // of the true 1,999). (keyword_id, asin) is unique within one marketplace.
+      .order('keyword_id', { ascending: true })
+      .order('asin', { ascending: true })
       .range(from, from + page - 1);
     if (error) {
       console.error(`Error fetching ${marketplace} product slugs:`, error);
