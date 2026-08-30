@@ -21,11 +21,37 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { CATALOG_MARKETPLACES, LOCALE_CATALOG } from '@/lib/geo-config';
+import { routing } from '@/i18n/routing';
 
 export const dynamic = 'force-dynamic';
 
 // '' = default (public /best/<slug>); localized variants live under /ar and /ja.
 const LOCALE_PREFIXES = ['', 'ar', 'ja'];
+
+// ── 2026-08-30 (per-geo-static revalidation fix) ────────────────────────────
+// BUG THIS FIXES: since feat/per-geo-static-best (2026-08-26), middleware rewrites
+// the public /best/<slug> to an INTERNAL /<locale>/best/<market>/<slug>, and Next
+// caches one static ISR variant PER (locale × market × slug). This endpoint,
+// written before that change, only revalidatePath'd the OLD public paths
+// (/best/<slug>, /ar/..., /ja/...) — which no longer have a cache entry (every
+// request is rewritten). Result: keyword_products updates (incl. the AE rerank
+// rollback) did NOT propagate to the live per-market pages until the 7-day ISR
+// window lapsed, and crawlers (pinned to the 'ae' market) kept indexing the stale
+// catalog. FIX: revalidatePath the actual internal per-market paths below.
+// Markets + locales come straight from geo-config/routing so this can't drift.
+const CATALOG_MARKETS = Array.from(CATALOG_MARKETPLACES);       // ae,us,uk,ca,ie,au,sg,jp
+// Internal paths always carry a locale prefix (en included — middleware rewrites
+// "/best/..." → "/en/best/..."). A locale pinned to one catalog (ja→jp) only ever
+// renders that single market variant; others follow the visitor's geo (all markets).
+function marketPathsForSlug(slug: string): string[] {
+  const paths: string[] = [];
+  for (const locale of routing.locales) {
+    const markets = LOCALE_CATALOG[locale] ? [LOCALE_CATALOG[locale]] : CATALOG_MARKETS;
+    for (const market of markets) paths.push(`/${locale}/best/${market}/${slug}`);
+  }
+  return paths;
+}
 
 export async function POST(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -60,16 +86,26 @@ export async function POST(request: NextRequest) {
 
   const revalidated: string[] = [];
   for (const slug of clean) {
+    // Legacy public paths — no longer hold a cache entry after per-geo-static
+    // (every /best request is rewritten), but revalidating them is a harmless
+    // no-op and keeps us safe if any non-rewritten fallback is ever reintroduced.
     for (const prefix of LOCALE_PREFIXES) {
       const path = prefix ? `/${prefix}/best/${slug}` : `/best/${slug}`;
       revalidatePath(path);
       revalidated.push(path);
     }
+    // 2026-08-30: the REAL cache entries — the internal per-market static variants
+    // /<locale>/best/<market>/<slug> that middleware rewrites to. Purge every one
+    // so a keyword_products update propagates to all markets (and the crawler-
+    // indexed 'ae' variant) within seconds instead of the 7-day ISR window.
+    for (const path of marketPathsForSlug(slug)) {
+      revalidatePath(path);
+      revalidated.push(path);
+    }
     // 2026-08-25 (rerank-11): also purge the per-market catalog data served by
-    // /api/catalog (tag `catalog:<slug>`). Without this, revalidatePath refreshed
-    // only the AE SSR page shell while the non-AE geo lists (us/uk/ca/ie/au/sg/jp)
-    // kept serving the OLD cached order — the stale-after-migrate bug. One tag purge
-    // clears every (mkt, locale) variant of this slug at once.
+    // /api/catalog (tag `catalog:<slug>`). Now largely vestigial (the client
+    // GeoCatalog swap was retired by per-geo-static), but kept — the tag is cheap
+    // and still clears the /api/catalog cache if anything reads it.
     revalidateTag(`catalog:${slug}`);
   }
 
