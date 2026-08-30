@@ -13,7 +13,7 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 
@@ -74,6 +74,39 @@ export async function structuralEntries(): Promise<SitemapEntry[]> {
   }
 
   for (const slug of getAllSlugs()) out.push({ url: `${base}/blog/${slug}`, changefreq: 'monthly', priority: 0.7 });
+  return out;
+}
+
+// Single-locale localized /best entries — used by /sitemap/<locale>.xml so JP (and next AR)
+// can be submitted to GSC as a standalone sitemap while the big index is removed there.
+// Lists a page ONLY when it renders index:true, matching
+// app/[locale]/best/[market]/[slug]/page.tsx exactly:
+//   • ar → noun + BYG                         (arIndexed)
+//   • ja → noun + BYG + >=1 'jp' catalog       (jaIndexed) — the extra catalog gate is why
+//     we intersect getMarketplaceSlugs('jp'); getTranslatedSlugs alone lists ~7 noun+BYG JP
+//     pages that are actually noindex (no JP catalog), which would show as "noindex" in GSC.
+// DB-driven: a NEW localized page enters automatically the moment it meets the gate — no
+// redeploy needed. 2026-08-30 (JP-only GSC sitemap test; AR mirrors it for the next step).
+export async function localizedBestEntries(locale: string): Promise<SitemapEntry[]> {
+  const base = CONFIG.siteUrl;
+  const out: SitemapEntry[] = [];
+  try {
+    const [keywords, translated, jaCatalog] = await Promise.all([
+      getAllKeywords(),
+      getTranslatedSlugs(locale),
+      locale === 'ja' ? getMarketplaceSlugs('jp') : Promise.resolve(null as Set<string> | null),
+    ]);
+    const seen = new Set<string>();
+    for (const k of keywords) {
+      const s = k.slug.toLowerCase();
+      if (!translated.has(s) || seen.has(s)) continue;
+      if (jaCatalog && !jaCatalog.has(s)) continue; // ja only: require >=1 'jp' catalog product
+      seen.add(s);
+      out.push({ url: `${base}/${locale}/best/${encodeURIComponent(k.slug)}`, changefreq: 'weekly', priority: 0.9 });
+    }
+  } catch (error) {
+    console.error(`sitemap localizedBestEntries(${locale}) failed:`, error);
+  }
   return out;
 }
 
