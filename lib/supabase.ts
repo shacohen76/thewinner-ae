@@ -512,6 +512,36 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
   return slugs;
 }
 
+// Set of keyword slugs (lowercased) that have >=1 catalog product in `marketplace`.
+// One paginated join (mirrors getTranslatedSlugs) so a sitemap can apply the SAME catalog
+// gate the page uses for jaIndexed — jaIndexed requires getKeywordMarketplaceCount('jp')>=1
+// — without an N-per-keyword fan-out. 2026-08-30 (JP-only GSC sitemap).
+export async function getMarketplaceSlugs(marketplace: string): Promise<Set<string>> {
+  const slugs = new Set<string>();
+  let from = 0;
+  const page = 1000;
+  for (;;) {
+    const { data, error } = await supabase
+      .from('keyword_products')
+      .select('keywords(slug)')
+      .eq('marketplace', marketplace)
+      .range(from, from + page - 1);
+    if (error) {
+      console.error(`Error fetching ${marketplace} product slugs:`, error);
+      break;
+    }
+    const rows = (data ?? []) as any[];
+    for (const r of rows) {
+      const kw = r?.keywords;
+      const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
+      if (slug) slugs.add(slug.toLowerCase());
+    }
+    if (rows.length < page) break;
+    from += page;
+  }
+  return slugs;
+}
+
 // Search keywords
 export async function searchKeywords(query: string, limit: number = 6): Promise<Keyword[]> {
   const { data, error } = await supabase
