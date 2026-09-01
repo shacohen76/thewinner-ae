@@ -90,6 +90,40 @@ export function buildAffiliateUrl(
   return `https://www.${domain}/dp/${asin}?tag=${tag}`;
 }
 
+// 2026-09-01 — "4 Stars & Up" rating filter for the search fallback.
+// The fallback landing page (below) previously dumped a raw keyword search on
+// the visitor's store, showing every result incl. unrated/low-quality junk =
+// too many distracting options, hurting conversion vs a curated /dp page. We
+// now pin Amazon's "4 Stars & Up" refinement (rh=p_72:<node>) so only well-
+// rated products show. NOTE: Amazon exposes ONLY whole-star buckets via URL —
+// there is no arbitrary "3.9+" cutoff — so 4-stars-&-up is the tightest quality
+// gate available (errs slightly stricter than 3.9, never looser).
+// The p_72 node is DIFFERENT per marketplace, so this map is required. Every
+// value below was pulled live from each store's real "4 Stars & Up" refinement
+// link on 2026-09-01 (all confirmed a-star-medium-4, no guesses). Domains match
+// PROGRAMS[].amazonDomain in lib/geo-config.ts. If a domain is ever missing
+// here, we fall back to the plain unfiltered search (prior behavior) — safe.
+const RATING_NODE_4STAR: Record<string, string> = {
+  'amazon.ae': '12407972031',
+  'amazon.sa': '16641816031',
+  'amazon.com': '1248915011',
+  'amazon.ca': '11192170011',
+  'amazon.com.au': '2547912051',
+  'amazon.sg': '6469122051',
+  'amazon.co.jp': '82363051',
+  'amazon.com.br': '17833786011',
+  'amazon.de': '419117031',
+  'amazon.co.uk': '419153031',
+  'amazon.it': '490205031',
+  'amazon.es': '831280031',
+  'amazon.fr': '437873031',
+  'amazon.pl': '20875468031',
+  'amazon.se': '20692905031',
+  'amazon.ie': '94791397031',
+  'amazon.com.be': '27921103031',
+  'amazon.nl': '4993218031',
+};
+
 // ML 3 (2026-07-17) — never-empty geo fallback.
 // When a US/UK/JP visitor lands on a keyword their storefront has NO catalog
 // for, GeoCatalog keeps the AE product cards (so the page is never empty) but
@@ -101,7 +135,10 @@ export function buildAffiliateUrl(
 export function buildAffiliateSearchUrl(query: string): string {
   const { tag, domain } = readSessionTagDomain();
   const k = encodeURIComponent((query || '').trim());
-  return `https://www.${domain}/s?k=${k}&tag=${tag}`;
+  // 2026-09-01: pin "4 Stars & Up" (rh=p_72:<node>) to cut distracting junk.
+  const node = RATING_NODE_4STAR[domain];
+  const ratingFilter = node ? `&rh=p_72:${node}` : '';
+  return `https://www.${domain}/s?k=${k}&tag=${tag}${ratingFilter}`;
 }
 
 // ML 3 (2026-07-17): turn a scraped product title into a clean Amazon SEARCH
