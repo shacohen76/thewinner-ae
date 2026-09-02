@@ -59,11 +59,22 @@ function getGradientStyle(gradient: string): React.CSSProperties {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const slug = params.slug;
 
+  // 2026-09-02: localize the category <title>/description for non-English locales.
+  // The visible page already localizes via next-intl (Categories/CategoryDesc/
+  // Subcategories namespaces); generateMetadata previously used the English
+  // MAIN_CATEGORIES/SUBCATEGORY_NAMES fields, so /ar + /ja pages shipped English
+  // <title> tags. Reuse the same translations here (fallback to English for 'en').
+  const isLocalized = params.locale !== 'en';
+  const tCat = await getTranslations({ locale: params.locale, namespace: 'Categories' });
+  const tDesc = await getTranslations({ locale: params.locale, namespace: 'CategoryDesc' });
+  const tSub = await getTranslations({ locale: params.locale, namespace: 'Subcategories' });
+  const tPage = await getTranslations({ locale: params.locale, namespace: 'CategoryPage' });
+
   if (isMainCategory(slug)) {
     const main = MAIN_CATEGORIES[slug];
     return {
-      title: generateCategoryTitle(main.label),
-      description: main.description,
+      title: generateCategoryTitle(isLocalized ? tCat(slug) : main.label),
+      description: isLocalized ? tDesc(slug) : main.description,
       alternates: {
         canonical: `/category/${slug}`,
         languages: {
@@ -77,9 +88,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const subcat = SUBCATEGORY_NAMES[slug];
   if (!subcat) return { title: 'Not Found' };
 
+  const subName = isLocalized ? tSub(slug) : subcat.name;
   return {
-    title: generateCategoryTitle(subcat.name),
-    description: `Product comparisons in ${subcat.name} — find the best for you`,
+    title: generateCategoryTitle(subName),
+    description: isLocalized ? tPage('subcatIntro', { name: subName }) : `Product comparisons in ${subcat.name} — find the best for you`,
     alternates: {
       canonical: `/category/${slug}`,
       languages: {
