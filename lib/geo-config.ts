@@ -326,8 +326,13 @@ export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
 /** Marketplaces that have their own catalog membership rows (keyword_products.
  *  marketplace). INCLUDES 'ae' here (unlike the old GeoCatalog client copy which
  *  excluded it, since AE was the SSR default there). Every OTHER program
- *  (de/fr/sa/…) renders the AE catalog with search-links (searchFallback). */
-export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp']);
+ *  (de/fr/it/…) renders the AE catalog with search-links (searchFallback). */
+// 2026-09-03: added 'sa' — amazon.sa now has its own harvested catalog (amz-api
+// searchItems → migrate → DDP → VLD). SA visitors now get real /dp product pages
+// on amazon.sa (tag thewinnersa-21) instead of the AE search-fallback. Crawlers
+// still pin to 'ae', so SEO/indexed pages are unaffected (SA catalog serves live
+// SA-geo visitors only). Built wave-1 = top-100 SA-clicked keywords; more waves rolling.
+export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', 'sa']);
 
 /** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
  *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
