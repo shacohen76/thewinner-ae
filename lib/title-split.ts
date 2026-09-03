@@ -36,26 +36,70 @@ function capitalizeFirst(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Minimum words a headline should carry (AMZ WBS 4, 2026-09-03, owner-approved).
+// The old comma/dash split often yields a brand+model-only headline
+// ("Terim TERR300S", "PHILIPS Bhh880") that reads as misleading — you can't tell
+// it's a fridge/straightener. When the headline falls short, we EXTEND it by
+// pulling in the next title segment(s), up to MIN_HEADLINE_WORDS, capped at
+// HEADLINE_WORD_CAP so a headline never runs long. Data (300K English titles):
+// ~8.4% of headlines were < 4 words; ~3.7% are genuinely un-extendable (the whole
+// title is just a brand, e.g. "Samsung") and are left as-is.
+const MIN_HEADLINE_WORDS = 4;
+const HEADLINE_WORD_CAP = 9;
+
+const wordCount = (s: string): number => (s.trim() ? s.trim().split(/\s+/).length : 0);
+
+// Split a full title into its human segments on comma / spaced dash / pipe — the
+// same delimiter family the base split uses. Hyphens inside tokens (Wi-Fi,
+// i5-1335U) are preserved because only SPACED dashes count.
+const TITLE_SEG_RE = /\s*,\s*|\s+[-–—|]\s+/;
+
+// Grow `short` toward MIN_HEADLINE_WORDS by appending whole segments taken from
+// the ORIGINAL title, never exceeding HEADLINE_WORD_CAP. IMPORTANT (owner req,
+// WBS 4): `rest` (the "Show more" tail) is returned UNCHANGED — the promoted
+// words stay in the read-more too, so nothing is lost from it.
+function extendHeadline(fullTitle: string, short: string, rest: string | null): SplitTitle {
+  if (wordCount(short) >= MIN_HEADLINE_WORDS) {
+    return { shortTitle: short, restTitle: rest };
+  }
+  const segs = fullTitle.split(TITLE_SEG_RE).map((s) => s.trim()).filter(Boolean);
+  if (segs.length <= 1) {
+    return { shortTitle: short, restTitle: rest }; // nothing more to add (brand-only)
+  }
+  let head = segs[0];
+  for (let i = 1; i < segs.length && wordCount(head) < MIN_HEADLINE_WORDS; i++) {
+    const candidate = `${head}, ${segs[i]}`;
+    if (wordCount(candidate) > HEADLINE_WORD_CAP) break;
+    head = candidate;
+  }
+  return { shortTitle: capitalizeFirst(head), restTitle: rest };
+}
+
 // Split title at first comma or spaced-dash — short title + rest for "Show more".
 // Does NOT split at hyphens inside words (Wi-Fi, 128GB-256GB, etc.).
-// VERBATIM from the previous components/ProductCard.tsx splitTitle().
+// The base split rule is VERBATIM from the previous ProductCard.splitTitle();
+// extendHeadline() then enforces the WBS-4 minimum-word headline on top (and is a
+// no-op when the base headline already has >= MIN_HEADLINE_WORDS, so titles that
+// were already fine stay byte-identical).
 function splitEnglishTitle(fullTitle: string): SplitTitle {
   // Try comma first (most common in Amazon titles)
   const commaIdx = fullTitle.indexOf(',');
   if (commaIdx >= 10) {
-    return {
-      shortTitle: capitalizeFirst(fullTitle.substring(0, commaIdx).trim()),
-      restTitle: fullTitle.substring(commaIdx + 1).trim() || null,
-    };
+    return extendHeadline(
+      fullTitle,
+      capitalizeFirst(fullTitle.substring(0, commaIdx).trim()),
+      fullTitle.substring(commaIdx + 1).trim() || null,
+    );
   }
 
   // Try spaced dash/pipe: " - ", " – ", " — ", " | "
   const spacedBreak = fullTitle.match(/^(.{10,}?)\s+[-–—|]\s+([\s\S]*)/);
   if (spacedBreak) {
-    return {
-      shortTitle: capitalizeFirst(spacedBreak[1].trim()),
-      restTitle: spacedBreak[2].trim() || null,
-    };
+    return extendHeadline(
+      fullTitle,
+      capitalizeFirst(spacedBreak[1].trim()),
+      spacedBreak[2].trim() || null,
+    );
   }
 
   return { shortTitle: capitalizeFirst(fullTitle), restTitle: null };
