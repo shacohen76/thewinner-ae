@@ -46,10 +46,20 @@ export const RELATED_POOL: RelatedPage[] = [
   { slug: '83-inch-smart-tv', name: '83" Smart TVs' },
   { slug: 'jbl-portable-speaker', name: 'JBL Portable Speakers' },
   { slug: 'hugo-boss-perfume-for-men', name: 'Hugo Boss Perfume for Men' },
+  // Strong cross-category adds (2026-09-06) — GSC-verified / owner strong picks.
+  { slug: 'roborock-vacuum-cleaners', name: 'Roborock Vacuum Cleaners' },
+  { slug: 'via-ferrata-set', name: 'Via Ferrata Sets' },
+  { slug: 'butterfly-table-tennis-racket', name: 'Butterfly Table Tennis Rackets' },
+  { slug: 'my-perfume-perfume-100ml', name: 'Perfumes' },
 ];
 
-// Geos rotated into the anchor text ("… in {geo}") — our program markets.
+// Geos rotated into the anchor text ("… in {geo}") — the FULL set of program /
+// monitored markets (2026-09-06), so the nav showcases the whole geo reach
+// (UAE → Saudi → Japan → Brazil). RelatedPages shows one link per geo, so each
+// market appears once. Source of truth = MARKETPLACES in amz_purchase_scraper_geo.py
+// (+ Brazil, which has a live amazon.com.br touchpoint).
 export const RELATED_GEOS: string[] = [
-  'UAE', 'USA', 'UK', 'Canada', 'Australia', 'Ireland',
-  'Singapore', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands',
+  'UAE', 'Saudi Arabia', 'USA', 'UK', 'Canada', 'Ireland',
+  'Australia', 'Singapore', 'Japan', 'Germany', 'France', 'Spain',
+  'Italy', 'Netherlands', 'Belgium', 'Sweden', 'Brazil',
 ];
