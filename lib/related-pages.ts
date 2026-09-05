@@ -21,21 +21,26 @@ export const RELATED_POOL: RelatedPage[] = [
   { slug: 'nokia-phone', name: 'Nokia Phones' },
   { slug: 'xiaomi-phones', name: 'Xiaomi Phones' },
   { slug: 'nothing-phone', name: 'Nothing Phones' },
+  { slug: 'samsung-galaxy-phones', name: 'Samsung Galaxy Phones' },
   { slug: 'xiaomi-tablet', name: 'Xiaomi Tablets' },
   { slug: 'samsung-tablets', name: 'Samsung Tablets' },
   // Computers & accessories
-  { slug: 'hp-laptops', name: 'HP Laptops' },
+  { slug: 'gaming-laptops', name: 'Gaming Laptops' },
+  { slug: 'asus-laptops', name: 'ASUS Laptops' },
+  { slug: 'macbook-air', name: 'MacBook Air' },
   { slug: 'power-bank', name: 'Power Banks' },
   { slug: 'phone-charger', name: 'Phone Chargers' },
   { slug: 'logitech-wireless-mouse', name: 'Logitech Wireless Mice' },
   { slug: 'portable-monitor', name: 'Portable Monitors' },
   // Audio & wearables
+  { slug: 'airpods', name: 'AirPods' },
   { slug: 'xiaomi-earbuds', name: 'Xiaomi Earbuds' },
   { slug: 'jbl-headphones', name: 'JBL Headphones' },
   { slug: 'amazfit-watches', name: 'Amazfit Watches' },
   { slug: 'xiaomi-smartwatch', name: 'Xiaomi Smartwatches' },
   // Cameras & TV
   { slug: 'dslr-camera', name: 'DSLR Cameras' },
+  { slug: 'instant-cameras', name: 'Instant Cameras' },
   { slug: 'fujifilm-digital-cameras', name: 'Fujifilm Cameras' },
   { slug: 'xiaomi-tvs', name: 'Xiaomi TVs' },
   // Home & kitchen
@@ -55,6 +60,7 @@ export const RELATED_POOL: RelatedPage[] = [
   { slug: 'night-cream-for-all-skin-types', name: 'Night Cream' },
   { slug: 'face-moisturizers', name: 'Face Moisturizers' },
   { slug: 'rasasi-hawas-perfume-for-men', name: 'Rasasi Hawas Perfume' },
+  { slug: 'dolce-gabbana-parfum-men', name: 'Dolce & Gabbana Perfume' },
   { slug: 'my-perfume-perfume-100ml', name: 'Perfumes' },
   // Baby & pet
   { slug: 'milk-powder-for-baby', name: 'Baby Milk Powder' },
