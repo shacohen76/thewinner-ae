@@ -281,13 +281,17 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       is_prime: false, // TODO: add is_prime to DB schema if needed
     }));
 
-  // Prepare gallery data
-  const galleryProducts = products.map(p => ({
-    asin: p.asin,
-    title: p.title,
-    image_url: p.image_url,
-    rank: p.rank,
-  }));
+  // Prepare gallery data — 2026-09-05: cap to top 10 by DB rank + renumber the badge
+  // sequentially (1..N) so the gallery never shows raw DB-rank holes either.
+  const galleryProducts = [...products]
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 10)
+    .map((p, i) => ({
+      asin: p.asin,
+      title: p.title,
+      image_url: p.image_url,
+      rank: i + 1,
+    }));
 
   // INTL1 slice 5 / JP Phase 2 (2026-07-06): localized hero from the stored noun
   // phrase via the native-confirmed templates, dispatched by locale. English path
