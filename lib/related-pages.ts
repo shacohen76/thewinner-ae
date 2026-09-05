@@ -77,7 +77,7 @@ export const RELATED_POOL: RelatedPage[] = [
 // market appears once. Source of truth = MARKETPLACES in amz_purchase_scraper_geo.py
 // (+ Brazil, which has a live amazon.com.br touchpoint).
 export const RELATED_GEOS: string[] = [
-  'UAE', 'Saudi Arabia', 'USA', 'UK', 'Canada', 'Ireland',
+  'The Emirates', 'Saudi Arabia', 'USA', 'UK', 'Canada', 'Ireland',
   'Australia', 'Singapore', 'Japan', 'Germany', 'France', 'Spain',
-  'Italy', 'Netherlands', 'Belgium', 'Sweden', 'Brazil',
+  'Italy', 'Netherlands', 'Belgium', 'Sweden', 'Poland', 'Brazil',
 ];
