@@ -85,24 +85,34 @@ function splitEnglishTitle(fullTitle: string): SplitTitle {
   // Try comma first (most common in Amazon titles)
   const commaIdx = fullTitle.indexOf(',');
   if (commaIdx >= 10) {
-    return extendHeadline(
+    const r = extendHeadline(
       fullTitle,
       capitalizeFirst(fullTitle.substring(0, commaIdx).trim()),
       fullTitle.substring(commaIdx + 1).trim() || null,
     );
+    return applySoftCap(r.shortTitle, r.restTitle);
   }
 
   // Try spaced dash/pipe: " - ", " – ", " — ", " | "
   const spacedBreak = fullTitle.match(/^(.{10,}?)\s+[-–—|]\s+([\s\S]*)/);
   if (spacedBreak) {
-    return extendHeadline(
+    const r = extendHeadline(
       fullTitle,
       capitalizeFirst(spacedBreak[1].trim()),
       spacedBreak[2].trim() || null,
     );
+    return applySoftCap(r.shortTitle, r.restTitle);
   }
 
-  return { shortTitle: capitalizeFirst(fullTitle), restTitle: null };
+  // No comma / spaced-dash delimiter → base rule made the WHOLE (often very long)
+  // title the headline. WBS-4 max-cap (2026-09-05, owner req "avoid the noise"):
+  // English had a MIN-word rule but no MAX, so comma-less titles like
+  // "Xiaomi Redmi Pad 2 WiFi Only (No Calls and Texts) 11\" 2.5K Octa Core …"
+  // flooded the card. applySoftCap (the same soft-cap used by ar/ja) trims a
+  // too-long headline at a clean boundary and pushes the overflow into "Show more"
+  // (no info lost). No-op for headlines already <= SOFT_CAP, so short titles stay
+  // byte-identical.
+  return applySoftCap(capitalizeFirst(fullTitle), null);
 }
 
 // ─── Arabic (validated; roadmap §4.8) ────────────────────────────────────────
