@@ -313,7 +313,9 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     { month: 'long', year: 'numeric' },
   );
   const bylineBy = tBest('by');
+  const bylineRole = tBest('reviewerRole');
   const bylineUpdated = tBest('updated', { date: updatedDate });
+  const consNote = tBest('consNote');
 
   // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
   const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
@@ -340,7 +342,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       </section>
 
       {/* Author byline + freshness (E-E-A-T, 2026-09-05) */}
-      <BestAuthorByline slug={slug} locale={params.locale} byLabel={bylineBy} updatedText={bylineUpdated} />
+      <BestAuthorByline slug={slug} byLabel={bylineBy} role={bylineRole} updatedText={bylineUpdated} />
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
@@ -457,6 +459,22 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                   '@type': 'Product',
                   name: p.title,
                   ...(p.image_url ? { image: p.image_url } : {}),
+                  // Pros = our genuine "Why We Love It" points; cons = the one honest,
+                  // always-true caveat (availability varies by market). (2026-09-05)
+                  ...(p.wwl_points && p.wwl_points.length > 0
+                    ? {
+                        positiveNotes: {
+                          '@type': 'ItemList',
+                          itemListElement: p.wwl_points.map((note, n) => ({
+                            '@type': 'ListItem', position: n + 1, name: note,
+                          })),
+                        },
+                        negativeNotes: {
+                          '@type': 'ItemList',
+                          itemListElement: [{ '@type': 'ListItem', position: 1, name: consNote }],
+                        },
+                      }
+                    : {}),
                 },
               })),
             }),
