@@ -362,6 +362,9 @@ export default function ProductCard({
               )}
             </div>
 
+            {/* Small, unobtrusive cons note — matches the negativeNotes schema (2026-09-05) */}
+            <div className="text-[11px] text-gray-400 -mt-2 mb-3">{t('consNote')}</div>
+
             {/* WWL Section */}
             <div className="mb-4">
               <h4 className="font-bold text-gray-800 mb-3">{t('whyWeLoveIt')}</h4>
