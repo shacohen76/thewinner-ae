@@ -60,6 +60,22 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
     return a.rank - b.rank;
   });
 
+  // 2026-09-05: the red "discounted" badge is limited to the two top-ranked cards
+  // + the single cheapest one (max 3 of ~10), so the deal signal stays credible.
+  // Everything else shows a neutral "great everyday price" badge.
+  const dealAsins = new Set<string>(
+    products.filter((p) => p.rank === 1 || p.rank === 2).map((p) => p.asin),
+  );
+  const pricedProducts = products.filter(
+    (p) => p.price_at_scrape != null && !Number.isNaN(parseFloat(p.price_at_scrape)),
+  );
+  if (pricedProducts.length > 0) {
+    const cheapest = pricedProducts.reduce((lo, p) =>
+      parseFloat(p.price_at_scrape!) < parseFloat(lo.price_at_scrape!) ? p : lo,
+    );
+    dealAsins.add(cheapest.asin);
+  }
+
   if (products.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
@@ -119,6 +135,7 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
             searchFallback={searchFallback}
             keywordEn={keywordEn}
             reviewCount={seededReviewCount(product.asin)}
+            showDeal={dealAsins.has(product.asin)}
           />
         ))}
       </div>

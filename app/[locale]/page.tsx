@@ -36,8 +36,8 @@ const popularComparisons = [
 // Popular search keywords
 const popularSearches = [
   { text: 'Portable Speakers', slug: 'portable-speakers' },
-  { text: 'Coffee Machines', slug: 'coffee-machines' },
-  { text: 'Washing Machines', slug: 'washing-machines' },
+  { text: 'Perfumes', slug: 'my-perfume-perfume-100ml' },
+  { text: 'Roborock Cleaners', slug: 'roborock-vacuum-cleaners' },
   { text: 'Earbuds', slug: 'earbuds' },
 ];
 

@@ -39,6 +39,7 @@
   "ProductCard": {
     "topPick": "اختيارنا الأفضل",
     "discounted": "خصم اليوم فقط",
+    "regularPrice": "سعر يومي رائع",
     "whyWeLoveIt": "لماذا نحبه",
     "details": "التفاصيل:",
     "showMore": "عرض المزيد",
@@ -77,7 +78,12 @@
     "quickPick": "اختيار سريع",
     "buyingGuide": "دليل الشراء: {keyword}",
     "tableOfContents": "جدول المحتويات",
-    "backToTop": "↑ العودة إلى أفضل 10 {keyword}"
+    "backToTop": "↑ العودة إلى أفضل 10 {keyword}",
+    "by": "بقلم",
+    "updated": "آخر تحديث {date}",
+    "morePicks": "أفضل الاختيارات الأخرى",
+    "howWeChoseTitle": "كيف نختار",
+    "howWeChoseBody": "محررونا أشخاص يحبون حقًا تجربة المنتجات والكتابة عنها. نقارن سهولة الاستخدام الواقعية لكل منتج ونقاط قوته، ثم نلخّص الأهم في نقاط \"لماذا نحبه\" الخاصة بنا — لتحصل على إحساس صادق وسريع بما يهم قبل الشراء."
   },
   "CategoryDesc": {
     "appliances-main": "أجهزة منزلية لكل بيت",
@@ -147,8 +153,8 @@
     "popularSearchesLabel": "عمليات بحث شائعة:",
     "searches": {
       "portable-speakers": "مكبرات صوت محمولة",
-      "coffee-machines": "ماكينات قهوة",
-      "washing-machines": "غسالات",
+      "my-perfume-perfume-100ml": "عطور",
+      "roborock-vacuum-cleaners": "مكانس روبوروك",
       "earbuds": "سماعات أذن"
     },
     "browseByCategory": "تصفّح حسب الفئة",
