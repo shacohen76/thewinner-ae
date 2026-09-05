@@ -40,6 +40,7 @@ interface ProductCardProps {
   bulletPoints?: string[] | null;   // 2026-08-28: product feature specs (Creators API) → "…for Nerds"
   isPrime?: boolean;
   reviewCount?: number;
+  showDeal?: boolean;   // 2026-09-05: true only for rank 1/2 + lowest-price → red "discounted" badge
   // 2026-08-26 (feat/per-geo-static-best): passed down from the server page (was
   // read from the retired GeoCatalog context). searchFallback → this AE card is
   // shown to a non-AE market lacking the keyword, so link to an Amazon SEARCH on the
@@ -166,6 +167,7 @@ export default function ProductCard({
   bulletPoints,
   isPrime = false,
   reviewCount = 0,
+  showDeal = false,
   searchFallback = false,
   keywordEn = '',
 }: ProductCardProps) {
@@ -240,8 +242,8 @@ export default function ProductCard({
       <div className={`text-4xl font-bold ${scoreInfo.color}`}>{score}</div>
       <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreLabel}</div>
 
-      {/* Stars — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
-      <div className="hidden flex justify-center mt-2">
+      {/* Stars — rank-derived editorial score (KSP parity, restored 2026-09-05) */}
+      <div className="flex justify-center mt-2">
         {[1, 2, 3, 4, 5].map((star) => (
           <svg
             key={star}
@@ -254,9 +256,9 @@ export default function ProductCard({
         ))}
       </div>
 
-      {/* Review count — TEMPORARILY HIDDEN (restore: remove 'hidden' class) */}
+      {/* Review count — KSP parity, restored 2026-09-05 */}
       {reviewCount > 0 && (
-        <div className="hidden text-xs text-gray-400 mt-1">
+        <div className="text-xs text-gray-400 mt-1">
           ({formatNumber(reviewCount)} reviews)
         </div>
       )}
@@ -323,11 +325,20 @@ export default function ProductCard({
             <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">{shortTitle}</h3>
             {brand && <div className="text-gray-500 text-sm mb-3">{brand}</div>}
 
-            {/* Discount & Prime Badges — always default text */}
+            {/* Deal badge — 2026-09-05: the red "discounted" badge now shows ONLY on
+                rank 1 & 2 and the single lowest-priced card (showDeal, set by ProductList);
+                every other card shows a neutral "great everyday price" badge so the deal
+                signal stays credible instead of screaming on all 10 cards. */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
-                {t('discounted')}
-              </span>
+              {showDeal ? (
+                <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
+                  {t('discounted')}
+                </span>
+              ) : (
+                <span className="bg-green-50 text-green-700 border border-green-200 text-xs font-medium px-3 py-1 rounded">
+                  {t('regularPrice')}
+                </span>
+              )}
               {isPrime && (
                 <span className="border border-blue-500 text-blue-600 text-xs font-medium px-3 py-1 rounded">
                   Prime

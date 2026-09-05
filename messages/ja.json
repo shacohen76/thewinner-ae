@@ -39,6 +39,7 @@
   "ProductCard": {
     "topPick": "一番のおすすめ",
     "discounted": "本日限定セール",
+    "regularPrice": "お買い得な通常価格",
     "whyWeLoveIt": "おすすめの理由",
     "details": "詳細:",
     "showMore": "もっと見る",
@@ -77,7 +78,12 @@
     "quickPick": "クイックピック",
     "buyingGuide": "購入ガイド: {keyword}",
     "tableOfContents": "目次",
-    "backToTop": "↑ {keyword}のトップ10に戻る"
+    "backToTop": "↑ {keyword}のトップ10に戻る",
+    "by": "執筆",
+    "updated": "最終更新 {date}",
+    "morePicks": "その他の人気の選択",
+    "howWeChoseTitle": "選び方について",
+    "howWeChoseBody": "編集者は製品を試し、それについて書くことを心から愛するメンバーです。各製品の実際の使いやすさと強みを比較し、最も重要な点を独自の「おすすめの理由」にまとめています。購入前に、大切なポイントがひと目でわかります。"
   },
   "CategoryDesc": {
     "appliances-main": "冷蔵庫、洗濯機、掃除機、エアコンなどの家電。",
@@ -147,8 +153,8 @@
     "popularSearchesLabel": "人気の検索:",
     "searches": {
       "portable-speakers": "ポータブルスピーカー",
-      "coffee-machines": "コーヒーメーカー",
-      "washing-machines": "洗濯機",
+      "my-perfume-perfume-100ml": "香水",
+      "roborock-vacuum-cleaners": "Roborock クリーナー",
       "earbuds": "イヤホン"
     },
     "browseByCategory": "カテゴリーから探す",

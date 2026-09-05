@@ -35,6 +35,8 @@ import {
   generateJapanesePageDescription,
 } from '@/lib/title-ja';
 import { buildAlternates } from '@/lib/seo-alternates';
+import RelatedPages from '@/components/RelatedPages';
+import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
 
 // ============================================
@@ -55,7 +57,7 @@ import { getTranslations } from 'next-intl/server';
 // Cache for 7 days (was 24h). With generateStaticParams (top slugs pre-built at
 // build time) + dynamicParams (long tail on-demand), crawler/bot hits become CDN
 // cache hits instead of cold DB renders — the load pattern that exhausted Disk IO.
-export const revalidate = 604800; // 7 days
+export const revalidate = 86400; // 24h (was 604800/7d — a bad state self-heals overnight; KSP parity). 2026-09-05
 
 // Slugs not pre-rendered below still render on first request, then cache.
 export const dynamicParams = true;
@@ -304,6 +306,18 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   }
   const tBest = await getTranslations({ locale: params.locale, namespace: 'BestPage' });
 
+  // 2026-09-05 E-E-A-T: author byline + freshness. Date is formatted per-locale;
+  // the page regenerates within its ISR window so month-granularity is honest.
+  const updatedDate = new Date().toLocaleDateString(
+    params.locale === 'en' ? 'en-US' : params.locale,
+    { month: 'long', year: 'numeric' },
+  );
+  const bylineBy = tBest('by');
+  const bylineUpdated = tBest('updated', { date: updatedDate });
+
+  // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
+  const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
+
   return (
     // 2026-08-26 (feat/per-geo-static-best): the product SET is now chosen server-side
     // by params.market (middleware-injected per geo), so there is no client swap and
@@ -324,6 +338,9 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           </p>
         </div>
       </section>
+
+      {/* Author byline + freshness (E-E-A-T, 2026-09-05) */}
+      <BestAuthorByline slug={slug} byLabel={bylineBy} updatedText={bylineUpdated} />
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
@@ -422,6 +439,54 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           }}
         />
       )}
+
+      {/* ItemList schema — marks up the ranked products (2026-09-05) */}
+      {productsForList.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              name: mainHeadline,
+              numberOfItems: productsForList.length,
+              itemListElement: productsForList.map((p, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                item: {
+                  '@type': 'Product',
+                  name: p.title,
+                  ...(p.image_url ? { image: p.image_url } : {}),
+                },
+              })),
+            }),
+          }}
+        />
+      )}
+
+      {/* BreadcrumbList schema — matches the visual breadcrumbs (2026-09-05) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: CONFIG.canonicalUrl },
+              { '@type': 'ListItem', position: 2, name: headingName, item: pageUrl },
+            ],
+          }),
+        }}
+      />
+
+      {/* How we choose (E-E-A-T methodology) + related internal links (2026-09-05) */}
+      <section className="bg-gray-50 border-t">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <h2 className="text-lg font-bold text-gray-800 mb-2">{tBest('howWeChoseTitle')}</h2>
+          <p className="text-sm text-gray-600 leading-relaxed max-w-3xl">{tBest('howWeChoseBody')}</p>
+        </div>
+      </section>
+      <RelatedPages currentSlug={slug} />
     </>
   );
 }

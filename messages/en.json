@@ -39,6 +39,7 @@
   "ProductCard": {
     "topPick": "Our Top Pick",
     "discounted": "DISCOUNTED TODAY",
+    "regularPrice": "GREAT EVERYDAY PRICE",
     "whyWeLoveIt": "Why We Love It",
     "details": "The Details:",
     "showMore": "Show more",
@@ -77,7 +78,12 @@
     "quickPick": "Quick Pick",
     "buyingGuide": "Buying Guide: {keyword}",
     "tableOfContents": "Table of Contents",
-    "backToTop": "↑ Back to Top 10 {keyword}"
+    "backToTop": "↑ Back to Top 10 {keyword}",
+    "by": "By",
+    "updated": "Updated {date}",
+    "morePicks": "More top picks",
+    "howWeChoseTitle": "How we choose",
+    "howWeChoseBody": "Our editors are people who genuinely love testing and writing about products. We compare each product's real-world usability and strengths, then distill what matters most into our own \"Why We Love It\" points — so you get an honest, at-a-glance sense of what counts before you buy."
   },
   "CategoryDesc": {
     "appliances-main": "Home appliances — refrigerators, washing machines, vacuum cleaners, air conditioners and more.",
@@ -147,8 +153,8 @@
     "popularSearchesLabel": "Popular searches:",
     "searches": {
       "portable-speakers": "Portable Speakers",
-      "coffee-machines": "Coffee Machines",
-      "washing-machines": "Washing Machines",
+      "my-perfume-perfume-100ml": "Perfumes",
+      "roborock-vacuum-cleaners": "Roborock Cleaners",
       "earbuds": "Earbuds"
     },
     "browseByCategory": "Browse by Category",
