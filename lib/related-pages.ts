@@ -51,6 +51,8 @@ export const RELATED_POOL: RelatedPage[] = [
   { slug: 'coffee-machines', name: 'Coffee Machines' },
   { slug: 'kettles', name: 'Electric Kettles' },
   { slug: 'blenders', name: 'Blenders' },
+  { slug: 'ninja-foodi', name: 'Ninja Foodi' },
+  { slug: 'air-fryers', name: 'Air Fryers' },
   // Grooming & beauty
   { slug: 'electric-toothbrush', name: 'Electric Toothbrushes' },
   { slug: 'hair-straightener', name: 'Hair Straighteners' },
