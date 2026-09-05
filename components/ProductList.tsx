@@ -51,9 +51,14 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
 
-  // 2026-09-05: a "10 Best" page renders at most 10 cards. The catalog can hold up
-  // to 15 memberships (pipeline CAP-15), so cap the DISPLAY to the top 10 by rank.
+  // 2026-09-05: a "10 Best" page renders at most 10 cards. Cap to the top 10 by DB
+  // rank (catalog can hold up to 15). Then assign a CONTIGUOUS display position
+  // (1..N): raw DB rank values can have HOLES — e.g. 1, 6, 9, 11 after products were
+  // removed in a cleanup/reharvest — and showing those holes looks broken. The
+  // badge, score, stars and deal all use this sequential position, never the raw
+  // DB rank (which is only used to ORDER the list).
   const rankedTop = [...products].sort((a, b) => a.rank - b.rank).slice(0, 10);
+  const displayRank = new Map<string, number>(rankedTop.map((p, i) => [p.asin, i + 1]));
 
   const sortedProducts = [...rankedTop].sort((a, b) => {
     if (sortBy === 'price') {
@@ -61,14 +66,14 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
       const priceB = b.price_at_scrape ? parseFloat(b.price_at_scrape) : Infinity;
       return priceA - priceB;
     }
-    return a.rank - b.rank;
+    return displayRank.get(a.asin)! - displayRank.get(b.asin)!;
   });
 
-  // 2026-09-05: the red "discounted" badge is limited to the two top-ranked cards
+  // 2026-09-05: the red "discounted" badge is limited to display positions 1 & 2
   // + the single cheapest one (max 3 of the shown 10), so the deal signal stays
   // credible. Everything else shows a neutral "great everyday price" badge.
   const dealAsins = new Set<string>(
-    rankedTop.filter((p) => p.rank === 1 || p.rank === 2).map((p) => p.asin),
+    rankedTop.filter((p) => displayRank.get(p.asin)! <= 2).map((p) => p.asin),
   );
   const pricedProducts = rankedTop.filter(
     (p) => p.price_at_scrape != null && !Number.isNaN(parseFloat(p.price_at_scrape)),
@@ -128,7 +133,7 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
         {sortedProducts.map((product) => (
           <ProductCard
             key={product.asin}
-            rank={product.rank}
+            rank={displayRank.get(product.asin)!}
             asin={product.asin}
             title={product.title}
             description={product.description}
