@@ -44,6 +44,15 @@ export function scoreToStars(score: number): number {
   return Math.round(score / 2);
 }
 
+// Rank-based star rating (owner spec 2026-09-05): 1-2 → 5, 3-4 → 4.5, 5-7 → 4,
+// 8+ → 3.5. Supports half-stars (ProductCard renders halves).
+export function rankToStars(rank: number): number {
+  if (rank <= 2) return 5;
+  if (rank <= 4) return 4.5;
+  if (rank <= 7) return 4;
+  return 3.5;
+}
+
 // ============================================
 // AFFILIATE URL BUILDER
 // ============================================
@@ -231,6 +240,23 @@ export function toTitleCase(text: string): string {
   return text
     .split(/\s+/)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+// Display-only title case that PRESERVES model/brand tokens (Q10V, JBL, 4K, iPhone).
+// Used to render raw keyword_text in the search dropdown — NEVER mutates stored data,
+// so it has no effect on DB uniqueness/dedup. (2026-09-05)
+export function smartTitleCase(text: string): string {
+  return text
+    .split(/\s+/)
+    .map(w => {
+      if (!w) return w;
+      // keep tokens with a digit, all-caps (len>1), or internal caps (model/brand)
+      if (/\d/.test(w) || (w.length > 1 && w === w.toUpperCase()) || /[A-Z]/.test(w.slice(1))) {
+        return w;
+      }
+      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    })
     .join(' ');
 }
 

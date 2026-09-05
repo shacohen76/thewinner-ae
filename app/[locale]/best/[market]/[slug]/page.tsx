@@ -340,7 +340,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       </section>
 
       {/* Author byline + freshness (E-E-A-T, 2026-09-05) */}
-      <BestAuthorByline slug={slug} byLabel={bylineBy} updatedText={bylineUpdated} />
+      <BestAuthorByline slug={slug} locale={params.locale} byLabel={bylineBy} updatedText={bylineUpdated} />
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">

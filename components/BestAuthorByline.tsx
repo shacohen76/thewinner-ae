@@ -1,25 +1,24 @@
 // ============================================
-// BestAuthorByline.tsx — E-E-A-T byline for /best pages (2026-09-05).
-// Reuses the blog author set (content/blog/authors.json + AuthorAvatar) so each
-// best-page shows a real editor with a photo, role, and "Updated" date — the
-// "who + when" signal Google's product-review systems look for. Server component
-// → rendered into the SSR HTML (crawlable). Author is chosen DETERMINISTICALLY
-// by slug so a given page always shows the same editor (stable, cache-safe).
+// BestAuthorByline.tsx — E-E-A-T byline for /best pages.
+// Created 2026-09-05; updated 2026-09-05 to use the real reviewer PHOTOS in
+// /public/team (the About-page team) instead of the blog authors, whose images
+// live under a non-existent /blog/authors path. Roles come from the About.team.*
+// messages so they localize (en/ar/ja). Server component → in the SSR HTML.
+// Reviewer is chosen DETERMINISTICALLY by slug (stable, cache-safe).
 // ============================================
 
-import authorsData from '@/content/blog/authors.json';
+import { getTranslations } from 'next-intl/server';
 import AuthorAvatar from '@/components/blog/AuthorAvatar';
 
-// Same gradient palette the blog uses for the initials fallback.
-const AUTHOR_GRADIENTS: Record<string, string> = {
-  'sarah-al-rashid': 'from-rose-500 to-red-600',
-  'omar-hassan': 'from-blue-500 to-blue-600',
-  'lina-mikhail': 'from-pink-500 to-pink-600',
-  'youssef-nabil': 'from-green-500 to-green-600',
-  'dina-karam': 'from-amber-500 to-amber-600',
-  'tariq-sayed': 'from-purple-500 to-purple-600',
-  'peter-gods': 'from-slate-600 to-zinc-800',
-};
+// Reviewers who have real photos in /public/team + a role in About.team.*.
+const REVIEWERS = [
+  { id: 'alex', name: 'Alex', avatar: '/team/alex.jpg', gradient: 'from-blue-500 to-blue-600' },
+  { id: 'adham', name: 'Adham', avatar: '/team/adham.jpg', gradient: 'from-amber-500 to-amber-600' },
+  { id: 'mariam', name: 'Mariam', avatar: '/team/mariam.jpg', gradient: 'from-purple-500 to-purple-600' },
+  { id: 'fatima', name: 'Fatima', avatar: '/team/fatima.jpg', gradient: 'from-pink-500 to-pink-600' },
+  { id: 'abdulla', name: 'Abdulla', avatar: '/team/abdulla.jpg', gradient: 'from-green-500 to-green-600' },
+  { id: 'sara', name: 'Sara', avatar: '/team/sara.jpg', gradient: 'from-rose-500 to-red-600' },
+];
 
 function hash(s: string): number {
   let h = 0;
@@ -28,34 +27,31 @@ function hash(s: string): number {
 }
 
 interface BestAuthorBylineProps {
-  /** Current page slug — seeds the deterministic author pick. */
   slug: string;
-  /** Localized "By" label. */
+  locale: string;
   byLabel: string;
-  /** Localized "Updated {month} {year}" string, already formatted. */
   updatedText: string;
 }
 
-export default function BestAuthorByline({ slug, byLabel, updatedText }: BestAuthorBylineProps) {
-  const authors = authorsData.authors;
-  if (!authors || authors.length === 0) return null;
-  const author = authors[hash(slug) % authors.length];
-  const gradient = AUTHOR_GRADIENTS[author.id] || 'from-gray-500 to-gray-600';
+export default async function BestAuthorByline({ slug, locale, byLabel, updatedText }: BestAuthorBylineProps) {
+  const tAbout = await getTranslations({ locale, namespace: 'About' });
+  const reviewer = REVIEWERS[hash(slug) % REVIEWERS.length];
+  const role = tAbout(`team.${reviewer.id}.role`);
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-6">
       <div className="flex items-center gap-3">
         <AuthorAvatar
-          name={author.name}
-          avatar={author.avatar}
+          name={reviewer.name}
+          avatar={reviewer.avatar}
           sizeClass="w-10 h-10 text-sm"
-          gradientClass={gradient}
+          gradientClass={reviewer.gradient}
         />
         <div className="text-sm text-gray-600 leading-tight">
           <div>
             {byLabel}{' '}
-            <span className="font-semibold text-gray-800">{author.name}</span>
-            <span className="text-gray-500"> · {author.role}</span>
+            <span className="font-semibold text-gray-800">{reviewer.name}</span>
+            <span className="text-gray-500"> · {role}</span>
           </div>
           <div className="text-gray-400">{updatedText}</div>
         </div>
