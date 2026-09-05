@@ -12,45 +12,55 @@ export interface RelatedPage {
   name: string;
 }
 
-// 32 top pages: highest-clicked (GSC) + owner-picked branded/high-intent slugs.
+// SIMPLE, mainstream, globally-searched products only (rebuilt 2026-09-06, owner
+// req "worldwide, most-searchable, that make sense" — dropped niche AE-only slugs
+// like via-ferrata / field-hockey / cigarette-cases). Every slug is VERIFIED
+// against live GSC data so no link 404s. Wide niche spread on purpose.
 export const RELATED_POOL: RelatedPage[] = [
+  // Phones & tablets
   { slug: 'nokia-phone', name: 'Nokia Phones' },
-  { slug: 'tan-enhancers-accelerators', name: 'Tan Accelerators' },
-  { slug: 'rasasi-hawas-perfume-for-men', name: 'Rasasi Hawas Perfume' },
-  { slug: 'xiaomi-smartwatch', name: 'Xiaomi Smartwatches' },
-  { slug: 'xiaomi-tablet', name: 'Xiaomi Tablets' },
-  { slug: 'tefal-iron', name: 'Tefal Irons' },
-  { slug: 'tennis-shoes', name: 'Tennis Shoes' },
   { slug: 'xiaomi-phones', name: 'Xiaomi Phones' },
   { slug: 'nothing-phone', name: 'Nothing Phones' },
-  { slug: 'electric-air-duster', name: 'Electric Air Dusters' },
-  { slug: 'steam-irons', name: 'Steam Irons' },
-  { slug: 'xiaomi-vacuum-cleaners', name: 'Xiaomi Vacuum Cleaners' },
-  { slug: 'david-beckham-parfum', name: 'David Beckham Parfum' },
-  { slug: 'tower-fan', name: 'Tower Fans' },
-  { slug: '2-in-1-shampoo-conditioner', name: '2-in-1 Shampoo & Conditioner' },
-  { slug: 'thunderbolt-cables', name: 'Thunderbolt Cables' },
+  { slug: 'xiaomi-tablet', name: 'Xiaomi Tablets' },
+  { slug: 'samsung-tablets', name: 'Samsung Tablets' },
+  // Computers & accessories
+  { slug: 'hp-laptops', name: 'HP Laptops' },
+  { slug: 'power-bank', name: 'Power Banks' },
+  { slug: 'phone-charger', name: 'Phone Chargers' },
+  { slug: 'logitech-wireless-mouse', name: 'Logitech Wireless Mice' },
+  { slug: 'portable-monitor', name: 'Portable Monitors' },
+  // Audio & wearables
+  { slug: 'xiaomi-earbuds', name: 'Xiaomi Earbuds' },
+  { slug: 'jbl-headphones', name: 'JBL Headphones' },
   { slug: 'amazfit-watches', name: 'Amazfit Watches' },
-  { slug: 'kimbo-coffee-beans', name: 'Kimbo Coffee Beans' },
-  { slug: 'karaoke-microphones', name: 'Karaoke Microphones' },
-  { slug: 'field-hockey-shoes', name: 'Field Hockey Shoes' },
-  { slug: 'earbuds', name: 'Earbuds' },
-  { slug: 'tablets', name: 'Tablets' },
-  { slug: 'electric-toothbrush', name: 'Electric Toothbrushes' },
-  { slug: 'running-shoes', name: 'Running Shoes' },
-  { slug: 'air-fryers', name: 'Air Fryers' },
-  { slug: 'body-sunscreen', name: 'Body Sunscreen' },
-  { slug: 'smart-door-lock', name: 'Smart Door Locks' },
-  { slug: 'womens-perfume', name: "Women's Perfume" },
-  { slug: 'baby-chairs', name: 'Baby Chairs' },
-  { slug: '83-inch-smart-tv', name: '83" Smart TVs' },
-  { slug: 'jbl-portable-speaker', name: 'JBL Portable Speakers' },
-  { slug: 'hugo-boss-perfume-for-men', name: 'Hugo Boss Perfume for Men' },
-  // Strong cross-category adds (2026-09-06) — GSC-verified / owner strong picks.
+  { slug: 'xiaomi-smartwatch', name: 'Xiaomi Smartwatches' },
+  // Cameras & TV
+  { slug: 'dslr-camera', name: 'DSLR Cameras' },
+  { slug: 'fujifilm-digital-cameras', name: 'Fujifilm Cameras' },
+  { slug: 'xiaomi-tvs', name: 'Xiaomi TVs' },
+  // Home & kitchen
+  { slug: 'steam-irons', name: 'Steam Irons' },
+  { slug: 'tower-fan', name: 'Tower Fans' },
+  { slug: 'vacuum-cleaners', name: 'Vacuum Cleaners' },
   { slug: 'roborock-vacuum-cleaners', name: 'Roborock Vacuum Cleaners' },
-  { slug: 'via-ferrata-set', name: 'Via Ferrata Sets' },
-  { slug: 'butterfly-table-tennis-racket', name: 'Butterfly Table Tennis Rackets' },
+  { slug: 'coffee-machines', name: 'Coffee Machines' },
+  { slug: 'kettles', name: 'Electric Kettles' },
+  { slug: 'blenders', name: 'Blenders' },
+  // Grooming & beauty
+  { slug: 'electric-toothbrush', name: 'Electric Toothbrushes' },
+  { slug: 'hair-straightener', name: 'Hair Straighteners' },
+  { slug: 'electric-hair-brush', name: 'Electric Hair Brushes' },
+  { slug: '2-in-1-shampoo-conditioner', name: '2-in-1 Shampoo & Conditioner' },
+  { slug: 'razors', name: 'Razors' },
+  { slug: 'night-cream-for-all-skin-types', name: 'Night Cream' },
+  { slug: 'face-moisturizers', name: 'Face Moisturizers' },
+  { slug: 'rasasi-hawas-perfume-for-men', name: 'Rasasi Hawas Perfume' },
   { slug: 'my-perfume-perfume-100ml', name: 'Perfumes' },
+  // Baby & pet
+  { slug: 'milk-powder-for-baby', name: 'Baby Milk Powder' },
+  { slug: 'baby-chairs', name: 'Baby Chairs' },
+  { slug: 'cat-food', name: 'Cat Food' },
+  { slug: 'dog-food', name: 'Dog Food' },
 ];
 
 // Geos rotated into the anchor text ("… in {geo}") — the FULL set of program /
