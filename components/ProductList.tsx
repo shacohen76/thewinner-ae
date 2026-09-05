@@ -51,7 +51,11 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
 
-  const sortedProducts = [...products].sort((a, b) => {
+  // 2026-09-05: a "10 Best" page renders at most 10 cards. The catalog can hold up
+  // to 15 memberships (pipeline CAP-15), so cap the DISPLAY to the top 10 by rank.
+  const rankedTop = [...products].sort((a, b) => a.rank - b.rank).slice(0, 10);
+
+  const sortedProducts = [...rankedTop].sort((a, b) => {
     if (sortBy === 'price') {
       const priceA = a.price_at_scrape ? parseFloat(a.price_at_scrape) : Infinity;
       const priceB = b.price_at_scrape ? parseFloat(b.price_at_scrape) : Infinity;
@@ -61,12 +65,12 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
   });
 
   // 2026-09-05: the red "discounted" badge is limited to the two top-ranked cards
-  // + the single cheapest one (max 3 of ~10), so the deal signal stays credible.
-  // Everything else shows a neutral "great everyday price" badge.
+  // + the single cheapest one (max 3 of the shown 10), so the deal signal stays
+  // credible. Everything else shows a neutral "great everyday price" badge.
   const dealAsins = new Set<string>(
-    products.filter((p) => p.rank === 1 || p.rank === 2).map((p) => p.asin),
+    rankedTop.filter((p) => p.rank === 1 || p.rank === 2).map((p) => p.asin),
   );
-  const pricedProducts = products.filter(
+  const pricedProducts = rankedTop.filter(
     (p) => p.price_at_scrape != null && !Number.isNaN(parseFloat(p.price_at_scrape)),
   );
   if (pricedProducts.length > 0) {

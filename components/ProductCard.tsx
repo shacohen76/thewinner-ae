@@ -20,6 +20,7 @@ import {
   getFixedScore,
   getScoreLabel,
   scoreToStars,
+  rankToStars,
   buildAffiliateUrl,
   buildAffiliateSearchUrl,
   cleanSearchQuery,
@@ -182,7 +183,7 @@ export default function ProductCard({
   const scoreLabel = scoreLabelKey ? t(`scoreLabels.${scoreLabelKey}`) : scoreInfo.label;
   const { shortTitle, restTitle } = splitTitle(title, locale);
   const brand = extractBrand(title);
-  const stars = scoreToStars(score);
+  const stars = rankToStars(rank); // owner spec 2026-09-05: 1-2→5, 3-4→4.5, 5-7→4, 8+→3.5
   const rankPadded = rank.toString().padStart(2, '0');
   // 2026-08-26 (SSR restore): deterministic 1-9 seeded by ASIN. Was Math.random(),
   // harmless while the page client-rendered, but now that the page renders
@@ -242,18 +243,33 @@ export default function ProductCard({
       <div className={`text-4xl font-bold ${scoreInfo.color}`}>{score}</div>
       <div className={`text-sm ${scoreInfo.color} font-medium`}>{scoreLabel}</div>
 
-      {/* Stars — rank-derived editorial score (KSP parity, restored 2026-09-05) */}
-      <div className="flex justify-center mt-2">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <svg
-            key={star}
-            className={`w-4 h-4 ${star <= stars ? 'text-amber-400' : 'text-gray-300'}`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
+      {/* Stars — rank-based rating with half-star support (owner spec 2026-09-05) */}
+      <div className="flex justify-center mt-2" aria-label={`${stars} / 5`}>
+        {[1, 2, 3, 4, 5].map((i) => {
+          const state =
+            i <= Math.floor(stars) ? 'full'
+            : (i === Math.floor(stars) + 1 && stars % 1 >= 0.5) ? 'half'
+            : 'empty';
+          const StarSvg = ({ className, clip }: { className: string; clip?: boolean }) => (
+            <svg
+              className={className}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              style={clip ? { clipPath: 'inset(0 50% 0 0)' } : undefined}
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          );
+          if (state === 'half') {
+            return (
+              <span key={i} className="relative inline-block w-4 h-4">
+                <StarSvg className="absolute inset-0 w-4 h-4 text-gray-300" />
+                <StarSvg className="absolute inset-0 w-4 h-4 text-amber-400" clip />
+              </span>
+            );
+          }
+          return <StarSvg key={i} className={`w-4 h-4 ${state === 'full' ? 'text-amber-400' : 'text-gray-300'}`} />;
+        })}
       </div>
 
       {/* Review count — KSP parity, restored 2026-09-05 */}
