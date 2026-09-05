@@ -261,20 +261,25 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     }
   }
 
-  // Prepare products data for ProductList
-  const productsForList = products.map(p => ({
-    asin: p.asin,
-    title: p.title,
-    description: p.description,
-    image_url: p.image_url,
-    wwl_points: p.wwl_points,
-    bullet_points: p.bullet_points,   // 2026-08-28: feature specs → "…for Nerds"
-    rank: p.rank,
-    price_at_scrape: p.price_at_scrape,
-    is_on_discount: p.is_on_discount || false,
-    discount_percentage: p.discount_percentage || null,
-    is_prime: false, // TODO: add is_prime to DB schema if needed
-  }));
+  // Prepare products data for ProductList. 2026-09-05: cap to the top 10 by rank
+  // HERE (catalog can hold up to 15 memberships) so the visible list AND the
+  // ItemList schema below both use the same 10 — no "10 Best" page showing 11/12.
+  const productsForList = [...products]
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 10)
+    .map(p => ({
+      asin: p.asin,
+      title: p.title,
+      description: p.description,
+      image_url: p.image_url,
+      wwl_points: p.wwl_points,
+      bullet_points: p.bullet_points,   // 2026-08-28: feature specs → "…for Nerds"
+      rank: p.rank,
+      price_at_scrape: p.price_at_scrape,
+      is_on_discount: p.is_on_discount || false,
+      discount_percentage: p.discount_percentage || null,
+      is_prime: false, // TODO: add is_prime to DB schema if needed
+    }));
 
   // Prepare gallery data
   const galleryProducts = products.map(p => ({
@@ -313,7 +318,9 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     { month: 'long', year: 'numeric' },
   );
   const bylineBy = tBest('by');
+  const bylineRole = tBest('reviewerRole');
   const bylineUpdated = tBest('updated', { date: updatedDate });
+  const consNote = tBest('consNote');
 
   // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
   const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
@@ -340,7 +347,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       </section>
 
       {/* Author byline + freshness (E-E-A-T, 2026-09-05) */}
-      <BestAuthorByline slug={slug} locale={params.locale} byLabel={bylineBy} updatedText={bylineUpdated} />
+      <BestAuthorByline slug={slug} byLabel={bylineBy} role={bylineRole} updatedText={bylineUpdated} />
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
@@ -457,6 +464,22 @@ export default async function ProductComparisonPage({ params }: PageProps) {
                   '@type': 'Product',
                   name: p.title,
                   ...(p.image_url ? { image: p.image_url } : {}),
+                  // Pros = our genuine "Why We Love It" points; cons = the one honest,
+                  // always-true caveat (availability varies by market). (2026-09-05)
+                  ...(p.wwl_points && p.wwl_points.length > 0
+                    ? {
+                        positiveNotes: {
+                          '@type': 'ItemList',
+                          itemListElement: p.wwl_points.map((note, n) => ({
+                            '@type': 'ListItem', position: n + 1, name: note,
+                          })),
+                        },
+                        negativeNotes: {
+                          '@type': 'ItemList',
+                          itemListElement: [{ '@type': 'ListItem', position: 1, name: consNote }],
+                        },
+                      }
+                    : {}),
                 },
               })),
             }),

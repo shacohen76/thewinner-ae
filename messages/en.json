@@ -40,6 +40,7 @@
     "topPick": "Our Top Pick",
     "discounted": "DISCOUNTED TODAY",
     "regularPrice": "GREAT EVERYDAY PRICE",
+    "consNote": "Not available in all programs",
     "whyWeLoveIt": "Why We Love It",
     "details": "The Details:",
     "showMore": "Show more",
@@ -83,7 +84,9 @@
     "updated": "Updated {date}",
     "morePicks": "More top picks",
     "howWeChoseTitle": "How we choose",
-    "howWeChoseBody": "Our editors are people who genuinely love testing and writing about products. We compare each product's real-world usability and strengths, then distill what matters most into our own \"Why We Love It\" points — so you get an honest, at-a-glance sense of what counts before you buy."
+    "howWeChoseBody": "Our editors are people who genuinely love testing and writing about products. We compare each product's real-world usability and strengths, then distill what matters most into our own \"Why We Love It\" points — so you get an honest, at-a-glance sense of what counts before you buy.",
+    "reviewerRole": "Product Reviewer",
+    "consNote": "Not available in all programs"
   },
   "CategoryDesc": {
     "appliances-main": "Home appliances — refrigerators, washing machines, vacuum cleaners, air conditioners and more.",

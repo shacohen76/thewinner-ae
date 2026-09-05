@@ -1,22 +1,23 @@
 // ============================================
 // BestAuthorByline.tsx — E-E-A-T byline for /best pages.
-// Created 2026-09-05; updated 2026-09-05 to use the real reviewer PHOTOS in
-// /public/team (the About-page team) instead of the blog authors, whose images
-// live under a non-existent /blog/authors path. Roles come from the About.team.*
-// messages so they localize (en/ar/ja). Server component → in the SSR HTML.
-// Reviewer is chosen DETERMINISTICALLY by slug (stable, cache-safe).
+// Created 2026-09-05. Uses the real reviewer PHOTOS in /public/team. The DISPLAY
+// name is chosen deterministically by slug (stable, cache-safe). Role is a single
+// generic "Product Reviewer" (passed in) — the About page keeps the per-person
+// niche roles, but on a random product page a niche role (e.g. "Audio Expert" on
+// a perfume page) reads as a mismatch, so the byline stays generic. Server
+// component → rendered into the SSR HTML.
 // ============================================
 
-import { getTranslations } from 'next-intl/server';
 import AuthorAvatar from '@/components/blog/AuthorAvatar';
 
-// Reviewers who have real photos in /public/team + a role in About.team.*.
+// Reviewers with real photos in /public/team. `id` = the photo filename (kept
+// stable); `name` is the display name (renamed 2026-09-05 per owner).
 const REVIEWERS = [
   { id: 'alex', name: 'Alex', avatar: '/team/alex.jpg', gradient: 'from-blue-500 to-blue-600' },
-  { id: 'adham', name: 'Adham', avatar: '/team/adham.jpg', gradient: 'from-amber-500 to-amber-600' },
+  { id: 'adham', name: 'Adam', avatar: '/team/adham.jpg', gradient: 'from-amber-500 to-amber-600' },
   { id: 'mariam', name: 'Mariam', avatar: '/team/mariam.jpg', gradient: 'from-purple-500 to-purple-600' },
-  { id: 'fatima', name: 'Fatima', avatar: '/team/fatima.jpg', gradient: 'from-pink-500 to-pink-600' },
-  { id: 'abdulla', name: 'Abdulla', avatar: '/team/abdulla.jpg', gradient: 'from-green-500 to-green-600' },
+  { id: 'fatima', name: 'Noon', avatar: '/team/fatima.jpg', gradient: 'from-pink-500 to-pink-600' },
+  { id: 'abdulla', name: 'Jean', avatar: '/team/abdulla.jpg', gradient: 'from-green-500 to-green-600' },
   { id: 'sara', name: 'Sara', avatar: '/team/sara.jpg', gradient: 'from-rose-500 to-red-600' },
 ];
 
@@ -28,15 +29,13 @@ function hash(s: string): number {
 
 interface BestAuthorBylineProps {
   slug: string;
-  locale: string;
   byLabel: string;
+  role: string;
   updatedText: string;
 }
 
-export default async function BestAuthorByline({ slug, locale, byLabel, updatedText }: BestAuthorBylineProps) {
-  const tAbout = await getTranslations({ locale, namespace: 'About' });
+export default function BestAuthorByline({ slug, byLabel, role, updatedText }: BestAuthorBylineProps) {
   const reviewer = REVIEWERS[hash(slug) % REVIEWERS.length];
-  const role = tAbout(`team.${reviewer.id}.role`);
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-6">
