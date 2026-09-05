@@ -120,8 +120,8 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
                 <p className="text-xs text-gray-400">{t('team.alex.bio')}</p>
               </div>
               <div className="bg-green-50 rounded-xl p-4 text-center">
-                <img src="/team/adham.jpg" alt="Adham" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
-                <h3 className="font-bold text-gray-800">Adham</h3>
+                <img src="/team/adham.jpg" alt="Adam" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
+                <h3 className="font-bold text-gray-800">Adam</h3>
                 <p className="text-sm text-gray-500 mb-2">{t('team.adham.role')}</p>
                 <p className="text-xs text-gray-400">{t('team.adham.bio')}</p>
               </div>
@@ -132,14 +132,14 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
                 <p className="text-xs text-gray-400">{t('team.mariam.bio')}</p>
               </div>
               <div className="bg-pink-50 rounded-xl p-4 text-center">
-                <img src="/team/fatima.jpg" alt="Fatima" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
-                <h3 className="font-bold text-gray-800">Fatima</h3>
+                <img src="/team/fatima.jpg" alt="Noon" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
+                <h3 className="font-bold text-gray-800">Noon</h3>
                 <p className="text-sm text-gray-500 mb-2">{t('team.fatima.role')}</p>
                 <p className="text-xs text-gray-400">{t('team.fatima.bio')}</p>
               </div>
               <div className="bg-amber-50 rounded-xl p-4 text-center">
-                <img src="/team/abdulla.jpg" alt="Abdulla" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
-                <h3 className="font-bold text-gray-800">Abdulla</h3>
+                <img src="/team/abdulla.jpg" alt="Jean" className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
+                <h3 className="font-bold text-gray-800">Jean</h3>
                 <p className="text-sm text-gray-500 mb-2">{t('team.abdulla.role')}</p>
                 <p className="text-xs text-gray-400">{t('team.abdulla.bio')}</p>
               </div>
