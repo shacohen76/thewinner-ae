@@ -22,7 +22,7 @@ interface RelatedPagesProps {
   count?: number;
 }
 
-export default function RelatedPages({ currentSlug, count = 8 }: RelatedPagesProps) {
+export default function RelatedPages({ currentSlug, count = RELATED_GEOS.length }: RelatedPagesProps) {
   const pool = RELATED_POOL.filter((p) => p.slug !== currentSlug);
   if (pool.length === 0) return null;
 
