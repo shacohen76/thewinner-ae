@@ -324,7 +324,6 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const bylineBy = tBest('by');
   const bylineRole = tBest('reviewerRole');
   const bylineUpdated = tBest('updated', { date: updatedDate });
-  const consNote = tBest('consNote');
 
   // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
   const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
@@ -451,7 +450,15 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         />
       )}
 
-      {/* ItemList schema — marks up the ranked products (2026-09-05) */}
+      {/* ItemList schema — a PLAIN list of the ranked product names only.
+          2026-09-06: reverted from `@type: Product` per item. Google requires a
+          Product to carry offers/review/aggregateRating, but Amazon Associates
+          terms bar us from showing prices/reviews, so Product markup only produced
+          the "Product snippets" GSC warning (177 items) and could never render a
+          rich result for us. A plain ItemList of names is valid + warning-free.
+          (Prices/reviews structured data are planned for the future shopping site,
+          not this one.) Visible pros ("Why We Love It") + cons line stay as page
+          text — they were never dependent on this markup. */}
       {productsForList.length > 0 && (
         <script
           type="application/ld+json"
@@ -464,27 +471,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
               itemListElement: productsForList.map((p, i) => ({
                 '@type': 'ListItem',
                 position: i + 1,
-                item: {
-                  '@type': 'Product',
-                  name: p.title,
-                  ...(p.image_url ? { image: p.image_url } : {}),
-                  // Pros = our genuine "Why We Love It" points; cons = the one honest,
-                  // always-true caveat (availability varies by market). (2026-09-05)
-                  ...(p.wwl_points && p.wwl_points.length > 0
-                    ? {
-                        positiveNotes: {
-                          '@type': 'ItemList',
-                          itemListElement: p.wwl_points.map((note, n) => ({
-                            '@type': 'ListItem', position: n + 1, name: note,
-                          })),
-                        },
-                        negativeNotes: {
-                          '@type': 'ItemList',
-                          itemListElement: [{ '@type': 'ListItem', position: 1, name: consNote }],
-                        },
-                      }
-                    : {}),
-                },
+                name: p.title,
               })),
             }),
           }}
