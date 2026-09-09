@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import ProductCard from './ProductCard';
 import ShareButton from './ShareButton';
+import type { ShopeeForPage } from '@/lib/shopee';
 
 interface Product {
   asin: string;
@@ -33,6 +34,10 @@ interface ProductListProps {
   // (were React context) and thread to each card's Amazon link decision.
   searchFallback?: boolean;
   keywordEn?: string;
+  // 2026-09-09 (Shopee): SEA-only Shopee links; each card renders its own (byAsin)
+  // or the page hero as fallback. undefined on non-SEA → no Shopee button anywhere.
+  shopee?: ShopeeForPage;
+  pageSlug?: string;
 }
 
 // 2026-08-26 (SSR restore): deterministic fake "review count" (500-5500) seeded by
@@ -47,7 +52,7 @@ function seededReviewCount(asin: string): number {
 
 type SortOption = 'rank' | 'price';
 
-export default function ProductList({ products, searchFallback, keywordEn }: ProductListProps) {
+export default function ProductList({ products, searchFallback, keywordEn, shopee, pageSlug }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
 
@@ -145,6 +150,8 @@ export default function ProductList({ products, searchFallback, keywordEn }: Pro
             keywordEn={keywordEn}
             reviewCount={seededReviewCount(product.asin)}
             showDeal={dealAsins.has(product.asin)}
+            shopeeLink={shopee ? (shopee.byAsin[product.asin] ?? shopee.hero ?? null) : null}
+            pageSlug={pageSlug}
           />
         ))}
       </div>
