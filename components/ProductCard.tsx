@@ -434,13 +434,13 @@ export default function ProductCard({
 
             {/* Amazon Logo + CTA Button */}
             <div className="flex flex-col items-center gap-3 mt-4 lg:mt-0">
-              {/* 2026-09-09 Shopee CTA — ABOVE the Amazon block (mobile + desktop), SEA only */}
+              {/* 2026-09-09 Shopee CTA — mirrors the Amazon block, ABOVE it, SEA only */}
               {shopeeLink && (
                 <ShopeeCta
-                  variant="inline"
                   shortLink={shopeeLink.short_link}
                   offerId={shopeeLink.shopee_offer_id}
                   pageSlug={pageSlug}
+                  label={t('showOffer')}
                 />
               )}
               {/* Official Amazon Badge */}
