@@ -150,7 +150,12 @@ export default function ProductList({ products, searchFallback, keywordEn, shope
             keywordEn={keywordEn}
             reviewCount={seededReviewCount(product.asin)}
             showDeal={dealAsins.has(product.asin)}
-            shopeeLink={shopee ? (shopee.byAsin[product.asin] ?? shopee.hero ?? null) : null}
+            shopeeLink={
+              shopee
+                ? (shopee.byAsin[product.asin] ??
+                   (displayRank.get(product.asin) === 1 ? shopee.hero ?? null : null))
+                : null
+            }
             pageSlug={pageSlug}
           />
         ))}
