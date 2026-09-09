@@ -31,6 +31,8 @@ import {
 import { splitTitle } from '@/lib/title-split';
 import { logAsinClickBeacon } from '@/components/TrackingProvider';
 
+import ShopeeCta from './ShopeeCta';
+
 interface ProductCardProps {
   rank: number;
   asin: string;
@@ -48,6 +50,11 @@ interface ProductCardProps {
   // visitor's store; keywordEn = English query used on localized (ar/ja) pages.
   searchFallback?: boolean;
   keywordEn?: string;
+  // 2026-09-09 (Shopee): per-card Shopee CTA, shown directly under the Amazon
+  // button for SEA visitors only. shopeeLink = this product's Shopee listing
+  // (per-product) or the page's hero fallback; pageSlug is for click logging.
+  shopeeLink?: { short_link: string; shopee_offer_id: string | null } | null;
+  pageSlug?: string;
 }
 
 // Title splitting (headline + "Show more" tail) now lives in the locale-aware
@@ -171,6 +178,8 @@ export default function ProductCard({
   showDeal = false,
   searchFallback = false,
   keywordEn = '',
+  shopeeLink,
+  pageSlug = '',
 }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
   const locale = useLocale();
@@ -425,6 +434,15 @@ export default function ProductCard({
 
             {/* Amazon Logo + CTA Button */}
             <div className="flex flex-col items-center gap-3 mt-4 lg:mt-0">
+              {/* 2026-09-09 Shopee CTA — ABOVE the Amazon block (mobile + desktop), SEA only */}
+              {shopeeLink && (
+                <ShopeeCta
+                  variant="inline"
+                  shortLink={shopeeLink.short_link}
+                  offerId={shopeeLink.shopee_offer_id}
+                  pageSlug={pageSlug}
+                />
+              )}
               {/* Official Amazon Badge */}
               <Image
                 src="/amazon-badge.png"

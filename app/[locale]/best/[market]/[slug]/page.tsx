@@ -4,7 +4,6 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
 import BackToTopLink from '@/components/BackToTopLink';
-import ShopeeCta from '@/components/ShopeeCta';
 import { unstable_cache } from 'next/cache';
 import {
   getKeywordBySlug,
@@ -361,16 +360,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
-        {/* Shopee CTA (SEA only) — page-level hero link, parallel to Amazon */}
-        {shopee.hero && (
-          <ShopeeCta
-            variant="banner"
-            shortLink={shopee.hero.short_link}
-            offerId={shopee.hero.shopee_offer_id}
-            pageSlug={slug}
-          />
-        )}
-        <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} />
+        {/* Shopee CTA now renders per-card (under each Amazon button), SEA only. */}
+        <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} />
       </main>
 
       {/* Product Gallery Section */}

@@ -216,7 +216,13 @@ export function middleware(request: NextRequest) {
   if (bestMatch) {
     const locale = LOCALIZED_PREFIXES.includes(bestMatch[1]) ? bestMatch[1] : routing.defaultLocale;
     const slug = bestMatch[2];
-    const market = resolveCatalogMarket(country, locale, isBot);
+    // 2026-09-09 (Shopee preview): ?shopeetest=<cc> forces the catalog market so the
+    // SEA-only Shopee CTA can be previewed from any IP (e.g. ...?shopeetest=sg). Only
+    // requests that explicitly pass the param are affected; real traffic is untouched.
+    const geoOverride = request.nextUrl.searchParams.get('shopeetest');
+    const market = geoOverride
+      ? resolveCatalogMarket(geoOverride.toUpperCase(), locale, false)
+      : resolveCatalogMarket(country, locale, isBot);
     const url = request.nextUrl.clone();
     url.pathname = `/${locale}/best/${market}/${slug}`;
     const response = NextResponse.rewrite(url);
