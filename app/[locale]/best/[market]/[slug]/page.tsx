@@ -4,6 +4,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
 import BackToTopLink from '@/components/BackToTopLink';
+import ShopeeCta from '@/components/ShopeeCta';
 import { unstable_cache } from 'next/cache';
 import {
   getKeywordBySlug,
@@ -38,6 +39,7 @@ import { buildAlternates } from '@/lib/seo-alternates';
 import RelatedPages from '@/components/RelatedPages';
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
+import { getShopeeForPage } from '@/lib/shopee';
 
 // ============================================
 // Keyword Page — /best/[slug] (internal route /[locale]/best/[market]/[slug])
@@ -328,6 +330,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
   const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
 
+  // 2026-09-09 (Shopee test): SEA visitors (market==='sg') get a Shopee CTA in
+  // parallel to Amazon. Fails closed → {} when no active link / non-SEA, so this
+  // never affects any other geo or the Amazon path.
+  const shopee = await getShopeeForPage(slug, params.market);
+
   return (
     // 2026-08-26 (feat/per-geo-static-best): the product SET is now chosen server-side
     // by params.market (middleware-injected per geo), so there is no client swap and
@@ -354,6 +361,15 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
+        {/* Shopee CTA (SEA only) — page-level hero link, parallel to Amazon */}
+        {shopee.hero && (
+          <ShopeeCta
+            variant="banner"
+            shortLink={shopee.hero.short_link}
+            offerId={shopee.hero.shopee_offer_id}
+            pageSlug={slug}
+          />
+        )}
         <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} />
       </main>
 
