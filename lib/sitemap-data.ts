@@ -14,11 +14,11 @@
 // ============================================
 
 import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getIndexAllowlist } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 
 export const CHUNK_SIZE = 20000; // English /best URLs per chunk — well under the 50k cap
-const INDEXABLE_LOCALES = ['ar', 'ja'];
 
 export interface SitemapEntry {
   url: string;
@@ -37,10 +37,13 @@ export async function bestChunkCount(): Promise<number> {
   }
 }
 
-// All chunk ids in order: structural first, then best-0..best-(N-1).
+// All chunk ids in order. 2026-09-10 (keep-best-~1K): the index now lists three
+// clean per-locale "indexable" sitemaps (allowlisted pages only) + structural.
+// The old best-<i> chunks (the ~48.9K English keyword dump) are gone — that
+// index bloat is exactly what triggered the Aug-21 sitewide demotion. Grow the
+// allowlist (seo_index_allowlist) to re-expand; no code change needed.
 export async function chunkIds(): Promise<string[]> {
-  const n = await bestChunkCount();
-  return ['structural', ...Array.from({ length: n }, (_, i) => `best-${i}`)];
+  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja'];
 }
 
 export async function structuralEntries(): Promise<SitemapEntry[]> {
@@ -56,22 +59,8 @@ export async function structuralEntries(): Promise<SitemapEntry[]> {
   for (const slug of Object.keys(MAIN_CATEGORIES)) out.push({ url: `${base}/category/${slug}`, changefreq: 'weekly', priority: 0.8 });
   for (const slug of Object.keys(SUBCATEGORY_NAMES)) out.push({ url: `${base}/category/${slug}`, changefreq: 'weekly', priority: 0.7 });
 
-  // localized /best (ar/ja) — DB-driven (keyword has a translation with noun + BYG)
-  try {
-    const keywords = await getAllKeywords();
-    for (const locale of INDEXABLE_LOCALES) {
-      const slugs = await getTranslatedSlugs(locale);
-      const seen = new Set<string>();
-      for (const k of keywords) {
-        const s = k.slug.toLowerCase();
-        if (!slugs.has(s) || seen.has(s)) continue;
-        seen.add(s);
-        out.push({ url: `${base}/${locale}/best/${encodeURIComponent(k.slug)}`, changefreq: 'weekly', priority: 0.9 });
-      }
-    }
-  } catch (error) {
-    console.error('sitemap structuralEntries localized failed:', error);
-  }
+  // localized /best (ar/ja) now live in their own indexable-ar / indexable-ja
+  // sitemaps (allowlisted pages only) — no longer dumped here. 2026-09-10.
 
   for (const slug of getAllSlugs()) out.push({ url: `${base}/blog/${slug}`, changefreq: 'monthly', priority: 0.7 });
   return out;
@@ -110,6 +99,31 @@ export async function localizedBestEntries(locale: string): Promise<SitemapEntry
   return out;
 }
 
+// keep-best-~1K (2026-09-10): a per-locale "indexable" sitemap = ONLY the pages
+// on that locale's allowlist (seo_index_allowlist), read through the SAME cached
+// getIndexAllowlist the page's robots gate uses — so sitemap and robots always
+// agree. English → /best/<slug>; ar/ja → /<locale>/best/<slug> (self-canonical).
+// An empty/unavailable allowlist yields an empty file (safe: an empty sitemap
+// never deindexes; Google keeps known URLs, and the page gate fails open).
+export async function allowlistEntries(locale: 'en' | 'ar' | 'ja'): Promise<SitemapEntry[]> {
+  const base = CONFIG.siteUrl;
+  const prefix = locale === 'en' ? '' : `/${locale}`;
+  const out: SitemapEntry[] = [];
+  try {
+    const allow = await getIndexAllowlist();
+    for (const slug of Array.from(allow[locale])) {
+      out.push({ url: `${base}${prefix}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9 });
+    }
+  } catch (error) {
+    console.error(`sitemap allowlistEntries(${locale}) failed:`, error);
+  }
+  return out;
+}
+
+// @deprecated 2026-09-10 (keep-best-~1K): NOT wired into the sitemap index or the
+// [id] route any more — it emitted the full ~48.9K English keyword dump (the index
+// bloat that tanked organic on Aug-21). Kept only for reference/rollback; use
+// allowlistEntries('en') instead. bestChunkCount/localizedBestEntries likewise retired.
 export async function bestChunkEntries(index: number): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {

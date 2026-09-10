@@ -35,6 +35,7 @@ import {
   generateJapanesePageDescription,
 } from '@/lib/title-ja';
 import { buildAlternates } from '@/lib/seo-alternates';
+import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
 import RelatedPages from '@/components/RelatedPages';
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
@@ -104,19 +105,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   ]);
   const nounAr = arTr?.keyword_text?.trim() || null;
   const nounJa = jaTr?.keyword_text?.trim() || null;
-  const arIndexed = !!nounAr && hasBuyingGuide(arTr?.qa_guide);
+  const arComplete = !!nounAr && hasBuyingGuide(arTr?.qa_guide);
   // INTL1 JP (2026-07-09): a /ja page indexes only if it ALSO has a JP catalog.
   // Without JP products a JP visitor gets dead amazon.co.jp links (the AE catalog
   // falls back), so keep those pages out of the index. AE-catalog locales (ar→ae)
   // need no such gate — the AE catalog is always present. Only query when a ja
   // translation exists (the only indexing candidates).
   const jaCatalogCount = nounJa ? await getKeywordMarketplaceCount(keyword.id, 'jp') : 0;
-  const jaIndexed = !!nounJa && hasBuyingGuide(jaTr?.qa_guide) && jaCatalogCount >= 1;
+  const jaComplete = !!nounJa && hasBuyingGuide(jaTr?.qa_guide) && jaCatalogCount >= 1;
+
+  // 2026-09-10 (SEO index allowlist — keep-best-~1K recovery): a page indexes
+  // only if it is ALSO on its locale's allowlist (seo_index_allowlist), so most
+  // thin/low-CTR pages get noindex,follow (they stay live; affiliate clicks
+  // unaffected; reversible). Each locale is INDEPENDENT — ar/ja index on their
+  // OWN list regardless of the English decision, and vice-versa. FAIL-OPEN: an
+  // empty/unavailable allowlist does not restrict (isAllowlisted returns true),
+  // so a DB hiccup can never deindex the whole site. The complete-gate (noun+BYG
+  // for ar/ja) is still ANDed, so ar/ja never over-index untranslated pages.
+  const allow = await getIndexAllowlist();
+  const slugLc = decodeURIComponent(params.slug).toLowerCase();
+  const enIndexed = isAllowlisted(allow, 'en', slugLc);
+  const arIndexed = arComplete && isAllowlisted(allow, 'ar', slugLc);
+  const jaIndexed = jaComplete && isAllowlisted(allow, 'ja', slugLc);
   const indexedLocales = [
     ...(arIndexed ? ['ar'] : []),
     ...(jaIndexed ? ['ja'] : []),
   ];
-  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, indexedLocales);
+  const alternates = buildAlternates(`/best/${params.slug}`, params.locale, indexedLocales, enIndexed);
   const localePrefix = params.locale === 'en' ? '' : `/${params.locale}`;
   const ogUrl = `${CONFIG.canonicalUrl}${localePrefix}/best/${params.slug}`;
 
@@ -172,7 +187,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return englishFallbackNoindex();
   }
 
-  // English — unchanged (no robots key → layout default index applies).
+  // English — index gated by the allowlist (2026-09-10 keep-best-~1K). Was
+  // "no robots key → layout default index"; now noindex,follow unless the slug
+  // is on the English allowlist. follow keeps link equity flowing to the kept
+  // winners. enIndexed is fail-open (true when the allowlist is unavailable).
   return {
     // 2026-08-26: title.absolute bypasses the layout's "%s | The Winners" template —
     // generatePageTitle already appends the brand, so a plain string doubled it
@@ -181,6 +199,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: { absolute: generatePageTitle(keyword.keyword_text) },
     description: generatePageDescription(keyword.keyword_text),
     alternates,
+    robots: { index: enIndexed, follow: true },
     openGraph: {
       title: generatePageTitle(keyword.keyword_text),
       description: generatePageDescription(keyword.keyword_text),
