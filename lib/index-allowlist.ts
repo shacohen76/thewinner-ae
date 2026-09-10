@@ -28,17 +28,21 @@ import { createClient } from '@supabase/supabase-js';
 export type Locale = 'en' | 'ar' | 'ja';
 export type Allowlist = Record<Locale, Set<string>>;
 
-const EMPTY: Allowlist = { en: new Set(), ar: new Set(), ja: new Set() };
+type AllowlistArrays = Record<Locale, string[]>;
+const EMPTY_ARRAYS: AllowlistArrays = { en: [], ar: [], ja: [] };
 
-// Uses the service-role key (present in the build/runtime env) so it reads the
-// table regardless of RLS. Returns EMPTY on ANY error → fail-open (see header).
-export const getIndexAllowlist = unstable_cache(
-  async (): Promise<Allowlist> => {
-    const out: Allowlist = { en: new Set(), ar: new Set(), ja: new Set() };
+// INNER (cached). MUST return JSON-serializable data: unstable_cache serializes
+// its result, so returning a Set comes back as {} at runtime (".has is not a
+// function" — this exact bug broke the first build). Return plain arrays here;
+// getIndexAllowlist() below rebuilds the Sets from them. Service-role read so it
+// works regardless of RLS. Returns empty arrays on ANY error → fail-open.
+const getIndexAllowlistArrays = unstable_cache(
+  async (): Promise<AllowlistArrays> => {
+    const out: AllowlistArrays = { en: [], ar: [], ja: [] };
     try {
       const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      if (!url || !serviceKey) return EMPTY;
+      if (!url || !serviceKey) return EMPTY_ARRAYS;
       const admin = createClient(url, serviceKey);
       let from = 0;
       const page = 1000;
@@ -51,28 +55,34 @@ export const getIndexAllowlist = unstable_cache(
           .order('slug', { ascending: true })
           .range(from, from + page - 1);
         if (error || !data) {
-          // Partial read = treat as failure → fail-open with EMPTY, not a
-          // half-built set that would wrongly deindex the missing pages.
-          if (from === 0) return EMPTY;
+          // Partial read = treat as failure → fail-open, not a half-built list
+          // that would wrongly deindex the missing pages.
+          if (from === 0) return EMPTY_ARRAYS;
           break;
         }
         for (const r of data as { locale: string; slug: string }[]) {
           const s = r.slug?.toLowerCase();
           if (s && (r.locale === 'en' || r.locale === 'ar' || r.locale === 'ja')) {
-            out[r.locale].add(s);
+            out[r.locale].push(s);
           }
         }
         if (data.length < page) break;
         from += page;
       }
     } catch {
-      return EMPTY;
+      return EMPTY_ARRAYS;
     }
     return out;
   },
   ['seo-index-allowlist-v1'],
   { revalidate: 3600, tags: ['seo-allowlist'] },
 );
+
+// PUBLIC: rebuild Sets from the cached arrays on each call (cheap: ~3×1K).
+export async function getIndexAllowlist(): Promise<Allowlist> {
+  const a = await getIndexAllowlistArrays();
+  return { en: new Set(a.en), ar: new Set(a.ar), ja: new Set(a.ja) };
+}
 
 // True if this (locale, slug) may be indexed per the allowlist. FAIL-OPEN: an
 // empty set for the locale means "allowlist unavailable/not built" → do not
