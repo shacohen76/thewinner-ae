@@ -165,6 +165,27 @@ const FOR_NERDS_HEADING: Record<string, string> = {
   ja: 'マニア向けの豆知識',
 };
 
+// 2026-09-10: corrupt catalog rows can store wwl_points/bullet_points as a JSON
+// STRING (e.g. '["a","b"]') instead of a real text[]. A string has .length and
+// .slice but NOT .map/.filter, so `wwlPoints.slice(0,4).map(...)` threw
+// "map is not a function" and crashed the prerender/build on such a page
+// (e.g. /best/ae/smartwatches). Coerce defensively to a real string[] wherever
+// these are consumed, so one bad row can never take down the page or the build.
+function coercePoints(v: unknown): string[] {
+  if (Array.isArray(v)) return v.filter((x): x is string => typeof x === 'string');
+  if (typeof v === 'string') {
+    const s = v.trim();
+    if (s.startsWith('[')) {
+      try {
+        const p = JSON.parse(s);
+        if (Array.isArray(p)) return p.filter((x): x is string => typeof x === 'string');
+      } catch { /* not JSON — treat as a single point below */ }
+    }
+    return s ? [s] : [];
+  }
+  return [];
+}
+
 export default function ProductCard({
   rank,
   asin,
@@ -207,7 +228,7 @@ export default function ProductCard({
   // Combine restTitle and description for the expandable section
   const expandableText = [restTitle, description].filter(Boolean).join('\n\n');
   // 2026-08-28: product feature specs (Creators API) → "The Fun Details - For Nerds"
-  const displayBullets = (bulletPoints ?? []).filter(Boolean).slice(0, 3);
+  const displayBullets = coercePoints(bulletPoints).filter(Boolean).slice(0, 3);
 
   const handleCtaClick = () => {
     if (typeof window !== 'undefined' && window.dataLayer) {
@@ -241,8 +262,9 @@ export default function ProductCard({
 
   // WWL points; when a product has none, fall back to the rank-based placeholder set
   // (3 points for this position), else the single generic default. (2026-08-28)
-  const displayWwl = (wwlPoints && wwlPoints.length > 0
-    ? wwlPoints.slice(0, 4)
+  const wwlArr = coercePoints(wwlPoints);
+  const displayWwl = (wwlArr.length > 0
+    ? wwlArr.slice(0, 4)
     : pickFallbackWwl(asin, rank, locale)
   ).map(capitalizeFirst);
 
