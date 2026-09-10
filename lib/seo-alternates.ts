@@ -41,21 +41,35 @@ const toLocalePath = (path: string, locale: string): string =>
 // indexed is NEVER listed ("no return tags" for noindex pages). With the list
 // empty the cluster is en-AE + x-default only — byte-identical to the pre-i18n
 // English output.
+// 2026-09-10 (seo index allowlist): added `enIndexed`. Once we deindex most
+// English pages (keep-best-~1K strategy), a slug's ENGLISH version may be
+// noindex while its ar/ja version stays indexed (each locale has its own
+// allowlist). Google's rule is "no return tags for noindex pages", so the
+// hreflang cluster must list ONLY indexed locales. When English is deindexed we
+// drop `en-AE` and re-home `x-default` onto the first indexed localized page —
+// so a kept ar/ja page is NEVER dragged down by pointing at a noindex EN URL.
+// The page stays SELF-canonical regardless (a noindex page self-canonical is
+// correct — it must not canonicalize onto another URL).
 export function buildAlternates(
   path: string,
   locale: string,
   indexedLocales: string[] = [],
+  enIndexed: boolean = true,
 ): Metadata['alternates'] {
   const base = CONFIG.canonicalUrl;
   const enAbs = path === '/' ? base : `${base}${path}`;
 
-  // Order preserved as en-AE → (localized…) → x-default. The hreflang key is the
-  // plain locale code (ar, ja); en uses the region-qualified 'en-AE'.
-  const languages: Record<string, string> = { 'en-AE': enAbs };
+  // Order: en-AE (only if English is indexed) → (localized…) → x-default. The
+  // hreflang key is the plain locale code (ar, ja); en uses region 'en-AE'.
+  const languages: Record<string, string> = {};
+  if (enIndexed) languages['en-AE'] = enAbs;
   for (const loc of indexedLocales) {
     languages[loc] = `${base}${toLocalePath(path, loc)}`;
   }
-  languages['x-default'] = enAbs;
+  // x-default → the indexed English page; if English is deindexed, the first
+  // indexed localized page; if nothing is indexed, omit it (no valid target).
+  if (enIndexed) languages['x-default'] = enAbs;
+  else if (indexedLocales.length) languages['x-default'] = `${base}${toLocalePath(path, indexedLocales[0])}`;
 
   return {
     // Self-canonical per locale: English → prefix-less path; any localized page
