@@ -134,6 +134,9 @@ export interface PoolConfig {
   stable_pin_hours: number;
   warming_pin_minutes: number;
   warming_target_m: number;
+  // 2026-09-10: when set (>=0), pins the warming lane to this fixed size instead of the
+  // dynamic (K−S)/m target. null/undefined ⇒ dynamic formula (unchanged). See maintainTagPool step 3.
+  warming_lane_size?: number | null;
   tag_prefix: string;
   mechanics_v2: boolean;
   enabled: boolean;
@@ -1067,7 +1070,15 @@ async function maintainTagPoolForProgram(program: string, keyRole: string): Prom
     if (sErr) errors.push(`s_stable: ${sErr.message}`);
     kClickouts = kCount;
     sStable = sCount || 0;
-    targetSize = Math.max(0, Math.ceil((kClickouts - sStable) / cfg.warming_target_m));
+    // 2026-09-10: a fixed small warming lane (program_pool_config.warming_lane_size)
+    // overrides the dynamic (K−S)/m target when set. Amazon (Sep-4 reporting change)
+    // hides low-volume tags into "Other"; the wide dynamic lane spreads overflow so thin
+    // that warmers never reach the 4-order visibility floor → never graduate → permanent
+    // dilution. A small fixed lane (e.g. 3) concentrates overflow → fast graduation →
+    // stable count self-grows. null ⇒ dynamic formula (unchanged) so each market is opt-in
+    // per row and AE stays byte-identical until its row is set. Graduation + auto-replace
+    // from reserve are untouched (steps 1 & 3 below).
+    targetSize = cfg.warming_lane_size ?? Math.max(0, Math.ceil((kClickouts - sStable) / cfg.warming_target_m));
   }
   const { count: cohortCount, error: cohortErr } = await sb
     .from('tag_pool')
