@@ -19,7 +19,10 @@ import { getTranslations } from 'next-intl/server';
 // ML 3 (2026-07-17): 7 days → 6 hours. If a category ever caches empty, it now
 // self-heals within hours instead of a week. Category pages are few (45) and rarely
 // change, so the extra regenerations are negligible (~dozens/hour worst case).
-export const revalidate = 21600; // 6 hours
+// 2026-09-22 (Vercel cost fix): 6h → 7 days. Subcategory lists are now the top-50
+// by clickouts (slow-moving), and the empty-cache risk above is handled at the
+// source (readWithRetry THROWS at runtime → a failed render is never cached).
+export const revalidate = 604800; // 7 days
 
 // ML 3 (2026-07-17): render category pages ON-DEMAND (was: prerender all 45 at
 // build). Prerendering hammered the DB concurrently at build, and the BIG
