@@ -234,22 +234,30 @@ export async function getCategories(): Promise<Category[]> {
 // ~300ms. readWithRetry adds resilience on top: retry a transient blip, then throw
 // at RUNTIME (so a failed render isn't cached empty) but degrade at BUILD (so a
 // build-time timeout under concurrency doesn't fail the deploy).
+//
+// 2026-09-22 (Vercel cost fix — cap subcategory pages): was "every keyword in the
+// subcategory, A→Z" — in practice the first ~1,000 A→Z (PostgREST row cap), i.e.
+// ~2.5MB HTML per ISR rebuild (the top ISR-write cost driver alongside /best).
+// Now the TOP `CATEGORY_LIST_LIMIT` keywords ranked by REAL affiliate clickouts
+// from program countries (bots excluded), zero-click fill A→Z — computed in the
+// SECURITY DEFINER RPC `category_top_keywords` (click_log isn't anon-readable; the
+// RPC returns only id/keyword_text/slug). JSONB return → no 1000-row-cap concern.
+export const CATEGORY_LIST_LIMIT = 50;
 export async function getKeywordsByCategory(
   categorySlug: string,
 ): Promise<Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]> {
   const rows = await readWithRetry<Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[]>(
     `getKeywordsByCategory("${categorySlug}")`,
     () =>
-      supabase
-        .from('keywords')
-        .select('id, keyword_text, slug, categories!inner(slug)')
-        .eq('categories.slug', categorySlug)
-        .order('keyword_text') as unknown as PromiseLike<{
+      supabase.rpc('category_top_keywords', {
+        p_category: categorySlug,
+        p_limit: CATEGORY_LIST_LIMIT,
+      }) as unknown as PromiseLike<{
         data: Pick<Keyword, 'id' | 'keyword_text' | 'slug'>[] | null;
         error: { message?: string } | null;
       }>,
   );
-  return rows || [];
+  return Array.isArray(rows) ? rows : [];
 }
 
 // Get keyword by slug
