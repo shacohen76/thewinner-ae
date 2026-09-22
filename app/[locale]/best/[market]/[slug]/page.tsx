@@ -35,6 +35,7 @@ import {
   generateJapanesePageDescription,
 } from '@/lib/title-ja';
 import { buildAlternates } from '@/lib/seo-alternates';
+import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
 import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
 import RelatedPages from '@/components/RelatedPages';
 import BestAuthorByline from '@/components/BestAuthorByline';
@@ -241,8 +242,12 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       }
       return { products, searchFallback };
     },
-    ['catalog', slug, params.market, params.locale],
-    { tags: [`catalog:${slug}`], revalidate: 604800 },
+    // 2026-09-23 (scoped refresh signals): each copy's data now carries TWO tags —
+    // the shared slug tag (unscoped purge, unchanged behaviour) + a per-copy tag, so
+    // /api/revalidate can refresh ONE language/market without marking every copy.
+    // Key bumped 'catalog' → 'catalog-v2' so all entries are re-created with both tags.
+    ['catalog-v2', slug, params.market, params.locale],
+    { tags: [catalogTag(slug), catalogCopyTag(slug, params.market, params.locale)], revalidate: 604800 },
   )();
 
   // English keyword for the searchFallback query (slugs are always English).
