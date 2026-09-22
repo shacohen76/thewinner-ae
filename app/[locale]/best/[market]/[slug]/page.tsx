@@ -59,7 +59,13 @@ import { getShopeeForPage } from '@/lib/shopee';
 // Cache for 7 days (was 24h). With generateStaticParams (top slugs pre-built at
 // build time) + dynamicParams (long tail on-demand), crawler/bot hits become CDN
 // cache hits instead of cold DB renders — the load pattern that exhausted Disk IO.
-export const revalidate = 86400; // 24h (was 604800/7d — a bad state self-heals overnight; KSP parity). 2026-09-05
+// 2026-09-22 (Vercel cost fix): back to 7 days (was 24h since 2026-09-05). With up
+// to 19 per-market/locale copies per slug, a 24h timer re-rendered every copy a bot
+// or visitor touched EVERY DAY — the top ISR-write cost driver — and bought no
+// product freshness (the products read below is unstable_cache'd for 7d anyway).
+// Real changes must SIGNAL a refresh (POST /api/revalidate); the timer is only a
+// backstop for a missed signal.
+export const revalidate = 604800; // 7d (was 86400/24h 2026-09-05 → 7d 2026-09-22)
 
 // Slugs not pre-rendered below still render on first request, then cache.
 export const dynamicParams = true;
