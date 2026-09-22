@@ -222,6 +222,9 @@ export default async function CategoryPage({ params }: PageProps) {
   // BUILD. So no page-level throw here: a genuine 0 (rare) still renders "Coming
   // Soon" below, and transient errors are handled in the query, not by failing the
   // whole prerender.
+  // 2026-09-22 (Vercel cost fix): returns at most CATEGORY_LIST_LIMIT (50) keywords —
+  // top real program-country clickouts first (see getKeywordsByCategory). Was every
+  // keyword A→Z (~1,000 cards, ~2.5MB HTML per ISR rebuild).
   const dbKeywords = await getKeywordsByCategory(slug);
   const keywords = dbKeywords.map(kw => ({
     text: toTitleCase(kw.keyword_text),
