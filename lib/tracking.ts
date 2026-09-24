@@ -671,46 +671,56 @@ async function assignGadsTagV2(
     .limit(1)
     .maybeSingle();
 
-  // Priority 2: a free WARMING tag. Prefer warmers with recent clickout progress
-  // (last_clickout_at DESC) so they accumulate orders and graduate sooner; LRU tie-break.
+  // 2026-09-25 REDESIGN: stable picks (P1) are exclusively held (one clean gclid/24h);
+  // warming picks (P2/P3) are SHARED (not held) so the same front-runner keeps taking overflow.
+  let exclusiveHold = !!freeTag;
+
+  // Priority 2: the ACTIVE warmer. Warming is a QUEUE, one tag at a time — pick the seeding_cohort
+  // warmer with the HIGHEST clickout_count that has NOT hit 4 clickouts in the last 24h, and DON'T
+  // hold it (shared), so the front-runner keeps taking overflow users until it caps, then the
+  // next-highest takes over. Amazon hides sub-threshold orders → warming attribution is a
+  // write-off; this exists only to concentrate ONE tag toward the ≥4 VISIBLE orders that graduate
+  // it to stable. clickout_count is stamped in logAsinClick; the 4/24h cap is counted live from
+  // click_log — only on overflow (all stable busy), and only for the few front-runners → cheap.
   if (!freeTag) {
-    const { data } = await sb
+    const { data: warmers } = await sb
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('program', cfg.program)
-      .eq('status', 'available')
       .eq('seeding_cohort', true)
       .eq('is_stable', false)
-      .order('last_clickout_at', { ascending: false, nullsFirst: false })
-      .order('assigned_at', { ascending: true, nullsFirst: true })
-      .limit(1)
-      .maybeSingle();
-    freeTag = data;
+      .order('clickout_count', { ascending: false })
+      .order('tag_id', { ascending: true })   // deterministic tie-break
+      .limit(8);
+    const since24h = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+    for (const w of (warmers || [])) {
+      const { count } = await sb
+        .from('click_log')
+        .select('*', { count: 'exact', head: true })
+        .eq('assigned_tag', w.tag_id)
+        .neq('clicked_asins', '{}')
+        .gt('created_at', since24h);
+      if ((count || 0) < 4) { freeTag = { tag_id: w.tag_id }; break; }   // active front-runner (shared)
+    }
   }
 
-  // Priority 3: pull a RESERVE tag into the warming lane on demand (dynamic top-up;
-  // maintainTagPool also tops warming up to W, but bursts can outrun the cron).
+  // Priority 3: no eligible warmer (queue empty or every front-runner capped) → pull the next
+  // RESERVE tag into the warming queue and use it (also shared, not held).
   if (!freeTag) {
     const { data: reserve } = await sb
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
       .eq('program', cfg.program)
-      .eq('status', 'available')
       .eq('is_stable', false)
       .eq('seeding_cohort', false)
       .order('tag_id', { ascending: true })   // deterministic: lowest tag_id first
       .limit(1)
       .maybeSingle();
     if (reserve) {
-      const { data: promoted } = await sb
-        .from('tag_pool')
-        .update({ seeding_cohort: true })
-        .eq('tag_id', reserve.tag_id)
-        .select('tag_id')
-        .maybeSingle();
-      freeTag = promoted || reserve;
+      await sb.from('tag_pool').update({ seeding_cohort: true }).eq('tag_id', reserve.tag_id);
+      freeTag = reserve;
     }
   }
 
@@ -734,6 +744,7 @@ async function assignGadsTagV2(
     );
     if (victim) {
       freeTag = { tag_id: victim.tag_id };
+      exclusiveHold = true;   // a stolen stable is exclusively held like a P1 pick
       // Expire the stolen session's click_log (it lost its tag; no attribution owed —
       // a soft-held tag with no clickout never earned an order).
       if (victim.current_session) {
@@ -746,9 +757,11 @@ async function assignGadsTagV2(
   // before rotation is enabled). Uses the program's own storetag, not AE's.
   const assignedTag = freeTag?.tag_id || routing.fallbackTag;
 
-  // Mark the tag busy with the SOFT hold. releaseExpiredTags frees it after
-  // soft_hold_minutes if no clickout arrives; a clickout re-pins it (logAsinClick).
-  if (freeTag) {
+  // Mark the tag busy with the SOFT hold — ONLY for exclusive picks (stable P1 / steal P4).
+  // Warming picks (P2/P3) are shared and left available so the front-runner keeps taking overflow.
+  // releaseExpiredTags frees a held tag after soft_hold_minutes if no clickout; a clickout re-pins
+  // it (logAsinClick).
+  if (freeTag && exclusiveHold) {
     await sb
       .from('tag_pool')
       .update({
