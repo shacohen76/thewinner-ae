@@ -136,8 +136,14 @@ export function middleware(request: NextRequest) {
   // this same code (separate Vercel projects), so we detect the mirror by Host and
   // permanent-redirect every path (query preserved). Applies to bots too — that's how
   // Google migrates the signals. Runs FIRST so a mirror hit never reaches geo/locale.
+  // 2026-09-24: env-gated so the thewinner-ae Vercel project can turn the mirror
+  // 301 OFF (set MIRROR_301_DISABLED=1 there) and serve thewinner.ae as its OWN
+  // indexable domain — parallel to thewinners.ae, same repo/DB, same index/noindex
+  // allowlist (good pages index, the rest noindex on both). Default (unset) keeps
+  // the 301 → thewinners.ae exactly as before. Pair with NEXT_PUBLIC_CANONICAL_URL
+  // + NEXT_PUBLIC_SITE_URL = https://thewinner.ae on that project so it self-canonicals.
   const host = (request.headers.get('host') || '').toLowerCase();
-  if (host === 'thewinner.ae' || host === 'www.thewinner.ae') {
+  if (!process.env.MIRROR_301_DISABLED && (host === 'thewinner.ae' || host === 'www.thewinner.ae')) {
     const url = request.nextUrl.clone();
     url.protocol = 'https';
     url.hostname = 'thewinners.ae';
