@@ -805,11 +805,15 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
   // Get current clicked_asins
   const { data: session } = await getSupabaseAdmin()
     .from('click_log')
-    .select('clicked_asins, click_timestamps')
+    .select('clicked_asins, click_timestamps, assigned_tag')
     .eq('session_id', sessionId)
     .single();
 
   if (!session) return false;
+
+  // 2026-09-25: a session's FIRST clickout (clicked_asins was empty) counts as one clickout for
+  // its tag's warming-queue score. Capture BEFORE the push below, which mutates clicked_asins.
+  const firstClickout = (session.clicked_asins || []).length === 0;
 
   const currentAsins: string[] = session.clicked_asins || [];
   const currentTimestamps: string[] = session.click_timestamps || [];
@@ -829,6 +833,13 @@ export async function logAsinClick(sessionId: string, asin: string): Promise<boo
       last_activity: new Date().toISOString(),
     })
     .eq('session_id', sessionId);
+
+  // 2026-09-25: credit clickout_count on the tag this session used, once per session (first
+  // clickout only). Reads assigned_tag from click_log so it works for SHARED warming tags (which
+  // hold no current_session). Drives the warming-queue order and carries over on demotion.
+  if (firstClickout && session.assigned_tag) {
+    await getSupabaseAdmin().rpc('increment_clickout_count', { p_tag: session.assigned_tag });
+  }
 
   const nowIso = new Date().toISOString();
 
