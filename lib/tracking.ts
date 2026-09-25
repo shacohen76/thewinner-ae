@@ -2,11 +2,26 @@
 // TRACKING UTILITIES — Server-side tag rotation
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-07-02 (tag-pool cron silent-write guard)
+// Last Modified: 2026-09-25 (D187 self-tuning warming — feed until graduation)
 //
 // Handles tag assignment, click logging, tag expiry, and pool maintenance.
 //
 // Changelog
+//   2026-09-25  v6   D187 — SELF-TUNING WARMING. assignGadsTagV2 P2 now feeds the ONE
+//                    highest-clickout_count warmer until it GRADUATES (promoter flips
+//                    is_stable at ≥4 visible orders → drops from the is_stable=false filter →
+//                    next warmer leads). Removed the fixed 4-clickouts/24h hand-off + its
+//                    per-warmer click_log count: a fixed clickout number can't match a per-ORDER
+//                    threshold across markets (it under-concentrated thin/low-conversion markets
+//                    and stranded orders below ≥4 across many parallel warmers). Market-agnostic,
+//                    nothing to tune. Supersedes the v5 4/24h hand-off. Spec: TAG_ROTATION_
+//                    REDESIGN_SPEC_2026_09_25.md §7; decision D187 (AM1_DECISIONS_LOG v1.19).
+//   2026-09-25  v5   Tag-rotation redesign (PR #96, D185/D186). assignGadsTagV2: stable-first
+//                    (P1); warming = ONE-at-a-time queue by clickout_count (P2, then 4-clickouts/24h
+//                    hand-off — SUPERSEDED by v6), reserve-pull (P3), steal (P4); stable/steal held,
+//                    warming shared. logAsinClick stamps clickout_count via increment_clickout_count
+//                    RPC. Genuine-stable kept ≡ ≥4-visible by the local promoter's new demote step.
+//                    New col tag_pool.clickout_count. Spec: TAG_ROTATION_REDESIGN_SPEC_2026_09_25.md.
 //   2026-03-27  v1   Initial: assignTag (LRU rotation), logAsinClick, releaseExpiredTags
 //   2026-05-19  v2   AMZ12 — Stable-first attribution overhaul:
 //                    - TRACKING_CONFIG: added seedingCohortSize (5), poolLowThreshold (20),
@@ -636,10 +651,11 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
 // 1-to-1 daily-attribution model:
 //   - Assignment gives only a SOFT hold (soft_hold_minutes). The tag is not "spent"
 //     until a clickout (see logAsinClick), so no-clickout visitors free the tag fast.
-//   - Priority: (1) free stable LRU  (2) free warming, preferring warmers already in
-//     progress (last_clickout_at DESC) so they cross the threshold sooner  (3) pull a
-//     reserve tag into the warming lane on demand  (4) steal the oldest NON-committed
-//     busy tag — never a committed stable (is_stable AND clicked out within stable_pin).
+//   - Priority: (1) free stable LRU  (2) the ONE active warmer — highest clickout_count
+//     seeding_cohort tag, fed until it graduates (D187 self-tuning, no clickout cap)  (3)
+//     pull a reserve tag into the warming queue when the cohort is empty  (4) steal the
+//     oldest NON-committed busy tag — never a committed stable (is_stable AND clicked out
+//     within stable_pin). Stable picks (1)/(4) are exclusively held; warming (2)/(3) shared.
 // MULTIGEO: every query scoped program=cfg.program + tag_type='gads'.
 // MG7 (2026-07-28): parameterized by cfg.program + routing so SA (and any future
 // rotation program) reuses this EXACT money-path. AE calls it with cfg.program='ae'
@@ -675,15 +691,23 @@ async function assignGadsTagV2(
   // warming picks (P2/P3) are SHARED (not held) so the same front-runner keeps taking overflow.
   let exclusiveHold = !!freeTag;
 
-  // Priority 2: the ACTIVE warmer. Warming is a QUEUE, one tag at a time — pick the seeding_cohort
-  // warmer with the HIGHEST clickout_count that has NOT hit 4 clickouts in the last 24h, and DON'T
-  // hold it (shared), so the front-runner keeps taking overflow users until it caps, then the
-  // next-highest takes over. Amazon hides sub-threshold orders → warming attribution is a
-  // write-off; this exists only to concentrate ONE tag toward the ≥4 VISIBLE orders that graduate
-  // it to stable. clickout_count is stamped in logAsinClick; the 4/24h cap is counted live from
-  // click_log — only on overflow (all stable busy), and only for the few front-runners → cheap.
+  // Priority 2: the ACTIVE warmer. Warming is a QUEUE, ONE tag at a time — pick the seeding_cohort
+  // warmer with the HIGHEST clickout_count and feed ALL overflow to it (shared, not held) UNTIL IT
+  // GRADUATES. Amazon hides sub-threshold orders → warming attribution is a write-off; this exists
+  // only to concentrate ONE tag toward the ≥4 VISIBLE orders that graduate it to stable.
+  //
+  // D187 (2026-09-25 SELF-TUNING): no fixed clickout cap. GRADUATION itself is the hand-off — the
+  // hourly promoter flips is_stable when the tag reaches ≥4 visible orders (This-Year), which drops
+  // it from this `is_stable=false` filter, so the next-highest warmer auto-becomes the leader. So
+  // "feed until graduation" = the market's own conversion × volume: few clickouts where conversion
+  // is high, many where it's low, with NOTHING per-market to tune. This replaces the old fixed
+  // 4-clickouts/24h hand-off (a fixed clickout number can't match a per-ORDER threshold across
+  // markets — it under-concentrated thin/low-conversion markets and stranded orders below the ≥4
+  // line across many parallel warmers). Removing it also deletes the per-warmer click_log count.
+  // See TAG_ROTATION_REDESIGN_SPEC_2026_09_25.md §7 (D187). Optional staleness guard (rotate a warmer
+  // that runs far past break-even with no graduation) is deferred — add only if a stall is observed.
   if (!freeTag) {
-    const { data: warmers } = await sb
+    const { data: warmer } = await sb
       .from('tag_pool')
       .select('tag_id')
       .eq('tag_type', TRACKING_CONFIG.gadsTagType)
@@ -691,18 +715,10 @@ async function assignGadsTagV2(
       .eq('seeding_cohort', true)
       .eq('is_stable', false)
       .order('clickout_count', { ascending: false })
-      .order('tag_id', { ascending: true })   // deterministic tie-break
-      .limit(8);
-    const since24h = new Date(now - 24 * 60 * 60 * 1000).toISOString();
-    for (const w of (warmers || [])) {
-      const { count } = await sb
-        .from('click_log')
-        .select('*', { count: 'exact', head: true })
-        .eq('assigned_tag', w.tag_id)
-        .neq('clicked_asins', '{}')
-        .gt('created_at', since24h);
-      if ((count || 0) < 4) { freeTag = { tag_id: w.tag_id }; break; }   // active front-runner (shared)
-    }
+      .order('tag_id', { ascending: true })   // deterministic tie-break at equal clickout_count
+      .limit(1)
+      .maybeSingle();
+    if (warmer) freeTag = { tag_id: warmer.tag_id };   // active front-runner (shared, fed until it graduates)
   }
 
   // Priority 3: no eligible warmer (queue empty or every front-runner capped) → pull the next
