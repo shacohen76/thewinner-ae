@@ -164,7 +164,8 @@ function searchUrlFor(domain: string, tag: string, query: string): string {
 //   • visitor's store = amazon.com.br (Brazil)  → /dp on amazon.com.br, visitor's own tag
 //     (keeps the BR tag-pool rotation / attribution exactly as today)
 //   • visitor's store = amazon.es (Portugal/Spain) → SEARCH on amazon.es for the product
-//     (BR product IDs often don't exist there; a search never dead-ends), visitor's tag
+//     (BR product IDs often don't exist there; a search never dead-ends), visitor's tag,
+//     opened in Portuguese (&language=pt_PT — owner 2026-09-26: Portugal buys on amazon.es)
 //   • anyone else → /dp on amazon.com.br with the BR program's default tag
 // Used at render time (ProductCard/ProductGallery) AND by TrackingProvider's link
 // rewrite, so both always produce the same link. Pages without a pinned market are
@@ -172,6 +173,10 @@ function searchUrlFor(domain: string, tag: string, query: string): string {
 const PIN_DOMAIN: Record<string, string> = { br: 'amazon.com.br' };
 const PIN_DEFAULT_TAG: Record<string, string> = { br: 'thewinnerbr-20' }; // = PROGRAMS.br.defaultTag
 const PIN_SEARCH_STORES: Record<string, string[]> = { br: ['amazon.es'] };
+// Language to open the search store in (verified 2026-09-26 in a browser: amazon.es has an
+// official "português - PT" UI; `&language=pt_PT` opens it in Portuguese for a new
+// visitor — a visitor who already chose another language on amazon.es keeps theirs).
+const PIN_SEARCH_LANGUAGE: Record<string, string> = { 'amazon.es': 'pt_PT' };
 
 export function pinnedAffiliateUrl(
   pinMarket: string,
@@ -183,7 +188,8 @@ export function pinnedAffiliateUrl(
   if (!pinDomain) return `https://www.${session.domain}/dp/${asin}?tag=${session.tag}`; // unknown pin → legacy
   if (session.domain === pinDomain) return `https://www.${pinDomain}/dp/${asin}?tag=${session.tag}`;
   if ((PIN_SEARCH_STORES[pinMarket] || []).includes(session.domain)) {
-    return searchUrlFor(session.domain, session.tag, searchQuery);
+    const lang = PIN_SEARCH_LANGUAGE[session.domain];
+    return searchUrlFor(session.domain, session.tag, searchQuery) + (lang ? `&language=${lang}` : '');
   }
   return `https://www.${pinDomain}/dp/${asin}?tag=${PIN_DEFAULT_TAG[pinMarket]}`;
 }
