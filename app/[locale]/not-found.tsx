@@ -13,8 +13,35 @@
 // ============================================
 
 import { Link } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
+
+// 2026-09-26 (BR 1): Portuguese on /pt (strings mirror messages/pt.json NotFound.*);
+// every other locale keeps the exact English text below.
+const PT = {
+  title: 'Página não encontrada',
+  body: 'A página que você procura não existe ou foi movida.',
+  back: 'Voltar para o início',
+};
 
 export default function NotFound() {
+  const isPt = useLocale() === 'pt';
+  if (isPt) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center px-4">
+          <div className="text-8xl mb-6">🔍</div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">{PT.title}</h1>
+          <p className="text-gray-500 mb-8 max-w-md mx-auto">{PT.body}</p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-colors"
+          >
+            {PT.back}
+          </Link>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center px-4">

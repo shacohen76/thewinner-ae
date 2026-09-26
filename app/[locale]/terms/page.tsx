@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
+import { ptStaticMetadata } from '@/lib/pt-meta';
+import TermsPt from './TermsPt';
 
 // ============================================
 // Terms of Use
@@ -11,14 +13,21 @@ import { CONFIG } from '@/lib/utils';
 // for visitors outside the UAE)
 // ============================================
 
-export const metadata: Metadata = {
+const metadataEn: Metadata = {
   title: 'Terms of Use',
   description: 'Terms of Use for The Winners — rules for using our product comparison site.',
   alternates: { canonical: '/terms' },
 };
 
+// 2026-09-26 (BR 1): was a static `metadata` export; now per-locale so /pt gets a
+// Portuguese title. Every other locale returns the SAME English object as before.
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  return params.locale === 'pt' ? ptStaticMetadata('terms') : metadataEn;
+}
+
 export default function TermsPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
+  if (params.locale === 'pt') return <TermsPt />; // BR 1: faithful pt-BR translation
 
   return (
     <>

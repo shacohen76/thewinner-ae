@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
+import { ptStaticMetadata } from '@/lib/pt-meta';
+import PrivacyPt from './PrivacyPt';
 
 // ============================================
 // Privacy Policy
@@ -10,14 +12,21 @@ import { CONFIG } from '@/lib/utils';
 // visitors now that we monetize 13 Amazon Associates programs globally)
 // ============================================
 
-export const metadata: Metadata = {
+const metadataEn: Metadata = {
   title: 'Privacy Policy',
   description: 'Privacy Policy for The Winners — learn how we collect, use and protect your information.',
   alternates: { canonical: '/privacy' },
 };
 
+// 2026-09-26 (BR 1): was a static `metadata` export; now per-locale so /pt gets a
+// Portuguese title. Every other locale returns the SAME English object as before.
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  return params.locale === 'pt' ? ptStaticMetadata('privacy') : metadataEn;
+}
+
 export default function PrivacyPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
+  if (params.locale === 'pt') return <PrivacyPt />; // BR 1: faithful pt-BR translation
 
   return (
     <>

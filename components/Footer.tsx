@@ -9,8 +9,9 @@
 // ============================================
 
 import { Link } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
+import { PT_FOOTER_POPULAR } from '@/lib/pt-featured';
 import FooterTagline from '@/components/FooterTagline';
 import CookieSettingsLink from '@/components/CookieSettingsLink';
 
@@ -18,6 +19,8 @@ export default function Footer() {
   const t = useTranslations('Footer');
   const tc = useTranslations('Categories');
   const tn = useTranslations('Nav'); // 2026-09-26 (BR 1): siteTagline for the © line
+  // BR 1: on /pt the "Popular" links point at BR pages and the (English-only) Blog link is hidden.
+  const isPt = useLocale() === 'pt';
   return (
     <footer className="bg-gray-800 text-gray-300">
       <div className="max-w-6xl mx-auto px-4 py-12">
@@ -78,6 +81,17 @@ export default function Footer() {
           {/* Popular */}
           <div>
             <h4 className="font-bold text-white mb-4">{t('popular')}</h4>
+            {isPt ? (
+            <ul className="space-y-2 text-sm">
+              {PT_FOOTER_POPULAR.map((slug) => (
+                <li key={slug}>
+                  <Link href={`/best/${slug}`} className="hover:text-white transition-colors">
+                    {t(`popularItems.${slug}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            ) : (
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/best/portable-speakers" className="hover:text-white transition-colors">
@@ -100,6 +114,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+            )}
           </div>
 
           {/* Legal */}
@@ -111,11 +126,13 @@ export default function Footer() {
                   {t('about')}
                 </Link>
               </li>
+		{!isPt && (
 		<li>
 		  <Link href="/blog" className="hover:text-white transition-colors">
 		    {t('blog')}
 		  </Link>
 		</li>
+		)}
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
                   {t('contact')}

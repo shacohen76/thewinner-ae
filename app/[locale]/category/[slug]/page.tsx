@@ -2,9 +2,35 @@ import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { getKeywordsByCategory, MAIN_CATEGORIES, SUBCATEGORY_NAMES, isMainCategory, getMainCategoryForSubcat } from '@/lib/supabase';
+import { getKeywordsByCategory, MAIN_CATEGORIES, SUBCATEGORY_NAMES, isMainCategory, getMainCategoryForSubcat, supabase } from '@/lib/supabase';
 import { generateCategoryTitle, toTitleCase, CONFIG } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import { getBrPilotPage } from '@/lib/br-pilot-preview';
+
+// ─── BR 1 (2026-09-26): /pt keyword cards ───
+// A /pt category lists ONLY keywords that have a Portuguese page (a pt noun), labelled
+// with that noun (the English keyword_text would leak English + link to pages that just
+// redirect away). Nouns come from the local pilot preview (dev only) or Supabase
+// keyword_translations(locale='pt'), in chunks of 25 ids (PostgREST gate).
+async function getPtNouns(ids: number[]): Promise<Map<number, string>> {
+  const out = new Map<number, string>();
+  for (const id of ids) {
+    const pilot = await getBrPilotPage(id);
+    if (pilot) out.set(id, pilot.noun);
+  }
+  const missing = ids.filter((id) => !out.has(id));
+  for (let i = 0; i < missing.length; i += 25) {
+    const { data } = await supabase
+      .from('keyword_translations')
+      .select('keyword_id, keyword_text')
+      .eq('locale', 'pt')
+      .in('keyword_id', missing.slice(i, i + 25));
+    for (const r of data ?? []) if (r.keyword_text?.trim()) out.set(r.keyword_id, r.keyword_text.trim());
+  }
+  return out;
+}
+
+const capFirstPt = (s: string) => (s ? s.charAt(0).toLocaleUpperCase('pt-BR') + s.slice(1) : s);
 
 // ============================================
 // Category Page — /category/[slug]
@@ -72,6 +98,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tDesc = await getTranslations({ locale: params.locale, namespace: 'CategoryDesc' });
   const tSub = await getTranslations({ locale: params.locale, namespace: 'Subcategories' });
   const tPage = await getTranslations({ locale: params.locale, namespace: 'CategoryPage' });
+
+  // BR 1: /pt → Portuguese title suffix + self-canonical (no en-AE cluster). Others unchanged.
+  if (params.locale === 'pt') {
+    const tMeta = await getTranslations({ locale: 'pt', namespace: 'Meta' });
+    const name = isMainCategory(slug) ? tCat(slug) : SUBCATEGORY_NAMES[slug] ? tSub(slug) : null;
+    if (!name) return { title: tMeta('categorySuffix') };
+    return {
+      title: `${name} — ${CONFIG.siteName} | ${tMeta('categorySuffix')}`,
+      description: isMainCategory(slug) ? tDesc(slug) : tPage('subcatIntro', { name }),
+      alternates: { canonical: `/pt/category/${slug}` },
+    };
+  }
 
   if (isMainCategory(slug)) {
     const main = MAIN_CATEGORIES[slug];
@@ -229,12 +267,24 @@ export default async function CategoryPage({ params }: PageProps) {
   // top real program-country clickouts first (see getKeywordsByCategory). Was every
   // keyword A→Z (~1,000 cards, ~2.5MB HTML per ISR rebuild).
   const dbKeywords = await getKeywordsByCategory(slug);
-  const keywords = dbKeywords.map(kw => ({
-    text: toTitleCase(kw.keyword_text),
-    slug: kw.slug,
-    icon: subcat.icon,
-    description: `Compare ${toTitleCase(kw.keyword_text)} — find the best for you`
-  }));
+  const isPt = params.locale === 'pt';
+  const tMeta = isPt ? await getTranslations({ locale: 'pt', namespace: 'Meta' }) : null;
+  const ptNouns = isPt ? await getPtNouns(dbKeywords.map((kw) => kw.id)) : null;
+  const keywords = isPt
+    ? dbKeywords
+        .filter((kw) => ptNouns!.has(kw.id))
+        .map((kw) => ({
+          text: capFirstPt(ptNouns!.get(kw.id)!),
+          slug: kw.slug,
+          icon: subcat.icon,
+          description: tMeta!('compareCard', { noun: ptNouns!.get(kw.id)! }),
+        }))
+    : dbKeywords.map(kw => ({
+        text: toTitleCase(kw.keyword_text),
+        slug: kw.slug,
+        icon: subcat.icon,
+        description: `Compare ${toTitleCase(kw.keyword_text)} — find the best for you`
+      }));
 
   // Find parent main category for breadcrumb + gradient
   const parentSlug = getMainCategoryForSubcat(slug);
@@ -312,8 +362,9 @@ export default async function CategoryPage({ params }: PageProps) {
         ) : (
           <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Coming Soon!</h3>
-            <p className="text-gray-500">We&apos;re working on adding comparisons to this category</p>
+            {/* BR 1: pt strings on /pt; English unchanged elsewhere */}
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{tMeta ? tMeta('comingSoon') : 'Coming Soon!'}</h3>
+            <p className="text-gray-500">{tMeta ? tMeta('comingSoonSub') : <>We&apos;re working on adding comparisons to this category</>}</p>
           </div>
         )}
       </main>
@@ -323,7 +374,9 @@ export default async function CategoryPage({ params }: PageProps) {
         <section className="bg-white py-12 border-t">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
-              {parent ? `More in ${parent.label}` : 'More Categories'}
+              {tMeta
+                ? (parent ? tMeta('moreIn', { label: catLabel(parentSlug as string, parent.label) }) : tMeta('moreCategories'))
+                : (parent ? `More in ${parent.label}` : 'More Categories')}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {siblingSubcats.map((cat) => (
@@ -333,7 +386,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                 >
                   <span className="text-2xl">{cat.icon}</span>
-                  <span className="font-medium text-gray-700">{cat.name}</span>
+                  <span className="font-medium text-gray-700">{isPt ? subLabel(cat.slug, cat.name) : cat.name}</span>
                 </Link>
               ))}
             </div>
