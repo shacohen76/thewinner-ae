@@ -143,11 +143,54 @@ const RATING_NODE_4STAR: Record<string, string> = {
 // compliant). Query is the product's cleaned title (brand + type).
 export function buildAffiliateSearchUrl(query: string): string {
   const { tag, domain } = readSessionTagDomain();
+  return searchUrlFor(domain, tag, query);
+}
+
+// Search URL on an explicit store + tag (shared by the session-based builder above
+// and the pinned-market rule below — same format, incl. the 4-star filter).
+function searchUrlFor(domain: string, tag: string, query: string): string {
   const k = encodeURIComponent((query || '').trim());
   // 2026-09-01: pin "4 Stars & Up" (rh=p_72:<node>) to cut distracting junk.
   const node = RATING_NODE_4STAR[domain];
   const ratingFilter = node ? `&rh=p_72:${node}` : '';
   return `https://www.${domain}/s?k=${k}&tag=${tag}${ratingFilter}`;
+}
+
+// ============================================
+// PINNED-MARKET LINKS — BR 1 (2026-09-26, owner rule)
+// ============================================
+// A /pt page shows the BR catalog (amazon.com.br product IDs) to EVERY visitor, but a
+// visitor's session store/tag follow their own country. Owner rule for /pt links:
+//   • visitor's store = amazon.com.br (Brazil)  → /dp on amazon.com.br, visitor's own tag
+//     (keeps the BR tag-pool rotation / attribution exactly as today)
+//   • visitor's store = amazon.es (Portugal/Spain) → SEARCH on amazon.es for the product
+//     (BR product IDs often don't exist there; a search never dead-ends), visitor's tag
+//   • anyone else → /dp on amazon.com.br with the BR program's default tag
+// Used at render time (ProductCard/ProductGallery) AND by TrackingProvider's link
+// rewrite, so both always produce the same link. Pages without a pinned market are
+// untouched (these helpers are only called when pinMarket is set).
+const PIN_DOMAIN: Record<string, string> = { br: 'amazon.com.br' };
+const PIN_DEFAULT_TAG: Record<string, string> = { br: 'thewinnerbr-20' }; // = PROGRAMS.br.defaultTag
+const PIN_SEARCH_STORES: Record<string, string[]> = { br: ['amazon.es'] };
+
+export function pinnedAffiliateUrl(
+  pinMarket: string,
+  asin: string,
+  searchQuery: string,
+  session: { tag: string; domain: string },
+): string {
+  const pinDomain = PIN_DOMAIN[pinMarket];
+  if (!pinDomain) return `https://www.${session.domain}/dp/${asin}?tag=${session.tag}`; // unknown pin → legacy
+  if (session.domain === pinDomain) return `https://www.${pinDomain}/dp/${asin}?tag=${session.tag}`;
+  if ((PIN_SEARCH_STORES[pinMarket] || []).includes(session.domain)) {
+    return searchUrlFor(session.domain, session.tag, searchQuery);
+  }
+  return `https://www.${pinDomain}/dp/${asin}?tag=${PIN_DEFAULT_TAG[pinMarket]}`;
+}
+
+/** Render-time variant: reads the visitor's session store/tag (SSR → defaults). */
+export function buildPinnedAffiliateUrl(pinMarket: string, asin: string, searchQuery: string): string {
+  return pinnedAffiliateUrl(pinMarket, asin, searchQuery, readSessionTagDomain());
 }
 
 // ML 3 (2026-07-17): turn a scraped product title into a clean Amazon SEARCH
