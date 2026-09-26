@@ -24,7 +24,7 @@
 
 import { useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { CONFIG } from '@/lib/utils';
+import { CONFIG, pinnedAffiliateUrl } from '@/lib/utils';
 import { getGeoGroup, type GeoGroup, type AmazonDomain } from '@/lib/geo-config';
 
 // Session data stored in sessionStorage
@@ -203,7 +203,17 @@ function storeSession(session: TrackingSession): void {
 function rewriteAmazonLinks(tag: string, domain?: string): void {
   if (typeof document === 'undefined') return;
 
-  const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="amazon.ae"]');
+  // 2026-09-26 (BR 1): links on a PINNED-market page (/pt → br) carry data-pin-* and
+  // follow the owner's rule (lib/utils pinnedAffiliateUrl): BR store → amazon.com.br /dp
+  // with this tag; amazon.es → amazon.es search; anyone else → amazon.com.br + BR default
+  // tag. They never go through the generic amazon.ae swap below.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-pin-market]').forEach(link => {
+    const { pinMarket, pinAsin, pinQuery } = link.dataset;
+    if (!pinMarket || !pinAsin) return;
+    link.href = pinnedAffiliateUrl(pinMarket, pinAsin, pinQuery || '', { tag, domain: domain || 'amazon.ae' });
+  });
+
+  const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="amazon.ae"]:not([data-pin-market])');
   links.forEach(link => {
     try {
       const url = new URL(link.href);

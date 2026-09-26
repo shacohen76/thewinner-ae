@@ -7,7 +7,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { CONFIG } from '@/lib/utils';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
@@ -28,6 +28,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = useTranslations('Nav');
   const tc = useTranslations('Categories');
+  // 2026-09-26 (BR 1): the blog is English-only → no Blog link on /pt. Other locales unchanged.
+  const showBlog = useLocale() !== 'pt';
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
@@ -79,9 +81,11 @@ export default function Header() {
             <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">
               {t('contact')}
             </Link>
+		{showBlog && (
 		<Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
 		  {t('blog')}
 		</Link>
+		)}
             <LanguageSwitcher />
           </nav>
 
@@ -138,6 +142,7 @@ export default function Header() {
               >
                 {t('contact')}
               </Link>
+		{showBlog && (
 		<Link
 		  href="/blog"
 		  className="px-4 py-2 text-gray-600"
@@ -145,6 +150,7 @@ export default function Header() {
 		>
 		  {t('blog')}
 		</Link>
+		)}
               {/* ML 2.4 (2026-07-12): language switcher moved to the always-visible
                   mobile header bar (above) — no longer buried inside this menu. */}
             </nav>

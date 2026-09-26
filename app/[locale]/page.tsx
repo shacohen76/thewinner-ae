@@ -6,7 +6,9 @@
 // ============================================
 
 import { Link } from '@/i18n/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
+import { PT_POPULAR_SEARCHES, PT_POPULAR_COMPARISONS } from '@/lib/pt-featured';
 import { useTranslations } from 'next-intl';
 import SearchBox from '@/components/SearchBox';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
@@ -41,8 +43,25 @@ const popularSearches = [
   { text: 'Earbuds', slug: 'earbuds' },
 ];
 
+// 2026-09-26 (BR 1): /pt home gets its own Portuguese <title>/description (the layout's
+// static metadata is English). Other locales return {} → layout default, unchanged.
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  if (params.locale !== 'pt') return {};
+  const t = await getTranslations({ locale: 'pt', namespace: 'Meta' });
+  return {
+    title: { absolute: t('homeTitle') },
+    description: t('homeDesc'),
+    openGraph: { title: t('homeTitle'), description: t('homeDesc'), locale: 'pt_BR' },
+  };
+}
+
 export default function HomePage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
+  // BR 1: /pt links only to BR pages (lib/pt-featured) and hides the search box
+  // (search covers English keywords only today). en/ar/ja unchanged.
+  const isPt = params.locale === 'pt';
+  const searches = isPt ? PT_POPULAR_SEARCHES.map((slug) => ({ slug })) : popularSearches;
+  const comparisons = isPt ? PT_POPULAR_COMPARISONS : popularComparisons;
   const tc = useTranslations('Categories');
   // INTL1 page-copy: localize the home page body (hero, sections, cards, features).
   const t = useTranslations('Home');
@@ -60,12 +79,12 @@ export default function HomePage({ params }: { params: { locale: string } }) {
           </p>
 
           {/* Smart Search Box */}
-          <SearchBox className="max-w-2xl mx-auto" />
+          {!isPt && <SearchBox className="max-w-2xl mx-auto" />}
 
           {/* Popular Searches */}
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <span className="text-blue-200 text-sm">{t('popularSearchesLabel')}</span>
-            {popularSearches.map((search) => (
+            {searches.map((search) => (
               <Link
                 key={search.slug}
                 href={`/best/${search.slug}`}
@@ -114,7 +133,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popularComparisons.map((comparison) => (
+            {comparisons.map((comparison) => (
               <Link
                 key={comparison.slug}
                 href={`/best/${comparison.slug}`}

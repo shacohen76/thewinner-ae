@@ -38,6 +38,7 @@ interface ProductListProps {
   // or the page hero as fallback. undefined on non-SEA → no Shopee button anywhere.
   shopee?: ShopeeForPage;
   pageSlug?: string;
+  pinMarket?: string; // 2026-09-26 (BR 1): /pt → 'br', passed to each card's link rule
 }
 
 // 2026-08-26 (SSR restore): deterministic fake "review count" (500-5500) seeded by
@@ -52,7 +53,7 @@ function seededReviewCount(asin: string): number {
 
 type SortOption = 'rank' | 'price';
 
-export default function ProductList({ products, searchFallback, keywordEn, shopee, pageSlug }: ProductListProps) {
+export default function ProductList({ products, searchFallback, keywordEn, shopee, pageSlug, pinMarket }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
 
@@ -148,6 +149,7 @@ export default function ProductList({ products, searchFallback, keywordEn, shope
             isPrime={product.is_prime}
             searchFallback={searchFallback}
             keywordEn={keywordEn}
+            pinMarket={pinMarket}
             reviewCount={seededReviewCount(product.asin)}
             showDeal={dealAsins.has(product.asin)}
             shopeeLink={

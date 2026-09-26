@@ -3,17 +3,23 @@ import { setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
+import { ptStaticMetadata } from '@/lib/pt-meta';
 
 // ============================================
 // Contact Page — thewinner.ae
 // Created: 2026-03-20
 // ============================================
 
-export const metadata: Metadata = {
+const metadataEn: Metadata = {
   title: 'Contact',
   description: 'Get in touch with us — we would love to hear from you.',
   alternates: { canonical: '/contact' },
 };
+
+// 2026-09-26 (BR 1): per-locale so /pt gets a Portuguese title; others unchanged.
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  return params.locale === 'pt' ? ptStaticMetadata('contact') : metadataEn;
+}
 
 export default function ContactPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);

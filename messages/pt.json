@@ -26,7 +26,11 @@
       "portable-speakers": "Caixas de Som Portáteis",
       "coffee-machines": "Cafeteiras",
       "washing-machines": "Máquinas de Lavar",
-      "televisions": "Televisores"
+      "televisions": "Televisores",
+      "gaming-laptops": "Notebook gamer",
+      "air-fryers": "Air fryer",
+      "smart-watches": "Smartwatch",
+      "vacuum-cleaners": "Aspirador de pó"
     },
     "about": "Sobre",
     "blog": "Blog",
@@ -159,28 +163,83 @@
       "portable-speakers": "Caixas de Som Portáteis",
       "my-perfume-perfume-100ml": "Perfumes",
       "roborock-vacuum-cleaners": "Aspiradores Roborock",
-      "earbuds": "Fones de Ouvido sem Fio"
+      "earbuds": "Fones de Ouvido sem Fio",
+      "gaming-laptops": "Notebook gamer",
+      "air-fryers": "Air fryer",
+      "smart-watches": "Smartwatch",
+      "baby-bottles": "Mamadeira"
     },
     "browseByCategory": "Navegue por Categoria",
     "browseByCategorySub": "Escolha uma categoria e encontre os melhores produtos",
     "popularComparisons": "Comparações Populares",
     "popularComparisonsSub": "As comparações mais procuradas pelos nossos usuários",
     "comparisons": {
-      "portable-speakers": { "title": "As 10 Melhores Caixas de Som Portáteis", "desc": "Comparação completa de caixas de som Bluetooth portáteis para todos os bolsos" },
-      "coffee-machines": { "title": "As 10 Melhores Cafeteiras", "desc": "De cafeteiras de cápsula a máquinas de espresso profissionais para a sua casa" },
-      "washing-machines": { "title": "As 10 Melhores Máquinas de Lavar", "desc": "Máquinas de lavar recomendadas para todos os bolsos e necessidades" },
-      "televisions": { "title": "Os 10 Melhores Televisores", "desc": "4K, OLED, QLED — todas as principais tecnologias comparadas" },
-      "earbuds": { "title": "Os 10 Melhores Fones de Ouvido sem Fio", "desc": "Fones sem fio para música, chamadas e um estilo de vida ativo" },
-      "hair-straightener": { "title": "As 10 Melhores Chapinhas", "desc": "Chapinhas de nível profissional para resultados de salão em casa" }
+      "portable-speakers": {
+        "title": "As 10 Melhores Caixas de Som Portáteis",
+        "desc": "Comparação completa de caixas de som Bluetooth portáteis para todos os bolsos"
+      },
+      "coffee-machines": {
+        "title": "As 10 Melhores Cafeteiras",
+        "desc": "De cafeteiras de cápsula a máquinas de espresso profissionais para a sua casa"
+      },
+      "washing-machines": {
+        "title": "As 10 Melhores Máquinas de Lavar",
+        "desc": "Máquinas de lavar recomendadas para todos os bolsos e necessidades"
+      },
+      "televisions": {
+        "title": "Os 10 Melhores Televisores",
+        "desc": "4K, OLED, QLED — todas as principais tecnologias comparadas"
+      },
+      "earbuds": {
+        "title": "Os 10 Melhores Fones de Ouvido sem Fio",
+        "desc": "Fones sem fio para música, chamadas e um estilo de vida ativo"
+      },
+      "hair-straightener": {
+        "title": "As 10 Melhores Chapinhas",
+        "desc": "Chapinhas de nível profissional para resultados de salão em casa"
+      },
+      "gaming-laptops": {
+        "title": "Notebook gamer: os 10 melhores",
+        "desc": "Desempenho para jogos, tela e custo comparados lado a lado"
+      },
+      "air-fryers": {
+        "title": "Air fryer: as 10 melhores",
+        "desc": "Capacidade, potência e praticidade para a sua cozinha"
+      },
+      "smart-watches": {
+        "title": "Smartwatch: os 10 melhores",
+        "desc": "Saúde, esportes e notificações no seu pulso"
+      },
+      "vacuum-cleaners": {
+        "title": "Aspirador de pó: os 10 melhores",
+        "desc": "Verticais, portáteis e robôs para cada tipo de casa"
+      },
+      "baby-bottles": {
+        "title": "Mamadeira: as 10 melhores",
+        "desc": "Modelos anticólica e fáceis de limpar para o dia a dia"
+      },
+      "dog-food": {
+        "title": "Ração para cachorro: as 10 melhores",
+        "desc": "Opções para filhotes, adultos e todas as raças"
+      }
     },
     "viewComparison": "Ver Comparação",
     "viewAllComparisons": "Ver Todas as Comparações",
     "whyChooseUs": "Por Que Nos Escolher?",
     "whyChooseUsSub": "Nós fazemos o trabalho pesado por você",
     "features": {
-      "research": { "title": "Pesquisa Aprofundada", "desc": "Analisamos e comparamos centenas de produtos para encontrar o melhor de cada categoria" },
-      "objective": { "title": "Totalmente Objetivo", "desc": "Nossos rankings se baseiam no desempenho real, não em publicidade ou marketing" },
-      "savings": { "title": "Economize Tempo e Dinheiro", "desc": "Em vez de passar horas pesquisando, tenha a resposta em minutos e encontre a melhor oferta" }
+      "research": {
+        "title": "Pesquisa Aprofundada",
+        "desc": "Analisamos e comparamos centenas de produtos para encontrar o melhor de cada categoria"
+      },
+      "objective": {
+        "title": "Totalmente Objetivo",
+        "desc": "Nossos rankings se baseiam no desempenho real, não em publicidade ou marketing"
+      },
+      "savings": {
+        "title": "Economize Tempo e Dinheiro",
+        "desc": "Em vez de passar horas pesquisando, tenha a resposta em minutos e encontre a melhor oferta"
+      }
     }
   },
   "About": {
@@ -190,25 +249,61 @@
     "mission": "No \"{siteName}\" acreditamos que todo consumidor merece informações confiáveis e objetivas antes de fazer uma compra. Nossa missão é poupar horas de pesquisa e entregar a conclusão final — quais são os melhores produtos de cada categoria.",
     "howWeWorkTitle": "Como Trabalhamos",
     "work": {
-      "research": { "title": "Pesquisa Aprofundada", "desc": "Analisamos centenas de produtos, especificações técnicas, avaliações de usuários e dados de vendas" },
-      "objective": { "title": "Comparação Objetiva", "desc": "Nossos rankings se baseiam no desempenho no mundo real, não em pagamentos ou publicidade" },
-      "recommendations": { "title": "Recomendações Claras", "desc": "Explicamos de forma simples por que cada produto é recomendado e para quem ele é mais indicado" }
+      "research": {
+        "title": "Pesquisa Aprofundada",
+        "desc": "Analisamos centenas de produtos, especificações técnicas, avaliações de usuários e dados de vendas"
+      },
+      "objective": {
+        "title": "Comparação Objetiva",
+        "desc": "Nossos rankings se baseiam no desempenho no mundo real, não em pagamentos ou publicidade"
+      },
+      "recommendations": {
+        "title": "Recomendações Claras",
+        "desc": "Explicamos de forma simples por que cada produto é recomendado e para quem ele é mais indicado"
+      }
     },
     "valuesTitle": "Nossos Valores",
     "values": {
-      "reliability": { "term": "Confiabilidade", "desc": " — Nossas informações são precisas e atualizadas. Não recomendamos produtos que nós mesmos não compraríamos." },
-      "transparency": { "term": "Transparência", "desc": " — Somos abertos sobre como ganhamos dinheiro. Quando você compra pelos nossos links, podemos receber uma comissão." },
-      "consumerFirst": { "term": "Consumidor em Primeiro Lugar", "desc": " — Cada decisão que tomamos é avaliada do seu ponto de vista — o do consumidor." }
+      "reliability": {
+        "term": "Confiabilidade",
+        "desc": " — Nossas informações são precisas e atualizadas. Não recomendamos produtos que nós mesmos não compraríamos."
+      },
+      "transparency": {
+        "term": "Transparência",
+        "desc": " — Somos abertos sobre como ganhamos dinheiro. Quando você compra pelos nossos links, podemos receber uma comissão."
+      },
+      "consumerFirst": {
+        "term": "Consumidor em Primeiro Lugar",
+        "desc": " — Cada decisão que tomamos é avaliada do seu ponto de vista — o do consumidor."
+      }
     },
     "teamTitle": "Nossa Equipe",
     "teamIntro": "Conheça os avaliadores especialistas por trás das nossas recomendações:",
     "team": {
-      "alex": { "role": "Especialista em Tecnologia", "bio": "Apaixonado por gadgets e games. Avalia computadores, smartphones e equipamentos para games." },
-      "adham": { "role": "Especialista em Eletrodomésticos", "bio": "Entusiasta de culinária e confeitaria. Avalia eletroportáteis de cozinha, cafeteiras e eletrônicos para casa." },
-      "mariam": { "role": "Especialista em Áudio", "bio": "Musicista e apaixonada por som. Avalia caixas de som, fones de ouvido e sistemas de áudio." },
-      "fatima": { "role": "Especialista em Beleza e Casa", "bio": "Apaixonada por design de interiores e beleza. Avalia produtos de beleza, cuidados com a pele e acessórios para casa." },
-      "abdulla": { "role": "Especialista em Esportes e Fitness", "bio": "Atleta e personal trainer. Avalia smartwatches, equipamentos de ginástica e eletrônicos esportivos." },
-      "sara": { "role": "Especialista em Família e Crianças", "bio": "Mãe de três filhos. Avalia produtos para bebês, brinquedos e itens essenciais para a família." }
+      "alex": {
+        "role": "Especialista em Tecnologia",
+        "bio": "Apaixonado por gadgets e games. Avalia computadores, smartphones e equipamentos para games."
+      },
+      "adham": {
+        "role": "Especialista em Eletrodomésticos",
+        "bio": "Entusiasta de culinária e confeitaria. Avalia eletroportáteis de cozinha, cafeteiras e eletrônicos para casa."
+      },
+      "mariam": {
+        "role": "Especialista em Áudio",
+        "bio": "Musicista e apaixonada por som. Avalia caixas de som, fones de ouvido e sistemas de áudio."
+      },
+      "fatima": {
+        "role": "Especialista em Beleza e Casa",
+        "bio": "Apaixonada por design de interiores e beleza. Avalia produtos de beleza, cuidados com a pele e acessórios para casa."
+      },
+      "abdulla": {
+        "role": "Especialista em Esportes e Fitness",
+        "bio": "Atleta e personal trainer. Avalia smartwatches, equipamentos de ginástica e eletrônicos esportivos."
+      },
+      "sara": {
+        "role": "Especialista em Família e Crianças",
+        "bio": "Mãe de três filhos. Avalia produtos para bebês, brinquedos e itens essenciais para a família."
+      }
     },
     "disclosureTitle": "Aviso",
     "disclosure": "Trabalhamos com parceiros de primeira linha para garantir ótimos resultados aos nossos usuários. Podemos receber uma comissão de forma independente, e nunca em nome dos nossos usuários. As comissões que recebemos não afetam nossos rankings nem nossas recomendações — eles se baseiam exclusivamente na qualidade dos produtos e na adequação às suas necessidades. Como Associados da Amazon, ganhamos com compras qualificadas. Lealdade e confiança acima de tudo, sempre."
@@ -218,8 +313,35 @@
     "subtitle": "Adoraríamos ouvir você!",
     "emailTitle": "📧 E-mail",
     "emailIntro": "Para dúvidas, sugestões ou parcerias, envie-nos um e-mail:",
-    "suggestions": { "title": "💡 Sugestões", "desc": "Tem uma ideia de nova categoria ou de um produto que deveríamos adicionar? Adoraríamos saber!" },
-    "partnerships": { "title": "🤝 Parcerias", "desc": "Tem interesse em uma parceria comercial? Entre em contato e teremos prazer em conversar." },
-    "report": { "title": "🐛 Relatar um Problema", "desc": "Encontrou um erro no site ou uma informação incorreta? Avise-nos e corrigiremos imediatamente." }
+    "suggestions": {
+      "title": "💡 Sugestões",
+      "desc": "Tem uma ideia de nova categoria ou de um produto que deveríamos adicionar? Adoraríamos saber!"
+    },
+    "partnerships": {
+      "title": "🤝 Parcerias",
+      "desc": "Tem interesse em uma parceria comercial? Entre em contato e teremos prazer em conversar."
+    },
+    "report": {
+      "title": "🐛 Relatar um Problema",
+      "desc": "Encontrou um erro no site ou uma informação incorreta? Avise-nos e corrigiremos imediatamente."
+    }
+  },
+  "Meta": {
+    "homeTitle": "The Winners — Análises de Produtos",
+    "homeDesc": "Comparamos os melhores produtos da Amazon.com.br: eletrônicos, eletrodomésticos, informática, beleza e muito mais.",
+    "about": "Sobre",
+    "aboutDesc": "Conheça a The Winners, plataforma de comparação de produtos.",
+    "contact": "Contato",
+    "contactDesc": "Fale com a gente — adoraríamos ouvir você.",
+    "privacy": "Política de Privacidade",
+    "privacyDesc": "Política de Privacidade da The Winners — como coletamos, usamos e protegemos suas informações.",
+    "terms": "Termos de Uso",
+    "termsDesc": "Termos de Uso da The Winners — regras para usar nosso site de comparação de produtos.",
+    "categorySuffix": "Comparação de Produtos",
+    "comingSoon": "Em breve!",
+    "comingSoonSub": "Estamos preparando comparações para esta categoria",
+    "moreIn": "Mais em {label}",
+    "moreCategories": "Mais categorias",
+    "compareCard": "Compare as melhores opções de {noun}"
   }
 }

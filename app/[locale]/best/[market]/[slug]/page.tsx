@@ -473,7 +473,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             </a>
           </div>
         ) : (
-          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} />
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} />
         )}
       </main>
 
@@ -488,7 +488,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           </p>
         </div>
       </section>
-      <ProductGallery products={galleryProducts} searchFallback={searchFallback} keywordEn={keywordEn} />
+      {/* BR 1: pinMarket 'br' on /pt → owner link rule (BR /dp · amazon.es search · else BR /dp + BR tag) */}
+      <ProductGallery products={galleryProducts} searchFallback={searchFallback} keywordEn={keywordEn} pinMarket={isPt ? 'br' : undefined} />
 
       {/* Buying Guide Section with TOC */}
       {buyingGuide.length > 0 && (

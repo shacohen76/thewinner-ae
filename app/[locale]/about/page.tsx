@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { CONFIG } from '@/lib/utils';
+import { ptStaticMetadata } from '@/lib/pt-meta';
 
 // ============================================
 // About Page — thewinner.ae
@@ -10,11 +11,16 @@ import { CONFIG } from '@/lib/utils';
 // Adapted from KSP: English, UAE market, renamed team
 // ============================================
 
-export const metadata: Metadata = {
+const metadataEn: Metadata = {
   title: 'About',
   description: `Learn about us — ${CONFIG.siteName} is the leading product comparison platform for the UAE.`,
   alternates: { canonical: '/about' },
 };
+
+// 2026-09-26 (BR 1): per-locale so /pt gets a Portuguese title; others unchanged.
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  return params.locale === 'pt' ? ptStaticMetadata('about') : metadataEn;
+}
 
 export default function AboutPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
