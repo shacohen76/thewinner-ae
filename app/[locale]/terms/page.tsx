@@ -36,7 +36,7 @@ export default function TermsPage({ params }: { params: { locale: string } }) {
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Terms of Use</h1>
-          <p className="text-gray-500 mb-8">Last updated: May 2026</p>
+          <p className="text-gray-500 mb-8">Last updated: September 2026</p>
 
           <div className="space-y-8 text-gray-600">
             <section>
@@ -63,7 +63,7 @@ export default function TermsPage({ params }: { params: { locale: string } }) {
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">4. Affiliate Links &amp; Partnerships</h2>
               <p className="leading-relaxed mb-3">
-                <strong>Affiliate disclosure</strong> (per US FTC §255, UK CMA, and EU UCPD guidance):
+                <strong>Affiliate disclosure</strong> (per US FTC §255, UK CMA, EU UCPD and Brazil CONAR guidance):
               </p>
               <p className="leading-relaxed mb-3">
                 The Site contains affiliate links to the Amazon Associates Program, including the regional Amazon storefronts amazon.ae, amazon.sa, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, amazon.se, amazon.ie, amazon.com.be, and amazon.nl. The specific storefront you are routed to is determined automatically based on your country.
@@ -100,6 +100,10 @@ export default function TermsPage({ params }: { params: { locale: string } }) {
               </p>
               <p className="leading-relaxed italic">
                 Nothing in this section shall override mandatory consumer-protection rights you may have under the laws of your country of residence. Visitors in the European Union, the United Kingdom, California, and other jurisdictions with mandatory consumer-protection laws retain those rights regardless of the choice-of-law clause above.
+              </p>
+              {/* 2026-09-26 (global legal coverage): home-court right + Brazil named explicitly. */}
+              <p className="leading-relaxed italic mt-3">
+                If you are a consumer, you may also bring a claim before the courts of the country where you live whenever your local law gives you that right — for example, consumers in Brazil under the Consumer Protection Code (CDC, Law 8,078/1990).
               </p>
             </section>
 
