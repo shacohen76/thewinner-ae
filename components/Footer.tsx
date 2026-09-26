@@ -17,6 +17,7 @@ import CookieSettingsLink from '@/components/CookieSettingsLink';
 export default function Footer() {
   const t = useTranslations('Footer');
   const tc = useTranslations('Categories');
+  const tn = useTranslations('Nav'); // 2026-09-26 (BR 1): siteTagline for the © line
   return (
     <footer className="bg-gray-800 text-gray-300">
       <div className="max-w-6xl mx-auto px-4 py-12">
@@ -147,7 +148,7 @@ export default function Footer() {
               {t('copyright', {
                 year: getCurrentYear(),
                 siteName: CONFIG.siteName,
-                tagline: CONFIG.siteTagline,
+                tagline: tn('siteTagline'),
               })}
             </p>
             <p className="text-xs text-gray-600 mt-2">

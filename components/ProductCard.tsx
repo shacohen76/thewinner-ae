@@ -142,6 +142,26 @@ const FALLBACK_WWL: Record<string, Record<FallbackBatch, string[]>> = {
       '選択肢の一つになり得る',
     ],
   },
+  // 2026-09-26 (BR 1): pt-BR so /pt never leaks English when a product has no WWL.
+  pt: {
+    top: [
+      'O verdadeiro vencedor',
+      'Testado e aprovado para merecer o posto',
+      'Provavelmente a escolha mais segura',
+      'Quem compra continua escolhendo este',
+    ],
+    mid: [
+      'Concorrente forte e uma escolha real',
+      'Não vai te decepcionar',
+      'Uma alternativa realmente boa',
+      'Vale muito a pena considerar',
+    ],
+    low: [
+      'Ainda vale uma olhada',
+      'Vai dar conta do recado',
+      'Também pode ser uma boa opção',
+    ],
+  },
 };
 
 function fallbackBatch(rank: number): FallbackBatch {
@@ -163,6 +183,7 @@ const FOR_NERDS_HEADING: Record<string, string> = {
   en: 'The Fun Details - For Nerds',
   ar: 'التفاصيل الممتعة — لعشّاق التفاصيل',
   ja: 'マニア向けの豆知識',
+  pt: 'Detalhes técnicos — para os mais curiosos', // 2026-09-26 (BR 1)
 };
 
 // 2026-09-10: corrupt catalog rows can store wwl_points/bullet_points as a JSON
@@ -306,7 +327,10 @@ export default function ProductCard({
       {/* Review count — KSP parity, restored 2026-09-05 */}
       {reviewCount > 0 && (
         <div className="text-xs text-gray-400 mt-1">
-          ({formatNumber(reviewCount)} reviews)
+          {/* 2026-09-26 (BR 1): pt → "1.326 avaliações" (pt-BR digits); en/ar/ja unchanged */}
+          {locale === 'pt'
+            ? `(${reviewCount.toLocaleString('pt-BR')} avaliações)`
+            : `(${formatNumber(reviewCount)} reviews)`}
         </div>
       )}
 

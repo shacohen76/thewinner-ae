@@ -26,6 +26,14 @@
 // ============================================
 
 import { defineRouting } from 'next-intl/routing';
+import { BR_PT_ENABLED } from '../lib/feature-flags';
+
+// 2026-09-26 (BR 1): Brazilian Portuguese ('pt', URL /pt/*) is appended ONLY when
+// NEXT_PUBLIC_BR_PT_ENABLED=1 (see lib/feature-flags.ts). Flag off (default) → the
+// list is exactly ['en','ar','ja'] as before, so production is unchanged.
+const BASE_LOCALES = ['en', 'ar', 'ja'] as const;
+type SiteLocale = (typeof BASE_LOCALES)[number] | 'pt';
+const LOCALES: SiteLocale[] = BR_PT_ENABLED ? [...BASE_LOCALES, 'pt'] : [...BASE_LOCALES];
 
 export const routing = defineRouting({
   // Phase 2A: Arabic ('ar') added. English stays the default and prefix-less;
@@ -36,7 +44,7 @@ export const routing = defineRouting({
   // (served under /ja/*, LTR, DB-driven auto-index gated on ja noun+BYG; the
   // whole /ja subtree is noindex EXCEPT /ja/best/* per middleware). Language is a
   // URL axis over the geo-driven JP catalog (catalog = f(geo), language = f(URL)).
-  locales: ['en', 'ar', 'ja'],
+  locales: LOCALES,
   defaultLocale: 'en',
   // English prefix-less (rewrite); non-default locales get a /xx prefix.
   localePrefix: 'as-needed',

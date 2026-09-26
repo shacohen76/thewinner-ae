@@ -38,6 +38,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS, resolveCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
+import { BR_PT_ENABLED } from '@/lib/feature-flags';
 
 // next-intl locale router. Produces the (rewritten) response we mutate below.
 const intlMiddleware = createMiddleware(routing);
@@ -104,11 +105,21 @@ const LOCALIZED_PREFIXES: string[] = routing.locales.filter((l) => l !== routing
 // It must never be a public/crawlable URL (duplicate content), so a request that
 // arrives WITH one is 308'd back to the canonical market-less path. Group $1 = the
 // "/best" (or "/ar/best") prefix, group $2 = the trailing "/" or end.
-const BEST_MARKET_LEAK_RE = /^(\/(?:ar\/|ja\/)?best)\/(?:ae|us|uk|ca|ie|au|sg|jp)(\/|$)/;
+// 2026-09-26 (BR 1): both regexes are now BUILT from LOCALIZED_PREFIXES so a new
+// locale (pt, behind NEXT_PUBLIC_BR_PT_ENABLED) needs no edit here. With the flag off
+// the prefixes are exactly ar|ja and the market list exactly the 8 below — i.e. the
+// compiled patterns are identical to the previous literals. 'br' (pt-pinned) joins the
+// leak list only when enabled. (Known pre-existing gap, NOT changed here: 'sa' is
+// absent from this list — separate follow-up.)
+const LEAK_MARKETS = ['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', ...(BR_PT_ENABLED ? ['br'] : [])];
+const PREFIX_ALT = LOCALIZED_PREFIXES.join('|');
+const BEST_MARKET_LEAK_RE = new RegExp(
+  `^(\\/(?:${LOCALIZED_PREFIXES.map((p) => `${p}\\/`).join('|')})?best)\\/(?:${LEAK_MARKETS.join('|')})(\\/|$)`,
+);
 // A PUBLIC /best request = exactly one segment after "best" (the slug), optional
-// locale prefix, not already market-segmented. Group $1 = ar|ja (undefined for en),
+// locale prefix, not already market-segmented. Group $1 = ar|ja|… (undefined for en),
 // group $2 = slug.
-const BEST_PUBLIC_RE = /^\/(?:(ar|ja)\/)?best\/([^/]+)\/?$/;
+const BEST_PUBLIC_RE = new RegExp(`^\\/(?:(${PREFIX_ALT})\\/)?best\\/([^/]+)\\/?$`);
 
 export function middleware(request: NextRequest) {
   const country = request.headers.get('x-vercel-ip-country') || '';
