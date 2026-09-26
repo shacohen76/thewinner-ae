@@ -10,7 +10,7 @@ export default function PrivacyPt() {
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Política de Privacidade</h1>
-          <p className="text-gray-500 mb-8">Última atualização: maio de 2026</p>
+          <p className="text-gray-500 mb-8">Última atualização: setembro de 2026</p>
 
           <div className="space-y-8 text-gray-600">
             <section>
@@ -66,6 +66,26 @@ export default function PrivacyPt() {
               <p className="leading-relaxed mb-4">
                 O Site é operado a partir dos Emirados Árabes Unidos e atende principalmente residentes dos Emirados Árabes Unidos, nos termos da Lei de Proteção de Dados Pessoais dos Emirados Árabes Unidos (PDPL). No entanto, visitantes de fora dos Emirados Árabes Unidos podem ter direitos adicionais previstos em suas leis locais, os quais respeitamos quando aplicáveis.
               </p>
+              {/* 2026-09-26 (global legal coverage): promessa universal para todos os visitantes. */}
+              <p className="leading-relaxed mb-4">
+                <strong>Onde quer que você more</strong>, você pode nos pedir para acessar, corrigir, excluir ou exportar seus dados pessoais, se opor ao uso deles ou retirar o seu consentimento, e pode apresentar uma reclamação à autoridade de proteção de dados do seu país.
+              </p>
+
+              {/* 2026-09-26 (global legal coverage): Brasil — primeiro na página em português. */}
+              <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Brasil (LGPD — Lei Geral de Proteção de Dados, Lei nº 13.709/2018)</h3>
+              <p className="leading-relaxed mb-2">Se você estiver no Brasil, você tem o direito de:</p>
+              <ul className="list-disc list-inside space-y-1 ms-4">
+                <li>confirmação da existência de tratamento e acesso aos seus dados;</li>
+                <li>correção de dados incompletos, inexatos ou desatualizados;</li>
+                <li>anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos;</li>
+                <li>portabilidade dos dados;</li>
+                <li>eliminação dos dados tratados com o seu consentimento e revogação do consentimento a qualquer momento;</li>
+                <li>informação sobre as entidades com as quais compartilhamos dados e sobre as consequências de não fornecer o consentimento;</li>
+                <li>apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).</li>
+              </ul>
+              <p className="leading-relaxed mt-3">
+                <strong>Base legal</strong> (art. 7º da LGPD): o seu consentimento para cookies de análise e de marketing e o nosso legítimo interesse em operar, proteger e melhorar o Site.
+              </p>
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Residentes dos Emirados Árabes Unidos (PDPL)</h3>
               <p className="leading-relaxed">
@@ -95,6 +115,12 @@ export default function PrivacyPt() {
                 <li>não sofrer discriminação por exercer esses direitos.</li>
               </ul>
 
+              {/* 2026-09-26 (global legal coverage): demais países atendidos pelo Site. */}
+              <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Outros países</h3>
+              <p className="leading-relaxed">
+                Se você estiver em outro lugar — incluindo Portugal e Espanha (GDPR), Arábia Saudita (PDPL), Japão (APPI), Canadá (PIPEDA), Austrália (Privacy Act 1988) e Singapura (PDPA) — você tem os direitos que a sua lei local lhe garante. Fale conosco e nós os respeitaremos.
+              </p>
+
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Retenção de dados</h3>
               <p className="leading-relaxed">
                 Os dados de sessão e de rastreamento de cliques são retidos por até 24 meses para fins de análise e atribuição de afiliados; por mais tempo quando exigido para cumprimento de obrigações legais.
@@ -102,14 +128,14 @@ export default function PrivacyPt() {
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Transferências internacionais de dados</h3>
               <p className="leading-relaxed">
-                Os seus dados podem ser transferidos para países diferentes do seu e tratados neles, incluindo os Estados Unidos e a União Europeia, pelos nossos prestadores de serviços (Vercel, Supabase, Google, Amazon). Quando aplicável, essas transferências se baseiam em salvaguardas adequadas, como Cláusulas Contratuais Padrão ou mecanismos equivalentes.
+                Os seus dados podem ser transferidos para países diferentes do seu e tratados neles, incluindo os Estados Unidos e a União Europeia, pelos nossos prestadores de serviços (Vercel, Supabase, Google, Amazon). Quando aplicável, essas transferências se baseiam nas salvaguardas exigidas pela lei da sua região, como cláusulas contratuais padrão aprovadas para essa região (por exemplo, as cláusulas da UE/Reino Unido ou as cláusulas-padrão contratuais aprovadas pela ANPD no Brasil) ou mecanismos equivalentes.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Como exercer os seus direitos</h3>
               <p className="leading-relaxed">
                 Envie um e-mail para{' '}
                 <a href="mailto:thewinners@atomicmail.io" className="text-blue-600 hover:underline">thewinners@atomicmail.io</a>
-                . Responderemos em até 30 dias, conforme exigido pelo GDPR e pela CCPA. Inclua informações suficientes para que possamos verificar a sua identidade (por exemplo, datas aproximadas das visitas, país, navegador/dispositivo).
+                . Responderemos em até 15 dias — o menor prazo entre as leis que seguimos (por exemplo, a LGPD), o que vale para todos os visitantes. Inclua informações suficientes para que possamos verificar a sua identidade (por exemplo, datas aproximadas das visitas, país, navegador/dispositivo).
               </p>
 
               <p className="leading-relaxed mt-4 italic">

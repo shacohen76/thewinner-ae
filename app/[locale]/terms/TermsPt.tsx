@@ -10,7 +10,7 @@ export default function TermsPt() {
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Termos de Uso</h1>
-          <p className="text-gray-500 mb-8">Última atualização: maio de 2026</p>
+          <p className="text-gray-500 mb-8">Última atualização: setembro de 2026</p>
 
           <div className="space-y-8 text-gray-600">
             <section>
@@ -37,7 +37,7 @@ export default function TermsPt() {
             <section>
               <h2 className="text-xl font-bold text-gray-800 mb-4">4. Links de Afiliados e Parcerias</h2>
               <p className="leading-relaxed mb-3">
-                <strong>Divulgação de afiliados</strong> (conforme as orientações da FTC dos EUA §255, da CMA do Reino Unido e da UCPD da UE):
+                <strong>Divulgação de afiliados</strong> (conforme as orientações da FTC dos EUA §255, da CMA do Reino Unido, da UCPD da UE e do CONAR no Brasil):
               </p>
               <p className="leading-relaxed mb-3">
                 O Site contém links de afiliados do Programa de Associados da Amazon, incluindo as lojas regionais da Amazon amazon.ae, amazon.sa, amazon.com, amazon.co.uk, amazon.de, amazon.fr, amazon.it, amazon.es, amazon.ca, amazon.com.au, amazon.sg, amazon.com.br, amazon.pl, amazon.se, amazon.ie, amazon.com.be e amazon.nl. A loja específica para a qual você é direcionado é determinada automaticamente com base no seu país.
@@ -74,6 +74,10 @@ export default function TermsPt() {
               </p>
               <p className="leading-relaxed italic">
                 Nada nesta seção prevalecerá sobre os direitos obrigatórios de proteção ao consumidor que você possa ter nos termos das leis do seu país de residência. Visitantes na União Europeia, no Reino Unido, na Califórnia e em outras jurisdições com leis obrigatórias de proteção ao consumidor mantêm esses direitos, independentemente da cláusula de escolha de lei acima.
+              </p>
+              {/* 2026-09-26 (global legal coverage): foro do consumidor + Brasil citado expressamente. */}
+              <p className="leading-relaxed italic mt-3">
+                Se você for consumidor, também pode propor uma ação perante os tribunais do país onde mora sempre que a sua lei local lhe garantir esse direito — por exemplo, os consumidores no Brasil, nos termos do Código de Defesa do Consumidor (CDC, Lei nº 8.078/1990).
               </p>
             </section>
 

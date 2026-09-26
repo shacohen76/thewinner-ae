@@ -35,7 +35,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Privacy Policy</h1>
-          <p className="text-gray-500 mb-8">Last updated: May 2026</p>
+          <p className="text-gray-500 mb-8">Last updated: September 2026</p>
 
           <div className="space-y-8 text-gray-600">
             <section>
@@ -91,6 +91,10 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
               <p className="leading-relaxed mb-4">
                 The Site is operated from the United Arab Emirates and primarily serves UAE residents under the UAE Personal Data Protection Law (PDPL). However, visitors from outside the UAE may be entitled to additional rights under their local laws, which we honor where applicable.
               </p>
+              {/* 2026-09-26 (global legal coverage): one universal promise for every visitor. */}
+              <p className="leading-relaxed mb-4">
+                <strong>Wherever you live</strong>, you can ask us to access, correct, delete or export your personal data, object to its use, or withdraw your consent, and you can complain to the data-protection authority of your country.
+              </p>
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">UAE Residents (PDPL)</h3>
               <p className="leading-relaxed">
@@ -120,6 +124,28 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
                 <li>non-discrimination for exercising these rights.</li>
               </ul>
 
+              {/* 2026-09-26 (global legal coverage): Brazil — the site now serves amazon.com.br visitors. */}
+              <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Brazil (LGPD — Lei Geral de Proteção de Dados, Law 13,709/2018)</h3>
+              <p className="leading-relaxed mb-2">If you are located in Brazil, you have the right to:</p>
+              <ul className="list-disc list-inside space-y-1 ms-4">
+                <li>confirmation that we process your personal data, and access to it;</li>
+                <li>correction of incomplete, inaccurate or outdated data;</li>
+                <li>anonymization, blocking or deletion of unnecessary or excessive data;</li>
+                <li>data portability;</li>
+                <li>deletion of data processed with your consent, and to withdraw consent at any time;</li>
+                <li>information about the parties we share data with, and about the consequences of not giving consent;</li>
+                <li>lodge a complaint with the Brazilian National Data Protection Authority (ANPD).</li>
+              </ul>
+              <p className="leading-relaxed mt-3">
+                <strong>Legal basis</strong> (LGPD Art. 7): your consent for analytics and marketing cookies, and our legitimate interest in operating, securing and improving the Site.
+              </p>
+
+              {/* 2026-09-26 (global legal coverage): the other countries the Site serves. */}
+              <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Other countries</h3>
+              <p className="leading-relaxed">
+                If you are located elsewhere — including Saudi Arabia (PDPL), Japan (APPI), Canada (PIPEDA), Australia (Privacy Act 1988) and Singapore (PDPA) — you have the rights your local law gives you. Contact us and we will honor them.
+              </p>
+
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Data retention</h3>
               <p className="leading-relaxed">
                 Session and click-tracking data is retained for up to 24 months for analytics and affiliate attribution purposes; longer where required by legal compliance.
@@ -127,14 +153,14 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">International data transfers</h3>
               <p className="leading-relaxed">
-                Your data may be transferred to and processed in countries other than your own, including the United States and the European Union, by our service providers (Vercel, Supabase, Google, Amazon). Where applicable, such transfers rely on appropriate safeguards such as Standard Contractual Clauses or equivalent mechanisms.
+                Your data may be transferred to and processed in countries other than your own, including the United States and the European Union, by our service providers (Vercel, Supabase, Google, Amazon). Where applicable, such transfers rely on the safeguards required by the law of your region, such as standard contractual clauses approved for that region (for example the EU/UK clauses, or the clauses approved by Brazil&apos;s ANPD) or equivalent mechanisms.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Exercising your rights</h3>
               <p className="leading-relaxed">
                 Email us at{' '}
                 <a href="mailto:thewinners@atomicmail.io" className="text-blue-600 hover:underline">thewinners@atomicmail.io</a>
-                . We will respond within 30 days as required by GDPR and CCPA. Please include enough information for us to verify your identity (e.g., approximate dates of visits, country, browser/device).
+                . We will respond within 15 days — the shortest deadline among the laws we follow (for example Brazil&apos;s LGPD), so it covers every visitor. Please include enough information for us to verify your identity (e.g., approximate dates of visits, country, browser/device).
               </p>
 
               <p className="leading-relaxed mt-4 italic">
