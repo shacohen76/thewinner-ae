@@ -81,7 +81,8 @@ export default function ProductGallery({ products, searchFallback, keywordEn }: 
                 </h3>
 
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-2 rounded-lg text-sm font-medium">
-                  View Details
+                  {/* 2026-09-26 (BR 1): pt only — ar/ja/en unchanged (still the English label) */}
+                  {locale === 'pt' ? 'Ver detalhes' : 'View Details'}
                 </div>
               </div>
             </a>

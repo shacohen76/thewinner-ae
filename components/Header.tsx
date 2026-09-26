@@ -40,7 +40,8 @@ export default function Header() {
             </div>
             <div>
               <div className="font-bold text-gray-800 text-lg">{CONFIG.siteName}</div>
-              <div className="text-xs text-gray-500">{CONFIG.siteTagline}</div>
+              {/* 2026-09-26 (BR 1): localized via Nav.siteTagline (en/ar/ja = "Product Reviews", unchanged) */}
+              <div className="text-xs text-gray-500">{t('siteTagline')}</div>
             </div>
           </Link>
 

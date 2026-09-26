@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductList from '@/components/ProductList';
 import ProductGallery from '@/components/ProductGallery';
@@ -34,6 +34,14 @@ import {
   generateJapanesePageTitle,
   generateJapanesePageDescription,
 } from '@/lib/title-ja';
+import {
+  generatePortugueseHeadline,
+  generatePortugueseSubHeadline,
+  generatePortuguesePageTitle,
+  generatePortuguesePageDescription,
+} from '@/lib/title-pt';
+import { getBrPilotPage } from '@/lib/br-pilot-preview';
+import { getProgramConfig } from '@/lib/geo-config';
 import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
 import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
@@ -89,12 +97,56 @@ interface PageProps {
   params: { slug: string; locale: string; market: string };
 }
 
+// ─── BR 1 (2026-09-26): 'pt' = Brazilian Portuguese, a SINGLE-LANGUAGE market ───
+// /pt exists only when NEXT_PUBLIC_BR_PT_ENABLED=1 (lib/feature-flags) and is pinned
+// to the 'br' catalog (amazon.com.br). Owner rules (study BR_PT_FOUNDATION_STUDY_v0_2 §0):
+//   • never 404 and never show English on /pt:
+//       - no pt noun yet        → temporary redirect to the same slug's English page
+//       - noun, no BR products  → Portuguese page + amazon.com.br search button (pt noun)
+//       - missing BYG / WWL     → Portuguese page, those sections simply hidden
+//   • no AE never-empty fallback on /pt (it would show UAE products / English titles)
+//   • pt pages are NOINDEX during the pilot (no pt allowlist yet).
+// The two read helpers below prefer the LOCAL pilot preview (dev only, env
+// BR_PT_PILOT_FILE — lib/br-pilot-preview.ts) and otherwise read Supabase as usual.
+async function readTranslation(keywordId: number, locale: string) {
+  if (locale === 'pt') {
+    const pilot = await getBrPilotPage(keywordId);
+    if (pilot) return { keyword_text: pilot.noun, qa_guide: pilot.qa_guide as unknown };
+  }
+  return getKeywordTranslation(keywordId, locale);
+}
+
+async function readProducts(keywordId: number, locale: string, market: string) {
+  if (locale === 'pt') {
+    const pilot = await getBrPilotPage(keywordId);
+    if (pilot) return pilot.products;
+  }
+  return getProductsForKeyword(keywordId, locale, market);
+}
+
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const keyword = await getKeywordBySlug(decodeURIComponent(params.slug));
 
   if (!keyword) {
     return { title: 'Not Found' };
+  }
+
+  // BR 1 (2026-09-26): /pt is its own single-language page (BR catalog, no English
+  // counterpart) → self-canonical, no hreflang cluster, NOINDEX during the pilot.
+  if (params.locale === 'pt') {
+    const ptTr = await readTranslation(keyword.id, 'pt');
+    const nounPt = ptTr?.keyword_text?.trim() || null;
+    const ptUrl = `${CONFIG.canonicalUrl}/pt/best/${params.slug}`;
+    const title = nounPt ? generatePortuguesePageTitle(nounPt, getCurrentYear()) : 'The Winners';
+    const description = nounPt ? generatePortuguesePageDescription(nounPt) : '';
+    return {
+      title: { absolute: title },
+      description,
+      alternates: { canonical: ptUrl },
+      robots: { index: false, follow: true },
+      openGraph: { title, description, url: ptUrl, locale: 'pt_BR' },
+    };
   }
 
   // INTL1 (DB-driven auto-index, no allowlist). Translation fills in stages:
@@ -223,6 +275,14 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     notFound();
   }
 
+  // BR 1 (2026-09-26): /pt without a Portuguese noun → never English on /pt, never
+  // 404 (owner) → temporary redirect to the same slug's English page.
+  const isPt = params.locale === 'pt';
+  const translation = await readTranslation(keyword.id, params.locale);
+  if (isPt && !translation?.keyword_text?.trim()) {
+    redirect(`/best/${params.slug}`);
+  }
+
   // 2026-08-26 (feat/per-geo-static-best): the product SET is now server-rendered
   // per market (was a client swap). Wrap ONLY the products read in a TAGGED
   // unstable_cache — key includes market+locale so each variant caches separately,
@@ -234,9 +294,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // catalog rendered with Amazon SEARCH links (never a dead cross-marketplace /dp).
   const { products, searchFallback } = await unstable_cache(
     async () => {
-      let products = await getProductsForKeyword(keyword.id, params.locale, params.market);
+      let products = await readProducts(keyword.id, params.locale, params.market);
       let searchFallback = false;
-      if (params.market !== 'ae' && products.length === 0) {
+      // BR 1: no AE fallback on /pt — the UAE catalog would show English titles and
+      // products that don't exist on amazon.com.br. /pt renders its own empty state.
+      if (params.market !== 'ae' && products.length === 0 && !isPt) {
         products = await getProductsForKeyword(keyword.id, params.locale, 'ae');
         searchFallback = true;
       }
@@ -251,7 +313,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   )();
 
   // English keyword for the searchFallback query (slugs are always English).
-  const keywordEn = slug.replace(/-/g, ' ').trim();
+  // BR 1: on /pt the search query is the Portuguese noun (amazon.com.br is searched in pt).
+  const keywordEn = isPt ? translation!.keyword_text!.trim() : slug.replace(/-/g, ' ').trim();
 
   // 2026-08-24 GUARD (post organic-collapse incident, 2026-08-21): never bake an EMPTY
   // English /best page into the 7-day ISR cache. getProductsForKeyword already
@@ -271,8 +334,9 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
   // INTL1 Phase 2C slice 4: prefer the translated buying guide for this locale,
   // falling back to the English qa_guide when no localized row exists yet.
-  const translation = await getKeywordTranslation(keyword.id, params.locale);
-  const qaGuideSource = translation?.qa_guide ?? keyword.qa_guide;
+  // (translation for params.locale is read at the top — BR 1 needs it for the /pt redirect.)
+  // BR 1: /pt never falls back to the English buying guide (section hidden instead).
+  const qaGuideSource = isPt ? translation?.qa_guide : (translation?.qa_guide ?? keyword.qa_guide);
 
   // Get BYG (Buying Guide) from qa_guide
   // Handle both JSON array and string formats
@@ -334,7 +398,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const headingName = noun ?? toTitleCase(keyword.keyword_text);
   let mainHeadline: string;
   let subHeadline: string;
-  if (noun && params.locale === 'ja') {
+  if (noun && isPt) {
+    mainHeadline = generatePortugueseHeadline(noun, currentYear);   // BR 1
+    subHeadline = generatePortugueseSubHeadline(noun);
+  } else if (noun && params.locale === 'ja') {
     mainHeadline = generateJapaneseHeadline(noun, currentYear);
     subHeadline = generateJapaneseSubHeadline(noun);
   } else if (noun && params.locale === 'ar') {
@@ -349,7 +416,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // 2026-09-05 E-E-A-T: author byline + freshness. Date is formatted per-locale;
   // the page regenerates within its ISR window so month-granularity is honest.
   const updatedDate = new Date().toLocaleDateString(
-    params.locale === 'en' ? 'en-US' : params.locale,
+    params.locale === 'en' ? 'en-US' : isPt ? 'pt-BR' : params.locale,
     { month: 'long', year: 'numeric' },
   );
   const bylineBy = tBest('by');
@@ -391,7 +458,23 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
         {/* Shopee CTA now renders per-card (under each Amazon button), SEA only. */}
-        <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} />
+        {isPt && productsForList.length === 0 ? (
+          // BR 1: noun but no BR products yet → Portuguese empty state with an
+          // amazon.com.br search (pt noun, program default tag). Never the AE fallback.
+          <div className="text-center py-12">
+            <p className="text-gray-700 mb-4">{`Estamos preparando nossa seleção de ${keywordEn}.`}</p>
+            <a
+              href={`https://www.${getProgramConfig('br').amazonDomain}/s?k=${encodeURIComponent(keywordEn)}&tag=${getProgramConfig('br').defaultTag}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg"
+            >
+              {`Ver ${keywordEn} na Amazon.com.br`}
+            </a>
+          </div>
+        ) : (
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} />
+        )}
       </main>
 
       {/* Product Gallery Section */}
@@ -537,7 +620,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           <p className="text-sm text-gray-600 leading-relaxed max-w-3xl">{tBest('howWeChoseBody')}</p>
         </div>
       </section>
-      <RelatedPages currentSlug={slug} />
+      {/* BR 1: RelatedPages is English-only (lib/related-pages) → hidden on /pt until localized */}
+      {!isPt && <RelatedPages currentSlug={slug} />}
     </>
   );
 }

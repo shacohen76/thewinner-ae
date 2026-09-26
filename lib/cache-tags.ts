@@ -12,7 +12,7 @@
 // new market or language is picked up automatically.
 // ============================================
 
-import { CATALOG_MARKETPLACES, LOCALE_CATALOG } from '@/lib/geo-config';
+import { CATALOG_MARKETPLACES, LOCALE_CATALOG, isCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
 
 /** Tag on EVERY copy of a slug's product data (unscoped purge = today's behaviour). */
@@ -53,6 +53,8 @@ export function isKnownLocale(locale: string): boolean {
   return (routing.locales as readonly string[]).includes(locale);
 }
 
+// 2026-09-26 (BR 1): also accept locale-pinned markets (br via pt) so a scoped
+// refresh signal for market='br' is not rejected. Unchanged while BR_PT is off.
 export function isKnownMarket(market: string): boolean {
-  return CATALOG_MARKETPLACES.has(market);
+  return isCatalogMarket(market);
 }

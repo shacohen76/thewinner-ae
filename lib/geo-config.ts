@@ -27,7 +27,11 @@
 //
 // Pure data + helpers — no side effects, no env reads, no DB. Safe to import
 // from middleware / server / client.
+// (2026-09-26: the one exception is the build-time BR_PT_ENABLED flag, which is a
+// NEXT_PUBLIC_* constant inlined at build — still safe from every runtime.)
 // ============================================
+
+import { BR_PT_ENABLED } from './feature-flags';
 
 // ============================================
 // TYPES
@@ -337,7 +341,20 @@ export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au',
 /** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
  *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
  *  from GeoCatalog.tsx. Non-pinned locales (en, ar) follow the visitor's geo. */
-export const LOCALE_CATALOG: Record<string, string> = { ja: 'jp' };
+// 2026-09-26 (BR 1): pt → br when NEXT_PUBLIC_BR_PT_ENABLED=1. BR is the first
+// SINGLE-LANGUAGE market (Portuguese only, no English page), so 'br' is deliberately
+// NOT added to CATALOG_MARKETPLACES — that set feeds the geo-followed locales (en, ar)
+// and would mint /en/best/br/* copies. BR is reachable ONLY through its pinned locale.
+export const LOCALE_CATALOG: Record<string, string> = {
+  ja: 'jp',
+  ...(BR_PT_ENABLED ? { pt: 'br' } : {}),
+};
+
+/** Every market that has its own catalog: geo-followed ones + locale-pinned ones
+ *  (e.g. 'br' via pt). Used to validate a market name (revalidate, leak guard). */
+export function isCatalogMarket(market: string): boolean {
+  return CATALOG_MARKETPLACES.has(market) || Object.values(LOCALE_CATALOG).includes(market);
+}
 
 /** Resolve which market's catalog a request renders. Pure — safe from middleware.
  *   • A pinned locale (ja→jp) overrides geo for all visitors.

@@ -28,13 +28,21 @@ const LANGUAGE_NAMES: Record<string, string> = {
   en: 'English',
   ar: 'العربية',
   ja: '日本語', // INTL1 JP Phase 2 (2026-07-06)
+  pt: 'Português', // BR 1 (2026-09-26) — Brazilian Portuguese, BR-only
 };
 
 // Localized "Change language" for the globe button's aria-label; English default.
 const CHANGE_LANGUAGE_LABEL: Record<string, string> = {
   ar: 'تغيير اللغة',
   ja: '言語を変更',
+  pt: 'Mudar idioma',
 };
+
+// 2026-09-26 (BR 1): 'pt' is a SINGLE-LANGUAGE market (BR catalog only, no English
+// counterpart). So: on a /pt page there is nothing to switch to → the switcher is
+// hidden; on every other page 'pt' is NOT offered (it would jump the visitor into the
+// BR catalog). en/ar/ja behaviour is unchanged.
+const SINGLE_LANGUAGE_LOCALES = new Set(['pt']);
 
 export default function LanguageSwitcher({ className = '' }: { className?: string }) {
   const pathname = usePathname();
@@ -62,6 +70,9 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
   const hrefFor = (l: string) =>
     l === routing.defaultLocale ? pathname || '/' : `/${l}${pathname === '/' ? '' : pathname}`;
 
+  const options = routing.locales.filter((l) => !SINGLE_LANGUAGE_LOCALES.has(l));
+  if (SINGLE_LANGUAGE_LOCALES.has(locale)) return null;
+
   return (
     <div ref={ref} className={`relative ${className}`}>
       <button
@@ -87,7 +98,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
           role="menu"
           className="absolute end-0 mt-2 w-40 bg-white rounded-xl shadow-lg border py-1 z-50"
         >
-          {routing.locales.map((l) => (
+          {options.map((l) => (
             <a
               key={l}
               href={hrefFor(l)}

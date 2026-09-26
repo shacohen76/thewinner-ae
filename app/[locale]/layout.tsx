@@ -91,6 +91,7 @@ const LOCALE_HTML: Record<string, { lang: string; dir: 'ltr' | 'rtl' }> = {
   en: { lang: 'en-AE', dir: 'ltr' },
   ar: { lang: 'ar-AE', dir: 'rtl' },
   ja: { lang: 'ja', dir: 'ltr' },
+  pt: { lang: 'pt-BR', dir: 'ltr' }, // 2026-09-26 (BR 1): /pt = Brazilian Portuguese (route exists only when BR_PT flag on)
 };
 
 // Statically pre-render the document shell for every configured locale.
