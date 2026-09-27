@@ -17,6 +17,7 @@ import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, MAIN_CATEGORIE
 import { getIndexAllowlist } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
+import { BR_PT_ENABLED } from '@/lib/feature-flags';
 
 export const CHUNK_SIZE = 20000; // English /best URLs per chunk — well under the 50k cap
 
@@ -43,7 +44,26 @@ export async function bestChunkCount(): Promise<number> {
 // index bloat is exactly what triggered the Aug-21 sitewide demotion. Grow the
 // allowlist (seo_index_allowlist) to re-expand; no code change needed.
 export async function chunkIds(): Promise<string[]> {
-  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja'];
+  // 2026-09-27 (BR 1): + 'indexable-pt' when the /pt locale is enabled.
+  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja', ...(BR_PT_ENABLED ? ['indexable-pt'] : [])];
+}
+
+// 2026-09-27 (BR 1, owner): ALL complete /pt pages are indexed (no allowlist — intentional
+// exception, see the /best page). Listed = keywords with a pt noun + pt BYG. The BR text
+// publisher (br_publish_pt_text_v1.py) only writes pt text for keywords it also published
+// BR products for, so this set == complete pages; the page itself re-checks ≥1 BR product
+// before emitting index. One paginated read of keyword_translations(pt) — cheap.
+export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
+  const base = CONFIG.siteUrl;
+  try {
+    const slugs = await getTranslatedSlugs('pt');
+    return Array.from(slugs).map((slug) => ({
+      url: `${base}/pt/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+    }));
+  } catch (error) {
+    console.error('sitemap ptIndexableEntries failed:', error);
+    return [];
+  }
 }
 
 export async function structuralEntries(): Promise<SitemapEntry[]> {

@@ -37,12 +37,19 @@ export function generatePortugueseSubHeadline(nounPt: string, date: Date = new D
   return `Análises, comparação e guia de compra de ${nounPt.trim()} · atualizado em ${getPortugueseMonth(date)} de ${date.getFullYear()}`;
 }
 
-// "Notebook gamer: os 10 melhores de 2026 | The Winners"
+// ── GEO-IN-TITLE RULE (owner test, 2026-09-27) ─────────────────────────────────────
+// A locale pinned to ONE country (pt → Brazil) names that country in the <title> and
+// meta description ("… no Brasil"). Multi-country locales (en, ar — one cached page
+// serves US/UK/AE/…) must NOT put a country in the title. The visible H1 is unchanged.
+// Measure in GSC once pt pages are indexed; reverting = drop the suffix here.
+const PT_GEO = 'no Brasil';
+
+// "Notebook gamer: os 10 melhores de 2026 no Brasil | The Winners"
 export function generatePortuguesePageTitle(nounPt: string, year: number, brand = 'The Winners'): string {
-  return `${generatePortugueseHeadline(nounPt, year)} | ${brand}`;
+  return `${generatePortugueseHeadline(nounPt, year)} ${PT_GEO} | ${brand}`;
 }
 
 export function generatePortuguesePageDescription(nounPt: string): string {
   // "as 10 melhores opções de {noun}" reads correctly with a singular noun.
-  return `Comparamos as 10 melhores opções de ${nounPt.trim()} na Amazon.com.br. Seleção objetiva para você escolher o modelo certo com confiança.`;
+  return `Comparamos as 10 melhores opções de ${nounPt.trim()} ${PT_GEO}, na Amazon.com.br. Seleção objetiva para você escolher o modelo certo com confiança.`;
 }

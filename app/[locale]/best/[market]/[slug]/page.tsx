@@ -133,18 +133,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // BR 1 (2026-09-26): /pt is its own single-language page (BR catalog, no English
-  // counterpart) → self-canonical, no hreflang cluster, NOINDEX during the pilot.
+  // counterpart) → self-canonical, no hreflang cluster with en/ar/ja.
+  // 2026-09-27 (owner): EVERY complete /pt page is INDEXED — complete = pt noun + pt BYG +
+  // ≥1 BR product. Intentional exception to the en/ar/ja "keep-best ~1K" allowlist: BR
+  // pages are fully localized (API titles, native WWL) and the owner wants them all in
+  // Google. Mirrors the 'indexable-pt' sitemap (lib/sitemap-data.ts ptIndexableEntries).
   if (params.locale === 'pt') {
     const ptTr = await readTranslation(keyword.id, 'pt');
     const nounPt = ptTr?.keyword_text?.trim() || null;
     const ptUrl = `${CONFIG.canonicalUrl}/pt/best/${params.slug}`;
     const title = nounPt ? generatePortuguesePageTitle(nounPt, getCurrentYear()) : 'The Winners';
     const description = nounPt ? generatePortuguesePageDescription(nounPt) : '';
+    const ptComplete = !!nounPt && hasBuyingGuide(ptTr?.qa_guide)
+      && (await getKeywordMarketplaceCount(keyword.id, 'br')) >= 1;
     return {
       title: { absolute: title },
       description,
-      alternates: { canonical: ptUrl },
-      robots: { index: false, follow: true },
+      alternates: { canonical: ptUrl, languages: { 'pt-BR': ptUrl } },
+      robots: { index: ptComplete, follow: true },
       openGraph: { title, description, url: ptUrl, locale: 'pt_BR' },
     };
   }

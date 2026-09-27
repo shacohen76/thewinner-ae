@@ -38,11 +38,11 @@ const CHANGE_LANGUAGE_LABEL: Record<string, string> = {
   pt: 'Mudar idioma',
 };
 
-// 2026-09-26 (BR 1): 'pt' is a SINGLE-LANGUAGE market (BR catalog only, no English
-// counterpart). So: on a /pt page there is nothing to switch to → the switcher is
-// hidden; on every other page 'pt' is NOT offered (it would jump the visitor into the
-// BR catalog). en/ar/ja behaviour is unchanged.
-const SINGLE_LANGUAGE_LOCALES = new Set(['pt']);
+// 2026-09-26 (BR 1) hid the switcher on /pt and never offered 'pt' elsewhere.
+// 2026-09-27 (owner): visitors got STUCK on /pt → the globe now shows on every page with
+// ALL languages (English, العربية, 日本語, Português). Choosing Português on a page that
+// has no Portuguese version yet simply falls back to the English page (pt redirect rule).
+const SINGLE_LANGUAGE_LOCALES = new Set<string>();
 
 export default function LanguageSwitcher({ className = '' }: { className?: string }) {
   const pathname = usePathname();
@@ -102,7 +102,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
             <a
               key={l}
               href={hrefFor(l)}
-              hrefLang={l === 'en' ? 'en-AE' : l}
+              hrefLang={l === 'en' ? 'en-AE' : l === 'pt' ? 'pt-BR' : l}
               role="menuitem"
               aria-current={l === locale ? 'true' : undefined}
               className={`block px-4 py-2 text-sm hover:bg-gray-50 ${
