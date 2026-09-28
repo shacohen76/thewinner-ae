@@ -111,7 +111,10 @@ const LOCALIZED_PREFIXES: string[] = routing.locales.filter((l) => l !== routing
 // compiled patterns are identical to the previous literals. 'br' (pt-pinned) joins the
 // leak list only when enabled. (Known pre-existing gap, NOT changed here: 'sa' is
 // absent from this list — separate follow-up.)
-const LEAK_MARKETS = ['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', ...(BR_PT_ENABLED ? ['br'] : [])];
+// 2026-09-28 (ML6): + the 8 EU catalog markets (their internal /best/<mkt>/* copies must not leak
+// publicly). 'sa' gap left as-is (separate follow-up, not this PR's scope).
+const LEAK_MARKETS = ['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp',
+  'de', 'es', 'fr', 'it', 'nl', 'pl', 'se', 'be', ...(BR_PT_ENABLED ? ['br'] : [])];
 const PREFIX_ALT = LOCALIZED_PREFIXES.join('|');
 const BEST_MARKET_LEAK_RE = new RegExp(
   `^(\\/(?:${LOCALIZED_PREFIXES.map((p) => `${p}\\/`).join('|')})?best)\\/(?:${LEAK_MARKETS.join('|')})(\\/|$)`,
