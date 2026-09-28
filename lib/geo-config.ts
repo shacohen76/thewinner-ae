@@ -346,8 +346,19 @@ export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
 // (page.tsx searchFallback) — always lands on real products, never a dead /dp. Markets are
 // harvested one by one; after each market's publish send `amz_signal_refresh_v1.py --locale en
 // --market <mkt>` so cached search-fallback copies rebuild with the new products. Crawlers still pin to 'ae'.
+// 2026-09-28 (owner): 'pl' REMOVED from this set — PL has no Creators-API app, so no pl catalog can
+// be built; PL visitors follow the DE catalog instead (CATALOG_ALIAS below). Keeping 'pl' here would
+// mint empty /best/pl/* copies (AE + search fallback) that the owner does not want.
 export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', 'sa',
-  'de', 'es', 'fr', 'it', 'nl', 'pl', 'se', 'be']);
+  'de', 'es', 'fr', 'it', 'nl', 'se', 'be']);
+
+/** Programs that have NO catalog of their own and FOLLOW another market's catalog (same HTML copy).
+ *  Links are still rewritten client-side to the visitor's own store + tag (TrackingProvider), so a
+ *  PL visitor sees the DE list with amazon.pl/dp/<ASIN>?tag=thewinnerpl-21 links. */
+// 2026-09-28 (owner, ML6): pl → de ("let PL follow the DE market, links not queries"). Stock of DE
+// ASINs on amazon.pl is UNVERIFIED (no PL API app; comparable EU stores 46-70% in stock). Remove the
+// alias once a pl catalog exists (PL API app, or the later-in-line scrape option).
+export const CATALOG_ALIAS: Record<string, string> = { pl: 'de' };
 
 /** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
  *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
@@ -371,12 +382,14 @@ export function isCatalogMarket(market: string): boolean {
  *   • A pinned locale (ja→jp) overrides geo for all visitors.
  *   • Crawlers pin to 'ae' (owner-approved) so indexable HTML is always the AE
  *     catalog and every geo shares one canonical indexed page.
- *   • Otherwise the visitor's program, if it has a catalog bucket; else 'ae'. */
+ *   • Otherwise the visitor's program (or the market it follows, CATALOG_ALIAS), if it has a
+ *     catalog bucket; else 'ae'. */
 export function resolveCatalogMarket(country: string, locale: string, isBot: boolean): string {
   if (LOCALE_CATALOG[locale]) return LOCALE_CATALOG[locale];   // ja → jp, pin all visitors
   if (isBot) return 'ae';                                       // crawler default = AE (owner-approved)
   const program = getGeoProgram(country);                       // existing export
-  return CATALOG_MARKETPLACES.has(program) ? program : 'ae';
+  const catalog = CATALOG_ALIAS[program] ?? program;            // 2026-09-28: pl → de
+  return CATALOG_MARKETPLACES.has(catalog) ? catalog : 'ae';
 }
 
 /** Full geo config — program + group + domain + tag + display strings.
