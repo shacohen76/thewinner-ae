@@ -24,6 +24,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getGeoGroup, getGeoProgram, getProgramConfig, ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
+// 2026-09-29: admin-only regions (gulf/europe/americas/apac/other) — see lib/admin-regions.ts.
+import { adminRegionOf, regionCountries, ADMIN_REGIONS, type AdminRegion } from '@/lib/admin-regions';
+import { PROGRAM_COUNTRY_CODES } from '@/lib/geo-config';
 
 // Country lists for DB-side filtering. Mirror lib/geo-config.ts membership.
 // Kept here as plain arrays (not Sets) so Supabase .in() can consume them.
@@ -96,14 +99,17 @@ export async function GET(request: NextRequest) {
 
   // Resolve the geo filter to the include/exclude country lists passed to the
   // aggregation function (mirrors the .in()/.not() filter on the sessions list).
+  // 2026-09-29: + region filters americas / apac / other (admin regions). gulf/europe now
+  // use the derived program-country lists (adds PT/AD/LU/MC/AL etc. that the hardcoded
+  // EUROPE_CC missed); legacy 'intl' (= not gulf/europe) kept for old page builds.
   let pIn: string[] | null = null;
   let pNotIn: string[] | null = null;
   if (countryFilter) {
     pIn = [countryFilter];
-  } else if (geoFilter === 'gulf') {
-    pIn = GULF_CC;
-  } else if (geoFilter === 'europe') {
-    pIn = EUROPE_CC;
+  } else if (geoFilter === 'gulf' || geoFilter === 'europe' || geoFilter === 'americas' || geoFilter === 'apac') {
+    pIn = regionCountries(geoFilter);
+  } else if (geoFilter === 'other') {
+    pNotIn = PROGRAM_COUNTRY_CODES;
   } else if (geoFilter === 'intl') {
     pNotIn = [...GULF_CC, ...EUROPE_CC];
   }
@@ -128,10 +134,10 @@ export async function GET(request: NextRequest) {
 
     if (countryFilter) {
       sessionsQuery = sessionsQuery.eq('ip_country', countryFilter);
-    } else if (geoFilter === 'gulf') {
-      sessionsQuery = sessionsQuery.in('ip_country', GULF_CC);
-    } else if (geoFilter === 'europe') {
-      sessionsQuery = sessionsQuery.in('ip_country', EUROPE_CC);
+    } else if (pIn) {
+      sessionsQuery = sessionsQuery.in('ip_country', pIn);   // 2026-09-29: any program region
+    } else if (geoFilter === 'other') {
+      sessionsQuery = sessionsQuery.not('ip_country', 'in', `(${PROGRAM_COUNTRY_CODES.join(',')})`);
     } else if (geoFilter === 'intl') {
       const exclusionList = [...GULF_CC, ...EUROPE_CC];
       sessionsQuery = sessionsQuery
@@ -186,6 +192,7 @@ export async function GET(request: NextRequest) {
     const sessions = sessionsRaw.map((s: any) => ({
       ...s,
       geo_group: getGeoGroup(s.ip_country) as GeoGroup,
+      region: adminRegionOf(s.ip_country),   // 2026-09-29: admin region badge
     }));
 
     // ── daily_stats: from rollup.by_day + rollup.by_day_source ──
@@ -225,6 +232,17 @@ export async function GET(request: NextRequest) {
       b.total_asins += c.total_asins;
     }
 
+    // 2026-09-29: admin regions — 4 clean program regions + 'other' (non-program geos:
+    // world-wide fallback traffic, today mostly bots/scrapers). Unknown country → other.
+    const byRegion = Object.fromEntries(ADMIN_REGIONS.map((r) => [r, emptyBucket()])) as Record<AdminRegion, GeoBucket>;
+    for (const c of byCountry) {
+      const b = byRegion[adminRegionOf(c.ip_country)];
+      b.sessions += c.sessions;
+      b.with_gclid += c.with_gclid;
+      b.with_clicks += c.with_clicks;
+      b.total_asins += c.total_asins;
+    }
+
     const topCountries = [...byCountry]
       .sort((a, b) => b.sessions - a.sessions)
       .slice(0, 12)
@@ -232,6 +250,7 @@ export async function GET(request: NextRequest) {
         code: c.ip_country || '_unknown',
         count: c.sessions,
         geo_group: c.ip_country ? getGeoGroup(c.ip_country) : 'international',
+        region: adminRegionOf(c.ip_country),
       }));
 
     // Per-program sessions/clicks from per-country aggregates.
@@ -330,6 +349,7 @@ export async function GET(request: NextRequest) {
         has_cross_source: u.sources.size > 1,
         primary_country: primaryCountry,
         geo_group: getGeoGroup(primaryCountry) as GeoGroup,
+        region: adminRegionOf(primaryCountry),
       };
     }).sort((a: any, b: any) => b.last_seen.localeCompare(a.last_seen));
 
@@ -391,6 +411,7 @@ export async function GET(request: NextRequest) {
       users: users,
       user_summary: user_summary,
       by_geo: byGeo,
+      by_region: byRegion,   // 2026-09-29: admin regions (page cards read this)
       top_countries: topCountries,
       by_program: byProgram,
       // Phase 2 additions (accurate, bot-excluded full-range aggregates):

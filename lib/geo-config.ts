@@ -313,6 +313,18 @@ export function getGeoProgram(countryCode: string | null | undefined): GeoProgra
   return COUNTRY_PROGRAM[cc] || 'us';
 }
 
+/** 2026-09-29 (admin regions): true when the country is served by one of OUR programs —
+ *  i.e. explicitly mapped in COUNTRY_PROGRAM (dedicated store or a neighbour routed to one),
+ *  or the US itself. Everything else only reaches amazon.com through the getGeoProgram
+ *  'us' FALLBACK (IN, IL, CN, Africa, …). Additive helper — routing is unchanged. */
+export function isProgramCountry(countryCode: string | null | undefined): boolean {
+  const cc = (countryCode || '').toUpperCase();
+  return cc === 'US' || cc in COUNTRY_PROGRAM;
+}
+
+/** 2026-09-29 (admin regions): every program country code (see isProgramCountry). */
+export const PROGRAM_COUNTRY_CODES: string[] = ['US', ...Object.keys(COUNTRY_PROGRAM)];
+
 /** Resolve a country code to its high-level geo group (gulf/europe/international).
  *  Derived from the program. */
 export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
