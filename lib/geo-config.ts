@@ -330,13 +330,24 @@ export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
 /** Marketplaces that have their own catalog membership rows (keyword_products.
  *  marketplace). INCLUDES 'ae' here (unlike the old GeoCatalog client copy which
  *  excluded it, since AE was the SSR default there). Every OTHER program
- *  (de/fr/it/…) renders the AE catalog with search-links (searchFallback). */
+ *  (fr/it/es/…) renders the AE catalog; its /dp links are rewritten client-side to the
+ *  visitor's store (NOT search-links — searchFallback only fires for a market IN this set
+ *  with 0 rows for the keyword). */
 // 2026-09-03: added 'sa' — amazon.sa now has its own harvested catalog (amz-api
 // searchItems → migrate → DDP → VLD). SA visitors now get real /dp product pages
 // on amazon.sa (tag thewinnersa-21) instead of the AE search-fallback. Crawlers
 // still pin to 'ae', so SEO/indexed pages are unaffected (SA catalog serves live
 // SA-geo visitors only). Built wave-1 = top-100 SA-clicked keywords; more waves rolling.
-export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', 'sa']);
+// 2026-09-28 (ML6 EU EN-BCPL, Docs_MD/EU_EN_BCPL_ROADMAP_2026_09_28.md): added ALL EU programs
+// (de, es, fr, it, nl, pl, se, be). Before this they got the AE list with the domain rewritten →
+// only ~21% (ES) / ~29% (DE) of those /dp links were in stock on the visitor's store (probe 09-28).
+// Now: a keyword WITH rows for the market (de = BCPL top-3K live) shows that store's own products;
+// a keyword with 0 rows falls back to AE products with SEARCH links on the visitor's store
+// (page.tsx searchFallback) — always lands on real products, never a dead /dp. Markets are
+// harvested one by one; after each market's publish send `amz_signal_refresh_v1.py --locale en
+// --market <mkt>` so cached search-fallback copies rebuild with the new products. Crawlers still pin to 'ae'.
+export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', 'sa',
+  'de', 'es', 'fr', 'it', 'nl', 'pl', 'se', 'be']);
 
 /** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
  *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
