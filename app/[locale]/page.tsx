@@ -11,6 +11,10 @@ import type { Metadata } from 'next';
 import { PT_POPULAR_SEARCHES, PT_POPULAR_COMPARISONS } from '@/lib/pt-featured';
 import { useTranslations } from 'next-intl';
 import SearchBox from '@/components/SearchBox';
+// 2026-09-29 (owner): homepage gets the same internal-link navs as the /best pages.
+import RelatedPages from '@/components/RelatedPages';
+import RelatedPagesPt from '@/components/RelatedPagesPt';
+import LocaleLinks from '@/components/LocaleLinks';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
 
 // Categories data — 8 main groups
@@ -214,6 +218,11 @@ export default function HomePage({ params }: { params: { locale: string } }) {
           </div>
         </div>
       </section>
+
+      {/* 2026-09-29: "More top picks" (own language) + 3 links per other language —
+          same navs as the /best pages, seeded 'home' (deterministic, ISR-safe). */}
+      {isPt ? <RelatedPagesPt currentSlug="home" /> : <RelatedPages currentSlug="home" />}
+      <LocaleLinks locale={params.locale} seedKey="home" />
     </>
   );
 }

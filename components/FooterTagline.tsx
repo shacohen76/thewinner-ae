@@ -50,6 +50,9 @@ export default function FooterTagline() {
   // Localized (non-English) locales: fixed translated tagline. geo-config country
   // names are English-only, so we don't inject a dynamic country here. The English
   // path below is unchanged. INTL1 JP Phase 2 (2026-07-06): was ar-only → any non-en.
+  // 2026-09-29 (geo-in-text rule, owner): SINGLE-country locales name their country in
+  // the fixed message itself — pt "…no Brasil", ja "日本の…". ar serves many Gulf
+  // countries → stays country-neutral (messages/*.json Footer.tagline).
   if (locale !== 'en') {
     return <p className="text-sm text-gray-400">{t('tagline')}</p>;
   }
