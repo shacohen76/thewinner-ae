@@ -17,6 +17,7 @@
 import { useState, useEffect, useCallback, Fragment } from 'react';
 import { CONFIG } from '@/lib/utils';
 import { ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
+import { adminRegionOf, type AdminRegion } from '@/lib/admin-regions';
 
 interface Session {
   session_id: string;
@@ -33,6 +34,7 @@ interface Session {
   status: string;
   // GEOS1: server-resolved geo group (gulf | europe | international)
   geo_group: GeoGroup;
+  region?: AdminRegion;   // 2026-09-29: admin region (badge)
 }
 
 interface TagPoolEntry {
@@ -99,6 +101,7 @@ interface UserEntry {
   // GEOS1: server-derived from primary country
   primary_country: string | null;
   geo_group: GeoGroup;
+  region?: AdminRegion;   // 2026-09-29
 }
 
 interface UserSummary {
@@ -124,6 +127,7 @@ interface TopCountry {
   code: string;
   count: number;
   geo_group: GeoGroup;
+  region?: AdminRegion;   // 2026-09-29
 }
 
 interface ByProgramRow {
@@ -145,6 +149,8 @@ interface TrackingData {
   user_summary: UserSummary;
   // GEOS1 aggregations
   by_geo: { gulf: ByGeoBucket; europe: ByGeoBucket; international: ByGeoBucket };
+  // 2026-09-29: admin regions — 4 program regions + 'other' (non-program geos).
+  by_region?: Record<AdminRegion, ByGeoBucket>;
   top_countries: TopCountry[];
   by_program: ByProgram;
   // Phase 2: accurate, bot-excluded full-range aggregates.
@@ -202,50 +208,71 @@ const SRC_BG: Record<string, string> = {
   other: 'bg-amber-100 text-amber-800',
 };
 
-// GEOS1 geo group badge labels + dark-on-darker chip colors
-const GEO_LABEL: Record<GeoGroup, string> = {
-  gulf: 'GULF',
-  europe: 'EU',
-  international: 'INTL',
+// 2026-09-29: admin REGION badges (lib/admin-regions.ts) — replaces the 3-way
+// Gulf/EU/INTL badge. 'other' = non-program geos (world-wide fallback / bot noise).
+const REGION_LABEL: Record<AdminRegion, string> = {
+  gulf: 'GULF', europe: 'EU', americas: 'AMER', apac: 'APAC', other: 'OTHER',
 };
-const GEO_BADGE: Record<GeoGroup, string> = {
-  gulf:          'bg-emerald-900 text-emerald-300',
-  europe:        'bg-blue-900 text-blue-300',
-  international: 'bg-purple-900 text-purple-300',
+const REGION_BADGE: Record<AdminRegion, string> = {
+  gulf:     'bg-emerald-900 text-emerald-300',
+  europe:   'bg-blue-900 text-blue-300',
+  americas: 'bg-purple-900 text-purple-300',
+  apac:     'bg-amber-900 text-amber-300',
+  other:    'bg-gray-800 text-gray-400',
 };
+const regionOfRow = (r: { region?: AdminRegion; ip_country?: string | null; code?: string }) =>
+  r.region || adminRegionOf(r.ip_country ?? (r.code && r.code !== '_unknown' ? r.code : null));
 
-// Country drilldown options for the dropdown — top traffic countries per
-// group. Sorted by current expected volume; not exhaustive.
-const COUNTRY_OPTIONS: { code: string; name: string; group: GeoGroup }[] = [
-  { code: 'AE', name: 'AE — UAE',            group: 'gulf' },
-  { code: 'SA', name: 'SA — Saudi Arabia',   group: 'gulf' },
-  { code: 'OM', name: 'OM — Oman',           group: 'gulf' },
-  { code: 'QA', name: 'QA — Qatar',          group: 'gulf' },
-  { code: 'BH', name: 'BH — Bahrain',        group: 'gulf' },
-  { code: 'KW', name: 'KW — Kuwait',         group: 'gulf' },
-  { code: 'GB', name: 'GB — United Kingdom', group: 'europe' },
-  { code: 'DE', name: 'DE — Germany',        group: 'europe' },
-  { code: 'NL', name: 'NL — Netherlands',    group: 'europe' },
-  { code: 'FR', name: 'FR — France',         group: 'europe' },
-  { code: 'IT', name: 'IT — Italy',          group: 'europe' },
-  { code: 'ES', name: 'ES — Spain',          group: 'europe' },
-  { code: 'US', name: 'US — United States',  group: 'international' },
-  { code: 'SG', name: 'SG — Singapore',      group: 'international' },
-  { code: 'CA', name: 'CA — Canada',         group: 'international' },
-  { code: 'IN', name: 'IN — India',          group: 'international' },
-  { code: 'AU', name: 'AU — Australia',      group: 'international' },
-  { code: 'JP', name: 'JP — Japan',          group: 'international' },
-  { code: 'IL', name: 'IL — Israel',         group: 'international' },
+const ADMIN_REGION_TOTAL = (b: Record<AdminRegion, { sessions: number }>) =>
+  (Object.values(b) as { sessions: number }[]).reduce((n, x) => n + x.sessions, 0);
+
+// The program-region cards (Overview + Funnel). 'other' is shown as a separate noise tile.
+const REGION_CARDS: { key: Exclude<AdminRegion, 'other'>; label: string; bg: string; accent: string; sub: string }[] = [
+  { key: 'gulf',     label: '🇦🇪 Gulf · .ae / .sa',               bg: 'bg-emerald-900/20 border-emerald-800/40', accent: 'text-emerald-300', sub: 'text-emerald-400' },
+  { key: 'europe',   label: '🇪🇺 Europe · 10 stores',             bg: 'bg-blue-900/20 border-blue-800/40',       accent: 'text-blue-300',    sub: 'text-blue-400' },
+  { key: 'americas', label: '🌎 Americas · .com / .ca / .com.br', bg: 'bg-purple-900/20 border-purple-800/40',   accent: 'text-purple-300',  sub: 'text-purple-400' },
+  { key: 'apac',     label: '🌏 Asia-Pacific · .jp / .au / .sg',  bg: 'bg-amber-900/20 border-amber-800/40',     accent: 'text-amber-300',   sub: 'text-amber-400' },
 ];
 
-type GeoFilter = 'all' | 'gulf' | 'europe' | 'intl';
+// Country drilldown options — 2026-09-29: every PROGRAM country (+ PT, routed to amazon.es
+// until its own program), grouped by admin region, most important first; non-program
+// geos (IN/IL/CN — fallback traffic, mostly bots) last.
+const COUNTRY_OPTIONS: { code: string; name: string; region: AdminRegion }[] = [
+  { code: 'AE', name: 'AE — UAE',            region: 'gulf' },
+  { code: 'SA', name: 'SA — Saudi Arabia',   region: 'gulf' },
+  { code: 'OM', name: 'OM — Oman',           region: 'gulf' },
+  { code: 'QA', name: 'QA — Qatar',          region: 'gulf' },
+  { code: 'BH', name: 'BH — Bahrain',        region: 'gulf' },
+  { code: 'KW', name: 'KW — Kuwait',         region: 'gulf' },
+  { code: 'GB', name: 'GB — United Kingdom', region: 'europe' },
+  { code: 'DE', name: 'DE — Germany',        region: 'europe' },
+  { code: 'ES', name: 'ES — Spain',          region: 'europe' },
+  { code: 'PT', name: 'PT — Portugal (→ amazon.es)', region: 'europe' },
+  { code: 'FR', name: 'FR — France',         region: 'europe' },
+  { code: 'IT', name: 'IT — Italy',          region: 'europe' },
+  { code: 'NL', name: 'NL — Netherlands',    region: 'europe' },
+  { code: 'IE', name: 'IE — Ireland',        region: 'europe' },
+  { code: 'BE', name: 'BE — Belgium',        region: 'europe' },
+  { code: 'SE', name: 'SE — Sweden',         region: 'europe' },
+  { code: 'PL', name: 'PL — Poland',         region: 'europe' },
+  { code: 'US', name: 'US — United States',  region: 'americas' },
+  { code: 'CA', name: 'CA — Canada',         region: 'americas' },
+  { code: 'BR', name: 'BR — Brazil',         region: 'americas' },
+  { code: 'JP', name: 'JP — Japan',          region: 'apac' },
+  { code: 'AU', name: 'AU — Australia',      region: 'apac' },
+  { code: 'SG', name: 'SG — Singapore',      region: 'apac' },
+  { code: 'IN', name: 'IN — India',          region: 'other' },
+  { code: 'IL', name: 'IL — Israel',         region: 'other' },
+  { code: 'CN', name: 'CN — China',          region: 'other' },
+];
+const OPTION_GROUPS: { region: AdminRegion; label: string }[] = [
+  { region: 'gulf', label: 'Gulf' }, { region: 'europe', label: 'Europe' },
+  { region: 'americas', label: 'Americas' }, { region: 'apac', label: 'Asia-Pacific' },
+  { region: 'other', label: 'Non-program (fallback / bots)' },
+];
 
-// API uses 'intl'; type GeoGroup uses 'international'. Bridge.
-function geoFilterToGroup(f: GeoFilter): GeoGroup | null {
-  if (f === 'all') return null;
-  if (f === 'intl') return 'international';
-  return f;
-}
+// 2026-09-29: geo filter = admin region ('intl' retired from the UI; API still accepts it).
+type GeoFilter = 'all' | AdminRegion;
 
 // MG5 (2026-07-28): date-range presets. 'today'/'yesterday' are single Dubai
 // days (yesterday sends mode=yesterday → server caps the window at today 00:00);
@@ -421,10 +448,12 @@ export default function AdminTracking() {
             {/* GEOS1: 5-state geo filter pill. Selecting a group clears country. */}
             <div className="flex items-center gap-0.5 bg-gray-900 border border-gray-700 rounded-lg p-0.5">
               {([
-                { val: 'all',    label: '🌍 All' },
-                { val: 'gulf',   label: '🇦🇪 Gulf' },
-                { val: 'europe', label: '🇪🇺 Europe' },
-                { val: 'intl',   label: '🇺🇸 Intl' },
+                { val: 'all',      label: '🌍 All' },
+                { val: 'gulf',     label: '🇦🇪 Gulf' },
+                { val: 'europe',   label: '🇪🇺 Europe' },
+                { val: 'americas', label: '🌎 Americas' },
+                { val: 'apac',     label: '🌏 Asia-Pac' },
+                { val: 'other',    label: '🤖 Other' },
               ] as { val: GeoFilter; label: string }[]).map(g => (
                 <button
                   key={g.val}
@@ -444,21 +473,13 @@ export default function AdminTracking() {
               onChange={e => { setCountryFilter(e.target.value); if (e.target.value) setGeoFilter('all'); }}
               className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5">
               <option value="">🔍 Country: any</option>
-              <optgroup label="Gulf">
-                {COUNTRY_OPTIONS.filter(c => c.group === 'gulf').map(c => (
-                  <option key={c.code} value={c.code}>{c.name}</option>
-                ))}
-              </optgroup>
-              <optgroup label="Europe">
-                {COUNTRY_OPTIONS.filter(c => c.group === 'europe').map(c => (
-                  <option key={c.code} value={c.code}>{c.name}</option>
-                ))}
-              </optgroup>
-              <optgroup label="International">
-                {COUNTRY_OPTIONS.filter(c => c.group === 'international').map(c => (
-                  <option key={c.code} value={c.code}>{c.name}</option>
-                ))}
-              </optgroup>
+              {OPTION_GROUPS.map(g => (
+                <optgroup key={g.region} label={g.label}>
+                  {COUNTRY_OPTIONS.filter(c => c.region === g.region).map(c => (
+                    <option key={c.code} value={c.code}>{c.name}</option>
+                  ))}
+                </optgroup>
+              ))}
             </select>
             <button onClick={() => fetchData()} disabled={loading}
               className="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50">
@@ -487,28 +508,41 @@ export default function AdminTracking() {
           <>
             {/* GEOS1 per-geo KPI strip — only when filter is 'all' AND no country picked.
                 Once narrowed, the 6-card row + tables already reflect the chosen geo. */}
-            {geoFilter === 'all' && !countryFilter && by_geo && (
-              <div className="grid md:grid-cols-3 gap-3 mb-6">
-                {[
-                  { key: 'gulf'         as const, label: '🇦🇪 Gulf · amazon.ae',        bg: 'bg-emerald-900/20 border-emerald-800/40', accent: 'text-emerald-300', sub: 'text-emerald-400' },
-                  { key: 'europe'       as const, label: '🇪🇺 Europe · amazon.de',      bg: 'bg-blue-900/20 border-blue-800/40',       accent: 'text-blue-300',    sub: 'text-blue-400' },
-                  { key: 'international' as const, label: '🇺🇸 International · amazon.com', bg: 'bg-purple-900/20 border-purple-800/40', accent: 'text-purple-300',  sub: 'text-purple-400' },
-                ].map(g => {
-                  const bucket = by_geo[g.key];
-                  const cr = bucket.sessions > 0 ? ((bucket.with_clicks / bucket.sessions) * 100).toFixed(1) + '%' : '0%';
-                  return (
-                    <div key={g.key} className={`${g.bg} rounded-xl p-4 border`}>
-                      <div className={`text-xs uppercase tracking-wide font-semibold mb-3 ${g.sub}`}>{g.label}</div>
-                      <div className="grid grid-cols-3 gap-2 text-sm">
-                        <div><div className="text-gray-500 text-[11px]">Sessions</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.sessions}</div></div>
-                        <div><div className="text-gray-500 text-[11px]">AMZ Clicks</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.with_clicks}</div></div>
-                        <div><div className="text-gray-500 text-[11px]">CR</div><div className={`text-2xl font-bold ${g.accent}`}>{cr}</div></div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {/* 2026-09-29: 4 CLEAN program-region cards + a slim non-program noise tile. */}
+            {geoFilter === 'all' && !countryFilter && data.by_region && (() => {
+              const byRegion = data.by_region!;
+              const other = byRegion.other;
+              const allSessions = ADMIN_REGION_TOTAL(byRegion);
+              return (
+                <>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+                    {REGION_CARDS.map(g => {
+                      const bucket = byRegion[g.key];
+                      const cr = bucket.sessions > 0 ? ((bucket.with_clicks / bucket.sessions) * 100).toFixed(1) + '%' : '0%';
+                      return (
+                        <button key={g.key} onClick={() => { setGeoFilter(g.key); setCountryFilter(''); }}
+                          className={`${g.bg} rounded-xl p-4 border text-left hover:brightness-125 transition`}>
+                          <div className={`text-xs uppercase tracking-wide font-semibold mb-3 ${g.sub}`}>{g.label}</div>
+                          <div className="grid grid-cols-3 gap-2 text-sm">
+                            <div><div className="text-gray-500 text-[11px]">Sessions</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.sessions}</div></div>
+                            <div><div className="text-gray-500 text-[11px]">AMZ Clicks</div><div className={`text-2xl font-bold ${g.accent}`}>{bucket.with_clicks}</div></div>
+                            <div><div className="text-gray-500 text-[11px]">CR</div><div className={`text-2xl font-bold ${g.accent}`}>{cr}</div></div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <button onClick={() => { setGeoFilter('other'); setCountryFilter(''); }}
+                    className="w-full mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-lg border border-gray-800 bg-gray-900/60 px-4 py-2 text-xs text-gray-400 hover:bg-gray-800/60 text-left">
+                    <span className="font-semibold text-gray-300">🤖 Non-program geos</span>
+                    <span>{other.sessions} sessions ({allSessions > 0 ? ((other.sessions / allSessions) * 100).toFixed(1) : '0'}% of traffic)</span>
+                    <span>{other.with_gclid} with GCLID</span>
+                    <span>{other.with_clicks} AMZ clicks</span>
+                    <span className="text-gray-600">world-wide fallback traffic — mostly bots / scrapers · click to inspect</span>
+                  </button>
+                </>
+              );
+            })()}
 
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
@@ -578,7 +612,7 @@ export default function AdminTracking() {
                   {top_countries && top_countries.length > 0 ? top_countries.slice(0, 10).map(c => (
                     <div key={c.code} className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${GEO_BADGE[c.geo_group]}`}>{GEO_LABEL[c.geo_group]}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${REGION_BADGE[regionOfRow(c)]}`}>{REGION_LABEL[regionOfRow(c)]}</span>
                         <span className="text-gray-300">{c.code === '_unknown' ? '— Unknown' : c.code}</span>
                       </span>
                       <span className="text-gray-500">{c.count}</span>
@@ -656,14 +690,11 @@ export default function AdminTracking() {
             </div>
 
             {/* GEOS1 per-geo funnel rollup — shown when filter is "all" */}
-            {geoFilter === 'all' && !countryFilter && by_geo && (
-              <div className="grid md:grid-cols-3 gap-3 mb-6">
-                {[
-                  { key: 'gulf'         as const, label: '🇦🇪 Gulf · amazon.ae',        bg: 'bg-emerald-900/20 border-emerald-800/40', title: 'text-emerald-400', val: 'text-emerald-300' },
-                  { key: 'europe'       as const, label: '🇪🇺 Europe · amazon.de',      bg: 'bg-blue-900/20 border-blue-800/40',       title: 'text-blue-400',    val: 'text-blue-300' },
-                  { key: 'international' as const, label: '🇺🇸 International · amazon.com', bg: 'bg-purple-900/20 border-purple-800/40', title: 'text-purple-400',  val: 'text-purple-300' },
-                ].map(g => {
-                  const b = by_geo[g.key];
+            {/* 2026-09-29: program regions (admin-regions); non-program noise lives in the Overview tile. */}
+            {geoFilter === 'all' && !countryFilter && data.by_region && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                {REGION_CARDS.map(r => ({ key: r.key, label: r.label, bg: r.bg, title: r.sub, val: r.accent })).map(g => {
+                  const b = data.by_region![g.key];
                   const cr = b.sessions > 0 ? ((b.with_clicks / b.sessions) * 100).toFixed(1) + '%' : '0%';
                   return (
                     <div key={g.key} className={`rounded-xl p-4 border ${g.bg}`}>
@@ -826,7 +857,7 @@ export default function AdminTracking() {
                         </span>
                       </td>
                       <td className="px-3 py-2">
-                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${GEO_BADGE[s.geo_group]}`}>{GEO_LABEL[s.geo_group]}</span>
+                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${REGION_BADGE[regionOfRow(s)]}`}>{REGION_LABEL[regionOfRow(s)]}</span>
                       </td>
                       <td className="px-3 py-2 font-mono text-xs text-gray-500">{s.assigned_tag}</td>
                       <td className="px-3 py-2 text-xs">
@@ -1114,7 +1145,7 @@ export default function AdminTracking() {
                             {u.user_id.substring(0, 6)}
                           </td>
                           <td className="px-3 py-2 text-xs">
-                            <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${GEO_BADGE[u.geo_group]}`}>{GEO_LABEL[u.geo_group]}</span>
+                            <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${REGION_BADGE[regionOfRow({ region: u.region, ip_country: u.primary_country })]}`}>{REGION_LABEL[regionOfRow({ region: u.region, ip_country: u.primary_country })]}</span>
                             <span className="text-gray-500 ml-1">{u.primary_country || '—'}</span>
                           </td>
                           <td className="px-3 py-2">
