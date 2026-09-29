@@ -40,14 +40,18 @@ export const CROSS_LOCALE_POOL: CrossLinkSlug[] = [
   { slug: 'robot-vacuum-and-mop', en: 'Robot Vacuums & Mops', ja: 'ロボット掃除機とモップ', ar: 'روبوتات الشفط والمسح', pt: 'aspirador de piso robô' },
 ];
 
-/** Native group label, <html lang>, direction and anchor template per locale. */
+/** Native group label, <html lang>, direction and anchor template per locale.
+ *  2026-09-29 (owner): every anchor NAMES THE GEO in its own language — ja → Japan,
+ *  ar → the Emirates + Saudi (the Arabic pages serve both), pt → Brazil. English pages
+ *  serve many countries, so the en anchor takes a rotating geo (same list as the EN
+ *  "More top picks", lib/related-pages RELATED_GEOS) passed in by the component. */
 export const LOCALE_LINK_META: Record<LinkLocale, {
-  label: string; dir: 'ltr' | 'rtl'; anchor: (noun: string) => string; path: (slug: string) => string;
+  label: string; dir: 'ltr' | 'rtl'; anchor: (noun: string, enGeo: string) => string; path: (slug: string) => string;
 }> = {
-  en: { label: 'English',            dir: 'ltr', anchor: (n) => `10 Best ${n}`,           path: (s) => `/best/${s}` },
-  ja: { label: '日本語',              dir: 'ltr', anchor: (n) => `${n}のおすすめ10選`,       path: (s) => `/ja/best/${s}` },
-  ar: { label: 'العربية',            dir: 'rtl', anchor: (n) => `أفضل 10 ${n}`,            path: (s) => `/ar/best/${s}` },
-  pt: { label: 'Português (Brasil)', dir: 'ltr', anchor: (n) => `Top 10 de ${n} no Brasil`, path: (s) => `/pt/best/${s}` },
+  en: { label: 'English',            dir: 'ltr', anchor: (n, g) => `10 Best ${n} in ${g}`,                 path: (s) => `/best/${s}` },
+  ja: { label: '日本語',              dir: 'ltr', anchor: (n) => `日本の${n}おすすめ10選`,                  path: (s) => `/ja/best/${s}` },
+  ar: { label: 'العربية',            dir: 'rtl', anchor: (n) => `أفضل 10 ${n} في الإمارات والسعودية`,      path: (s) => `/ar/best/${s}` },
+  pt: { label: 'Português (Brasil)', dir: 'ltr', anchor: (n) => `Top 10 de ${n} no Brasil`,               path: (s) => `/pt/best/${s}` },
 };
 
 export const LINK_LOCALES: LinkLocale[] = ['en', 'ja', 'ar', 'pt'];

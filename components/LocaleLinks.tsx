@@ -12,6 +12,7 @@
 
 import { routing } from '@/i18n/routing';
 import { CROSS_LOCALE_POOL, LOCALE_LINK_META, LINK_LOCALES, type LinkLocale } from '@/lib/locale-links';
+import { RELATED_GEOS } from '@/lib/related-pages';   // 2026-09-29: geo in the en anchors
 
 function hash(s: string): number {
   let h = 0;
@@ -47,10 +48,10 @@ export default function LocaleLinks({ locale, seedKey, perLocale = 3 }: LocaleLi
             <div key={loc} lang={loc} dir={meta.dir}>
               <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{meta.label}</div>
               <ul className="space-y-1 text-sm">
-                {picks.map((p) => (
+                {picks.map((p, i) => (
                   <li key={p.slug}>
                     <a href={meta.path(p.slug)} hrefLang={loc} className="text-blue-600 hover:text-blue-800 hover:underline">
-                      {meta.anchor(p[loc])}
+                      {meta.anchor(p[loc], RELATED_GEOS[(seed + i) % RELATED_GEOS.length])}
                     </a>
                   </li>
                 ))}

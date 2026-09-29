@@ -46,7 +46,7 @@ export default async function RelatedPagesPt({ currentSlug, count = 18 }: Relate
                 href={`/best/${p.slug}`}
                 className="text-blue-600 hover:text-blue-800 hover:underline"
               >
-                Top 10 de {p.noun}
+                Top 10 de {p.noun} no Brasil
               </Link>
             </li>
           ))}
