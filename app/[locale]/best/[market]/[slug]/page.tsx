@@ -46,6 +46,8 @@ import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
 import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
 import RelatedPages from '@/components/RelatedPages';
+import RelatedPagesPt from '@/components/RelatedPagesPt';   // 2026-09-29: /pt internal links
+import LocaleLinks from '@/components/LocaleLinks';         // 2026-09-29: cross-language links
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
 import { getShopeeForPage } from '@/lib/shopee';
@@ -627,8 +629,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
           <p className="text-sm text-gray-600 leading-relaxed max-w-3xl">{tBest('howWeChoseBody')}</p>
         </div>
       </section>
-      {/* BR 1: RelatedPages is English-only (lib/related-pages) → hidden on /pt until localized */}
-      {!isPt && <RelatedPages currentSlug={slug} />}
+      {/* BR 1: RelatedPages is English-only (lib/related-pages). 2026-09-29: /pt gets its own
+          pt-only nav (complete /pt pages, Portuguese anchors) — see lib/related-pages-pt.ts. */}
+      {isPt ? <RelatedPagesPt currentSlug={slug} /> : <RelatedPages currentSlug={slug} />}
+      {/* 2026-09-29: 3 links per OTHER language (native anchors) — connects en/ja/ar/pt. */}
+      <LocaleLinks locale={params.locale} seedKey={slug} />
     </>
   );
 }

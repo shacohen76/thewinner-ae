@@ -21,7 +21,7 @@
     "categories": "Categorias",
     "popular": "Populares",
     "info": "Informações",
-    "tagline": "O principal site de comparação de produtos. Ajudamos você a encontrar o produto perfeito.",
+    "tagline": "O principal site de comparação de produtos no Brasil. Ajudamos você a encontrar o produto perfeito.",
     "popularItems": {
       "portable-speakers": "Caixas de Som Portáteis",
       "coffee-machines": "Cafeteiras",
@@ -87,7 +87,7 @@
     "backToTop": "↑ Voltar ao top 10 de {keyword} no Brasil",
     "by": "Por",
     "updated": "Atualizado em {date}",
-    "morePicks": "Mais escolhas principais",
+    "morePicks": "Mais recomendações",
     "howWeChoseTitle": "Como escolhemos",
     "howWeChoseBody": "Nossos editores são pessoas que realmente adoram testar produtos e escrever sobre eles. Comparamos a usabilidade no dia a dia e os pontos fortes de cada produto e resumimos o que mais importa em nossos próprios pontos \"Por Que Adoramos\" — para você ter, num piscar de olhos, uma visão honesta do que conta antes de comprar.",
     "reviewerRole": "Avaliador de Produtos",
