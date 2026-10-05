@@ -39,6 +39,58 @@ import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS, resolveCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
 import { BR_PT_ENABLED } from '@/lib/feature-flags';
+import { NO_TRACK_COOKIE, CAMPAIGN_PARAMS, obviousJunkReason } from '@/lib/junk-traffic';
+
+// ─── Junk-DIRECT no-track cookie (2026-10-05) ─────────────────────────────────
+// Marks an OBVIOUS-junk direct landing (see lib/junk-traffic.ts) with a session
+// cookie so the page skips GTM/GA4 and /api/tag-assign writes no click_log row.
+// Never blocks, never changes the HTML. Decided only on a real landing request:
+//   - client-side navigations / prefetches (RSC requests) → cookie untouched
+//   - referrer = our own site (internal page load)       → cookie untouched
+//   - external referrer or any campaign param            → cookie cleared (track)
+//   - direct (no referrer)                                → set iff obvious junk
+function applyNoTrackCookie(
+  request: NextRequest,
+  response: NextResponse,
+  country: string,
+  userAgent: string,
+  isBot: boolean,
+): void {
+  if (isBot) return; // allowed search/social/AI crawlers: leave as-is
+  const h = request.headers;
+  if (h.get('rsc') || h.get('next-router-prefetch') || h.get('next-router-state-tree')) return;
+
+  const has = request.cookies.get(NO_TRACK_COOKIE)?.value === '1';
+  const clear = () => { if (has) response.cookies.delete(NO_TRACK_COOKIE); };
+
+  const referer = h.get('referer') || '';
+  if (referer) {
+    let refHost = '';
+    try { refHost = new URL(referer).hostname.toLowerCase(); } catch { /* bad header */ }
+    const ownHost = (h.get('host') || '').toLowerCase().split(':')[0];
+    const isOwn = refHost === ownHost || /(^|\.)thewinners?\.ae$/.test(refHost);
+    if (isOwn) return;   // internal load — keep the landing decision
+    return clear();      // came from somewhere (search, social, app…) → track
+  }
+
+  const params = request.nextUrl.searchParams;
+  if (CAMPAIGN_PARAMS.some(p => params.has(p))) return clear();
+
+  if (obviousJunkReason(country, userAgent)) {
+    if (!has) {
+      response.cookies.set({
+        name: NO_TRACK_COOKIE,
+        value: '1',
+        path: '/',
+        sameSite: 'lax',
+        secure: request.nextUrl.protocol === 'https:',
+        httpOnly: false, // layout inline script + TrackingProvider read it
+      });
+    }
+  } else {
+    clear();
+  }
+}
 
 // next-intl locale router. Produces the (rewritten) response we mutate below.
 const intlMiddleware = createMiddleware(routing);
@@ -263,6 +315,9 @@ export function middleware(request: NextRequest) {
       response.cookies.delete(GEO_COOKIE_NAME);
     }
 
+    // 2026-10-05: junk-direct no-track cookie (see applyNoTrackCookie).
+    applyNoTrackCookie(request, response, country, userAgent, isBot);
+
     return response;
   }
 
@@ -311,6 +366,9 @@ export function middleware(request: NextRequest) {
     // any stale geo cookie so consumer code reverts to default (Gulf) behavior.
     response.cookies.delete(GEO_COOKIE_NAME);
   }
+
+  // 2026-10-05: junk-direct no-track cookie (see applyNoTrackCookie).
+  applyNoTrackCookie(request, response, country, userAgent, isBot);
 
   return response;
 }

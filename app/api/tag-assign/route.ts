@@ -8,11 +8,20 @@
 //       + geo_group for uniform client-side handling. Main path passes the
 //       fields through automatically via assignTag(). ip_country forwarded
 //       to assignTag → server-side geo derivation; client doesn't post geo.
+// v1.3 (2026-10-05, junk-direct cleanup): when middleware marked the visit as
+//       obvious junk (NO_TRACK_COOKIE), resolve tag + domain but write NO
+//       click_log row (session_id null). If that visitor clicks out, the client
+//       calls again with `clicked_asin` → the session is created right then and
+//       the ASIN logged, so a real buyer's click is never lost. Paid traffic
+//       (gads / gclid) always persists — enforced in lib/tracking shouldPersist.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { assignTag } from '@/lib/tracking';
+import { assignTag, logAsinClick } from '@/lib/tracking';
 import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
+import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
+
+const ASIN_RE = /^[A-Z0-9]{10}$/;
 
 // Bot user agents that should NOT get tracking sessions.
 // Crawler/automation patterns live here; the SPOOFED-browser signatures (junk
@@ -61,7 +70,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { gclid, fbclid, traffic_source, landing_page, user_id, site } = body;
+    const { gclid, fbclid, traffic_source, landing_page, user_id, site, clicked_asin } = body;
+
+    // 2026-10-05: junk-direct no-track (see header v1.3). A clickout always persists.
+    const clickedAsin = typeof clicked_asin === 'string' && ASIN_RE.test(clicked_asin) ? clicked_asin : null;
+    const noTrack = request.cookies.get(NO_TRACK_COOKIE)?.value === '1';
+    const persist = clickedAsin ? true : !noTrack;
 
     // Skip admin pages — don't track our own dashboard visits
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
@@ -103,7 +117,14 @@ export async function POST(request: NextRequest) {
       site: site || null,
       as_name: asName,
       as_number: Number.isFinite(asNumber as number) ? asNumber : null,
+      persist,
     });
+
+    // 2026-10-05: deferred (no-track) visitor just clicked out → log that ASIN on
+    // the session we created for it. Same call ProductCard's beacon would make.
+    if (clickedAsin && result.session_id) {
+      await logAsinClick(result.session_id, clickedAsin);
+    }
 
     return NextResponse.json(result);
   } catch (error) {

@@ -40,6 +40,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import TrackingProvider from '@/components/TrackingProvider';
 import LayoutShell from '@/components/LayoutShell';
 import { CONFIG } from '@/lib/utils';
+import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
 import { routing, type AppLocale } from '@/i18n/routing';
 import '@/styles/globals.css';
 
@@ -175,15 +176,21 @@ export default async function LocaleLayout({
             after GTM tag is properly configured for Consent Mode v2 AND
             CookieConsent.tsx update path is verified end-to-end.
             See AM1 decisions log entry GEOS1-HOTFIX-1. */}
-        {/* Google Tag Manager */}
+        {/* Google Tag Manager
+            2026-10-05 (junk-direct cleanup): not loaded when middleware marked this
+            visit as obvious junk (NO_TRACK_COOKIE, see lib/junk-traffic.ts) → no GA4
+            user for China/crawler direct hits. The cookie arrives with this HTML
+            response, so it is readable before this script runs. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              if(!/(?:^|;\\s*)${NO_TRACK_COOKIE}=1/.test(document.cookie)){
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','${CONFIG.gtmId}');
+              }
             `,
           }}
         />
