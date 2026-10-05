@@ -381,10 +381,21 @@ export interface TagAssignRequest {
   // capture. See AMZ_AFF/Docs_MD/SG_BOT_FILTER_ROADMAP.md.
   as_name?: string | null;
   as_number?: number | null;
+  // 2026-10-05 (junk-direct cleanup): false = resolve the visitor's tag + Amazon
+  // domain but write NO click_log row (obvious-junk direct visit, see
+  // lib/junk-traffic.ts). Only honoured for static (non-paid) traffic — a gads
+  // visit or anything carrying a gclid ALWAYS persists (see shouldPersist).
+  persist?: boolean;
+}
+
+/** 2026-10-05: the paid money path can never be skipped, whatever the caller says. */
+function shouldPersist(req: TagAssignRequest): boolean {
+  return req.persist !== false || req.traffic_source === TRACKING_CONFIG.gadsTagType || !!req.gclid;
 }
 
 export interface TagAssignResponse {
-  session_id: string;
+  // null when the session was resolved but not persisted (persist=false).
+  session_id: string | null;
   assigned_tag: string;
   expires_at: string | null;
   // GEOS1: client uses these to (a) rewrite Amazon link hostnames to the
@@ -464,23 +475,28 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
       // program-specific tag in assigned_tag. ip_country tells us the geo.
       // Non-AE gads visitors also get routed here, intentionally skipping
       // the gads rotation pool (rotation is AE-only, GCLID-attribution).
-      await getSupabaseAdmin().from('click_log').insert({
-        session_id: sessionId,
-        gclid: req.gclid || null,
-        fbclid: req.fbclid || null,
-        assigned_tag: assignedTag,
-        traffic_source: req.traffic_source,
-        landing_page: req.landing_page || null,
-        user_agent: req.user_agent || null,
-        ip_country: req.ip_country || null,
-        user_id: req.user_id || null,
-        site: req.site || null,
-        as_name: req.as_name || null,
-        as_number: req.as_number ?? null,
-      });
+      // 2026-10-05: skipped for obvious-junk direct visits (persist=false) —
+      // they still get the correct tag/domain below, just no row/user_id.
+      const persist = shouldPersist(req);
+      if (persist) {
+        await getSupabaseAdmin().from('click_log').insert({
+          session_id: sessionId,
+          gclid: req.gclid || null,
+          fbclid: req.fbclid || null,
+          assigned_tag: assignedTag,
+          traffic_source: req.traffic_source,
+          landing_page: req.landing_page || null,
+          user_agent: req.user_agent || null,
+          ip_country: req.ip_country || null,
+          user_id: req.user_id || null,
+          site: req.site || null,
+          as_name: req.as_name || null,
+          as_number: req.as_number ?? null,
+        });
+      }
 
       return {
-        session_id: sessionId,
+        session_id: persist ? sessionId : null,
         assigned_tag: assignedTag,
         expires_at: null, // geo-static tags don't expire
         amazon_domain: geoConfig.amazonDomain,
@@ -519,23 +535,27 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
     );
 
     // Log the session (even for static tags — useful for analytics)
-    await getSupabaseAdmin().from('click_log').insert({
-    session_id: sessionId,
-    gclid: req.gclid || null,
-    fbclid: req.fbclid || null,
-    assigned_tag: staticTag,
-    traffic_source: req.traffic_source,
-    landing_page: req.landing_page || null,
-    user_agent: req.user_agent || null,
-    ip_country: req.ip_country || null,
-    user_id: req.user_id || null,
-    site: req.site || null,
-    as_name: req.as_name || null,
-    as_number: req.as_number ?? null,
-  });
+    // 2026-10-05: skipped for obvious-junk direct visits (persist=false).
+    const persist = shouldPersist(req);
+    if (persist) {
+      await getSupabaseAdmin().from('click_log').insert({
+        session_id: sessionId,
+        gclid: req.gclid || null,
+        fbclid: req.fbclid || null,
+        assigned_tag: staticTag,
+        traffic_source: req.traffic_source,
+        landing_page: req.landing_page || null,
+        user_agent: req.user_agent || null,
+        ip_country: req.ip_country || null,
+        user_id: req.user_id || null,
+        site: req.site || null,
+        as_name: req.as_name || null,
+        as_number: req.as_number ?? null,
+      });
+    }
 
     return {
-      session_id: sessionId,
+      session_id: persist ? sessionId : null,
       assigned_tag: staticTag,
       expires_at: null, // static tags don't expire
       amazon_domain: 'amazon.ae',

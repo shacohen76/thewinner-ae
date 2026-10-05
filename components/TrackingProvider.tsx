@@ -8,6 +8,9 @@
 // v2.1 (AMZ6): persistent user_id + site columns
 // v2.2 (GEOS1): geo-aware link rewriting (domain + tag), conditional session
 //               re-init on geo mismatch, client-side bot guard.
+// v2.3 (2026-10-05, junk-direct cleanup): obvious-junk direct visits (middleware
+//               NO_TRACK_COOKIE, lib/junk-traffic.ts) get correct links but no
+//               user_id / click_log row ("deferred"); created on first clickout.
 //
 // Conditional re-init explained:
 //   When GEOS1_ENABLED toggles or a visitor crosses geos (VPN, traveling),
@@ -26,10 +29,12 @@ import { useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { CONFIG, pinnedAffiliateUrl } from '@/lib/utils';
 import { getGeoGroup, type GeoGroup, type AmazonDomain } from '@/lib/geo-config';
+import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
 
 // Session data stored in sessionStorage
 interface TrackingSession {
-  session_id: string;
+  // null for a bot short-circuit or a deferred (no-track) visit — no click_log row.
+  session_id: string | null;
   assigned_tag: string;
   expires_at: string | null;
   traffic_source: string;
@@ -41,9 +46,20 @@ interface TrackingSession {
   // 3 values, which was inaccurate for every non-catch-all program.
   amazon_domain?: AmazonDomain;
   geo_group?: GeoGroup;
+  // 2026-10-05 (junk-direct cleanup): true when the visit was flagged obvious junk
+  // (NO_TRACK_COOKIE) — links are tagged/geo-routed, but no click_log row and no
+  // user_id exist yet. The session is created on the first clickout.
+  deferred?: boolean;
+  landing_page?: string | null;
 }
 
 const SESSION_KEY = 'tw_tracking_session';
+
+/** 2026-10-05: middleware flagged this visit as obvious junk (lib/junk-traffic.ts). */
+function isNoTrack(): boolean {
+  if (typeof document === 'undefined') return false;
+  return new RegExp(`(?:^|;\\s*)${NO_TRACK_COOKIE}=1`).test(document.cookie);
+}
 
 // ============================================
 // GEOS1 HELPERS
@@ -157,6 +173,13 @@ function getStoredSession(): TrackingSession | null {
     const currentGroup = getCurrentGeoGroup();
     const storedGroup = session.geo_group || 'gulf';
     if (currentGroup !== storedGroup) {
+      sessionStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+
+    // 2026-10-05: a deferred (no-track) session whose flag was since cleared
+    // (visitor came back via search/ads in this tab) → re-assign so it is tracked.
+    if (session.deferred && !session.session_id && !isNoTrack()) {
       sessionStorage.removeItem(SESSION_KEY);
       return null;
     }
@@ -337,6 +360,9 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
     // No valid session — request a new tag
     const trafficSource = detectTrafficSource();
     const { gclid, fbclid } = persistGclid();
+    // 2026-10-05: obvious-junk direct visit → no user_id minted; the server
+    // (same cookie) resolves tag + domain without writing a click_log row.
+    const noTrack = isNoTrack();
 
     try {
       const response = await fetch('/api/tag-assign', {
@@ -347,7 +373,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
           fbclid,
           traffic_source: trafficSource,
           landing_page: pathname,
-          user_id: getUserId(),
+          user_id: noTrack ? null : getUserId(),
           site: window.location.hostname,
         }),
       });
@@ -367,6 +393,8 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
         gclid: gclid || null,
         amazon_domain: data.amazon_domain,
         geo_group: data.geo_group,
+        deferred: noTrack && !data.session_id && !data.is_bot,
+        landing_page: pathname,
       };
       storeSession(session);
 
@@ -436,8 +464,48 @@ export function getSessionId(): string | null {
  * Log an ASIN click via sendBeacon (fire-and-forget).
  * Called by ProductCard on "Show Offer" click.
  */
+let _promoting = false;
+
+/**
+ * 2026-10-05 (junk-direct cleanup) — safety net: a deferred (no-track) visitor
+ * just clicked out, so they are not junk after all. Create the click_log session
+ * NOW (with this ASIN) and switch the stored session to the real session_id so
+ * further clicks use the normal beacon. Clickouts open a new tab, so this page
+ * stays alive for the response; keepalive covers the rare same-tab case.
+ */
+function promoteDeferredSession(session: TrackingSession, asin: string): void {
+  if (_promoting) return;
+  _promoting = true;
+  fetch('/api/tag-assign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    keepalive: true,
+    body: JSON.stringify({
+      gclid: session.gclid,
+      fbclid: null,
+      traffic_source: session.traffic_source,
+      landing_page: session.landing_page || window.location.pathname,
+      user_id: getUserId(),
+      site: window.location.hostname,
+      clicked_asin: asin,
+    }),
+  })
+    .then(r => (r.ok ? r.json() : null))
+    .then(data => {
+      if (data?.session_id) {
+        storeSession({ ...session, session_id: data.session_id, deferred: false });
+      }
+    })
+    .catch(() => {})
+    .finally(() => { _promoting = false; });
+}
+
 export function logAsinClickBeacon(asin: string): void {
   const session = getStoredSession();
+  if (session && !session.session_id && session.deferred) {
+    promoteDeferredSession(session, asin);
+    return;
+  }
   if (!session?.session_id) return;
 
   const payload = JSON.stringify({
