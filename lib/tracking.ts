@@ -1041,34 +1041,14 @@ async function maintainTagPoolForProgram(program: string, keyRole: string): Prom
   // ── 0b. V2 config (Decision 157). Flag off ⇒ V1 fixed cohort + threshold 4. ──
   const cfg = await getPoolConfig(program);
   const v2 = cfg?.mechanics_v2 === true && cfg.enabled === true;
-  const promoteThreshold = v2 ? cfg!.visibility_threshold : 4;
 
-  // ── 1. Promote tags whose cumulative order count ≥ threshold ──
-  // Fetch the eligible tag_ids from snapshot, then UPDATE tag_pool. Scoped to the AE
-  // gads rotation pool (2026-07-02): is_stable only governs gads rotation eligibility,
-  // so static tags (seo/direct/…) must not be flagged, and program='ae' preserves the
-  // MULTIGEO Step-1 invariant. No-op vs old behavior for AE assignment.
-  // 2026-07-05: threshold is config-driven under V2 (visibility_threshold), still 4 in V1.
-  const { data: snapshotEligible, error: snapErr } = await sb
-    .from('amazon_purchase_snapshot')
-    .select('tag_id')
-    .gte('items_ordered', promoteThreshold);
-  if (snapErr) errors.push(`snapshot_read: ${snapErr.message}`);
-  const eligibleIds = (snapshotEligible || []).map(r => r.tag_id);
-
-  let promotedCount = 0;
-  if (eligibleIds.length > 0) {
-    const { data: promoted, error: promErr } = await sb
-      .from('tag_pool')
-      .update({ is_stable: true })
-      .in('tag_id', eligibleIds)
-      .eq('program', program)
-      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
-      .eq('is_stable', false)
-      .select('tag_id');
-    if (promErr) errors.push(`promote: ${promErr.message}`);
-    promotedCount = promoted?.length || 0;
-  }
+  // 2026-10-10 (PS 12, owner OK, decision D202): step 1 REMOVED. The cron promoted gads tags on the
+  // This-Year snapshot (old rule) and, on a fetch-cache miss, flipped US/JP/UK/CA year-stables back to
+  // is_stable=true (10-10 14:45 IL). Since 10-05 the ONLY is_stable writer is the local monthly promoter
+  // amz_promote_stable_by_live_signal.py --source mtd. Interim kill-switch was
+  // program_pool_config.visibility_threshold=1000000 (can return to 4 after this ships).
+  // promotedCount stays 0 so the result shape (promoted_to_stable) is unchanged for log parsers.
+  const promotedCount = 0;
 
   // ── 2. Graduate stable cohort members (they no longer need cohort lane) ──
   // 2026-07-02: scoped to program='ae' + gads to preserve the MULTIGEO invariant.
