@@ -26,6 +26,7 @@ const categories = [
   { name: 'Beauty, Care & Family', slug: 'care-main', icon: '✨', color: 'from-pink-500 to-pink-600' },
   { name: 'Hobbies & Leisure', slug: 'hobbies-main', icon: '🎮', color: 'from-red-500 to-red-600' },
   { name: 'Home & Garden', slug: 'home-main', icon: '🏡', color: 'from-teal-500 to-teal-600' },
+  { name: 'Fashion & Accessories', slug: 'fashion-main', icon: '👜', color: 'from-fuchsia-500 to-fuchsia-600' }, // 2026-10-11
   { name: 'More', slug: 'other-main', icon: '📦', color: 'from-gray-500 to-gray-600' },
 ];
 

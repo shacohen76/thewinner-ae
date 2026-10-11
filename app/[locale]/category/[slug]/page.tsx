@@ -79,6 +79,7 @@ const GRADIENT_STYLES: Record<string, string> = {
   'from-red-600 via-red-700 to-orange-800': 'linear-gradient(to bottom right, #dc2626, #b91c1c, #9a3412)',
   'from-teal-600 via-teal-700 to-emerald-800': 'linear-gradient(to bottom right, #0d9488, #0f766e, #065f46)',
   'from-gray-600 via-gray-700 to-slate-800': 'linear-gradient(to bottom right, #4b5563, #374151, #1e293b)',
+  'from-fuchsia-600 via-fuchsia-700 to-purple-800': 'linear-gradient(to bottom right, #c026d3, #a21caf, #6b21a8)', // 2026-10-11 fashion-main
 };
 
 function getGradientStyle(gradient: string): React.CSSProperties {

@@ -15,6 +15,7 @@
     "care-main": "Beleza, Cuidados e Família",
     "hobbies-main": "Hobbies e Lazer",
     "home-main": "Casa e Jardim",
+    "fashion-main": "Moda e Acessórios",
     "other-main": "Mais"
   },
   "Footer": {
@@ -101,7 +102,8 @@
     "care-main": "Perfumes, maquiagem, cuidados com os cabelos, cuidados com a pele e produtos para bebês.",
     "hobbies-main": "Games, brinquedos, esportes, câmeras e instrumentos musicais.",
     "home-main": "Móveis, banheiro, iluminação, casa inteligente, jardim e ferramentas elétricas.",
-    "other-main": "Automotivo, bolsas e muito mais."
+    "fashion-main": "Bolsas, carteiras, chapéus, cachecóis, luvas, óculos de sol e cintos.",
+    "other-main": "Automotivo e muito mais."
   },
   "Subcategories": {
     "large-appliances": "Grandes Eletrodomésticos",
@@ -140,6 +142,9 @@
     "power-tools": "Ferramentas Elétricas",
     "automotive": "Automotivo",
     "bags-backpacks": "Bolsas e Mochilas",
+    "wallets-small-leather-goods": "Carteiras e Porta-Cartões",
+    "hats-scarves-gloves": "Chapéus, Cachecóis e Luvas",
+    "sunglasses-eyewear-belts": "Óculos de Sol, Armações e Cintos",
     "other": "Outros"
   },
   "CategoryPage": {

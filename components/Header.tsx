@@ -21,6 +21,7 @@ const categories = [
   { slug: 'care-main', icon: '✨' },
   { slug: 'hobbies-main', icon: '🎮' },
   { slug: 'home-main', icon: '🏡' },
+  { slug: 'fashion-main', icon: '👜' }, // 2026-10-11 owner lean fashion decision
   { slug: 'other-main', icon: '📦' },
 ];
 
