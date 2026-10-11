@@ -146,11 +146,19 @@ export const MAIN_CATEGORIES: Record<string, { label: string; icon: string; colo
     description: 'Furniture, bathroom, lighting, smart home, garden and power tools.',
     subcategories: ['furniture', 'bathroom', 'lighting', 'smart-home', 'garden-outdoor', 'power-tools'],
   },
+  // 2026-10-11 owner decision (LEAN fashion structure, via BCPL 6.4): one main group, 4 subcategories.
+  // bags-backpacks keeps its slug/URL (moved here from other-main); 3 new DB rows: ids 38/39/40.
+  'fashion-main': {
+    label: 'Fashion & Accessories', icon: '👜', color: 'fuchsia',
+    gradient: 'from-fuchsia-600 via-fuchsia-700 to-purple-800',
+    description: 'Bags, backpacks, wallets, hats, scarves, gloves, sunglasses and belts.',   // native-check wording 10-11
+    subcategories: ['bags-backpacks', 'wallets-small-leather-goods', 'hats-scarves-gloves', 'sunglasses-eyewear-belts'],
+  },
   'other-main': {
     label: 'More', icon: '📦', color: 'gray',
     gradient: 'from-gray-600 via-gray-700 to-slate-800',
-    description: 'Automotive, bags and more.',
-    subcategories: ['automotive', 'bags-backpacks', 'other'],
+    description: 'Automotive and more.',   // 2026-10-11: bags moved to fashion-main
+    subcategories: ['automotive', 'other'],
   },
 };
 
@@ -192,6 +200,10 @@ export const SUBCATEGORY_NAMES: Record<string, { name: string; icon: string }> =
   'power-tools': { name: 'Power Tools', icon: '🔨' },
   'automotive': { name: 'Automotive', icon: '🚗' },
   'bags-backpacks': { name: 'Bags & Backpacks', icon: '🎒' },
+  // 2026-10-11 fashion-main subcategories (DB categories ids 38/39/40 — must exist before deploy)
+  'wallets-small-leather-goods': { name: 'Wallets & Small Leather Goods', icon: '👛' },
+  'hats-scarves-gloves': { name: 'Hats, Scarves & Gloves', icon: '🧣' },
+  'sunglasses-eyewear-belts': { name: 'Sunglasses, Eyewear & Belts', icon: '🕶️' },
   'other': { name: 'Other', icon: '📦' },
 };
 

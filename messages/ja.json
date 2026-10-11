@@ -15,6 +15,7 @@
     "care-main": "美容・ケア・ファミリー",
     "hobbies-main": "ホビー・レジャー",
     "home-main": "ホーム・ガーデン",
+    "fashion-main": "ファッション・小物",
     "other-main": "その他"
   },
   "Footer": {
@@ -97,7 +98,8 @@
     "care-main": "香水、メイク、ヘアケア、スキンケア、ベビー用品。",
     "hobbies-main": "ゲーム、おもちゃ、スポーツ、カメラ、楽器。",
     "home-main": "家具、バスルーム、照明、スマートホーム、ガーデン、電動工具。",
-    "other-main": "車用品、バッグなど。"
+    "fashion-main": "バッグ、財布、帽子、マフラー、手袋、サングラス、ベルト。",
+    "other-main": "車用品など。"
   },
   "Subcategories": {
     "large-appliances": "大型家電",
@@ -136,6 +138,9 @@
     "power-tools": "電動工具",
     "automotive": "車用品",
     "bags-backpacks": "バッグ・リュック",
+    "wallets-small-leather-goods": "財布・革小物",
+    "hats-scarves-gloves": "帽子・マフラー・手袋",
+    "sunglasses-eyewear-belts": "サングラス・メガネ・ベルト",
     "other": "その他"
   },
   "CategoryPage": {

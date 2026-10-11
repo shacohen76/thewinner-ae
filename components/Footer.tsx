@@ -75,6 +75,12 @@ export default function Footer() {
                   {tc('home-main')}
                 </Link>
               </li>
+              {/* 2026-10-11 fashion-main (owner lean decision) */}
+              <li>
+                <Link href="/category/fashion-main" className="hover:text-white transition-colors">
+                  {tc('fashion-main')}
+                </Link>
+              </li>
             </ul>
           </div>
 

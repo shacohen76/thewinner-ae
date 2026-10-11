@@ -15,6 +15,7 @@
     "care-main": "Beauty, Care & Family",
     "hobbies-main": "Hobbies & Leisure",
     "home-main": "Home & Garden",
+    "fashion-main": "Fashion & Accessories",
     "other-main": "More"
   },
   "Footer": {
@@ -97,7 +98,8 @@
     "care-main": "Perfumes, makeup, hair care, skincare, and baby products.",
     "hobbies-main": "Gaming, toys, sports, cameras and musical instruments.",
     "home-main": "Furniture, bathroom, lighting, smart home, garden and power tools.",
-    "other-main": "Automotive, bags and more."
+    "fashion-main": "Bags, backpacks, wallets, hats, scarves, gloves, sunglasses and belts.",
+    "other-main": "Automotive and more."
   },
   "Subcategories": {
     "large-appliances": "Large Appliances",
@@ -136,6 +138,9 @@
     "power-tools": "Power Tools",
     "automotive": "Automotive",
     "bags-backpacks": "Bags & Backpacks",
+    "wallets-small-leather-goods": "Wallets & Small Leather Goods",
+    "hats-scarves-gloves": "Hats, Scarves & Gloves",
+    "sunglasses-eyewear-belts": "Sunglasses, Eyewear & Belts",
     "other": "Other"
   },
   "CategoryPage": {

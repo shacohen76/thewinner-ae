@@ -15,6 +15,7 @@
     "care-main": "الجمال والعناية والعائلة",
     "hobbies-main": "الهوايات والترفيه",
     "home-main": "المنزل والحديقة",
+    "fashion-main": "الأزياء والإكسسوارات",
     "other-main": "المزيد"
   },
   "Footer": {
@@ -97,7 +98,8 @@
     "care-main": "عطور ومكياج وعناية",
     "hobbies-main": "ألعاب ورياضة وكاميرات",
     "home-main": "أثاث وإضاءة وحديقة",
-    "other-main": "سيارات وحقائب والمزيد"
+    "fashion-main": "حقائب ومحافظ وقبعات ونظارات شمسية",
+    "other-main": "مستلزمات السيارات والمزيد"
   },
   "Subcategories": {
     "large-appliances": "الأجهزة الكبيرة",
@@ -136,6 +138,9 @@
     "power-tools": "الأدوات الكهربائية",
     "automotive": "السيارات",
     "bags-backpacks": "الحقائب وحقائب الظهر",
+    "wallets-small-leather-goods": "المحافظ والجلديات",
+    "hats-scarves-gloves": "القبعات والأوشحة والقفازات",
+    "sunglasses-eyewear-belts": "النظارات الشمسية والطبية والأحزمة",
     "other": "أخرى"
   },
   "CategoryPage": {
