@@ -17,7 +17,9 @@ export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  // 2026-10-12 ONE DOOR P0-f: fail CLOSED. Before, an unset CRON_SECRET let ANY caller run this writer
+  // (tag_pool / click_log). Same rule as /api/revalidate.
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
