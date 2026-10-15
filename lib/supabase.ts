@@ -151,8 +151,9 @@ export const MAIN_CATEGORIES: Record<string, { label: string; icon: string; colo
   'fashion-main': {
     label: 'Fashion & Accessories', icon: '👜', color: 'fuchsia',
     gradient: 'from-fuchsia-600 via-fuchsia-700 to-purple-800',
-    description: 'Bags, backpacks, wallets, hats, scarves, gloves, sunglasses and belts.',   // native-check wording 10-11
-    subcategories: ['bags-backpacks', 'wallets-small-leather-goods', 'hats-scarves-gloves', 'sunglasses-eyewear-belts'],
+    // 2026-10-15 owner decision (via orchestrator): ONE "Jewelry" subcategory added (DB categories id 41)
+    description: 'Bags, backpacks, wallets, jewelry, hats, scarves, gloves, sunglasses and belts.',
+    subcategories: ['bags-backpacks', 'wallets-small-leather-goods', 'jewelry', 'hats-scarves-gloves', 'sunglasses-eyewear-belts'],
   },
   'other-main': {
     label: 'More', icon: '📦', color: 'gray',
@@ -204,6 +205,7 @@ export const SUBCATEGORY_NAMES: Record<string, { name: string; icon: string }> =
   'wallets-small-leather-goods': { name: 'Wallets & Small Leather Goods', icon: '👛' },
   'hats-scarves-gloves': { name: 'Hats, Scarves & Gloves', icon: '🧣' },
   'sunglasses-eyewear-belts': { name: 'Sunglasses, Eyewear & Belts', icon: '🕶️' },
+  'jewelry': { name: 'Jewelry', icon: '💍' },   // 2026-10-15 fashion-main (DB categories id 41 — must exist before deploy)
   'other': { name: 'Other', icon: '📦' },
 };
 

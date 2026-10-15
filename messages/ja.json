@@ -98,7 +98,7 @@
     "care-main": "香水、メイク、ヘアケア、スキンケア、ベビー用品。",
     "hobbies-main": "ゲーム、おもちゃ、スポーツ、カメラ、楽器。",
     "home-main": "家具、バスルーム、照明、スマートホーム、ガーデン、電動工具。",
-    "fashion-main": "バッグ、財布、帽子、マフラー、手袋、サングラス、ベルト。",
+    "fashion-main": "バッグ、財布、ジュエリー、帽子、マフラー、手袋、サングラス、ベルト。",
     "other-main": "車用品など。"
   },
   "Subcategories": {
@@ -141,6 +141,7 @@
     "wallets-small-leather-goods": "財布・革小物",
     "hats-scarves-gloves": "帽子・マフラー・手袋",
     "sunglasses-eyewear-belts": "サングラス・メガネ・ベルト",
+    "jewelry": "ジュエリー",
     "other": "その他"
   },
   "CategoryPage": {
