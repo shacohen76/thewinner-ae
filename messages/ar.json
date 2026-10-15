@@ -98,7 +98,7 @@
     "care-main": "عطور ومكياج وعناية",
     "hobbies-main": "ألعاب ورياضة وكاميرات",
     "home-main": "أثاث وإضاءة وحديقة",
-    "fashion-main": "حقائب ومحافظ وقبعات ونظارات شمسية",
+    "fashion-main": "حقائب ومحافظ ومجوهرات وقبعات ونظارات شمسية",
     "other-main": "مستلزمات السيارات والمزيد"
   },
   "Subcategories": {
@@ -141,6 +141,7 @@
     "wallets-small-leather-goods": "المحافظ والجلديات",
     "hats-scarves-gloves": "القبعات والأوشحة والقفازات",
     "sunglasses-eyewear-belts": "النظارات الشمسية والطبية والأحزمة",
+    "jewelry": "المجوهرات",
     "other": "أخرى"
   },
   "CategoryPage": {

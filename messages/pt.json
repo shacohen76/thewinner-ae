@@ -102,7 +102,7 @@
     "care-main": "Perfumes, maquiagem, cuidados com os cabelos, cuidados com a pele e produtos para bebês.",
     "hobbies-main": "Games, brinquedos, esportes, câmeras e instrumentos musicais.",
     "home-main": "Móveis, banheiro, iluminação, casa inteligente, jardim e ferramentas elétricas.",
-    "fashion-main": "Bolsas, carteiras, chapéus, cachecóis, luvas, óculos de sol e cintos.",
+    "fashion-main": "Bolsas, carteiras, joias, chapéus, cachecóis, luvas, óculos de sol e cintos.",
     "other-main": "Automotivo e muito mais."
   },
   "Subcategories": {
@@ -145,6 +145,7 @@
     "wallets-small-leather-goods": "Carteiras e Porta-Cartões",
     "hats-scarves-gloves": "Chapéus, Cachecóis e Luvas",
     "sunglasses-eyewear-belts": "Óculos de Sol, Armações e Cintos",
+    "jewelry": "Joias",
     "other": "Outros"
   },
   "CategoryPage": {

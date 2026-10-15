@@ -98,7 +98,7 @@
     "care-main": "Perfumes, makeup, hair care, skincare, and baby products.",
     "hobbies-main": "Gaming, toys, sports, cameras and musical instruments.",
     "home-main": "Furniture, bathroom, lighting, smart home, garden and power tools.",
-    "fashion-main": "Bags, backpacks, wallets, hats, scarves, gloves, sunglasses and belts.",
+    "fashion-main": "Bags, backpacks, wallets, jewelry, hats, scarves, gloves, sunglasses and belts.",
     "other-main": "Automotive and more."
   },
   "Subcategories": {
@@ -141,6 +141,7 @@
     "wallets-small-leather-goods": "Wallets & Small Leather Goods",
     "hats-scarves-gloves": "Hats, Scarves & Gloves",
     "sunglasses-eyewear-belts": "Sunglasses, Eyewear & Belts",
+    "jewelry": "Jewelry",
     "other": "Other"
   },
   "CategoryPage": {
