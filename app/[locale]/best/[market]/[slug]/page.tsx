@@ -119,9 +119,11 @@ async function readTranslation(keywordId: number, locale: string) {
 }
 
 // 2026-10-19 (never-empty): last-resort catalogs, in order, for a page whose own market AND
-// AE are both empty. English-native stores only (their titles are the English base) — jp/br
-// and the EU stores are left out so an English page never shows foreign-language titles.
-const NEVER_EMPTY_FALLBACK_MARKETS = ['us', 'uk', 'ca', 'au', 'ie', 'sg'] as const;
+// AE are both empty. English-native stores first (their titles are the English base); 'jp'
+// LAST (owner OK 2026-10-19) so JP-only keywords on English URLs (JP ad campaigns) are never
+// empty for crawlers — only reached when no English-native store has products. br and the
+// EU stores stay out.
+const NEVER_EMPTY_FALLBACK_MARKETS = ['us', 'uk', 'ca', 'au', 'ie', 'sg', 'jp'] as const;
 
 async function readProducts(keywordId: number, locale: string, market: string) {
   if (locale === 'pt') {
@@ -326,6 +328,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       // SEARCH links on the visitor's own store (same safe mode as the AE fallback above).
       // Crawlers keep the AE catalog wherever it exists (SEO unchanged); a keyword with no
       // products in any of these markets still hits the guard below (honest 404).
+      // ('jp' is the last entry: English-native stores always win when they have products.)
       if (products.length === 0 && !isPt) {
         for (const mkt of NEVER_EMPTY_FALLBACK_MARKETS) {
           if (mkt === params.market) continue;
