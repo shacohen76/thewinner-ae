@@ -118,6 +118,13 @@ async function readTranslation(keywordId: number, locale: string) {
   return getKeywordTranslation(keywordId, locale);
 }
 
+// 2026-10-19 (never-empty): last-resort catalogs, in order, for a page whose own market AND
+// AE are both empty. English-native stores first (their titles are the English base); 'jp'
+// LAST (owner OK 2026-10-19) so JP-only keywords on English URLs (JP ad campaigns) are never
+// empty for crawlers — only reached when no English-native store has products. br and the
+// EU stores stay out.
+const NEVER_EMPTY_FALLBACK_MARKETS = ['us', 'uk', 'ca', 'au', 'ie', 'sg', 'jp'] as const;
+
 async function readProducts(keywordId: number, locale: string, market: string) {
   if (locale === 'pt') {
     const pilot = await getBrPilotPage(keywordId);
@@ -310,6 +317,28 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         products = await getProductsForKeyword(keyword.id, params.locale, 'ae');
         searchFallback = true;
       }
+      // 2026-10-19 (never-empty, SPC investigation — Docs_MD/SPC_..._RESEARCH §5m–5n):
+      // a keyword published ONLY to non-AE markets (US-only waves, -spc pages, JA-native
+      // keywords on English stores) rendered EMPTY for every crawler — crawlers are pinned
+      // to 'ae' (geo-config resolveCatalogMarket) and had no AE rows, so the page hit the
+      // notFound() guard below inside a 200. Measured: ~7K Google Ads page-feed URLs
+      // DISAPPROVED "DESTINATION_NOT_CRAWLABLE"; random sample 27/40 disapproved vs 1/40
+      // approved were empty for AdsBot. Fix: when the page's market AND AE are both empty,
+      // fall back to the first English-native market that HAS products, rendered with
+      // SEARCH links on the visitor's own store (same safe mode as the AE fallback above).
+      // Crawlers keep the AE catalog wherever it exists (SEO unchanged); a keyword with no
+      // products in any of these markets still hits the guard below (honest 404).
+      // ('jp' is the last entry: English-native stores always win when they have products.)
+      if (products.length === 0 && !isPt) {
+        for (const mkt of NEVER_EMPTY_FALLBACK_MARKETS) {
+          if (mkt === params.market) continue;
+          products = await getProductsForKeyword(keyword.id, params.locale, mkt);
+          if (products.length > 0) {
+            searchFallback = true;
+            break;
+          }
+        }
+      }
       return { products, searchFallback };
     },
     // 2026-09-23 (scoped refresh signals): each copy's data now carries TWO tags —
@@ -334,6 +363,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // indexable page. Localized (ar/ja) untranslated pages already noindex in
   // generateMetadata, so scope this to the indexable English base. Pairs with
   // amz_revalidate_v1.py GUARD 1 (never revalidate a slug below --min-products).
+  // 2026-10-19: reached only when NO fallback market has products either (never-empty above).
   if (params.locale === 'en' && products.length === 0) {
     notFound();
   }
