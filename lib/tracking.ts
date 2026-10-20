@@ -2,11 +2,17 @@
 // TRACKING UTILITIES — Server-side tag rotation
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-09-25 (D187 self-tuning warming — feed until graduation)
+// Last Modified: 2026-10-20 (config-driven warmer round — program_pool_config.warm_*)
 //
 // Handles tag assignment, click logging, tag expiry, and pool maintenance.
 //
 // Changelog
+//   2026-10-20  v7   CONFIG-DRIVEN WARMER POLICY (PS 13). assignGadsTagV2 P2 reads
+//                    program_pool_config.warm_mode / warm_round_size / warm_slot_minutes per
+//                    program. Default (null/missing) = feed1 = v6 unchanged. 'round' = the first N
+//                    cohort warmers by tag_id take turns, each getting all warmer traffic for one
+//                    slot; falls back to feed1 on a read error / empty cohort. Changes are SQL, live
+//                    within the 30 s config cache. Spec: CONFIG_DRIVEN_ROTATION_SPEC_v1_0.md.
 //   2026-09-25  v6   D187 — SELF-TUNING WARMING. assignGadsTagV2 P2 now feeds the ONE
 //                    highest-clickout_count warmer until it GRADUATES (promoter flips
 //                    is_stable at ≥4 visible orders → drops from the is_stable=false filter →
@@ -152,6 +158,13 @@ export interface PoolConfig {
   // 2026-09-10: when set (>=0), pins the warming lane to this fixed size instead of the
   // dynamic (K−S)/m target. null/undefined ⇒ dynamic formula (unchanged). See maintainTagPool step 3.
   warming_lane_size?: number | null;
+  // 2026-10-20 (PS 13, CONFIG_DRIVEN_ROTATION_SPEC_v1_0): warmer policy as data. Missing / null ⇒
+  // 'feed1' = the D187 single front-runner, byte-identical to before. 'round' = the first
+  // warm_round_size cohort warmers (by tag_id) take turns, each getting ALL warmer traffic for
+  // warm_slot_minutes. Columns may not exist yet → undefined → feed1.
+  warm_mode?: 'feed1' | 'round' | null;
+  warm_round_size?: number | null;
+  warm_slot_minutes?: number | null;
   tag_prefix: string;
   mechanics_v2: boolean;
   enabled: boolean;
@@ -726,6 +739,25 @@ async function assignGadsTagV2(
   // line across many parallel warmers). Removing it also deletes the per-warmer click_log count.
   // See TAG_ROTATION_REDESIGN_SPEC_2026_09_25.md §7 (D187). Optional staleness guard (rotate a warmer
   // that runs far past break-even with no graduation) is deferred — add only if a stall is observed.
+  // 2026-10-20 (PS 13): optional ROUND — N cohort warmers take turns by time slot (config-driven,
+  // per program). Bounds-clamped; any read problem or an empty cohort falls through to feed1 below.
+  const roundSize = Math.min(10, Math.max(1, Math.floor(cfg.warm_round_size ?? 1)));
+  if (!freeTag && cfg.warm_mode === 'round' && roundSize > 1) {
+    const slotMs = Math.min(720, Math.max(15, Math.floor(cfg.warm_slot_minutes ?? 60))) * 60 * 1000;
+    const { data: round, error: roundErr } = await sb
+      .from('tag_pool')
+      .select('tag_id')
+      .eq('tag_type', TRACKING_CONFIG.gadsTagType)
+      .eq('program', cfg.program)
+      .eq('seeding_cohort', true)
+      .eq('is_stable', false)
+      .order('tag_id', { ascending: true })   // stable slot order: graduations/top-ups only shift later slots
+      .limit(roundSize);
+    if (!roundErr && round && round.length > 0) {
+      freeTag = { tag_id: round[Math.floor(now / slotMs) % round.length].tag_id };   // shared, not held
+    }
+  }
+
   if (!freeTag) {
     const { data: warmer } = await sb
       .from('tag_pool')
