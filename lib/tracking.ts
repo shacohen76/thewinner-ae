@@ -751,7 +751,10 @@ async function assignGadsTagV2(
       .eq('program', cfg.program)
       .eq('seeding_cohort', true)
       .eq('is_stable', false)
-      .order('tag_id', { ascending: true })   // stable slot order: graduations/top-ups only shift later slots
+      // 2026-10-21: the N most advanced warmers first — the cron can add idle 0-clickout warmers
+      // overnight (UK reached 20); they only enter the round when fewer than N warmers have traffic.
+      .order('clickout_count', { ascending: false })
+      .order('tag_id', { ascending: true })
       .limit(roundSize);
     if (!roundErr && round && round.length > 0) {
       freeTag = { tag_id: round[Math.floor(now / slotMs) % round.length].tag_id };   // shared, not held
