@@ -2,63 +2,57 @@
 // Tag Assignment API — /api/tag-assign
 // ============================================
 // Created: 2026-03-27
-// Last Modified: 2026-05-21 (GEOS1)
+// Last Modified: 2026-10-22 (junk rules → one Supabase table)
 // v1.1: Added bot filtering (Vercel bots, crawlers)
 // v1.2: GEOS1 — bot/admin short-circuit responses now include amazon_domain
 //       + geo_group for uniform client-side handling. Main path passes the
 //       fields through automatically via assignTag(). ip_country forwarded
 //       to assignTag → server-side geo derivation; client doesn't post geo.
-// v1.3 (2026-10-05, junk-direct cleanup): when middleware marked the visit as
-//       obvious junk (NO_TRACK_COOKIE), resolve tag + domain but write NO
-//       click_log row (session_id null). If that visitor clicks out, the client
-//       calls again with `clicked_asin` → the session is created right then and
-//       the ASIN logged, so a real buyer's click is never lost. Paid traffic
-//       (gads / gclid) always persists — enforced in lib/tracking shouldPersist.
+// v1.3 (2026-10-05, junk-direct cleanup): obvious-junk direct visits resolve
+//       tag + domain but write NO click_log row (session_id null). If that
+//       visitor clicks out, the client calls again with `clicked_asin` → the
+//       session is created right then and the ASIN logged, so a real buyer's
+//       click is never lost. Paid traffic (gads / gclid) always persists —
+//       enforced in lib/tracking shouldPersist.
+// v2.0 (2026-10-22): THIS route is now the ONE place that decides "bot" /
+//       "direct_junk", using the rules in public.junk_traffic_rules (loaded by
+//       lib/junk-rules.ts, matched by lib/junk-traffic.ts). The hardcoded
+//       BOT_PATTERNS list + lib/bot-signatures.ts and the middleware decision
+//       were moved into that table. This route also sets / clears the
+//       NO_TRACK_COOKIE (was middleware). Docs: docs/JUNK_TRAFFIC_RULES.md.
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
 import { assignTag, logAsinClick } from '@/lib/tracking';
-import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
-import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
+import { NO_TRACK_COOKIE, findRule, type VisitFacts } from '@/lib/junk-traffic';
+import { getJunkRules } from '@/lib/junk-rules';
 
 const ASIN_RE = /^[A-Z0-9]{10}$/;
 
-// Bot user agents that should NOT get tracking sessions.
-// Crawler/automation patterns live here; the SPOOFED-browser signatures (junk
-// bots that mimic a real Chrome/Firefox UA) are shared with the admin analytics
-// reads via lib/bot-signatures.ts so the ingest guard and the panel can never
-// drift out of sync — that drift is exactly what let the Aug-2026 wave inflate
-// the dashboard (the rollup only knew the old 'Chrome/145' signature).
-const BOT_PATTERNS = [
-  'vercel-screenshot', 'HeadlessChrome', 'Googlebot', 'AdsBot', 'Mediapartners-Google',
-  'Google-Adwords-DisplayAds', 'pageburst',
-  'bingbot', 'Baiduspider', 'YandexBot', 'facebookexternalhit', 'Twitterbot',
-  'LinkedInBot', 'Slurp', 'DuckDuckBot', 'Applebot', 'AhrefsBot', 'SemrushBot',
-  'MJ12bot', 'Screaming Frog', 'crawler', 'spider', 'bot/', 'Bot/', 'Bot-',
-  'PetalBot', 'Bytespider', 'GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot',
-  // Spoofed-browser junk bots — frozen residential-proxy UA pool. See
-  // lib/bot-signatures.ts for the full rationale + how to add signatures.
-  ...SPOOFED_BROWSER_BOT_UAS,
-];
-
 // Pages that should not create tracking sessions
 const EXCLUDED_PAGES = ['/admin'];
-
-
-function isBot(userAgent: string | null): boolean {
-  if (!userAgent) return true; // no UA = likely bot
-  return BOT_PATTERNS.some(pattern => userAgent.includes(pattern));
-}
 
 export async function POST(request: NextRequest) {
   try {
     const userAgent = request.headers.get('user-agent') || null;
 
-    // Skip bots — don't waste tags or pollute click_log.
+    // Vercel geo headers. as_name is not sent on our plan (null in 100% of rows,
+    // measured 2026-10-22); as_number is present on every row.
+    const ipCountry = request.headers.get('x-vercel-ip-country') || null;
+    const asName = request.headers.get('x-vercel-ip-as-name') || null;
+    const asNumberRaw = request.headers.get('x-vercel-ip-as-number');
+    const asNumberParsed = asNumberRaw ? parseInt(asNumberRaw, 10) : NaN;
+    const asNumber = Number.isFinite(asNumberParsed) ? asNumberParsed : null;
+
+    const visit: VisitFacts = { userAgent, country: ipCountry, asNumber };
+    const rules = await getJunkRules();
+
+    // BOT (any traffic source, also with a gclid): no click_log row, ever.
+    // Safety invariant in code: no user-agent at all = bot.
     // Response shape includes GEOS1 fields (amazon_domain, geo_group) so the
     // client can read them uniformly — defaults to gulf since bots don't
     // need geo routing (they index cached UAE HTML anyway).
-    if (isBot(userAgent)) {
+    if (!userAgent || findRule(rules, 'bot', visit)) {
       return NextResponse.json({
         session_id: null,
         assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
@@ -70,12 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { gclid, fbclid, traffic_source, landing_page, user_id, site, clicked_asin } = body;
-
-    // 2026-10-05: junk-direct no-track (see header v1.3). A clickout always persists.
-    const clickedAsin = typeof clicked_asin === 'string' && ASIN_RE.test(clicked_asin) ? clicked_asin : null;
-    const noTrack = request.cookies.get(NO_TRACK_COOKIE)?.value === '1';
-    const persist = clickedAsin ? true : !noTrack;
+    const { gclid, fbclid, traffic_source, landing_page, user_id, site, clicked_asin, campaign } = body;
 
     // Skip admin pages — don't track our own dashboard visits
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
@@ -96,15 +85,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get country + ASN from Vercel geo headers.
-    // SG-BOT Phase 0 (2026-05-27): as_name / as_number captured for
-    // observability so we can identify the new SG bot wave's hosting infra
-    // and write a precise filter from data instead of guesses. NO filtering
-    // here. See AMZ_AFF/Docs_MD/SG_BOT_FILTER_ROADMAP.md.
-    const ipCountry = request.headers.get('x-vercel-ip-country') || null;
-    const asName = request.headers.get('x-vercel-ip-as-name') || null;
-    const asNumberRaw = request.headers.get('x-vercel-ip-as-number');
-    const asNumber = asNumberRaw ? parseInt(asNumberRaw, 10) : null;
+    // DIRECT_JUNK: only a direct visit (no referrer, no click id, no campaign
+    // param) can match. A clickout ALWAYS persists (safety invariant).
+    const clickedAsin = typeof clicked_asin === 'string' && ASIN_RE.test(clicked_asin) ? clicked_asin : null;
+    const isDirect = traffic_source === 'direct' && !gclid && !fbclid && campaign !== true;
+    const junkRule = isDirect ? findRule(rules, 'direct_junk', visit) : null;
+    const persist = clickedAsin ? true : !junkRule;
 
     const result = await assignTag({
       gclid: gclid || null,
@@ -116,17 +102,39 @@ export async function POST(request: NextRequest) {
       user_id: user_id || null,
       site: site || null,
       as_name: asName,
-      as_number: Number.isFinite(asNumber as number) ? asNumber : null,
+      as_number: asNumber,
       persist,
     });
 
-    // 2026-10-05: deferred (no-track) visitor just clicked out → log that ASIN on
-    // the session we created for it. Same call ProductCard's beacon would make.
+    // Deferred (direct_junk) visitor just clicked out → log that ASIN on the
+    // session we created for it. Same call ProductCard's beacon would make.
     if (clickedAsin && result.session_id) {
       await logAsinClick(result.session_id, clickedAsin);
     }
 
-    return NextResponse.json(result);
+    // no_track tells TrackingProvider to keep the session "deferred" (created on
+    // the first clickout). junk_rule_id = which table row decided it (debugging).
+    const noTrack = !!junkRule && !clickedAsin && !result.session_id;
+    const response = NextResponse.json({
+      ...result,
+      no_track: noTrack,
+      ...(noTrack ? { junk_rule_id: junkRule!.id } : {}),
+    });
+
+    // Cookie = the layout's signal to skip GTM/GA4 on the following page loads.
+    if (noTrack) {
+      response.cookies.set({
+        name: NO_TRACK_COOKIE,
+        value: '1',
+        path: '/',
+        sameSite: 'lax',
+        secure: request.nextUrl.protocol === 'https:',
+        httpOnly: false, // layout inline script + TrackingProvider read it
+      });
+    } else if (request.cookies.get(NO_TRACK_COOKIE)) {
+      response.cookies.delete(NO_TRACK_COOKIE);
+    }
+    return response;
   } catch (error) {
     console.error('Tag assignment error:', error);
     return NextResponse.json(

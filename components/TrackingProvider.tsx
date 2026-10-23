@@ -11,6 +11,11 @@
 // v2.3 (2026-10-05, junk-direct cleanup): obvious-junk direct visits (middleware
 //               NO_TRACK_COOKIE, lib/junk-traffic.ts) get correct links but no
 //               user_id / click_log row ("deferred"); created on first clickout.
+// v2.4 (2026-10-22): the junk decision is made ONLY by /api/tag-assign from the
+//               Supabase table public.junk_traffic_rules (docs/JUNK_TRAFFIC_RULES.md).
+//               The client follows its `no_track` answer and sends `campaign`
+//               (any campaign param in the URL). The client keeps NO junk rules;
+//               isBotClient() below is only the SEO crawler skip.
 //
 // Conditional re-init explained:
 //   When GEOS1_ENABLED toggles or a visitor crosses geos (VPN, traveling),
@@ -29,7 +34,7 @@ import { useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { CONFIG, pinnedAffiliateUrl } from '@/lib/utils';
 import { getGeoGroup, type GeoGroup, type AmazonDomain } from '@/lib/geo-config';
-import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
+import { hasCampaignParam } from '@/lib/junk-traffic';
 
 // Session data stored in sessionStorage
 interface TrackingSession {
@@ -46,19 +51,20 @@ interface TrackingSession {
   // 3 values, which was inaccurate for every non-catch-all program.
   amazon_domain?: AmazonDomain;
   geo_group?: GeoGroup;
-  // 2026-10-05 (junk-direct cleanup): true when the visit was flagged obvious junk
-  // (NO_TRACK_COOKIE) — links are tagged/geo-routed, but no click_log row and no
-  // user_id exist yet. The session is created on the first clickout.
+  // 2026-10-05 (junk-direct cleanup): true when /api/tag-assign answered
+  // no_track (a direct_junk rule matched) — links are tagged/geo-routed, but no
+  // click_log row and no user_id exist yet. The session is created on the first clickout.
   deferred?: boolean;
   landing_page?: string | null;
 }
 
 const SESSION_KEY = 'tw_tracking_session';
 
-/** 2026-10-05: middleware flagged this visit as obvious junk (lib/junk-traffic.ts). */
-function isNoTrack(): boolean {
-  if (typeof document === 'undefined') return false;
-  return new RegExp(`(?:^|;\\s*)${NO_TRACK_COOKIE}=1`).test(document.cookie);
+/** 2026-10-22: this page load is a plain direct visit (no referrer from outside,
+ *  no click id, no campaign param). Only such a visit can stay "deferred". */
+function isDirectLanding(): boolean {
+  if (typeof window === 'undefined') return true;
+  return detectTrafficSource() === 'direct' && !hasCampaignParam(new URLSearchParams(window.location.search));
 }
 
 // ============================================
@@ -87,10 +93,12 @@ function getCurrentGeoGroup(): GeoGroup {
  */
 function isBotClient(): boolean {
   if (typeof navigator === 'undefined') return false;
-  // Includes the GEOS2 spoofed-bot signature (impossible Chrome/145.0.0.0) so
-  // the client skips the /api/tag-assign call entirely for it — no click_log
-  // row, no DOM rewrite. The tag-assign route's BOT_PATTERNS is the backstop.
-  return /Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot|Chrome\/145\.0\.0\.0/i.test(
+  // SEO purpose only (search crawlers render the page unmodified). It is NOT a
+  // tracking rule: whether a visitor gets a click_log row is decided only by
+  // /api/tag-assign from public.junk_traffic_rules (docs/JUNK_TRAFFIC_RULES.md).
+  // 2026-10-22: the spoofed 'Chrome/145.0.0.0' token was removed from here — it is
+  // a 'bot' row in that table now (the server answers is_bot, no row written).
+  return /Googlebot|bingbot|YandexBot|Baiduspider|DuckDuckBot|AdsBot|Mediapartners-Google|GPTBot|ClaudeBot|PerplexityBot|AhrefsBot|SemrushBot/i.test(
     navigator.userAgent
   );
 }
@@ -177,9 +185,9 @@ function getStoredSession(): TrackingSession | null {
       return null;
     }
 
-    // 2026-10-05: a deferred (no-track) session whose flag was since cleared
-    // (visitor came back via search/ads in this tab) → re-assign so it is tracked.
-    if (session.deferred && !session.session_id && !isNoTrack()) {
+    // 2026-10-05: a deferred (no-track) session, but the visitor came back via
+    // search/ads/a campaign link in this tab → re-assign so it is tracked.
+    if (session.deferred && !session.session_id && !isDirectLanding()) {
       sessionStorage.removeItem(SESSION_KEY);
       return null;
     }
@@ -360,9 +368,10 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
     // No valid session — request a new tag
     const trafficSource = detectTrafficSource();
     const { gclid, fbclid } = persistGclid();
-    // 2026-10-05: obvious-junk direct visit → no user_id minted; the server
-    // (same cookie) resolves tag + domain without writing a click_log row.
-    const noTrack = isNoTrack();
+    // 2026-10-22: the server decides junk (public.junk_traffic_rules). The
+    // user_id below only reaches the DB if the server writes a row — for a
+    // direct_junk visit it writes none (until a clickout).
+    const campaign = hasCampaignParam(new URLSearchParams(window.location.search));
 
     try {
       const response = await fetch('/api/tag-assign', {
@@ -373,8 +382,9 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
           fbclid,
           traffic_source: trafficSource,
           landing_page: pathname,
-          user_id: noTrack ? null : getUserId(),
+          user_id: getUserId(),
           site: window.location.hostname,
+          campaign,
         }),
       });
 
@@ -393,7 +403,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
         gclid: gclid || null,
         amazon_domain: data.amazon_domain,
         geo_group: data.geo_group,
-        deferred: noTrack && !data.session_id && !data.is_bot,
+        deferred: data.no_track === true && !data.session_id && !data.is_bot,
         landing_page: pathname,
       };
       storeSession(session);
