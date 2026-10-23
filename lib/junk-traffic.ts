@@ -1,56 +1,75 @@
 // ============================================
-// Junk DIRECT traffic — "no-track" rule (single source of truth)
+// Junk / bot traffic — rule MATCHING (pure, no rule values in code)
 // ============================================
-// Created: 2026-10-05 (owner: junk visitors must not get a user id; NO blocking;
-//          only OBVIOUS junk — "if there's doubt, we leave it").
+// v1.0 2026-10-05: obvious-junk DIRECT visits get no user id / click_log row.
+// v2.0 2026-10-22 (owner: "exactly ONE place for these rules, clear + documented"):
+//   every rule VALUE now lives in ONE Supabase table, public.junk_traffic_rules.
+//   This file holds only the matching logic; lib/junk-rules.ts loads the table.
+//   Adding / removing a rule = one row in that table, no PR, no deploy
+//   (effective within the 10-min cache in lib/junk-rules.ts).
 //
-// Data behind it (click_log, Sep-Oct 2026): "direct" = 12,089 sessions/30d with a
-// 1.27% clickout rate (gads: 36.7%). The junk is crawlers rendering one /best page
-// per fresh session — China (Chrome/99.0.4844.51), a US Linux crawler
-// (X11 + Chrome/147.0.0.0, ~5.5K/14d) and SG rotating old Chrome builds. Every
-// real desktop buyer runs a current Chrome (150+ in Oct-2026); 0 of ~13K direct
-// sessions on Chrome <140 ever clicked out. Real direct buyers are mostly mobile.
+//   FULL DOCUMENTATION: docs/JUNK_TRAFFIC_RULES.md (what each rule does, how to
+//   add/disable one, what is deliberately NOT in the table, rollback).
 //
-// What the flag does (nothing here BLOCKS — the page renders normally):
-//   - middleware sets the NO_TRACK_COOKIE on the visitor's landing request
-//   - layout skips loading GTM/GA4 → no GA4 user is created
-//   - TrackingProvider still gets the correct geo tag + Amazon domain for the
-//     links, but /api/tag-assign writes NO click_log row and no user_id is minted
-//   - if the visitor ever clicks out, the session IS created at that moment
-//     (safety net — a real buyer's click is never lost)
+// Two kinds of rules (column applies_to):
+//   'bot'          → the visitor is a bot. /api/tag-assign writes NO click_log row,
+//                    ever (any traffic source, also with a gclid — e.g. AdsBot).
+//                    The admin panel also excludes old rows that match.
+//   'direct_junk'  → only for a DIRECT visit (no referrer, no gclid/fbclid, no
+//                    campaign param). No click_log row / user_id is written at
+//                    landing; IF the visitor clicks a product, the session is
+//                    created right then (a real buyer's click is never lost).
 //
-// The rule is deliberately narrow. A visit is "obvious junk" ONLY if it is
-// direct (no referrer), carries no ad/campaign id, and ONE of:
-//   1. country is known and is NOT one of our program countries
-//   2. desktop Chrome/Edge older than STALE_DESKTOP_CHROME_BELOW (≥1 year stale)
-//   3. a known zero-clickout crawler UA (JUNK_CRAWLER_UA_SIGNATURES)
-// Mobile visitors in program countries, unknown countries and current browsers
-// are always left alone. Search/social/AI crawlers are excluded by the caller.
+// Fixed SAFETY INVARIANTS (in code on purpose — they are not junk rules):
+//   - no user-agent at all            → bot (route.ts)
+//   - gads / gclid traffic            → ALWAYS persisted (lib/tracking.ts shouldPersist)
+//   - a clickout (clicked_asin)       → ALWAYS persisted (route.ts)
+//   - table unreadable                → NO rules apply = everyone is tracked
+//                                       (fail-open: junk slips through, money never lost)
+//
+// This file is imported by the browser (TrackingProvider) too, so it must stay
+// free of server-only imports (no Supabase client here).
 // ============================================
 
 import { isProgramCountry } from '@/lib/geo-config';
 
-/** Cookie set by middleware when the landing visit is obvious junk. Read by the
- *  layout (GTM skip), TrackingProvider and /api/tag-assign. Session cookie. */
+/** Session cookie: "this visit was judged direct_junk". Set/cleared ONLY by
+ *  /api/tag-assign. Read by the layout (skips GTM/GA4 on the following pages)
+ *  and by TrackingProvider. */
 export const NO_TRACK_COOKIE = 'tw_nt';
 
-/** Desktop Chrome majors below this are ≥1 year stale (Chrome 140 = Sep-2025).
- *  Fixed on purpose: as time passes the rule only gets MORE conservative relative
- *  to current Chrome, never less. */
-export const STALE_DESKTOP_CHROME_BELOW = 140;
-
-/** Exact crawler UA fragments with thousands of direct sessions and ZERO
- *  clickouts in click_log. Each entry is ANDed (all parts must match). */
-export const JUNK_CRAWLER_UA_SIGNATURES: string[][] = [
-  // US Linux crawler, first seen 2026-06-18: 8,148 direct sessions, 0 clickouts.
-  ['X11; Linux x86_64', 'Chrome/147.0.0.0'],
-];
-
-/** URL params that mean the visit came from a campaign/ad → never junk. */
+/** URL params that mean the visit came from a campaign/ad → never direct_junk. */
 export const CAMPAIGN_PARAMS = [
   'gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid',
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_sub',
 ];
+
+export function hasCampaignParam(params: URLSearchParams): boolean {
+  return CAMPAIGN_PARAMS.some(p => params.has(p));
+}
+
+/** One row of public.junk_traffic_rules (only the columns the code needs). */
+export interface JunkRule {
+  id: number;
+  applies_to: 'bot' | 'direct_junk';
+  /**
+   * ua_contains          value = text the user-agent must contain (case-sensitive).
+   *                      Several parts joined with ' && ' must ALL be present.
+   * asn                  value = AS number (x-vercel-ip-as-number), e.g. '132203'.
+   * not_program_country  value = '*'. Country is known and is not one of our
+   *                      Amazon program countries (lib/geo-config).
+   * desktop_chrome_below value = Chrome major, e.g. '140'. Desktop (non-mobile)
+   *                      Chrome/Edge older than this.
+   */
+  kind: 'ua_contains' | 'asn' | 'not_program_country' | 'desktop_chrome_below';
+  value: string;
+}
+
+export interface VisitFacts {
+  userAgent: string | null;
+  country: string | null;
+  asNumber: number | null;
+}
 
 function isMobileUA(ua: string): boolean {
   return /mobile|android|iphone|ipad/i.test(ua);
@@ -61,25 +80,34 @@ function chromeMajor(ua: string): number | null {
   return m ? parseInt(m[1], 10) : null;
 }
 
-export type JunkReason = 'non_program_country' | 'stale_desktop_chrome' | 'crawler_signature';
+/** Does this single rule match the visit? Unknown kinds never match. */
+export function ruleMatches(rule: JunkRule, v: VisitFacts): boolean {
+  const ua = v.userAgent || '';
+  switch (rule.kind) {
+    case 'ua_contains': {
+      const parts = rule.value.split('&&').map(p => p.trim()).filter(Boolean);
+      return parts.length > 0 && parts.every(p => ua.includes(p));
+    }
+    case 'asn':
+      return v.asNumber !== null && String(v.asNumber) === rule.value.trim();
+    case 'not_program_country':
+      return !!v.country && !isProgramCountry(v.country);
+    case 'desktop_chrome_below': {
+      const below = parseInt(rule.value, 10);
+      if (!Number.isFinite(below) || isMobileUA(ua)) return false;
+      const major = chromeMajor(ua);
+      return major !== null && major < below;
+    }
+    default:
+      return false;
+  }
+}
 
-/**
- * Decide whether a DIRECT, campaign-less landing visit is obvious junk.
- * Caller is responsible for: direct (no external referrer), no campaign params,
- * not an allowed search/social crawler. Returns the reason, or null = keep tracking.
- */
-export function obviousJunkReason(
-  country: string | null | undefined,
-  userAgent: string | null | undefined,
-): JunkReason | null {
-  const ua = userAgent || '';
-  if (country && !isProgramCountry(country)) return 'non_program_country';
-  if (!isMobileUA(ua)) {
-    const major = chromeMajor(ua);
-    if (major !== null && major < STALE_DESKTOP_CHROME_BELOW) return 'stale_desktop_chrome';
-  }
-  if (JUNK_CRAWLER_UA_SIGNATURES.some(parts => parts.every(p => ua.includes(p)))) {
-    return 'crawler_signature';
-  }
-  return null;
+/** First matching rule of the given kind (applies_to), or null. */
+export function findRule(
+  rules: JunkRule[],
+  appliesTo: JunkRule['applies_to'],
+  v: VisitFacts,
+): JunkRule | null {
+  return rules.find(r => r.applies_to === appliesTo && ruleMatches(r, v)) || null;
 }

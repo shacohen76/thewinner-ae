@@ -177,10 +177,11 @@ export default async function LocaleLayout({
             CookieConsent.tsx update path is verified end-to-end.
             See AM1 decisions log entry GEOS1-HOTFIX-1. */}
         {/* Google Tag Manager
-            2026-10-05 (junk-direct cleanup): not loaded when middleware marked this
-            visit as obvious junk (NO_TRACK_COOKIE, see lib/junk-traffic.ts) → no GA4
-            user for China/crawler direct hits. The cookie arrives with this HTML
-            response, so it is readable before this script runs. */}
+            2026-10-05 (junk-direct cleanup): not loaded when the visit was judged
+            direct_junk (NO_TRACK_COOKIE) → no GA4 user for junk direct hits.
+            2026-10-22: the cookie is now set by /api/tag-assign (rules in the Supabase
+            table public.junk_traffic_rules, docs/JUNK_TRAFFIC_RULES.md), so GTM is
+            skipped from the visitor's 2nd page load on; the 1st page loads GTM. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `

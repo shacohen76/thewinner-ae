@@ -23,7 +23,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getGeoGroup, getGeoProgram, getProgramConfig, ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
-import { SPOOFED_BROWSER_BOT_UAS } from '@/lib/bot-signatures';
+// 2026-10-22: bot UA list comes from public.junk_traffic_rules (was lib/bot-signatures.ts).
+import { getJunkRules, botUaSubstrings } from '@/lib/junk-rules';
 // 2026-09-29: admin-only regions (gulf/europe/americas/apac/other) — see lib/admin-regions.ts.
 import { adminRegionOf, regionCountries, ADMIN_REGIONS, type AdminRegion } from '@/lib/admin-regions';
 import { PROGRAM_COUNTRY_CODES } from '@/lib/geo-config';
@@ -123,9 +124,9 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(500);
 
-    // Exclude every known spoofed-browser bot signature (lib/bot-signatures.ts).
-    // Kept in sync with the ingest guard (/api/tag-assign) and the SQL rollup.
-    for (const sig of SPOOFED_BROWSER_BOT_UAS) {
+    // Exclude every 'bot' UA rule of public.junk_traffic_rules — the SAME table the
+    // ingest guard (/api/tag-assign) and the SQL rollup (is_junk_bot_ua) read.
+    for (const sig of botUaSubstrings(await getJunkRules())) {
       sessionsQuery = sessionsQuery.not('user_agent', 'ilike', `%${sig}%`);
     }
 
