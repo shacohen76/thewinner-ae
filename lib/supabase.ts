@@ -307,6 +307,29 @@ export async function getKeywordBySlug(slug: string): Promise<Keyword | null> {
 // (Removed MARKETPLACE_NATIVE_LOCALE 2026-07-09 — the overlay now skips only the
 // true ae+en base; see getProductsForKeyword step 3.)
 
+// Per-market out-of-stock (2026-10-25). products.is_out_of_stock is ONE flag per
+// asin shared by every program, so a flag set from one market hid the product in
+// all markets. product_market_stock holds it per (asin, marketplace); an asin with
+// no row for this marketplace = in stock. Returns the OOS asins, or null when the
+// read fails → caller falls back to the legacy global flag (no hard failure: this
+// read must never empty or break a page).
+async function getMarketOutOfStock(
+  asins: string[],
+  marketplace: string,
+): Promise<Set<string> | null> {
+  const { data, error } = await supabase
+    .from('product_market_stock')
+    .select('asin')
+    .eq('marketplace', marketplace)
+    .eq('is_out_of_stock', true)
+    .in('asin', asins);
+  if (error) {
+    console.error(`getMarketOutOfStock(mkt=${marketplace}) failed — using products.is_out_of_stock:`, error);
+    return null;
+  }
+  return new Set((data ?? []).map((r: { asin: string }) => r.asin));
+}
+
 // Get products for a keyword.
 // LIMIT: Returns max 10 products, ordered by rank.
 // Buffer system: Scraper links 15 → Website shows 10 → room for OOS/removals.
@@ -345,6 +368,11 @@ export async function getProductsForKeyword(
   const asins = Array.from(new Set(linkRows.map(l => l.asin).filter(Boolean)));
   if (asins.length === 0) return []; // legitimate empty (not an error) — render graceful empty state
 
+  // 2b) STOCK — per program (2026-10-25): stock is a fact of (asin, marketplace),
+  // read from product_market_stock. Started here so it runs in parallel with the
+  // content read below.
+  const marketOosPromise = getMarketOutOfStock(asins, marketplace);
+
   // 2) CONTENT — shared product rows by asin. Canonical pick (prefer 'ae' English
   // base) covers the transition window where a shared asin still has per-market
   // rows; post-collapse each asin has one row and this just returns it.
@@ -354,6 +382,11 @@ export async function getProductsForKeyword(
     `getProductsForKeyword.content(kw=${keywordId})`,
     () => supabase.from('products').select('*').in('asin', asins),
   );
+  const marketOos = await marketOosPromise;
+  // Per-market flag when the stock read worked; else the legacy global flag
+  // (products.is_out_of_stock = the behaviour before 2026-10-25).
+  const isOutOfStock = (p: Product) =>
+    marketOos ? marketOos.has(p.asin) : !!p.is_out_of_stock;
 
   const canonical = new Map<string, Product>();
   for (const p of (prodRows || []) as (Product & { marketplace?: string })[]) {
@@ -369,7 +402,7 @@ export async function getProductsForKeyword(
       const p = canonical.get(l.asin);
       return p ? { ...(p as Product), ...l } : null;
     })
-    .filter((p): p is Product & KeywordProduct => !!p && !p.is_out_of_stock)
+    .filter((p): p is Product & KeywordProduct => !!p && !isOutOfStock(p))
     .slice(0, 10)
     .map(p => ({ ...p, title: sanitizeProductTitle(p.title ?? '') }));
 
