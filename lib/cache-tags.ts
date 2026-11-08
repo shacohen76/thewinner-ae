@@ -12,7 +12,7 @@
 // new market or language is picked up automatically.
 // ============================================
 
-import { CATALOG_MARKETPLACES, LOCALE_CATALOG, isCatalogMarket } from '@/lib/geo-config';
+import { CATALOG_MARKETPLACES, LOCALE_CATALOG, LOCALE_MARKETS, isCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
 
 /** Tag on EVERY copy of a slug's product data (unscoped purge = today's behaviour). */
@@ -35,12 +35,16 @@ export interface BestPageCopy {
  * The saved copies of /best/<slug>, optionally narrowed to one locale and/or market.
  * A locale pinned to one catalog (LOCALE_CATALOG, e.g. ja→jp) only ever has that
  * market's copy; other locales follow the visitor's geo (every catalog market).
+ * 2026-11-08 (EU NATIVE 1): an EU native locale (LOCALE_MARKETS, e.g. pl→['pl']) has copies
+ * for ITS markets only — never the 16-market fan-out.
  */
 export function bestPageCopies(slug: string, opts: { locale?: string; market?: string } = {}): BestPageCopy[] {
   const copies: BestPageCopy[] = [];
   const locales = opts.locale ? [opts.locale] : [...routing.locales];
   for (const locale of locales) {
-    const markets = LOCALE_CATALOG[locale] ? [LOCALE_CATALOG[locale]] : Array.from(CATALOG_MARKETPLACES);
+    const markets = LOCALE_CATALOG[locale] ? [LOCALE_CATALOG[locale]]
+      : LOCALE_MARKETS[locale] ? [...LOCALE_MARKETS[locale]]
+      : Array.from(CATALOG_MARKETPLACES);
     for (const market of markets) {
       if (opts.market && market !== opts.market) continue;
       copies.push({ locale, market, path: `/${locale}/best/${market}/${slug}` });
