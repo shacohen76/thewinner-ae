@@ -12,3 +12,8 @@
 // ============================================
 
 export const BR_PT_ENABLED = process.env.NEXT_PUBLIC_BR_PT_ENABLED === '1';
+
+// EU_NATIVE_LOCALES_RAW (2026-11-08, EU NATIVE 1) — comma list of EU single-language locales to
+// enable, e.g. "pl" or "pl,es" (parsed + validated in lib/native-locales.ts). Unset (default) →
+// no EU locale anywhere; the site is byte-identical to before.
+export const EU_NATIVE_LOCALES_RAW = process.env.NEXT_PUBLIC_EU_NATIVE_LOCALES || '';

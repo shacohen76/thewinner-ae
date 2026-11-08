@@ -32,6 +32,7 @@
 // ============================================
 
 import { BR_PT_ENABLED } from './feature-flags';
+import { EU_NATIVE_LOCALE_MARKETS } from './native-locales';
 
 // ============================================
 // TYPES
@@ -384,10 +385,18 @@ export const LOCALE_CATALOG: Record<string, string> = {
   ...(BR_PT_ENABLED ? { pt: 'br' } : {}),
 };
 
+/** Locales pinned to a SMALL SET of markets (EU NATIVE 1, 2026-11-08): the visitor's own program
+ *  when it is in the set, else the set's first market (also for crawlers). E.g. a future /fr →
+ *  ['fr','be']. Keeps each EU locale to its own ISR copies (no fan-out to all CATALOG_MARKETPLACES).
+ *  Empty unless NEXT_PUBLIC_EU_NATIVE_LOCALES enables a locale (lib/native-locales.ts). A market
+ *  here (e.g. 'pl') can be reachable ONLY through its locale — the English page keeps CATALOG_ALIAS. */
+export const LOCALE_MARKETS: Record<string, string[]> = EU_NATIVE_LOCALE_MARKETS;
+
 /** Every market that has its own catalog: geo-followed ones + locale-pinned ones
  *  (e.g. 'br' via pt). Used to validate a market name (revalidate, leak guard). */
 export function isCatalogMarket(market: string): boolean {
-  return CATALOG_MARKETPLACES.has(market) || Object.values(LOCALE_CATALOG).includes(market);
+  return CATALOG_MARKETPLACES.has(market) || Object.values(LOCALE_CATALOG).includes(market)
+    || Object.values(LOCALE_MARKETS).some((ms) => ms.includes(market));
 }
 
 /** Resolve which market's catalog a request renders. Pure — safe from middleware.
@@ -398,6 +407,11 @@ export function isCatalogMarket(market: string): boolean {
  *     catalog bucket; else 'ae'. */
 export function resolveCatalogMarket(country: string, locale: string, isBot: boolean): string {
   if (LOCALE_CATALOG[locale]) return LOCALE_CATALOG[locale];   // ja → jp, pin all visitors
+  const pinnedSet = LOCALE_MARKETS[locale];                     // 2026-11-08: EU native (pl → ['pl'])
+  if (pinnedSet) {
+    const own = getGeoProgram(country);
+    return !isBot && pinnedSet.includes(own) ? own : pinnedSet[0];
+  }
   if (isBot) return 'ae';                                       // crawler default = AE (owner-approved)
   const program = getGeoProgram(country);                       // existing export
   const catalog = CATALOG_ALIAS[program] ?? program;            // 2026-09-28: pl → de

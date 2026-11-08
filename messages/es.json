@@ -1,0 +1,231 @@
+{
+  "Nav": {
+    "siteTagline": "Análisis de productos",
+    "categories": "Categorías",
+    "about": "Quiénes somos",
+    "contact": "Contacto",
+    "blog": "Blog",
+    "home": "Inicio"
+  },
+  "Categories": {
+    "appliances-main": "Electrodomésticos",
+    "kitchen-main": "Cocina y café",
+    "computers-main": "Ordenadores y móviles",
+    "entertainment-main": "TV y audio",
+    "care-main": "Belleza, cuidado y familia",
+    "hobbies-main": "Ocio y aficiones",
+    "home-main": "Hogar y jardín",
+    "fashion-main": "Moda y accesorios",
+    "other-main": "Más"
+  },
+  "Footer": {
+    "categories": "Categorías",
+    "popular": "Populares",
+    "info": "Información",
+    "tagline": "Web de comparación de productos. Te ayudamos a encontrar el producto perfecto.",
+    "popularItems": {
+      "portable-speakers": "Altavoces portátiles",
+      "coffee-machines": "Cafeteras",
+      "washing-machines": "Lavadoras",
+      "televisions": "Televisores"
+    },
+    "about": "Quiénes somos",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "privacy": "Política de privacidad",
+    "terms": "Condiciones de uso",
+    "disclosure": "Aviso: trabajamos con socios de confianza para ofrecer los mejores resultados a nuestros usuarios. Podemos recibir una comisión, pero nunca a costa de nuestros usuarios. Como Afiliado de Amazon, obtenemos ingresos por las compras adscritas que cumplen los requisitos aplicables. La lealtad y la confianza, siempre por encima de todo.",
+    "copyright": "© {year} {siteName} — {tagline}. Todos los derechos reservados.",
+    "trademark": "Amazon y el logotipo de Amazon son marcas comerciales de Amazon.com, Inc. o de sus filiales."
+  },
+  "ProductCard": {
+    "topPick": "Nuestra elección",
+    "discounted": "REBAJADO HOY",
+    "regularPrice": "GRAN PRECIO DE SIEMPRE",
+    "consNote": "No disponible en todos los programas",
+    "whyWeLoveIt": "Por qué nos encanta",
+    "details": "Los detalles:",
+    "showMore": "Ver más",
+    "showLess": "Ver menos",
+    "showOffer": "Ver oferta",
+    "interested": "🔥 {count} interesados",
+    "defaultWwl": "Producto recomendado en esta categoría",
+    "scoreLabels": {
+      "exceptional": "Excepcional",
+      "excellent": "Excelente",
+      "veryGood": "Muy bueno",
+      "good": "Bueno"
+    }
+  },
+  "Cookie": {
+    "consent": "Usamos cookies para entender cómo se usa nuestra web y para medir nuestro marketing. Elige tu preferencia a continuación; podrás cambiarla más tarde desde el pie de página.",
+    "privacyPolicy": "Política de privacidad",
+    "rejectAll": "Rechazar todas",
+    "acceptAll": "Aceptar todas",
+    "settings": "Configuración de cookies"
+  },
+  "ProductList": {
+    "sort": "Ordenar:",
+    "recommended": "Recomendados",
+    "lowestPrice": "Precio más bajo",
+    "emptyTitle": "Todavía no hay productos",
+    "emptyBody": "Estamos añadiendo productos a esta categoría"
+  },
+  "Share": {
+    "button": "Compartir",
+    "label": "Compartir esta página",
+    "copied": "✓ ¡Enlace copiado!",
+    "copiedHint": "Pégalo en WhatsApp y compártelo con tu familia y amigos"
+  },
+  "BestPage": {
+    "quickPick": "Elección rápida",
+    "buyingGuide": "Guía de compra: {keyword}",
+    "tableOfContents": "Índice",
+    "backToTop": "↑ Volver a las 10 mejores opciones: {keyword}",
+    "by": "Por",
+    "updated": "Actualizado en {date}",
+    "morePicks": "Más recomendaciones",
+    "howWeChoseTitle": "Cómo elegimos",
+    "howWeChoseBody": "Nuestros editores son personas a las que de verdad les gusta probar productos y escribir sobre ellos. Comparamos el uso real y los puntos fuertes de cada producto y resumimos lo más importante en nuestros propios puntos «Por qué nos encanta», para que veas de un vistazo y con honestidad lo que cuenta antes de comprar.",
+    "reviewerRole": "Analista de productos",
+    "consNote": "No disponible en todos los programas"
+  },
+  "CategoryDesc": {
+    "appliances-main": "Electrodomésticos: frigoríficos, lavadoras, aspiradoras, aires acondicionados y más.",
+    "kitchen-main": "Todo para la cocina: aparatos de cocina, cafeteras, hervidores y más.",
+    "computers-main": "Portátiles, móviles, tablets, monitores, impresoras y accesorios.",
+    "entertainment-main": "Televisores, altavoces, auriculares y equipos de audio.",
+    "care-main": "Perfumes, maquillaje, cuidado del cabello, cuidado de la piel y productos para bebés.",
+    "hobbies-main": "Videojuegos, juguetes, deporte, cámaras e instrumentos musicales.",
+    "home-main": "Muebles, baño, iluminación, hogar inteligente, jardín y herramientas eléctricas.",
+    "fashion-main": "Bolsos, mochilas, carteras, joyería, gorros, bufandas, guantes, gafas de sol y cinturones.",
+    "other-main": "Motor y más."
+  },
+  "Subcategories": {
+    "large-appliances": "Grandes electrodomésticos",
+    "vacuum-cleaners": "Aspiradoras",
+    "laundry": "Lavado",
+    "climate-control": "Climatización",
+    "kitchen-appliances": "Pequeño electrodoméstico de cocina",
+    "coffee-tea": "Café y té",
+    "laptops": "Portátiles",
+    "desktops": "Ordenadores de sobremesa",
+    "phones-accessories": "Móviles y accesorios",
+    "tablets": "Tablets",
+    "monitors": "Monitores",
+    "printers": "Impresoras",
+    "computer-accessories": "Accesorios de informática",
+    "watches-wearables": "Relojes y wearables",
+    "tv-projectors": "TV y proyectores",
+    "speakers-audio": "Altavoces y audio",
+    "headphones-earbuds": "Auriculares",
+    "perfumes-fragrances": "Perfumes y fragancias",
+    "makeup": "Maquillaje",
+    "hair-care-styling": "Cuidado y peinado del cabello",
+    "skincare": "Cuidado de la piel",
+    "personal-care": "Cuidado personal",
+    "baby-kids": "Bebés y niños",
+    "gaming": "Videojuegos",
+    "toys": "Juguetes",
+    "fitness-sports": "Fitness y deporte",
+    "cameras-photography": "Cámaras y fotografía",
+    "musical-instruments": "Instrumentos musicales",
+    "furniture": "Muebles",
+    "bathroom": "Baño",
+    "lighting": "Iluminación",
+    "smart-home": "Hogar inteligente",
+    "garden-outdoor": "Jardín y exterior",
+    "power-tools": "Herramientas eléctricas",
+    "automotive": "Motor",
+    "bags-backpacks": "Bolsos y mochilas",
+    "wallets-small-leather-goods": "Carteras y marroquinería",
+    "hats-scarves-gloves": "Gorros, bufandas y guantes",
+    "sunglasses-eyewear-belts": "Gafas y cinturones",
+    "jewelry": "Joyería",
+    "other": "Otros"
+  },
+  "CategoryPage": {
+    "subcategoriesCount": "{count} subcategorías",
+    "chooseSubcategory": "Elige una subcategoría",
+    "chooseSubcategoryHint": "Selecciona una categoría para ver comparativas de productos",
+    "viewCategory": "Ver categoría",
+    "moreCategories": "Más categorías",
+    "comparisonsCount": "{count} comparativas de productos",
+    "subcatIntro": "Comparativas de productos en {name}: encuentra el mejor para ti",
+    "comparisonsHere": "Comparativas en esta categoría",
+    "comparisonsHereHint": "Elige una comparativa para ver los 10 mejores productos",
+    "viewComparison": "Ver comparativa",
+    "products10": "10 productos"
+  },
+  "Home": {
+    "heroTitle": "Encuentra el producto <hl>ganador</hl> para ti",
+    "heroSub": "Comparación de productos inteligente y objetiva. Nosotros investigamos; tú eliges lo mejor.",
+    "popularSearchesLabel": "Búsquedas populares:",
+    "searches": {
+      "portable-speakers": "Altavoces portátiles",
+      "my-perfume-perfume-100ml": "Perfumes",
+      "roborock-vacuum-cleaners": "Aspiradoras Roborock",
+      "earbuds": "Auriculares inalámbricos"
+    },
+    "browseByCategory": "Explora por categoría",
+    "browseByCategorySub": "Elige una categoría y encuentra los mejores productos",
+    "popularComparisons": "Comparativas populares",
+    "popularComparisonsSub": "Las comparativas más solicitadas por nuestros usuarios",
+    "comparisons": {
+      "portable-speakers": { "title": "Los 10 mejores altavoces portátiles", "desc": "Comparativa completa de altavoces Bluetooth portátiles para todos los presupuestos" },
+      "coffee-machines": { "title": "Las 10 mejores cafeteras", "desc": "De cápsulas a cafeteras espresso profesionales para casa" },
+      "washing-machines": { "title": "Las 10 mejores lavadoras", "desc": "Lavadoras recomendadas para cada presupuesto y necesidad" },
+      "televisions": { "title": "Los 10 mejores televisores", "desc": "4K, OLED, QLED: comparamos todas las tecnologías líderes" },
+      "earbuds": { "title": "Los 10 mejores auriculares inalámbricos", "desc": "Auriculares inalámbricos para música, llamadas y un estilo de vida activo" },
+      "hair-straightener": { "title": "Las 10 mejores planchas de pelo", "desc": "Planchas de pelo de nivel profesional para resultados de peluquería en casa" }
+    },
+    "viewComparison": "Ver comparativa",
+    "viewAllComparisons": "Ver todas las comparativas",
+    "whyChooseUs": "¿Por qué elegirnos?",
+    "whyChooseUsSub": "Hacemos el trabajo duro por ti",
+    "features": {
+      "research": { "title": "Investigación a fondo", "desc": "Revisamos y comparamos cientos de productos para encontrar lo mejor de cada categoría" },
+      "objective": { "title": "Totalmente objetivos", "desc": "Nuestros rankings se basan en el rendimiento real, no en publicidad ni marketing" },
+      "savings": { "title": "Ahorra tiempo y dinero", "desc": "En lugar de pasar horas investigando, obtén la respuesta en minutos y la mejor oferta" }
+    }
+  },
+  "About": {
+    "title": "Sobre {siteName}",
+    "subtitle": "Plataforma de comparación de productos",
+    "missionTitle": "Nuestra misión",
+    "mission": "En «{siteName}» creemos que todo consumidor merece información fiable y objetiva antes de comprar. Nuestra misión es ahorrarte horas de búsqueda y darte la conclusión: cuáles son los mejores productos de cada categoría.",
+    "howWeWorkTitle": "Cómo trabajamos",
+    "work": {
+      "research": { "title": "Investigación a fondo", "desc": "Revisamos cientos de productos y analizamos especificaciones técnicas, opiniones de usuarios y datos de ventas" },
+      "objective": { "title": "Comparación objetiva", "desc": "Nuestros rankings se basan en el rendimiento real, no en pagos ni publicidad" },
+      "recommendations": { "title": "Recomendaciones claras", "desc": "Explicamos de forma sencilla por qué recomendamos cada producto y para quién es más adecuado" }
+    },
+    "valuesTitle": "Nuestros valores",
+    "values": {
+      "reliability": { "term": "Fiabilidad", "desc": ": nuestra información es precisa y está actualizada. No recomendamos productos que no compraríamos nosotros mismos." },
+      "transparency": { "term": "Transparencia", "desc": ": somos claros sobre cómo ganamos dinero. Cuando compras a través de nuestros enlaces, podemos recibir una comisión." },
+      "consumerFirst": { "term": "El consumidor primero", "desc": ": evaluamos cada decisión desde tu punto de vista, el del consumidor." }
+    },
+    "teamTitle": "Nuestro equipo",
+    "teamIntro": "Conoce a los expertos que hay detrás de nuestras recomendaciones:",
+    "team": {
+      "alex": { "role": "Experto en tecnología", "bio": "Le encantan los gadgets y los videojuegos. Analiza ordenadores, smartphones y equipos gaming." },
+      "adham": { "role": "Experto en electrodomésticos", "bio": "Apasionado de la cocina y la repostería. Analiza aparatos de cocina, cafeteras y electrónica del hogar." },
+      "mariam": { "role": "Experta en audio", "bio": "Música y amante del buen sonido. Analiza altavoces, auriculares y equipos de audio." },
+      "fatima": { "role": "Experta en belleza y hogar", "bio": "Amante del interiorismo y la belleza. Analiza cosmética, cuidado de la piel y accesorios para el hogar." },
+      "abdulla": { "role": "Experto en deporte y fitness", "bio": "Deportista y entrenador personal. Analiza relojes inteligentes, equipos de fitness y electrónica deportiva." },
+      "sara": { "role": "Experta en familia y niños", "bio": "Madre de tres hijos. Analiza productos para bebés, juguetes y artículos esenciales para la familia." }
+    },
+    "disclosureTitle": "Aviso",
+    "disclosure": "Trabajamos con socios de confianza para ofrecer los mejores resultados a nuestros usuarios. Podemos recibir una comisión, pero nunca a costa de nuestros usuarios. Las comisiones no influyen en nuestros rankings ni recomendaciones, que se basan únicamente en la calidad del producto y en su adecuación a tus necesidades. Como Afiliado de Amazon, obtenemos ingresos por las compras adscritas que cumplen los requisitos aplicables. La lealtad y la confianza, siempre por encima de todo."
+  },
+  "Contact": {
+    "title": "Contacto",
+    "subtitle": "¡Nos encantará saber de ti!",
+    "emailTitle": "📧 Correo electrónico",
+    "emailIntro": "Para preguntas, sugerencias o colaboraciones, escríbenos:",
+    "suggestions": { "title": "💡 Sugerencias", "desc": "¿Tienes una idea para una nueva categoría o un producto que deberíamos añadir? ¡Cuéntanosla!" },
+    "partnerships": { "title": "🤝 Colaboraciones", "desc": "¿Te interesa una colaboración comercial? Escríbenos y lo hablamos encantados." },
+    "report": { "title": "🐛 Informar de un problema", "desc": "¿Has encontrado un error en la web o información incorrecta? Avísanos y lo corregiremos enseguida." }
+  }
+}
