@@ -360,18 +360,21 @@ export function getGeoGroup(countryCode: string | null | undefined): GeoGroup {
 // harvested one by one; after each market's publish send `amz_signal_refresh_v1.py --locale en
 // --market <mkt>` so cached search-fallback copies rebuild with the new products. Crawlers still pin to 'ae'.
 // 2026-09-28 (owner): 'pl' REMOVED from this set — PL has no Creators-API app, so no pl catalog can
-// be built; PL visitors follow the DE catalog instead (CATALOG_ALIAS below). Keeping 'pl' here would
+// be built; PL visitors follow the DE catalog instead (was CATALOG_ALIAS; now CATALOG_FALLBACK below). Keeping 'pl' here would
 // mint empty /best/pl/* copies (AE + search fallback) that the owner does not want.
+// 2026-11-08 (ML 6.2, Manager 6.8 GO, owner OK): 'pl' BACK in this set — a pl catalog now exists
+// (DE lists filtered to IN_STOCK on amazon.pl via the DE app, ≥3 in-stock products per page). Keywords
+// WITHOUT pl rows do NOT get the AE search fallback: they keep the DE list (CATALOG_FALLBACK below).
 export const CATALOG_MARKETPLACES = new Set(['ae', 'us', 'uk', 'ca', 'ie', 'au', 'sg', 'jp', 'sa',
-  'de', 'es', 'fr', 'it', 'nl', 'se', 'be']);
+  'de', 'es', 'fr', 'it', 'nl', 'se', 'be', 'pl']);
 
-/** Programs that have NO catalog of their own and FOLLOW another market's catalog (same HTML copy).
- *  Links are still rewritten client-side to the visitor's own store + tag (TrackingProvider), so a
- *  PL visitor sees the DE list with amazon.pl/dp/<ASIN>?tag=thewinnerpl-21 links. */
-// 2026-09-28 (owner, ML6): pl → de ("let PL follow the DE market, links not queries"). Stock of DE
-// ASINs on amazon.pl is UNVERIFIED (no PL API app; comparable EU stores 46-70% in stock). Remove the
-// alias once a pl catalog exists (PL API app, or the later-in-line scrape option).
-export const CATALOG_ALIAS: Record<string, string> = { pl: 'de' };
+/** Per-KEYWORD fallback: when a market has 0 rows for a keyword, render this other market's list
+ *  (real /dp links — rewritten client-side to the visitor's own store + tag by TrackingProvider)
+ *  before the AE search fallback. */
+// 2026-09-28 (owner, ML6): pl → de ("let PL follow the DE market, links not queries") — was a whole-market
+// CATALOG_ALIAS. 2026-11-08 (ML 6.2, design (b) by Manager 6.8): pl uses its OWN list when it has rows and
+// follows DE per keyword when it has none, so no PL page gets worse than the DE list it showed before.
+export const CATALOG_FALLBACK: Record<string, string> = { pl: 'de' };
 
 /** Locales that PIN to a specific catalog for EVERY visitor regardless of geo —
  *  "language follows the URL". A /ja page always shows the JP catalog. Moved here
@@ -389,7 +392,9 @@ export const LOCALE_CATALOG: Record<string, string> = {
  *  when it is in the set, else the set's first market (also for crawlers). E.g. a future /fr →
  *  ['fr','be']. Keeps each EU locale to its own ISR copies (no fan-out to all CATALOG_MARKETPLACES).
  *  Empty unless NEXT_PUBLIC_EU_NATIVE_LOCALES enables a locale (lib/native-locales.ts). A market
- *  here (e.g. 'pl') can be reachable ONLY through its locale — the English page keeps CATALOG_ALIAS. */
+ *  here (e.g. 'pl') can be reachable ONLY through its locale — the English page keeps CATALOG_ALIAS.
+ *  2026-11-09 (ML 6.2 merge with #118): CATALOG_ALIAS is gone — 'pl' is now in CATALOG_MARKETPLACES and
+ *  both the English page and /pl use the pl list, following DE per keyword (CATALOG_FALLBACK). */
 export const LOCALE_MARKETS: Record<string, string[]> = EU_NATIVE_LOCALE_MARKETS;
 
 /** Every market that has its own catalog: geo-followed ones + locale-pinned ones
@@ -403,8 +408,7 @@ export function isCatalogMarket(market: string): boolean {
  *   • A pinned locale (ja→jp) overrides geo for all visitors.
  *   • Crawlers pin to 'ae' (owner-approved) so indexable HTML is always the AE
  *     catalog and every geo shares one canonical indexed page.
- *   • Otherwise the visitor's program (or the market it follows, CATALOG_ALIAS), if it has a
- *     catalog bucket; else 'ae'. */
+ *   • Otherwise the visitor's program, if it has a catalog bucket; else 'ae'. */
 export function resolveCatalogMarket(country: string, locale: string, isBot: boolean): string {
   if (LOCALE_CATALOG[locale]) return LOCALE_CATALOG[locale];   // ja → jp, pin all visitors
   const pinnedSet = LOCALE_MARKETS[locale];                     // 2026-11-08: EU native (pl → ['pl'])
@@ -414,8 +418,7 @@ export function resolveCatalogMarket(country: string, locale: string, isBot: boo
   }
   if (isBot) return 'ae';                                       // crawler default = AE (owner-approved)
   const program = getGeoProgram(country);                       // existing export
-  const catalog = CATALOG_ALIAS[program] ?? program;            // 2026-09-28: pl → de
-  return CATALOG_MARKETPLACES.has(catalog) ? catalog : 'ae';
+  return CATALOG_MARKETPLACES.has(program) ? program : 'ae';    // 2026-11-08: pl own (no alias)
 }
 
 /** Full geo config — program + group + domain + tag + display strings.

@@ -41,7 +41,7 @@ import {
   generatePortuguesePageDescription,
 } from '@/lib/title-pt';
 import { getBrPilotPage } from '@/lib/br-pilot-preview';
-import { getProgramConfig, type GeoProgram } from '@/lib/geo-config';
+import { getProgramConfig, CATALOG_FALLBACK, type GeoProgram } from '@/lib/geo-config';
 import { getEuNativeLocale } from '@/lib/native-locales';   // 2026-11-08: EU NATIVE 1 (/pl, /es …)
 import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
@@ -336,6 +336,12 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     async () => {
       let products = await readProducts(keyword.id, params.locale, params.market);
       let searchFallback = false;
+      // 2026-11-08 (ML 6.2): per-keyword market fallback (pl → de) BEFORE the AE search fallback —
+      // a PL keyword without pl rows keeps the DE list it showed before pl had its own catalog.
+      const follow = CATALOG_FALLBACK[params.market];
+      if (follow && products.length === 0 && !isPt) {
+        products = await getProductsForKeyword(keyword.id, params.locale, follow);
+      }
       // BR 1: no AE fallback on /pt — the UAE catalog would show English titles and
       // products that don't exist on amazon.com.br. /pt renders its own empty state.
       if (params.market !== 'ae' && products.length === 0 && !singleLang) {
