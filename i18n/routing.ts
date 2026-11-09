@@ -27,13 +27,20 @@
 
 import { defineRouting } from 'next-intl/routing';
 import { BR_PT_ENABLED } from '../lib/feature-flags';
+import { EU_NATIVE_CODES } from '../lib/native-locales';
 
 // 2026-09-26 (BR 1): Brazilian Portuguese ('pt', URL /pt/*) is appended ONLY when
 // NEXT_PUBLIC_BR_PT_ENABLED=1 (see lib/feature-flags.ts). Flag off (default) → the
 // list is exactly ['en','ar','ja'] as before, so production is unchanged.
+// 2026-11-08 (EU NATIVE 1): + the EU single-language locales listed in
+// NEXT_PUBLIC_EU_NATIVE_LOCALES (lib/native-locales.ts). Unset (default) → none appended.
 const BASE_LOCALES = ['en', 'ar', 'ja'] as const;
-type SiteLocale = (typeof BASE_LOCALES)[number] | 'pt';
-const LOCALES: SiteLocale[] = BR_PT_ENABLED ? [...BASE_LOCALES, 'pt'] : [...BASE_LOCALES];
+type SiteLocale = (typeof BASE_LOCALES)[number] | 'pt' | 'pl' | 'es';
+const LOCALES: SiteLocale[] = [
+  ...BASE_LOCALES,
+  ...(BR_PT_ENABLED ? (['pt'] as const) : []),
+  ...(EU_NATIVE_CODES as SiteLocale[]),
+];
 
 export const routing = defineRouting({
   // Phase 2A: Arabic ('ar') added. English stays the default and prefix-less;

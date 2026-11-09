@@ -41,7 +41,8 @@ import {
   generatePortuguesePageDescription,
 } from '@/lib/title-pt';
 import { getBrPilotPage } from '@/lib/br-pilot-preview';
-import { getProgramConfig, CATALOG_FALLBACK } from '@/lib/geo-config';
+import { getProgramConfig, CATALOG_FALLBACK, type GeoProgram } from '@/lib/geo-config';
+import { getEuNativeLocale } from '@/lib/native-locales';   // 2026-11-08: EU NATIVE 1 (/pl, /es …)
 import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
 import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
@@ -161,6 +162,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       alternates: { canonical: ptUrl, languages: { 'pt-BR': ptUrl } },
       robots: { index: ptComplete, follow: true },
       openGraph: { title, description, url: ptUrl, locale: 'pt_BR' },
+    };
+  }
+
+  // 2026-11-08 (EU NATIVE 1): EU single-language locales (/pl, /es …) copy the /pt model
+  // (owner D-3): self-canonical, no hreflang cluster, INDEX only when complete = native noun +
+  // native BYG + ≥1 product in the locale's first market. Off unless NEXT_PUBLIC_EU_NATIVE_LOCALES.
+  const eu = getEuNativeLocale(params.locale);
+  if (eu) {
+    const euTr = await getKeywordTranslation(keyword.id, eu.code);
+    const nounEu = euTr?.keyword_text?.trim() || null;
+    const euUrl = `${CONFIG.canonicalUrl}/${eu.code}/best/${params.slug}`;
+    const title = nounEu ? eu.pageTitle(nounEu, getCurrentYear()) : 'The Winners';
+    const description = nounEu ? eu.description(nounEu) : '';
+    const euComplete = !!nounEu && hasBuyingGuide(euTr?.qa_guide)
+      && (await getKeywordMarketplaceCount(keyword.id, eu.markets[0])) >= 1;
+    return {
+      title: { absolute: title },
+      description,
+      alternates: { canonical: euUrl, languages: { [eu.htmlLang]: euUrl } },
+      robots: { index: euComplete, follow: true },
+      openGraph: { title, description, url: euUrl, locale: eu.ogLocale },
     };
   }
 
@@ -293,8 +315,11 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // BR 1 (2026-09-26): /pt without a Portuguese noun → never English on /pt, never
   // 404 (owner) → temporary redirect to the same slug's English page.
   const isPt = params.locale === 'pt';
+  // 2026-11-08 (EU NATIVE 1): EU native locales follow the same single-language rules as /pt.
+  const eu = getEuNativeLocale(params.locale);
+  const singleLang = isPt || !!eu;
   const translation = await readTranslation(keyword.id, params.locale);
-  if (isPt && !translation?.keyword_text?.trim()) {
+  if (singleLang && !translation?.keyword_text?.trim()) {
     redirect(`/best/${params.slug}`);
   }
 
@@ -319,7 +344,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       }
       // BR 1: no AE fallback on /pt — the UAE catalog would show English titles and
       // products that don't exist on amazon.com.br. /pt renders its own empty state.
-      if (params.market !== 'ae' && products.length === 0 && !isPt) {
+      if (params.market !== 'ae' && products.length === 0 && !singleLang) {
         products = await getProductsForKeyword(keyword.id, params.locale, 'ae');
         searchFallback = true;
       }
@@ -335,7 +360,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       // Crawlers keep the AE catalog wherever it exists (SEO unchanged); a keyword with no
       // products in any of these markets still hits the guard below (honest 404).
       // ('jp' is the last entry: English-native stores always win when they have products.)
-      if (products.length === 0 && !isPt) {
+      if (products.length === 0 && !singleLang) {
         for (const mkt of NEVER_EMPTY_FALLBACK_MARKETS) {
           if (mkt === params.market) continue;
           products = await getProductsForKeyword(keyword.id, params.locale, mkt);
@@ -357,7 +382,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
   // English keyword for the searchFallback query (slugs are always English).
   // BR 1: on /pt the search query is the Portuguese noun (amazon.com.br is searched in pt).
-  const keywordEn = isPt ? translation!.keyword_text!.trim() : slug.replace(/-/g, ' ').trim();
+  const keywordEn = singleLang ? translation!.keyword_text!.trim() : slug.replace(/-/g, ' ').trim();
 
   // 2026-08-24 GUARD (post organic-collapse incident, 2026-08-21): never bake an EMPTY
   // English /best page into the 7-day ISR cache. getProductsForKeyword already
@@ -380,7 +405,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // falling back to the English qa_guide when no localized row exists yet.
   // (translation for params.locale is read at the top — BR 1 needs it for the /pt redirect.)
   // BR 1: /pt never falls back to the English buying guide (section hidden instead).
-  const qaGuideSource = isPt ? translation?.qa_guide : (translation?.qa_guide ?? keyword.qa_guide);
+  const qaGuideSource = singleLang ? translation?.qa_guide : (translation?.qa_guide ?? keyword.qa_guide);
 
   // Get BYG (Buying Guide) from qa_guide
   // Handle both JSON array and string formats
@@ -445,6 +470,9 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   if (noun && isPt) {
     mainHeadline = generatePortugueseHeadline(noun, currentYear);   // BR 1
     subHeadline = generatePortugueseSubHeadline(noun);
+  } else if (noun && eu) {
+    mainHeadline = eu.headline(noun, currentYear);                  // EU NATIVE 1
+    subHeadline = eu.subHeadline(noun);
   } else if (noun && params.locale === 'ja') {
     mainHeadline = generateJapaneseHeadline(noun, currentYear);
     subHeadline = generateJapaneseSubHeadline(noun);
@@ -460,7 +488,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // 2026-09-05 E-E-A-T: author byline + freshness. Date is formatted per-locale;
   // the page regenerates within its ISR window so month-granularity is honest.
   const updatedDate = new Date().toLocaleDateString(
-    params.locale === 'en' ? 'en-US' : isPt ? 'pt-BR' : params.locale,
+    params.locale === 'en' ? 'en-US' : isPt ? 'pt-BR' : eu ? eu.htmlLang : params.locale,
     { month: 'long', year: 'numeric' },
   );
   const bylineBy = tBest('by');
@@ -514,6 +542,20 @@ export default async function ProductComparisonPage({ params }: PageProps) {
               className="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg"
             >
               {`Ver ${keywordEn} na Amazon.com.br`}
+            </a>
+          </div>
+        ) : eu && productsForList.length === 0 ? (
+          // EU NATIVE 1: noun but no products in this market yet → native empty state + a search
+          // on the market's own store (program default tag). Never the AE / English fallback.
+          <div className="text-center py-12">
+            <p className="text-gray-700 mb-4">{eu.emptyText(keywordEn)}</p>
+            <a
+              href={`https://www.${getProgramConfig(params.market as GeoProgram).amazonDomain}/s?k=${encodeURIComponent(keywordEn)}&tag=${getProgramConfig(params.market as GeoProgram).defaultTag}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg"
+            >
+              {eu.emptyCta(keywordEn)}
             </a>
           </div>
         ) : (
@@ -667,7 +709,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       </section>
       {/* BR 1: RelatedPages is English-only (lib/related-pages). 2026-09-29: /pt gets its own
           pt-only nav (complete /pt pages, Portuguese anchors) — see lib/related-pages-pt.ts. */}
-      {isPt ? <RelatedPagesPt currentSlug={slug} /> : <RelatedPages currentSlug={slug} />}
+      {/* EU NATIVE 1: no native related-pages block yet (RelatedPages is English-only) → none. */}
+      {isPt ? <RelatedPagesPt currentSlug={slug} /> : eu ? null : <RelatedPages currentSlug={slug} />}
       {/* 2026-09-29: 3 links per OTHER language (native anchors) — connects en/ja/ar/pt. */}
       <LocaleLinks locale={params.locale} seedKey={slug} />
     </>

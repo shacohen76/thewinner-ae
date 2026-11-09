@@ -1,8 +1,9 @@
 // /sitemap/<id>.xml — one sitemap chunk (route handler). id ∈ { structural, best-0, best-1, … }.
 // See lib/sitemap-data.ts. 2026-08-25 (rerank-11 SEO split).
 import { CONFIG } from '@/lib/utils';
-import { structuralEntries, allowlistEntries, ptIndexableEntries, urlsetXml } from '@/lib/sitemap-data';
+import { structuralEntries, allowlistEntries, ptIndexableEntries, euNativeIndexableEntries, urlsetXml } from '@/lib/sitemap-data';
 import { BR_PT_ENABLED } from '@/lib/feature-flags';
+import { EU_NATIVE_CODES } from '@/lib/native-locales';
 
 export const revalidate = 3600;
 
@@ -20,6 +21,9 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   } else if (id === 'indexable-pt' && BR_PT_ENABLED) {
     // 2026-09-27 (BR 1): every complete /pt page (owner: all BR pages indexed).
     entries = await ptIndexableEntries();
+  } else if (id.startsWith('indexable-') && EU_NATIVE_CODES.includes(id.slice('indexable-'.length))) {
+    // 2026-11-08 (EU NATIVE 1): one chunk per enabled EU native locale (none by default).
+    entries = await euNativeIndexableEntries(id.slice('indexable-'.length));
   } else if (id === 'ja' || id === 'ar') {
     // Back-compat: the standalone /sitemap/ar.xml, /ja.xml submitted to GSC now
     // serve the same allowlisted set (identical to indexable-ar / indexable-ja).

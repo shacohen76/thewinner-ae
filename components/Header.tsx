@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { CONFIG } from '@/lib/utils';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { isSingleLanguageLocale } from '@/lib/native-locales';
 
 // Main categories — 8 groups linking to /category/{slug}.
 // Labels come from the Categories.{slug} message namespace (locale-aware).
@@ -30,7 +31,8 @@ export default function Header() {
   const t = useTranslations('Nav');
   const tc = useTranslations('Categories');
   // 2026-09-26 (BR 1): the blog is English-only → no Blog link on /pt. Other locales unchanged.
-  const showBlog = useLocale() !== 'pt';
+  // 2026-11-08 (EU NATIVE 1): same for the EU single-language locales (/pl, /es …).
+  const showBlog = !isSingleLanguageLocale(useLocale());
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50 border-b">

@@ -22,6 +22,7 @@ import { useState, useRef, useEffect } from 'react';
 import { usePathname } from '@/i18n/navigation';
 import { useLocale } from 'next-intl';
 import { routing } from '@/i18n/routing';
+import { EU_NATIVE_LOCALES } from '@/lib/native-locales';
 
 // Native-script display name per locale. Add new languages here as they launch.
 const LANGUAGE_NAMES: Record<string, string> = {
@@ -29,6 +30,8 @@ const LANGUAGE_NAMES: Record<string, string> = {
   ar: 'العربية',
   ja: '日本語', // INTL1 JP Phase 2 (2026-07-06)
   pt: 'Português', // BR 1 (2026-09-26) — Brazilian Portuguese, BR-only
+  // 2026-11-08 (EU NATIVE 1): enabled EU native locales (none unless the flag lists them).
+  ...Object.fromEntries(EU_NATIVE_LOCALES.map((l) => [l.code, l.languageName])),
 };
 
 // Localized "Change language" for the globe button's aria-label; English default.
@@ -36,6 +39,14 @@ const CHANGE_LANGUAGE_LABEL: Record<string, string> = {
   ar: 'تغيير اللغة',
   ja: '言語を変更',
   pt: 'Mudar idioma',
+  ...Object.fromEntries(EU_NATIVE_LOCALES.map((l) => [l.code, l.changeLanguageLabel])),
+};
+
+// hreflang per switcher entry: en/pt keep their region tags; EU native → its BCP-47 tag.
+const HREFLANG: Record<string, string> = {
+  en: 'en-AE',
+  pt: 'pt-BR',
+  ...Object.fromEntries(EU_NATIVE_LOCALES.map((l) => [l.code, l.htmlLang])),
 };
 
 // 2026-09-26 (BR 1) hid the switcher on /pt and never offered 'pt' elsewhere.
@@ -102,7 +113,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
             <a
               key={l}
               href={hrefFor(l)}
-              hrefLang={l === 'en' ? 'en-AE' : l === 'pt' ? 'pt-BR' : l}
+              hrefLang={HREFLANG[l] ?? l}
               role="menuitem"
               aria-current={l === locale ? 'true' : undefined}
               className={`block px-4 py-2 text-sm hover:bg-gray-50 ${

@@ -42,6 +42,7 @@ import LayoutShell from '@/components/LayoutShell';
 import { CONFIG } from '@/lib/utils';
 import { NO_TRACK_COOKIE } from '@/lib/junk-traffic';
 import { routing, type AppLocale } from '@/i18n/routing';
+import { EU_NATIVE_LOCALES } from '@/lib/native-locales';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -93,6 +94,8 @@ const LOCALE_HTML: Record<string, { lang: string; dir: 'ltr' | 'rtl' }> = {
   ar: { lang: 'ar-AE', dir: 'rtl' },
   ja: { lang: 'ja', dir: 'ltr' },
   pt: { lang: 'pt-BR', dir: 'ltr' }, // 2026-09-26 (BR 1): /pt = Brazilian Portuguese (route exists only when BR_PT flag on)
+  // 2026-11-08 (EU NATIVE 1): enabled EU native locales (none unless NEXT_PUBLIC_EU_NATIVE_LOCALES).
+  ...Object.fromEntries(EU_NATIVE_LOCALES.map((l) => [l.code, { lang: l.htmlLang, dir: 'ltr' as const }])),
 };
 
 // Statically pre-render the document shell for every configured locale.

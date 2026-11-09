@@ -18,6 +18,7 @@ import { getIndexAllowlist } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 import { BR_PT_ENABLED } from '@/lib/feature-flags';
+import { EU_NATIVE_CODES } from '@/lib/native-locales';
 
 export const CHUNK_SIZE = 20000; // English /best URLs per chunk — well under the 50k cap
 
@@ -45,7 +46,25 @@ export async function bestChunkCount(): Promise<number> {
 // allowlist (seo_index_allowlist) to re-expand; no code change needed.
 export async function chunkIds(): Promise<string[]> {
   // 2026-09-27 (BR 1): + 'indexable-pt' when the /pt locale is enabled.
-  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja', ...(BR_PT_ENABLED ? ['indexable-pt'] : [])];
+  // 2026-11-08 (EU NATIVE 1): + 'indexable-<code>' per enabled EU native locale (none by default).
+  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja', ...(BR_PT_ENABLED ? ['indexable-pt'] : []),
+    ...EU_NATIVE_CODES.map((c) => `indexable-${c}`)];
+}
+
+// 2026-11-08 (EU NATIVE 1, owner D-3 "copy PT"): every page with a native noun in an enabled EU
+// locale. Same shape as ptIndexableEntries; the page itself re-checks BYG + ≥1 product before it
+// emits index (a listed page that is not complete yet stays noindex until its text lands).
+export async function euNativeIndexableEntries(locale: string): Promise<SitemapEntry[]> {
+  const base = CONFIG.siteUrl;
+  try {
+    const slugs = await getTranslatedSlugs(locale);
+    return Array.from(slugs).map((slug) => ({
+      url: `${base}/${locale}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+    }));
+  } catch (error) {
+    console.error(`sitemap euNativeIndexableEntries(${locale}) failed:`, error);
+    return [];
+  }
 }
 
 // 2026-09-27 (BR 1, owner): ALL complete /pt pages are indexed (no allowlist — intentional
