@@ -30,6 +30,13 @@
 
 import type { Metadata } from 'next';
 import { CONFIG } from './utils';
+import { EU_NATIVE_LOCALES } from './native-locales';
+
+// 2026-11-09 (EU NATIVE 1): EU native locales are single-country (es → amazon.es only), so their
+// hreflang key carries the region (es-ES, pl-PL …). ar/ja keep their plain codes (unchanged).
+const HREFLANG_KEY: Record<string, string> = Object.fromEntries(
+  EU_NATIVE_LOCALES.map((l) => [l.code, l.htmlLang]),
+);
 
 // Prefix-less English path → the localized path for `locale` (e.g. '/ar/best/x').
 const toLocalePath = (path: string, locale: string): string =>
@@ -64,7 +71,7 @@ export function buildAlternates(
   const languages: Record<string, string> = {};
   if (enIndexed) languages['en-AE'] = enAbs;
   for (const loc of indexedLocales) {
-    languages[loc] = `${base}${toLocalePath(path, loc)}`;
+    languages[HREFLANG_KEY[loc] ?? loc] = `${base}${toLocalePath(path, loc)}`;
   }
   // x-default → the indexed English page; if English is deindexed, the first
   // indexed localized page; if nothing is indexed, omit it (no valid target).

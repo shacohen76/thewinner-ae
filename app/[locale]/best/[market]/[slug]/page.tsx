@@ -42,7 +42,7 @@ import {
 } from '@/lib/title-pt';
 import { getBrPilotPage } from '@/lib/br-pilot-preview';
 import { getProgramConfig, CATALOG_FALLBACK, type GeoProgram } from '@/lib/geo-config';
-import { getEuNativeLocale } from '@/lib/native-locales';   // 2026-11-08: EU NATIVE 1 (/pl, /es …)
+import { getEuNativeLocale, EU_NATIVE_LOCALES } from '@/lib/native-locales';   // 2026-11-08: EU NATIVE 1 (/pl, /es …)
 import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
 import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
@@ -119,6 +119,18 @@ async function readTranslation(keywordId: number, locale: string) {
   return getKeywordTranslation(keywordId, locale);
 }
 
+// 2026-11-09 (EU NATIVE 1): the enabled EU native locales whose version of this keyword is
+// COMPLETE = native noun + native BYG + ≥1 product in the locale's first market (the index gate).
+async function euIndexedCodes(keywordId: number): Promise<string[]> {
+  if (!EU_NATIVE_LOCALES.length) return [];
+  const ok = await Promise.all(EU_NATIVE_LOCALES.map(async (l) => {
+    const tr = await getKeywordTranslation(keywordId, l.code);
+    return !!tr?.keyword_text?.trim() && hasBuyingGuide(tr?.qa_guide)
+      && (await getKeywordMarketplaceCount(keywordId, l.markets[0])) >= 1;
+  }));
+  return EU_NATIVE_LOCALES.filter((_, i) => ok[i]).map((l) => l.code);
+}
+
 // 2026-10-19 (never-empty): last-resort catalogs, in order, for a page whose own market AND
 // AE are both empty. English-native stores first (their titles are the English base); 'jp'
 // LAST (owner OK 2026-10-19) so JP-only keywords on English URLs (JP ad campaigns) are never
@@ -165,27 +177,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  // 2026-11-08 (EU NATIVE 1): EU single-language locales (/pl, /es …) copy the /pt model
-  // (owner D-3): self-canonical, no hreflang cluster, INDEX only when complete = native noun +
-  // native BYG + ≥1 product in the locale's first market. Off unless NEXT_PUBLIC_EU_NATIVE_LOCALES.
-  const eu = getEuNativeLocale(params.locale);
-  if (eu) {
-    const euTr = await getKeywordTranslation(keyword.id, eu.code);
-    const nounEu = euTr?.keyword_text?.trim() || null;
-    const euUrl = `${CONFIG.canonicalUrl}/${eu.code}/best/${params.slug}`;
-    const title = nounEu ? eu.pageTitle(nounEu, getCurrentYear()) : 'The Winners';
-    const description = nounEu ? eu.description(nounEu) : '';
-    const euComplete = !!nounEu && hasBuyingGuide(euTr?.qa_guide)
-      && (await getKeywordMarketplaceCount(keyword.id, eu.markets[0])) >= 1;
-    return {
-      title: { absolute: title },
-      description,
-      alternates: { canonical: euUrl, languages: { [eu.htmlLang]: euUrl } },
-      robots: { index: euComplete, follow: true },
-      openGraph: { title, description, url: euUrl, locale: eu.ogLocale },
-    };
-  }
-
   // INTL1 (DB-driven auto-index, no allowlist). Translation fills in stages:
   // noun first (qa_guide empty), then BYG, then WWL. A page is READY TO INDEX
   // only once its editorial text is localized = noun AND BYG present (WWL can
@@ -223,13 +214,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const enIndexed = isAllowlisted(allow, 'en', slugLc);
   const arIndexed = arComplete && isAllowlisted(allow, 'ar', slugLc);
   const jaIndexed = jaComplete && isAllowlisted(allow, 'ja', slugLc);
+  // 2026-11-09 (EU NATIVE 1, owner D-2 "organic visitors from es → es pages"): an enabled EU
+  // locale joins the reciprocal hreflang cluster when its page is COMPLETE (same gate as its
+  // robots index + indexable-<code> sitemap). Flag off → [] with no DB read → output unchanged.
+  const euIndexed = await euIndexedCodes(keyword.id);
   const indexedLocales = [
     ...(arIndexed ? ['ar'] : []),
     ...(jaIndexed ? ['ja'] : []),
+    ...euIndexed,
   ];
   const alternates = buildAlternates(`/best/${params.slug}`, params.locale, indexedLocales, enIndexed);
   const localePrefix = params.locale === 'en' ? '' : `/${params.locale}`;
   const ogUrl = `${CONFIG.canonicalUrl}${localePrefix}/best/${params.slug}`;
+
+  // 2026-11-08 (EU NATIVE 1): EU single-language locales (/pl, /es …) copy the /pt model
+  // (owner D-3): self-canonical, INDEX only when complete = native noun + native BYG + ≥1
+  // product in the locale's first market. Off unless NEXT_PUBLIC_EU_NATIVE_LOCALES.
+  // 2026-11-09 (owner D-2): a COMPLETE page emits the same reciprocal hreflang cluster as its
+  // en/ar/ja twins (en-AE ↔ es-ES + x-default, via buildAlternates); an incomplete one stays
+  // self-only (never listed as an alternate while noindex). No redirect (localeDetection off).
+  const eu = getEuNativeLocale(params.locale);
+  if (eu) {
+    const euTr = await getKeywordTranslation(keyword.id, eu.code);
+    const nounEu = euTr?.keyword_text?.trim() || null;
+    const euUrl = `${CONFIG.canonicalUrl}/${eu.code}/best/${params.slug}`;
+    const title = nounEu ? eu.pageTitle(nounEu, getCurrentYear()) : 'The Winners';
+    const description = nounEu ? eu.description(nounEu) : '';
+    const euComplete = euIndexed.includes(eu.code);
+    return {
+      title: { absolute: title },
+      description,
+      alternates: euComplete ? alternates : { canonical: euUrl, languages: { [eu.htmlLang]: euUrl } },
+      robots: { index: euComplete, follow: true },
+      openGraph: { title, description, url: euUrl, locale: eu.ogLocale },
+    };
+  }
 
   // Localized page (any non-English locale) with NO noun yet → English fallback
   // content, NOINDEX (keep an untranslated localized page out of search).
