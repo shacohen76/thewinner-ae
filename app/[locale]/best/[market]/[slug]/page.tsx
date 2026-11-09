@@ -143,7 +143,8 @@ async function readProducts(keywordId: number, locale: string, market: string) {
     const pilot = await getBrPilotPage(keywordId);
     if (pilot) return pilot.products;
   }
-  return getProductsForKeyword(keywordId, locale, market);
+  // 2026-11-09 (EU NATIVE 1, owner): /es, /pl … list only products with a native title.
+  return getProductsForKeyword(keywordId, locale, market, { nativeOnly: !!getEuNativeLocale(locale) });
 }
 
 // Generate metadata for SEO
@@ -217,7 +218,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // 2026-11-09 (EU NATIVE 1, owner D-2 "organic visitors from es → es pages"): an enabled EU
   // locale joins the reciprocal hreflang cluster when its page is COMPLETE (same gate as its
   // robots index + indexable-<code> sitemap). Flag off → [] with no DB read → output unchanged.
-  const euIndexed = await euIndexedCodes(keyword.id);
+  // (no await at all when the flag is off → the render has the same async steps as before)
+  const euIndexed = EU_NATIVE_LOCALES.length ? await euIndexedCodes(keyword.id) : [];
   const indexedLocales = [
     ...(arIndexed ? ['ar'] : []),
     ...(jaIndexed ? ['ja'] : []),
@@ -359,7 +361,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       // a PL keyword without pl rows keeps the DE list it showed before pl had its own catalog.
       const follow = CATALOG_FALLBACK[params.market];
       if (follow && products.length === 0 && !isPt) {
-        products = await getProductsForKeyword(keyword.id, params.locale, follow);
+        products = await getProductsForKeyword(keyword.id, params.locale, follow,
+          { nativeOnly: !!getEuNativeLocale(params.locale) });   // 2026-11-09: /pl stays native-only
       }
       // BR 1: no AE fallback on /pt — the UAE catalog would show English titles and
       // products that don't exist on amazon.com.br. /pt renders its own empty state.
