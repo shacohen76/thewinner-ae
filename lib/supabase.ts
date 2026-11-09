@@ -346,6 +346,11 @@ export async function getProductsForKeyword(
   keywordId: number,
   locale: string = 'en',
   marketplace: string = 'ae', // which program's catalog membership to serve (geo-driven)
+  // 2026-11-09 (EU NATIVE 1, owner rule "native titles only"): a single-language EU page shows
+  // ONLY products that have a title in its own locale (product_translations(asin, locale)). A
+  // product without one would show the English base title from another market → hidden instead.
+  // Default false → every existing caller is unchanged.
+  opts: { nativeOnly?: boolean } = {},
 ): Promise<(Product & KeywordProduct)[]> {
   // 1) MEMBERSHIP — which asins this program ranks for the keyword.
   // ML 3 (2026-07-17): retry-then-throw on a real DB error (readWithRetry) so a
@@ -397,12 +402,28 @@ export async function getProductsForKeyword(
   }
 
   // Join membership (rank order) + content; drop OOS; take top 10; sanitize title.
-  const products = linkRows
+  let inStock = linkRows
     .map(l => {
       const p = canonical.get(l.asin);
       return p ? { ...(p as Product), ...l } : null;
     })
-    .filter((p): p is Product & KeywordProduct => !!p && !isOutOfStock(p))
+    .filter((p): p is Product & KeywordProduct => !!p && !isOutOfStock(p));
+  // nativeOnly: keep the asins with a localized title BEFORE the top-10 cut, so the 15-row
+  // buffer refills the list. Same retry-then-throw guard as the reads above (a blip must not
+  // cache a list that silently shows foreign titles or drops everything).
+  if (opts.nativeOnly && inStock.length > 0) {
+    const titled = await readWithRetry<{ asin: string; title: string | null }[]>(
+      `getProductsForKeyword.nativeTitles(kw=${keywordId},loc=${locale})`,
+      () => supabase
+        .from('product_translations')
+        .select('asin, title')
+        .eq('locale', locale)
+        .in('asin', inStock.map(p => p.asin)),
+    );
+    const has = new Set((titled || []).filter(t => sanitizeProductTitle(t.title ?? '')).map(t => t.asin));
+    inStock = inStock.filter(p => has.has(p.asin));
+  }
+  const products = inStock
     .slice(0, 10)
     .map(p => ({ ...p, title: sanitizeProductTitle(p.title ?? '') }));
 
