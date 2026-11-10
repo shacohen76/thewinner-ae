@@ -9,7 +9,6 @@ export const revalidate = 3600;
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const id = params.id.replace(/\.xml$/, '');
-  const lastmod = new Date().toISOString();
 
   let entries;
   if (id === 'structural') {
@@ -34,7 +33,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 
   // CONFIG referenced so the handler shares the same base-url source as the index.
   void CONFIG;
-  return new Response(urlsetXml(entries, lastmod), {
+  return new Response(urlsetXml(entries), {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
       'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',

@@ -628,6 +628,42 @@ export async function getMarketplaceSlugs(marketplace: string): Promise<Set<stri
   return slugs;
 }
 
+// Map of slug -> page creation date (ISO 8601), for the sitemap <lastmod>. Reads
+// keywords.created_at for ONLY the given slugs (chunked IN — NO full-table scan), so each
+// sitemap URL carries a STABLE per-page date (the keyword's creation) instead of the regen
+// time. 2026-11-10 (sitemap-lastmod fix): the routes used to stamp EVERY url with new Date()
+// on every hourly regen/deploy, so the sitemap told crawlers "all ~11K pages changed now" —
+// false, and re-sent each hour. A slug missing here (or a failed chunk) simply gets NO
+// <lastmod>, which is valid and never churns. created_at is immutable, so a page's lastmod
+// is fixed at its creation day and does not move once the page is crawled.
+export async function getSlugCreatedAt(slugs: string[]): Promise<Map<string, string>> {
+  const out = new Map<string, string>();
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || slugs.length === 0) return out;
+  const uniq = Array.from(new Set(slugs.map((s) => s.toLowerCase())));
+  const CHUNK = 200; // keep the IN(...) querystring well under URL-length limits
+  for (let i = 0; i < uniq.length; i += CHUNK) {
+    const chunk = uniq.slice(i, i + CHUNK);
+    let rows: { slug: string; created_at: string }[] | null = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const res = await supabase.from('keywords').select('slug, created_at').in('slug', chunk);
+      if (!res.error) { rows = (res.data as { slug: string; created_at: string }[]) ?? []; break; }
+      console.error(`getSlugCreatedAt chunk @${i} attempt ${attempt} failed:`, res.error);
+      await new Promise((r) => setTimeout(r, 200 * attempt));
+    }
+    if (!rows) continue; // omit lastmod for this chunk rather than fail the whole sitemap
+    for (const r of rows) {
+      if (!r?.slug || !r?.created_at) continue;
+      const d = new Date(r.created_at);
+      if (Number.isNaN(d.getTime())) continue;
+      const key = r.slug.toLowerCase();
+      const iso = d.toISOString();
+      const prev = out.get(key);
+      if (!prev || iso < prev) out.set(key, iso); // earliest wins if a slug repeats
+    }
+  }
+  return out;
+}
+
 // Search keywords
 export async function searchKeywords(query: string, limit: number = 6): Promise<Keyword[]> {
   const { data, error } = await supabase
