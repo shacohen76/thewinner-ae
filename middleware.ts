@@ -39,6 +39,7 @@ import createMiddleware from 'next-intl/middleware';
 import { GEO_COOKIE_NAME, GEO_COOKIE_MAX_AGE_SECONDS, resolveCatalogMarket } from '@/lib/geo-config';
 import { routing } from '@/i18n/routing';
 import { BR_PT_ENABLED } from '@/lib/feature-flags';
+import { bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';   // 2026-11-10 (BF 1)
 // 2026-10-22: the junk-DIRECT no-track decision (2026-10-05) moved OUT of the
 // middleware into /api/tag-assign, which reads every junk/bot rule from the one
 // Supabase table public.junk_traffic_rules (docs/JUNK_TRAFFIC_RULES.md). The
@@ -242,6 +243,10 @@ export function middleware(request: NextRequest) {
   if (bestMatch) {
     const locale = LOCALIZED_PREFIXES.includes(bestMatch[1]) ? bestMatch[1] : routing.defaultLocale;
     const slug = bestMatch[2];
+    // 2026-11-10 (BF 1): English Black Friday twin /best/<base>-black-friday-deals (flag on only).
+    // Indexable during the season; once BF_TWINS_NOINDEX_AFTER is reached the header below turns
+    // it noindex on EVERY request (the cached page's own robots meta follows at its next render).
+    const bfNoindex = !bestMatch[1] && !!bfTwinBaseSlug(slug, locale) && bfTwinsNoindex();
     // 2026-09-09 (Shopee preview): ?shopeetest=<cc> forces the catalog market so the
     // SEA-only Shopee CTA can be previewed from any IP (e.g. ...?shopeetest=sg). Only
     // requests that explicitly pass the param are affected; real traffic is untouched.
@@ -252,6 +257,7 @@ export function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/${locale}/best/${market}/${slug}`;
     const response = NextResponse.rewrite(url);
+    if (bfNoindex) response.headers.set('X-Robots-Tag', 'noindex, follow');   // BF 1
 
     // GEOS1 geo cookie — same policy as the normal flow below.
     const geos1Enabled = process.env.GEOS1_ENABLED === 'true';

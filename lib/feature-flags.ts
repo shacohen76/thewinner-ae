@@ -17,3 +17,11 @@ export const BR_PT_ENABLED = process.env.NEXT_PUBLIC_BR_PT_ENABLED === '1';
 // enable, e.g. "pl" or "pl,es" (parsed + validated in lib/native-locales.ts). Unset (default) →
 // no EU locale anywhere; the site is byte-identical to before.
 export const EU_NATIVE_LOCALES_RAW = process.env.NEXT_PUBLIC_EU_NATIVE_LOCALES || '';
+
+// BF_TWINS_ENABLED (2026-11-10, BF 1) — English /best/<slug>-black-friday-deals twins for the
+// Black Friday GAds campaigns (lib/bf-twin.ts). Unset (default) → no twin route anywhere; the
+// site is byte-identical to before. Plan: AMZ_AFF/Docs_MD/BF_PAGES_PLAN_v0_1_2026_11_10.md
+// Also ON in Vercel PREVIEW deployments (never production), so a PR preview can be checked
+// as Googlebot/AdsBot without any Vercel env change. Twins are noindex either way.
+const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || '';
+export const BF_TWINS_ENABLED = process.env.NEXT_PUBLIC_BF_TWINS === '1' || VERCEL_ENV === 'preview';

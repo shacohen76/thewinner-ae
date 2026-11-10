@@ -52,6 +52,16 @@ import LocaleLinks from '@/components/LocaleLinks';         // 2026-09-29: cross
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
 import { getShopeeForPage } from '@/lib/shopee';
+import { bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';   // 2026-11-10 (BF 1): Black Friday twins
+import {
+  generateBfHeadline,
+  generateBfSubHeadline,
+  generateBfPageTitle,
+  generateBfPageDescription,
+  generateBfStrip,
+  generateBfIntro,
+  generateBfCardBadge,
+} from '@/lib/title-bf';
 
 // ============================================
 // Keyword Page — /best/[slug] (internal route /[locale]/best/[market]/[slug])
@@ -147,12 +157,39 @@ async function readProducts(keywordId: number, locale: string, market: string) {
   return getProductsForKeyword(keywordId, locale, market, { nativeOnly: !!getEuNativeLocale(locale) });
 }
 
+// 2026-11-10 (BF 1): resolve the page's keyword. A real row for the requested slug always wins;
+// only when there is none, an English /best/<base>-black-friday-deals request (flag on) resolves
+// to its BASE keyword → bfBase = the base slug (else null). No DB row exists for a twin.
+async function getKeywordOrBfTwin(slug: string, locale: string) {
+  const keyword = await getKeywordBySlug(slug);
+  if (keyword) return { keyword, bfBase: null };
+  const base = bfTwinBaseSlug(slug, locale);
+  const baseKeyword = base ? await getKeywordBySlug(base) : null;
+  return { keyword: baseKeyword, bfBase: baseKeyword ? base : null };
+}
+
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const keyword = await getKeywordBySlug(decodeURIComponent(params.slug));
+  const { keyword, bfBase } = await getKeywordOrBfTwin(decodeURIComponent(params.slug), params.locale);
 
   if (!keyword) {
     return { title: 'Not Found' };
+  }
+
+  // BF 1 (owner 2026-11-10): a Black Friday twin is INDEXABLE on its own URL — index,follow,
+  // SELF-canonical, no hreflang cluster (English only), allowlist not consulted; it is kept out of
+  // every sitemap simply because it has no DB row. BF_TWINS_NOINDEX_AFTER flips it to noindex.
+  if (bfBase) {
+    const twinUrl = `${CONFIG.canonicalUrl}/best/${decodeURIComponent(params.slug).toLowerCase()}`;
+    const title = generateBfPageTitle(keyword.keyword_text, getCurrentYear());
+    const description = generateBfPageDescription(keyword.keyword_text, getCurrentYear());
+    return {
+      title: { absolute: title },
+      description,
+      alternates: { canonical: twinUrl },
+      robots: { index: !bfTwinsNoindex(), follow: true },
+      openGraph: { title, description, url: twinUrl },
+    };
   }
 
   // BR 1 (2026-09-26): /pt is its own single-language page (BR catalog, no English
@@ -327,11 +364,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductComparisonPage({ params }: PageProps) {
   const slug = decodeURIComponent(params.slug).toLowerCase();
-  const keyword = await getKeywordBySlug(slug);
+  const { keyword, bfBase } = await getKeywordOrBfTwin(slug, params.locale);
 
   if (!keyword) {
     notFound();
   }
+
+  // BF 1 (2026-11-10): a Black Friday twin renders its BASE page's data — same products cache
+  // entry (key + tags, so every refresh signal of the base also refreshes the twin), base links,
+  // byline and related pages. Only the BF texts differ (headline/title/meta, strip, intro, card
+  // chip — lib/title-bf.ts). dataSlug === slug otherwise.
+  const isBf = !!bfBase;
+  const dataSlug = bfBase ?? slug;
 
   // BR 1 (2026-09-26): /pt without a Portuguese noun → never English on /pt, never
   // 404 (owner) → temporary redirect to the same slug's English page.
@@ -398,13 +442,13 @@ export default async function ProductComparisonPage({ params }: PageProps) {
     // the shared slug tag (unscoped purge, unchanged behaviour) + a per-copy tag, so
     // /api/revalidate can refresh ONE language/market without marking every copy.
     // Key bumped 'catalog' → 'catalog-v2' so all entries are re-created with both tags.
-    ['catalog-v2', slug, params.market, params.locale],
-    { tags: [catalogTag(slug), catalogCopyTag(slug, params.market, params.locale)], revalidate: 604800 },
+    ['catalog-v2', dataSlug, params.market, params.locale],
+    { tags: [catalogTag(dataSlug), catalogCopyTag(dataSlug, params.market, params.locale)], revalidate: 604800 },
   )();
 
   // English keyword for the searchFallback query (slugs are always English).
   // BR 1: on /pt the search query is the Portuguese noun (amazon.com.br is searched in pt).
-  const keywordEn = singleLang ? translation!.keyword_text!.trim() : slug.replace(/-/g, ' ').trim();
+  const keywordEn = singleLang ? translation!.keyword_text!.trim() : dataSlug.replace(/-/g, ' ').trim();
 
   // 2026-08-24 GUARD (post organic-collapse incident, 2026-08-21): never bake an EMPTY
   // English /best page into the 7-day ISR cache. getProductsForKeyword already
@@ -489,7 +533,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const headingName = noun ?? toTitleCase(keyword.keyword_text);
   let mainHeadline: string;
   let subHeadline: string;
-  if (noun && isPt) {
+  if (isBf) {
+    mainHeadline = generateBfHeadline(keyword.keyword_text, currentYear);   // BF 1 (English only)
+    subHeadline = generateBfSubHeadline(keyword.keyword_text, currentYear);
+  } else if (noun && isPt) {
     mainHeadline = generatePortugueseHeadline(noun, currentYear);   // BR 1
     subHeadline = generatePortugueseSubHeadline(noun);
   } else if (noun && eu) {
@@ -523,7 +570,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // 2026-09-09 (Shopee test): SEA visitors (market==='sg') get a Shopee CTA in
   // parallel to Amazon. Fails closed → {} when no active link / non-SEA, so this
   // never affects any other geo or the Amazon path.
-  const shopee = await getShopeeForPage(slug, params.market);
+  const shopee = await getShopeeForPage(dataSlug, params.market);
 
   return (
     // 2026-08-26 (feat/per-geo-static-best): the product SET is now chosen server-side
@@ -547,11 +594,21 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       </section>
 
       {/* Author byline + freshness (E-E-A-T, 2026-09-05) */}
-      <BestAuthorByline slug={slug} byLabel={bylineBy} role={bylineRole} updatedText={bylineUpdated} />
+      <BestAuthorByline slug={dataSlug} byLabel={bylineBy} role={bylineRole} updatedText={bylineUpdated} />
 
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
         {/* Shopee CTA now renders per-card (under each Amazon button), SEA only. */}
+        {/* BF 1: Black Friday strip + intro line — twins only (base pages render nothing here). */}
+        {isBf && (
+          <div className="mb-6">
+            <div className="bg-gray-900 text-white rounded-xl px-5 py-4 mb-4">
+              <p className="font-bold text-lg">🛍️ {generateBfStrip(currentYear).title}</p>
+              <p className="text-gray-200 text-sm mt-1">{generateBfStrip(currentYear).body}</p>
+            </div>
+            <p className="text-gray-700 leading-relaxed">{generateBfIntro(keyword.keyword_text)}</p>
+          </div>
+        )}
         {isPt && productsForList.length === 0 ? (
           // BR 1: noun but no BR products yet → Portuguese empty state with an
           // amazon.com.br search (pt noun, program default tag). Never the AE fallback.
@@ -581,7 +638,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             </a>
           </div>
         ) : (
-          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} />
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} bfBadge={isBf ? generateBfCardBadge(currentYear) : undefined} />
         )}
       </main>
 
@@ -732,9 +789,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       {/* BR 1: RelatedPages is English-only (lib/related-pages). 2026-09-29: /pt gets its own
           pt-only nav (complete /pt pages, Portuguese anchors) — see lib/related-pages-pt.ts. */}
       {/* EU NATIVE 1: no native related-pages block yet (RelatedPages is English-only) → none. */}
-      {isPt ? <RelatedPagesPt currentSlug={slug} /> : eu ? null : <RelatedPages currentSlug={slug} />}
+      {/* BF 1: twins use the base slug → links/seed identical to the base page (links to base pages). */}
+      {isPt ? <RelatedPagesPt currentSlug={slug} /> : eu ? null : <RelatedPages currentSlug={dataSlug} />}
       {/* 2026-09-29: 3 links per OTHER language (native anchors) — connects en/ja/ar/pt. */}
-      <LocaleLinks locale={params.locale} seedKey={slug} />
+      <LocaleLinks locale={params.locale} seedKey={dataSlug} />
     </>
   );
 }
