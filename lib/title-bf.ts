@@ -1,8 +1,7 @@
 // ============================================
-// Black Friday twin pages — ALL headline/title/meta templates live HERE (one place)
+// Black Friday twin pages — ALL BF texts live HERE (one place)
 // ============================================
-// Created: 2026-11-10 (BF 1). Option A of BF_PAGES_PLAN_v0_1 §d (owner decision D1 pending —
-// a different option is an edit of these four strings only).
+// Created: 2026-11-10 (BF 1). Headline = option A (owner D1). Extra BF copy = owner Q4.
 // Rules: never mention the store or any store-branded sale event; brands stay Latin (keyword_text
 // as stored); no %-off / price claims — the page shows no prices, so the copy only points to the
 // current price at the store.
@@ -23,5 +22,23 @@ export function generateBfPageTitle(keyword: string, year: number): string {
 }
 
 export function generateBfPageDescription(keyword: string, year: number): string {
-  return `Our top 10 ${toTitleCase(keyword)} picks for Black Friday ${year}, compared side by side. Check each pick's current Black Friday price at the store before you buy.`;
+  return `Black Friday ${year}: our top 10 ${toTitleCase(keyword)}, compared side by side with honest pros and a quick buying guide. Check each pick's current Black Friday price at the store before you buy.`;
+}
+
+/** Strip above the product list (title line + body). */
+export function generateBfStrip(year: number): { title: string; body: string } {
+  return {
+    title: `Black Friday & Cyber Monday ${year}`,
+    body: 'Deals change fast during Black Friday week — check the current price of each pick at the store before you buy.',
+  };
+}
+
+/** Intro line under the strip. */
+export function generateBfIntro(keyword: string): string {
+  return `Shopping for ${toTitleCase(keyword)} this Black Friday? We compared the most popular options and ranked our top 10, so you can shop the season with confidence.`;
+}
+
+/** Chip on every product card. */
+export function generateBfCardBadge(year: number): string {
+  return `BLACK FRIDAY PICK ${year}`;
 }

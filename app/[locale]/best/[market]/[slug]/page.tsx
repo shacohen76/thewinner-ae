@@ -52,12 +52,15 @@ import LocaleLinks from '@/components/LocaleLinks';         // 2026-09-29: cross
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
 import { getShopeeForPage } from '@/lib/shopee';
-import { bfTwinBaseSlug } from '@/lib/bf-twin';   // 2026-11-10 (BF 1): Black Friday twins
+import { bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';   // 2026-11-10 (BF 1): Black Friday twins
 import {
   generateBfHeadline,
   generateBfSubHeadline,
   generateBfPageTitle,
   generateBfPageDescription,
+  generateBfStrip,
+  generateBfIntro,
+  generateBfCardBadge,
 } from '@/lib/title-bf';
 
 // ============================================
@@ -173,18 +176,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Not Found' };
   }
 
-  // BF 1: a Black Friday twin is NEVER indexable (noindex,follow, canonical → the base page, no
-  // hreflang cluster), whatever the allowlist says. Title/description from lib/title-bf.ts.
+  // BF 1 (owner 2026-11-10): a Black Friday twin is INDEXABLE on its own URL — index,follow,
+  // SELF-canonical, no hreflang cluster (English only), allowlist not consulted; it is kept out of
+  // every sitemap simply because it has no DB row. BF_TWINS_NOINDEX_AFTER flips it to noindex.
   if (bfBase) {
-    const baseUrl = `${CONFIG.canonicalUrl}/best/${bfBase}`;
+    const twinUrl = `${CONFIG.canonicalUrl}/best/${decodeURIComponent(params.slug).toLowerCase()}`;
     const title = generateBfPageTitle(keyword.keyword_text, getCurrentYear());
     const description = generateBfPageDescription(keyword.keyword_text, getCurrentYear());
     return {
       title: { absolute: title },
       description,
-      alternates: { canonical: baseUrl },
-      robots: { index: false, follow: true },
-      openGraph: { title, description, url: baseUrl },
+      alternates: { canonical: twinUrl },
+      robots: { index: !bfTwinsNoindex(), follow: true },
+      openGraph: { title, description, url: twinUrl },
     };
   }
 
@@ -368,7 +372,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
 
   // BF 1 (2026-11-10): a Black Friday twin renders its BASE page's data — same products cache
   // entry (key + tags, so every refresh signal of the base also refreshes the twin), base links,
-  // byline and related pages. Only the headline/title/meta differ. dataSlug === slug otherwise.
+  // byline and related pages. Only the BF texts differ (headline/title/meta, strip, intro, card
+  // chip — lib/title-bf.ts). dataSlug === slug otherwise.
   const isBf = !!bfBase;
   const dataSlug = bfBase ?? slug;
 
@@ -560,8 +565,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   const bylineUpdated = tBest('updated', { date: updatedDate });
 
   // 2026-09-05: canonical (market-less) URL for this page, used in BreadcrumbList.
-  // BF 1: a twin's breadcrumb points to its base page (the twin's canonical).
-  const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${bfBase ?? params.slug}`;
+  const pageUrl = `${CONFIG.canonicalUrl}${params.locale === 'en' ? '' : '/' + params.locale}/best/${params.slug}`;
 
   // 2026-09-09 (Shopee test): SEA visitors (market==='sg') get a Shopee CTA in
   // parallel to Amazon. Fails closed → {} when no active link / non-SEA, so this
@@ -595,6 +599,16 @@ export default async function ProductComparisonPage({ params }: PageProps) {
       {/* Products Section */}
       <main className="max-w-5xl mx-auto px-4 py-8">
         {/* Shopee CTA now renders per-card (under each Amazon button), SEA only. */}
+        {/* BF 1: Black Friday strip + intro line — twins only (base pages render nothing here). */}
+        {isBf && (
+          <div className="mb-6">
+            <div className="bg-gray-900 text-white rounded-xl px-5 py-4 mb-4">
+              <p className="font-bold text-lg">🛍️ {generateBfStrip(currentYear).title}</p>
+              <p className="text-gray-200 text-sm mt-1">{generateBfStrip(currentYear).body}</p>
+            </div>
+            <p className="text-gray-700 leading-relaxed">{generateBfIntro(keyword.keyword_text)}</p>
+          </div>
+        )}
         {isPt && productsForList.length === 0 ? (
           // BR 1: noun but no BR products yet → Portuguese empty state with an
           // amazon.com.br search (pt noun, program default tag). Never the AE fallback.
@@ -624,7 +638,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             </a>
           </div>
         ) : (
-          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} />
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} bfBadge={isBf ? generateBfCardBadge(currentYear) : undefined} />
         )}
       </main>
 

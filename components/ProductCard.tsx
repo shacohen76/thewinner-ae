@@ -59,6 +59,7 @@ interface ProductCardProps {
   // (per-product) or the page's hero fallback; pageSlug is for click logging.
   shopeeLink?: { short_link: string; shopee_offer_id: string | null } | null;
   pageSlug?: string;
+  bfBadge?: string;   // 2026-11-10 (BF 1): Black Friday twin chip; undefined on every other page
 }
 
 // Title splitting (headline + "Show more" tail) now lives in the locale-aware
@@ -227,6 +228,7 @@ export default function ProductCard({
   pinMarket,
   shopeeLink,
   pageSlug = '',
+  bfBadge,
 }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
   const locale = useLocale();
@@ -413,6 +415,11 @@ export default function ProductCard({
                 every other card shows a neutral "great everyday price" badge so the deal
                 signal stays credible instead of screaming on all 10 cards. */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
+              {bfBadge && (
+                <span className="bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded">
+                  {bfBadge}
+                </span>
+              )}
               {showDeal ? (
                 <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded">
                   {t('discounted')}
