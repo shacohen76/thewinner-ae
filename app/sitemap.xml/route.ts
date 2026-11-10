@@ -7,9 +7,8 @@ export const revalidate = 3600; // regenerate at most hourly
 
 export async function GET() {
   const base = CONFIG.siteUrl;
-  const lastmod = new Date().toISOString();
   const ids = await chunkIds();
-  const xml = sitemapIndexXml(ids.map((id) => `${base}/sitemap/${id}.xml`), lastmod);
+  const xml = sitemapIndexXml(ids.map((id) => `${base}/sitemap/${id}.xml`));
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',

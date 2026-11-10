@@ -13,7 +13,7 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { getIndexAllowlist } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
@@ -26,6 +26,10 @@ export interface SitemapEntry {
   url: string;
   changefreq: string;
   priority: number;
+  // ISO 8601 last-modified = the page's creation date (keywords.created_at). OPTIONAL:
+  // omitted for code-defined pages (home/category/blog) and for any slug whose date we
+  // can't read. We never stamp "now" — see getSlugCreatedAt + the 2026-11-10 fix.
+  lastmod?: string;
 }
 
 // Number of English /best chunks (>=1). Errors default to 1 so the index still renders.
@@ -57,9 +61,11 @@ export async function chunkIds(): Promise<string[]> {
 export async function euNativeIndexableEntries(locale: string): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await getTranslatedSlugs(locale);
-    return Array.from(slugs).map((slug) => ({
+    const slugs = Array.from(await getTranslatedSlugs(locale));
+    const dates = await getSlugCreatedAt(slugs);
+    return slugs.map((slug) => ({
       url: `${base}/${locale}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+      lastmod: dates.get(slug.toLowerCase()),
     }));
   } catch (error) {
     console.error(`sitemap euNativeIndexableEntries(${locale}) failed:`, error);
@@ -75,9 +81,11 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
 export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await getTranslatedSlugs('pt');
-    return Array.from(slugs).map((slug) => ({
+    const slugs = Array.from(await getTranslatedSlugs('pt'));
+    const dates = await getSlugCreatedAt(slugs);
+    return slugs.map((slug) => ({
       url: `${base}/pt/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+      lastmod: dates.get(slug.toLowerCase()),
     }));
   } catch (error) {
     console.error('sitemap ptIndexableEntries failed:', error);
@@ -150,8 +158,11 @@ export async function allowlistEntries(locale: 'en' | 'ar' | 'ja'): Promise<Site
   const out: SitemapEntry[] = [];
   try {
     const allow = await getIndexAllowlist();
-    for (const slug of Array.from(allow[locale])) {
-      out.push({ url: `${base}${prefix}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9 });
+    const slugs = Array.from(allow[locale]);
+    const dates = await getSlugCreatedAt(slugs);
+    for (const slug of slugs) {
+      out.push({ url: `${base}${prefix}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+        lastmod: dates.get(slug.toLowerCase()) });
     }
   } catch (error) {
     console.error(`sitemap allowlistEntries(${locale}) failed:`, error);
@@ -181,14 +192,22 @@ export async function bestChunkEntries(index: number): Promise<SitemapEntry[]> {
 
 const xmlEscape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
-export function urlsetXml(entries: SitemapEntry[], lastmod: string): string {
+// 2026-11-10 (sitemap-lastmod fix): <lastmod> is now PER-ENTRY (the page's creation date)
+// and OMITTED when absent. We no longer pass a single regen timestamp applied to every url
+// (that falsely told crawlers all ~11K pages changed on every hourly regen/deploy).
+export function urlsetXml(entries: SitemapEntry[]): string {
   const body = entries
-    .map((e) => `  <url><loc>${xmlEscape(e.url)}</loc><lastmod>${lastmod}</lastmod><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`)
+    .map((e) => {
+      const lm = e.lastmod ? `<lastmod>${xmlEscape(e.lastmod)}</lastmod>` : '';
+      return `  <url><loc>${xmlEscape(e.url)}</loc>${lm}<changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`;
+    })
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>`;
 }
 
-export function sitemapIndexXml(locs: string[], lastmod: string): string {
-  const body = locs.map((l) => `  <sitemap><loc>${xmlEscape(l)}</loc><lastmod>${lastmod}</lastmod></sitemap>`).join('\n');
+// No <lastmod> on the index entries: a child sitemap's "changed" time is not a real signal
+// here (the set changes only when the allowlist does), and stamping it "now" was the churn.
+export function sitemapIndexXml(locs: string[]): string {
+  const body = locs.map((l) => `  <sitemap><loc>${xmlEscape(l)}</loc></sitemap>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>`;
 }
