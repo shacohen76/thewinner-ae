@@ -1,0 +1,231 @@
+{
+  "Nav": {
+    "siteTagline": "Productvergelijkingen",
+    "categories": "Categorieën",
+    "about": "Over ons",
+    "contact": "Contact",
+    "blog": "Blog",
+    "home": "Home"
+  },
+  "Categories": {
+    "appliances-main": "Huishoudelijke apparaten",
+    "kitchen-main": "Keuken en koffie",
+    "computers-main": "Computers en smartphones",
+    "entertainment-main": "Tv en audio",
+    "care-main": "Beauty, verzorging en gezin",
+    "hobbies-main": "Vrije tijd en hobby",
+    "home-main": "Huis en tuin",
+    "fashion-main": "Mode en accessoires",
+    "other-main": "Meer"
+  },
+  "Footer": {
+    "categories": "Categorieën",
+    "popular": "Populair",
+    "info": "Informatie",
+    "tagline": "Website voor productvergelijkingen. We helpen je het perfecte product te vinden.",
+    "popularItems": {
+      "portable-speakers": "Draagbare speakers",
+      "coffee-machines": "Koffiemachines",
+      "washing-machines": "Wasmachines",
+      "televisions": "Televisies"
+    },
+    "about": "Over ons",
+    "blog": "Blog",
+    "contact": "Contact",
+    "privacy": "Privacybeleid",
+    "terms": "Gebruiksvoorwaarden",
+    "disclosure": "Transparantie: we werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Als Amazon Partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop.",
+    "copyright": "© {year} {siteName} — {tagline}. Alle rechten voorbehouden.",
+    "trademark": "Amazon en het Amazon-logo zijn handelsmerken van Amazon.com, Inc. of haar dochterondernemingen."
+  },
+  "ProductCard": {
+    "topPick": "Onze topkeuze",
+    "discounted": "VANDAAG IN DE AANBIEDING",
+    "regularPrice": "ALTIJD EEN SCHERPE PRIJS",
+    "consNote": "Niet in alle programma's beschikbaar",
+    "whyWeLoveIt": "Waarom we er dol op zijn",
+    "details": "De details:",
+    "showMore": "Meer tonen",
+    "showLess": "Minder tonen",
+    "showOffer": "Bekijk aanbieding",
+    "interested": "🔥 {count} geïnteresseerden",
+    "defaultWwl": "Aanbevolen product in deze categorie",
+    "scoreLabels": {
+      "exceptional": "Uitzonderlijk",
+      "excellent": "Uitstekend",
+      "veryGood": "Zeer goed",
+      "good": "Goed"
+    }
+  },
+  "Cookie": {
+    "consent": "We gebruiken cookies om te begrijpen hoe onze website wordt gebruikt en om onze marketing te meten. Kies hieronder je voorkeur; je kunt die later altijd wijzigen via de footer.",
+    "privacyPolicy": "Privacybeleid",
+    "rejectAll": "Alles weigeren",
+    "acceptAll": "Alles accepteren",
+    "settings": "Cookie-instellingen"
+  },
+  "ProductList": {
+    "sort": "Sorteren:",
+    "recommended": "Aanbevolen",
+    "lowestPrice": "Laagste prijs",
+    "emptyTitle": "Nog geen producten",
+    "emptyBody": "We voegen producten toe aan deze categorie"
+  },
+  "Share": {
+    "button": "Delen",
+    "label": "Deze pagina delen",
+    "copied": "✓ Link gekopieerd!",
+    "copiedHint": "Plak hem in WhatsApp en deel hem met familie en vrienden"
+  },
+  "BestPage": {
+    "quickPick": "Snelle keuze",
+    "buyingGuide": "Koopgids: {keyword}",
+    "tableOfContents": "Inhoud",
+    "backToTop": "↑ Terug naar de top 10: {keyword}",
+    "by": "Door",
+    "updated": "Bijgewerkt in {date}",
+    "morePicks": "Meer aanraders",
+    "howWeChoseTitle": "Zo kiezen we",
+    "howWeChoseBody": "Onze redacteuren zijn mensen die het echt leuk vinden om producten uit te proberen en erover te schrijven. We vergelijken het praktische gebruik en de sterke punten van elk product en vatten het belangrijkste samen in onze eigen punten ‘Waarom we er dol op zijn’ – zodat je in één oogopslag eerlijk ziet wat telt voordat je koopt.",
+    "reviewerRole": "Productrecensent",
+    "consNote": "Niet in alle programma's beschikbaar"
+  },
+  "CategoryDesc": {
+    "appliances-main": "Huishoudelijke apparaten: koelkasten, wasmachines, stofzuigers, airco's en meer.",
+    "kitchen-main": "Alles voor de keuken: keukenapparaten, koffiemachines, waterkokers en meer.",
+    "computers-main": "Laptops, smartphones, tablets, monitoren, printers en accessoires.",
+    "entertainment-main": "Televisies, speakers, koptelefoons en audioapparatuur.",
+    "care-main": "Parfums, make-up, haarverzorging, huidverzorging en babyproducten.",
+    "hobbies-main": "Games, speelgoed, sport, camera's en muziekinstrumenten.",
+    "home-main": "Meubels, badkamer, verlichting, slim wonen, tuin en elektrisch gereedschap.",
+    "fashion-main": "Tassen, rugzakken, portemonnees, sieraden, mutsen, sjaals, handschoenen, zonnebrillen en riemen.",
+    "other-main": "Auto en motor en meer."
+  },
+  "Subcategories": {
+    "large-appliances": "Grote huishoudelijke apparaten",
+    "vacuum-cleaners": "Stofzuigers",
+    "laundry": "Wassen en drogen",
+    "climate-control": "Klimaatbeheersing",
+    "kitchen-appliances": "Kleine keukenapparaten",
+    "coffee-tea": "Koffie en thee",
+    "laptops": "Laptops",
+    "desktops": "Desktopcomputers",
+    "phones-accessories": "Smartphones en accessoires",
+    "tablets": "Tablets",
+    "monitors": "Monitoren",
+    "printers": "Printers",
+    "computer-accessories": "Computeraccessoires",
+    "watches-wearables": "Horloges en wearables",
+    "tv-projectors": "Tv en projectoren",
+    "speakers-audio": "Speakers en audio",
+    "headphones-earbuds": "Koptelefoons en oordopjes",
+    "perfumes-fragrances": "Parfums en geuren",
+    "makeup": "Make-up",
+    "hair-care-styling": "Haarverzorging en styling",
+    "skincare": "Huidverzorging",
+    "personal-care": "Persoonlijke verzorging",
+    "baby-kids": "Baby en kind",
+    "gaming": "Gaming",
+    "toys": "Speelgoed",
+    "fitness-sports": "Fitness en sport",
+    "cameras-photography": "Camera's en fotografie",
+    "musical-instruments": "Muziekinstrumenten",
+    "furniture": "Meubels",
+    "bathroom": "Badkamer",
+    "lighting": "Verlichting",
+    "smart-home": "Slim wonen",
+    "garden-outdoor": "Tuin en buiten",
+    "power-tools": "Elektrisch gereedschap",
+    "automotive": "Auto en motor",
+    "bags-backpacks": "Tassen en rugzakken",
+    "wallets-small-leather-goods": "Portemonnees en kleine lederwaren",
+    "hats-scarves-gloves": "Mutsen, sjaals en handschoenen",
+    "sunglasses-eyewear-belts": "Brillen en riemen",
+    "jewelry": "Sieraden",
+    "other": "Overig"
+  },
+  "CategoryPage": {
+    "subcategoriesCount": "{count} subcategorieën",
+    "chooseSubcategory": "Kies een subcategorie",
+    "chooseSubcategoryHint": "Selecteer een categorie om productvergelijkingen te bekijken",
+    "viewCategory": "Bekijk categorie",
+    "moreCategories": "Meer categorieën",
+    "comparisonsCount": "{count} productvergelijkingen",
+    "subcatIntro": "Productvergelijkingen – {name}: vind het beste voor jou",
+    "comparisonsHere": "Vergelijkingen in deze categorie",
+    "comparisonsHereHint": "Kies een vergelijking om de 10 beste producten te bekijken",
+    "viewComparison": "Bekijk vergelijking",
+    "products10": "10 producten"
+  },
+  "Home": {
+    "heroTitle": "Vind het <hl>winnende</hl> product voor jou",
+    "heroSub": "Slimme en objectieve productvergelijkingen. Wij doen het onderzoek, jij kiest het beste.",
+    "popularSearchesLabel": "Populaire zoekopdrachten:",
+    "searches": {
+      "portable-speakers": "Draagbare speakers",
+      "my-perfume-perfume-100ml": "Parfums",
+      "roborock-vacuum-cleaners": "Roborock-stofzuigers",
+      "earbuds": "Draadloze oordopjes"
+    },
+    "browseByCategory": "Bladeren per categorie",
+    "browseByCategorySub": "Kies een categorie en vind de beste producten",
+    "popularComparisons": "Populaire vergelijkingen",
+    "popularComparisonsSub": "De vergelijkingen waar onze gebruikers het vaakst om vragen",
+    "comparisons": {
+      "portable-speakers": { "title": "De 10 beste draagbare speakers", "desc": "Een complete vergelijking van draagbare bluetoothspeakers voor elk budget" },
+      "coffee-machines": { "title": "De 10 beste koffiemachines", "desc": "Van capsulemachines tot professionele espressomachines voor thuis" },
+      "washing-machines": { "title": "De 10 beste wasmachines", "desc": "Aanbevolen wasmachines voor elk budget en elke behoefte" },
+      "televisions": { "title": "De 10 beste televisies", "desc": "4K, OLED, QLED: we vergelijken alle toonaangevende technologieën" },
+      "earbuds": { "title": "De 10 beste draadloze oordopjes", "desc": "Draadloze oordopjes voor muziek, bellen en een actieve levensstijl" },
+      "hair-straightener": { "title": "De 10 beste stijltangen", "desc": "Stijltangen van professionele kwaliteit voor salonresultaten thuis" }
+    },
+    "viewComparison": "Bekijk vergelijking",
+    "viewAllComparisons": "Alle vergelijkingen bekijken",
+    "whyChooseUs": "Waarom kiezen voor ons?",
+    "whyChooseUsSub": "Wij doen het zware werk voor je",
+    "features": {
+      "research": { "title": "Grondig onderzoek", "desc": "We bekijken en vergelijken honderden producten om in elke categorie het beste te vinden" },
+      "objective": { "title": "Volledig objectief", "desc": "Onze ranglijsten zijn gebaseerd op echte prestaties, niet op reclame of marketing" },
+      "savings": { "title": "Bespaar tijd en geld", "desc": "In plaats van urenlang te zoeken, krijg je binnen een paar minuten het antwoord – en de beste aanbieding" }
+    }
+  },
+  "About": {
+    "title": "Over {siteName}",
+    "subtitle": "Platform voor productvergelijkingen",
+    "missionTitle": "Onze missie",
+    "mission": "Bij ‘{siteName}’ vinden we dat elke consument betrouwbare en objectieve informatie verdient voordat hij iets koopt. Onze missie is je uren zoekwerk te besparen en je de conclusie te geven: welke producten in elke categorie het beste zijn.",
+    "howWeWorkTitle": "Zo werken we",
+    "work": {
+      "research": { "title": "Grondig onderzoek", "desc": "We bekijken honderden producten en analyseren technische specificaties, gebruikersreviews en verkoopcijfers" },
+      "objective": { "title": "Objectieve vergelijking", "desc": "Onze ranglijsten zijn gebaseerd op echte prestaties, niet op betalingen of reclame" },
+      "recommendations": { "title": "Heldere aanbevelingen", "desc": "We leggen eenvoudig uit waarom we elk product aanraden en voor wie het het meest geschikt is" }
+    },
+    "valuesTitle": "Onze waarden",
+    "values": {
+      "reliability": { "term": "Betrouwbaarheid", "desc": ": onze informatie is nauwkeurig en actueel. We raden geen producten aan die we zelf niet zouden kopen." },
+      "transparency": { "term": "Transparantie", "desc": ": we zijn duidelijk over hoe we geld verdienen. Als je via onze links koopt, kunnen we een commissie ontvangen." },
+      "consumerFirst": { "term": "De consument eerst", "desc": ": we beoordelen elke beslissing vanuit jouw standpunt, dat van de consument." }
+    },
+    "teamTitle": "Ons team",
+    "teamIntro": "Maak kennis met de experts achter onze aanbevelingen:",
+    "team": {
+      "alex": { "role": "Techexpert", "bio": "Gek op gadgets en games. Beoordeelt computers, smartphones en gaminguitrusting." },
+      "adham": { "role": "Expert huishoudelijke apparaten", "bio": "Gepassioneerd door koken en bakken. Beoordeelt keukenapparaten, koffiemachines en elektronica voor in huis." },
+      "mariam": { "role": "Audio-expert", "bio": "Muzikant en liefhebber van goed geluid. Beoordeelt speakers, koptelefoons en audioapparatuur." },
+      "fatima": { "role": "Expert beauty en wonen", "bio": "Houdt van interieur en beauty. Beoordeelt cosmetica, huidverzorging en woonaccessoires." },
+      "abdulla": { "role": "Expert sport en fitness", "bio": "Sporter en personal trainer. Beoordeelt smartwatches, fitnessapparatuur en sportelektronica." },
+      "sara": { "role": "Expert gezin en kinderen", "bio": "Moeder van drie kinderen. Beoordeelt babyproducten, speelgoed en onmisbare spullen voor het gezin." }
+    },
+    "disclosureTitle": "Transparantie",
+    "disclosure": "We werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Commissies hebben geen invloed op onze ranglijsten of aanbevelingen; die zijn uitsluitend gebaseerd op de kwaliteit van het product en hoe goed het bij jouw behoeften past. Als Amazon Partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop."
+  },
+  "Contact": {
+    "title": "Contact",
+    "subtitle": "We horen graag van je!",
+    "emailTitle": "📧 E-mail",
+    "emailIntro": "Voor vragen, suggesties of samenwerkingen kun je ons mailen:",
+    "suggestions": { "title": "💡 Suggesties", "desc": "Heb je een idee voor een nieuwe categorie of een product dat we zouden moeten toevoegen? Laat het ons weten!" },
+    "partnerships": { "title": "🤝 Samenwerkingen", "desc": "Interesse in een zakelijke samenwerking? Mail ons, we praten er graag over." },
+    "report": { "title": "🐛 Een probleem melden", "desc": "Heb je een fout op de website of onjuiste informatie gevonden? Laat het ons weten, dan lossen we het snel op." }
+  }
+}
