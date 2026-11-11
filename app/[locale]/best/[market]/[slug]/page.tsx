@@ -45,7 +45,7 @@ import { getProgramConfig, CATALOG_FALLBACK, type GeoProgram } from '@/lib/geo-c
 import { getEuNativeLocale, EU_NATIVE_LOCALES } from '@/lib/native-locales';   // 2026-11-08: EU NATIVE 1 (/pl, /es …)
 import { buildAlternates } from '@/lib/seo-alternates';
 import { catalogTag, catalogCopyTag } from '@/lib/cache-tags';
-import { getIndexAllowlist, isAllowlisted } from '@/lib/index-allowlist';
+import { getIndexAllowlist, isAllowlisted, type Allowlist, type Locale as AllowlistLocale } from '@/lib/index-allowlist';
 import RelatedPages from '@/components/RelatedPages';
 import RelatedPagesPt from '@/components/RelatedPagesPt';   // 2026-09-29: /pt internal links
 import LocaleLinks from '@/components/LocaleLinks';         // 2026-09-29: cross-language links
@@ -131,9 +131,13 @@ async function readTranslation(keywordId: number, locale: string) {
 
 // 2026-11-09 (EU NATIVE 1): the enabled EU native locales whose version of this keyword is
 // COMPLETE = native noun + native BYG + ≥1 product in the locale's first market (the index gate).
-async function euIndexedCodes(keywordId: number): Promise<string[]> {
+// 2026-11-11 (LOCALE SITE 1 · PR B): AND on its locale's index allowlist (lib/index-allowlist.ts —
+// es: open until seeded; pl/fr/it/de/sv/nl: nothing listed = noindex; read error = fail-open).
+// The same result drives the page's robots AND the hreflang cluster on every twin.
+async function euIndexedCodes(keywordId: number, allow: Allowlist, slugLc: string): Promise<string[]> {
   if (!EU_NATIVE_LOCALES.length) return [];
   const ok = await Promise.all(EU_NATIVE_LOCALES.map(async (l) => {
+    if (!isAllowlisted(allow, l.code as AllowlistLocale, slugLc)) return false;   // no DB reads when not listed
     const tr = await getKeywordTranslation(keywordId, l.code);
     return !!tr?.keyword_text?.trim() && hasBuyingGuide(tr?.qa_guide)
       && (await getKeywordMarketplaceCount(keywordId, l.markets[0])) >= 1;
@@ -205,7 +209,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const title = nounPt ? generatePortuguesePageTitle(nounPt, getCurrentYear()) : 'The Winners';
     const description = nounPt ? generatePortuguesePageDescription(nounPt) : '';
     const ptComplete = !!nounPt && hasBuyingGuide(ptTr?.qa_guide)
-      && (await getKeywordMarketplaceCount(keyword.id, 'br')) >= 1;
+      && (await getKeywordMarketplaceCount(keyword.id, 'br')) >= 1
+      // 2026-11-11 (LOCALE SITE 1 · PR B): + the pt index allowlist (open until seeded; read
+      // error = fail-open). Same gate as the 'indexable-pt' sitemap.
+      && isAllowlisted(await getIndexAllowlist(), 'pt', decodeURIComponent(params.slug).toLowerCase());
     return {
       title: { absolute: title },
       description,
@@ -256,7 +263,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // locale joins the reciprocal hreflang cluster when its page is COMPLETE (same gate as its
   // robots index + indexable-<code> sitemap). Flag off → [] with no DB read → output unchanged.
   // (no await at all when the flag is off → the render has the same async steps as before)
-  const euIndexed = EU_NATIVE_LOCALES.length ? await euIndexedCodes(keyword.id) : [];
+  const euIndexed = EU_NATIVE_LOCALES.length ? await euIndexedCodes(keyword.id, allow, slugLc) : [];
   const indexedLocales = [
     ...(arIndexed ? ['ar'] : []),
     ...(jaIndexed ? ['ja'] : []),

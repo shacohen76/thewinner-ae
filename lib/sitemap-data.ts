@@ -14,7 +14,7 @@
 // ============================================
 
 import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
-import { getIndexAllowlist } from '@/lib/index-allowlist';
+import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 import { BR_PT_ENABLED, BF_TWINS_ENABLED } from '@/lib/feature-flags';
@@ -75,13 +75,23 @@ export function bfTwinEntries(): SitemapEntry[] {
     .map((slug) => ({ url: `${base}/best/${encodeURIComponent(slug)}${BF_SUFFIX}`, changefreq: 'daily', priority: 0.8 }));
 }
 
+// 2026-11-11 (LOCALE SITE 1 · PR B): pt + EU sitemaps list only slugs their locale's index
+// allowlist lets index — the SAME rule as the page's robots gate (lib/index-allowlist.ts
+// allowlistRestriction: not seeded pt/es → no restriction; pl/fr/it/de/sv/nl with no rows → none;
+// read error → no restriction).
+async function allowlisted(locale: string, slugs: string[]): Promise<string[]> {
+  if (!isAllowlistLocale(locale)) return slugs;
+  const only = allowlistRestriction(await getIndexAllowlist(), locale);
+  return only === null ? slugs : slugs.filter((s) => only.has(s.toLowerCase()));
+}
+
 // 2026-11-08 (EU NATIVE 1, owner D-3 "copy PT"): every page with a native noun in an enabled EU
 // locale. Same shape as ptIndexableEntries; the page itself re-checks BYG + ≥1 product before it
 // emits index (a listed page that is not complete yet stays noindex until its text lands).
 export async function euNativeIndexableEntries(locale: string): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = Array.from(await getTranslatedSlugs(locale));
+    const slugs = await allowlisted(locale, Array.from(await getTranslatedSlugs(locale)));
     const dates = await getSlugCreatedAt(slugs);
     return slugs.map((slug) => ({
       url: `${base}/${locale}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
@@ -93,7 +103,7 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
   }
 }
 
-// 2026-09-27 (BR 1, owner): ALL complete /pt pages are indexed (no allowlist — intentional
+// 2026-09-27 (BR 1, owner): ALL complete /pt pages were indexed (2026-11-11: now ANDed with the pt allowlist, see allowlisted() above; was: no allowlist — intentional
 // exception, see the /best page). Listed = keywords with a pt noun + pt BYG. The BR text
 // publisher (br_publish_pt_text_v1.py) only writes pt text for keywords it also published
 // BR products for, so this set == complete pages; the page itself re-checks ≥1 BR product
@@ -101,7 +111,7 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
 export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = Array.from(await getTranslatedSlugs('pt'));
+    const slugs = await allowlisted('pt', Array.from(await getTranslatedSlugs('pt')));
     const dates = await getSlugCreatedAt(slugs);
     return slugs.map((slug) => ({
       url: `${base}/pt/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
