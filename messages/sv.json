@@ -1,0 +1,231 @@
+{
+  "Nav": {
+    "siteTagline": "Produktjämförelser",
+    "categories": "Kategorier",
+    "about": "Om oss",
+    "contact": "Kontakt",
+    "blog": "Blogg",
+    "home": "Hem"
+  },
+  "Categories": {
+    "appliances-main": "Vitvaror och hushållsapparater",
+    "kitchen-main": "Kök och kaffe",
+    "computers-main": "Datorer och mobiler",
+    "entertainment-main": "TV och ljud",
+    "care-main": "Skönhet, hälsa och familj",
+    "hobbies-main": "Fritid och hobby",
+    "home-main": "Hem och trädgård",
+    "fashion-main": "Mode och accessoarer",
+    "other-main": "Mer"
+  },
+  "Footer": {
+    "categories": "Kategorier",
+    "popular": "Populärt",
+    "info": "Information",
+    "tagline": "En sajt för produktjämförelser. Vi hjälper dig att hitta den perfekta produkten.",
+    "popularItems": {
+      "portable-speakers": "Bärbara högtalare",
+      "coffee-machines": "Kaffemaskiner",
+      "washing-machines": "Tvättmaskiner",
+      "televisions": "TV-apparater"
+    },
+    "about": "Om oss",
+    "blog": "Blogg",
+    "contact": "Kontakt",
+    "privacy": "Integritetspolicy",
+    "terms": "Användarvillkor",
+    "disclosure": "Information: vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Som Amazon-partner tjänar vi pengar på kvalificerade köp. Lojalitet och förtroende går alltid först.",
+    "copyright": "© {year} {siteName} — {tagline}. Alla rättigheter förbehållna.",
+    "trademark": "Amazon och Amazon-logotypen är varumärken som tillhör Amazon.com, Inc. eller dess dotterbolag."
+  },
+  "ProductCard": {
+    "topPick": "Vårt toppval",
+    "discounted": "NEDSATT IDAG",
+    "regularPrice": "ALLTID BRA PRIS",
+    "consNote": "Inte tillgänglig i alla program",
+    "whyWeLoveIt": "Därför älskar vi den",
+    "details": "Detaljerna:",
+    "showMore": "Visa mer",
+    "showLess": "Visa mindre",
+    "showOffer": "Se erbjudandet",
+    "interested": "🔥 {count} intresserade",
+    "defaultWwl": "Rekommenderad produkt i den här kategorin",
+    "scoreLabels": {
+      "exceptional": "Enastående",
+      "excellent": "Utmärkt",
+      "veryGood": "Mycket bra",
+      "good": "Bra"
+    }
+  },
+  "Cookie": {
+    "consent": "Vi använder cookies för att förstå hur vår webbplats används och för att mäta vår marknadsföring. Välj vad du föredrar nedan – du kan ändra det senare via sidfoten.",
+    "privacyPolicy": "Integritetspolicy",
+    "rejectAll": "Avvisa alla",
+    "acceptAll": "Godkänn alla",
+    "settings": "Cookie-inställningar"
+  },
+  "ProductList": {
+    "sort": "Sortera:",
+    "recommended": "Rekommenderade",
+    "lowestPrice": "Lägsta pris",
+    "emptyTitle": "Inga produkter än",
+    "emptyBody": "Vi lägger till produkter i den här kategorin"
+  },
+  "Share": {
+    "button": "Dela",
+    "label": "Dela den här sidan",
+    "copied": "✓ Länken har kopierats!",
+    "copiedHint": "Klistra in den i WhatsApp och dela med familj och vänner"
+  },
+  "BestPage": {
+    "quickPick": "Snabbval",
+    "buyingGuide": "Köpguide: {keyword}",
+    "tableOfContents": "Innehåll",
+    "backToTop": "↑ Tillbaka till topp 10: {keyword}",
+    "by": "Av",
+    "updated": "Uppdaterad {date}",
+    "morePicks": "Fler rekommendationer",
+    "howWeChoseTitle": "Så väljer vi",
+    "howWeChoseBody": "Våra redaktörer är människor som verkligen gillar att prova produkter och skriva om dem. Vi jämför hur varje produkt fungerar i praktiken och vilka styrkor den har, och sammanfattar det viktigaste i våra egna punkter ”Därför älskar vi den” – så att du snabbt och ärligt ser vad som spelar roll innan du köper.",
+    "reviewerRole": "Produktgranskare",
+    "consNote": "Inte tillgänglig i alla program"
+  },
+  "CategoryDesc": {
+    "appliances-main": "Vitvaror och hushållsapparater: kylskåp, tvättmaskiner, dammsugare, luftkonditionering och mer.",
+    "kitchen-main": "Allt för köket: köksapparater, kaffemaskiner, vattenkokare och mer.",
+    "computers-main": "Bärbara datorer, mobiler, surfplattor, skärmar, skrivare och tillbehör.",
+    "entertainment-main": "TV-apparater, högtalare, hörlurar och ljudutrustning.",
+    "care-main": "Parfymer, smink, hårvård, hudvård och babyprodukter.",
+    "hobbies-main": "Tv-spel, leksaker, sport, kameror och musikinstrument.",
+    "home-main": "Möbler, badrum, belysning, smarta hem, trädgård och elverktyg.",
+    "fashion-main": "Väskor, ryggsäckar, plånböcker, smycken, mössor, halsdukar, handskar, solglasögon och bälten.",
+    "other-main": "Fordon och mer."
+  },
+  "Subcategories": {
+    "large-appliances": "Vitvaror",
+    "vacuum-cleaners": "Dammsugare",
+    "laundry": "Tvätt",
+    "climate-control": "Klimat och värme",
+    "kitchen-appliances": "Små köksapparater",
+    "coffee-tea": "Kaffe och te",
+    "laptops": "Bärbara datorer",
+    "desktops": "Stationära datorer",
+    "phones-accessories": "Mobiler och tillbehör",
+    "tablets": "Surfplattor",
+    "monitors": "Skärmar",
+    "printers": "Skrivare",
+    "computer-accessories": "Datortillbehör",
+    "watches-wearables": "Klockor och wearables",
+    "tv-projectors": "TV och projektorer",
+    "speakers-audio": "Högtalare och ljud",
+    "headphones-earbuds": "Hörlurar",
+    "perfumes-fragrances": "Parfymer och dofter",
+    "makeup": "Smink",
+    "hair-care-styling": "Hårvård och styling",
+    "skincare": "Hudvård",
+    "personal-care": "Personlig vård",
+    "baby-kids": "Baby och barn",
+    "gaming": "Gaming",
+    "toys": "Leksaker",
+    "fitness-sports": "Träning och sport",
+    "cameras-photography": "Kameror och foto",
+    "musical-instruments": "Musikinstrument",
+    "furniture": "Möbler",
+    "bathroom": "Badrum",
+    "lighting": "Belysning",
+    "smart-home": "Smarta hem",
+    "garden-outdoor": "Trädgård och utomhus",
+    "power-tools": "Elverktyg",
+    "automotive": "Fordon",
+    "bags-backpacks": "Väskor och ryggsäckar",
+    "wallets-small-leather-goods": "Plånböcker och smålädervaror",
+    "hats-scarves-gloves": "Mössor, halsdukar och handskar",
+    "sunglasses-eyewear-belts": "Glasögon och bälten",
+    "jewelry": "Smycken",
+    "other": "Övrigt"
+  },
+  "CategoryPage": {
+    "subcategoriesCount": "{count} underkategorier",
+    "chooseSubcategory": "Välj en underkategori",
+    "chooseSubcategoryHint": "Välj en kategori för att se produktjämförelser",
+    "viewCategory": "Visa kategori",
+    "moreCategories": "Fler kategorier",
+    "comparisonsCount": "{count} produktjämförelser",
+    "subcatIntro": "Produktjämförelser – {name}: hitta den som passar dig bäst",
+    "comparisonsHere": "Jämförelser i den här kategorin",
+    "comparisonsHereHint": "Välj en jämförelse för att se de 10 bästa produkterna",
+    "viewComparison": "Visa jämförelse",
+    "products10": "10 produkter"
+  },
+  "Home": {
+    "heroTitle": "Hitta den <hl>vinnande</hl> produkten för dig",
+    "heroSub": "Smarta och objektiva produktjämförelser. Vi gör researchen, du väljer det bästa.",
+    "popularSearchesLabel": "Populära sökningar:",
+    "searches": {
+      "portable-speakers": "Bärbara högtalare",
+      "my-perfume-perfume-100ml": "Parfymer",
+      "roborock-vacuum-cleaners": "Roborock-dammsugare",
+      "earbuds": "Trådlösa hörlurar"
+    },
+    "browseByCategory": "Utforska efter kategori",
+    "browseByCategorySub": "Välj en kategori och hitta de bästa produkterna",
+    "popularComparisons": "Populära jämförelser",
+    "popularComparisonsSub": "De jämförelser som våra användare efterfrågar mest",
+    "comparisons": {
+      "portable-speakers": { "title": "De 10 bästa bärbara högtalarna", "desc": "En komplett jämförelse av bärbara Bluetooth-högtalare för alla budgetar" },
+      "coffee-machines": { "title": "De 10 bästa kaffemaskinerna", "desc": "Från kapselmaskiner till professionella espressomaskiner för hemmet" },
+      "washing-machines": { "title": "De 10 bästa tvättmaskinerna", "desc": "Rekommenderade tvättmaskiner för alla budgetar och behov" },
+      "televisions": { "title": "De 10 bästa TV-apparaterna", "desc": "4K, OLED, QLED: vi jämför alla ledande tekniker" },
+      "earbuds": { "title": "De 10 bästa trådlösa hörlurarna", "desc": "Trådlösa hörlurar för musik, samtal och en aktiv livsstil" },
+      "hair-straightener": { "title": "De 10 bästa plattångerna", "desc": "Plattänger i proffskvalitet för salongsresultat hemma" }
+    },
+    "viewComparison": "Visa jämförelse",
+    "viewAllComparisons": "Visa alla jämförelser",
+    "whyChooseUs": "Varför välja oss?",
+    "whyChooseUsSub": "Vi gör grovjobbet åt dig",
+    "features": {
+      "research": { "title": "Grundlig research", "desc": "Vi granskar och jämför hundratals produkter för att hitta det bästa i varje kategori" },
+      "objective": { "title": "Helt objektiva", "desc": "Våra rankningar bygger på verklig prestanda, inte på reklam eller marknadsföring" },
+      "savings": { "title": "Spara tid och pengar", "desc": "I stället för att lägga timmar på research får du svaret på några minuter – och det bästa erbjudandet" }
+    }
+  },
+  "About": {
+    "title": "Om {siteName}",
+    "subtitle": "En plattform för produktjämförelser",
+    "missionTitle": "Vårt uppdrag",
+    "mission": "På ”{siteName}” tror vi att varje konsument förtjänar pålitlig och objektiv information innan köpet. Vårt uppdrag är att spara dig timmar av letande och ge dig slutsatsen: vilka produkter som är bäst i varje kategori.",
+    "howWeWorkTitle": "Så arbetar vi",
+    "work": {
+      "research": { "title": "Grundlig research", "desc": "Vi granskar hundratals produkter och analyserar tekniska data, användaromdömen och försäljningsdata" },
+      "objective": { "title": "Objektiv jämförelse", "desc": "Våra rankningar bygger på verklig prestanda, inte på betalningar eller reklam" },
+      "recommendations": { "title": "Tydliga rekommendationer", "desc": "Vi förklarar enkelt varför vi rekommenderar varje produkt och för vem den passar bäst" }
+    },
+    "valuesTitle": "Våra värderingar",
+    "values": {
+      "reliability": { "term": "Pålitlighet", "desc": ": vår information är korrekt och uppdaterad. Vi rekommenderar inga produkter som vi inte själva skulle köpa." },
+      "transparency": { "term": "Öppenhet", "desc": ": vi är tydliga med hur vi tjänar pengar. När du handlar via våra länkar kan vi få provision." },
+      "consumerFirst": { "term": "Konsumenten först", "desc": ": vi bedömer varje beslut utifrån ditt perspektiv – konsumentens." }
+    },
+    "teamTitle": "Vårt team",
+    "teamIntro": "Möt experterna bakom våra rekommendationer:",
+    "team": {
+      "alex": { "role": "Teknikexpert", "bio": "Älskar prylar och tv-spel. Granskar datorer, mobiler och gamingutrustning." },
+      "adham": { "role": "Expert på hushållsapparater", "bio": "Brinner för matlagning och bakning. Granskar köksapparater, kaffemaskiner och hemelektronik." },
+      "mariam": { "role": "Ljudexpert", "bio": "Musiker med kärlek till bra ljud. Granskar högtalare, hörlurar och ljudutrustning." },
+      "fatima": { "role": "Expert på skönhet och hem", "bio": "Älskar inredning och skönhet. Granskar kosmetika, hudvård och accessoarer för hemmet." },
+      "abdulla": { "role": "Expert på sport och träning", "bio": "Idrottare och personlig tränare. Granskar smartklockor, träningsutrustning och sportelektronik." },
+      "sara": { "role": "Expert på familj och barn", "bio": "Mamma till tre barn. Granskar babyprodukter, leksaker och det viktigaste för familjen." }
+    },
+    "disclosureTitle": "Information",
+    "disclosure": "Vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Provisionerna påverkar inte våra rankningar eller rekommendationer, som enbart bygger på produktens kvalitet och hur väl den passar dina behov. Som Amazon-partner tjänar vi pengar på kvalificerade köp. Lojalitet och förtroende går alltid först."
+  },
+  "Contact": {
+    "title": "Kontakt",
+    "subtitle": "Vi vill gärna höra från dig!",
+    "emailTitle": "📧 E-post",
+    "emailIntro": "Frågor, förslag eller samarbeten? Skriv till oss:",
+    "suggestions": { "title": "💡 Förslag", "desc": "Har du en idé om en ny kategori eller en produkt som vi borde lägga till? Berätta för oss!" },
+    "partnerships": { "title": "🤝 Samarbeten", "desc": "Intresserad av ett affärssamarbete? Skriv till oss så pratar vi gärna om det." },
+    "report": { "title": "🐛 Rapportera ett problem", "desc": "Har du hittat ett fel på webbplatsen eller felaktig information? Hör av dig så rättar vi det direkt." }
+  }
+}

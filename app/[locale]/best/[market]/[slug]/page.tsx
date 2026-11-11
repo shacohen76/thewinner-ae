@@ -277,8 +277,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const euTr = await getKeywordTranslation(keyword.id, eu.code);
     const nounEu = euTr?.keyword_text?.trim() || null;
     const euUrl = `${CONFIG.canonicalUrl}/${eu.code}/best/${params.slug}`;
-    const title = nounEu ? eu.pageTitle(nounEu, getCurrentYear()) : 'The Winners';
-    const description = nounEu ? eu.description(nounEu) : '';
+    const title = nounEu ? eu.pageTitle(nounEu, getCurrentYear(), params.market) : 'The Winners';
+    const description = nounEu ? eu.description(nounEu, params.market) : '';   // 2026-11-11: /fr /nl name the rendered market (FR|BE, NL|BE)
     const euComplete = euIndexed.includes(eu.code);
     return {
       title: { absolute: title },

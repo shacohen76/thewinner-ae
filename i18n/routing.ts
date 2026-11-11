@@ -35,7 +35,7 @@ import { EU_NATIVE_CODES } from '../lib/native-locales';
 // 2026-11-08 (EU NATIVE 1): + the EU single-language locales listed in
 // NEXT_PUBLIC_EU_NATIVE_LOCALES (lib/native-locales.ts). Unset (default) → none appended.
 const BASE_LOCALES = ['en', 'ar', 'ja'] as const;
-type SiteLocale = (typeof BASE_LOCALES)[number] | 'pt' | 'pl' | 'es';
+type SiteLocale = (typeof BASE_LOCALES)[number] | 'pt' | 'pl' | 'es' | 'fr' | 'it' | 'de' | 'sv' | 'nl';
 const LOCALES: SiteLocale[] = [
   ...BASE_LOCALES,
   ...(BR_PT_ENABLED ? (['pt'] as const) : []),
