@@ -246,7 +246,7 @@ export function middleware(request: NextRequest) {
     // 2026-11-10 (BF 1): English Black Friday twin /best/<base>-black-friday-deals (flag on only).
     // Indexable during the season; once BF_TWINS_NOINDEX_AFTER is reached the header below turns
     // it noindex on EVERY request (the cached page's own robots meta follows at its next render).
-    const bfNoindex = !bestMatch[1] && !!bfTwinBaseSlug(slug, locale) && bfTwinsNoindex();
+    const bfNoindex = !!bfTwinBaseSlug(slug, locale) && bfTwinsNoindex();   // 2026-11-11: every BF locale
     // 2026-09-09 (Shopee preview): ?shopeetest=<cc> forces the catalog market so the
     // SEA-only Shopee CTA can be previewed from any IP (e.g. ...?shopeetest=sg). Only
     // requests that explicitly pass the param are affected; real traffic is untouched.
