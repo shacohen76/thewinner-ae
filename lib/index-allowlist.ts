@@ -55,14 +55,39 @@
 //     the SEO tool's add/weekly → revalidate flow indexes pages immediately.
 //     DB trigger `seo_index_allowlist_touch` bumps updated_at on every UPDATE (so even a
 //     manual SQL edit changes the version).
+//
+// ── 2026-11-11 (LOCALE SITE 1 · PR B, roadmap LOCALES_ROADMAP_v1_0 change C) ──
+// The gate now covers the single-language locales too: pt · es · pl · fr · it · de · sv · nl.
+// Before this, pt and es indexed EVERY complete page (no allowlist) — with ~47K pages per
+// locale coming, that is the Aug-21 index-bloat pattern. Two modes when a locale's set is EMPTY:
+//   • OPEN_IF_EMPTY (en · ar · ja · pt · es) — "not seeded" → do not restrict (as before). pt/es
+//     are live and indexing today, so a deploy that lands before their seed rows can never
+//     deindex them. Once a locale has ≥1 row it is gated like en/ar/ja (keep-best, grow weekly).
+//   • CLOSED_IF_EMPTY (pl · fr · it · de · sv · nl) — none of them indexes today. After a GOOD
+//     read, an empty set means "nothing approved yet" → noindex. This is what stops a new
+//     locale's complete pages from all indexing at once.
+// FAIL-OPEN is unchanged and applies to EVERY locale: a read error / missing env with no
+// previous good copy (`readOk: false`) → do not restrict. Never deindex on a DB blip.
+// Callers still AND this with their own complete-gate (noun + BYG + products).
 // ============================================================
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-export type Locale = 'en' | 'ar' | 'ja';
-export type Allowlist = Record<Locale, Set<string>>;
+export type Locale = 'en' | 'ar' | 'ja' | 'pt' | 'es' | 'pl' | 'fr' | 'it' | 'de' | 'sv' | 'nl';
+export const ALLOWLIST_LOCALES: readonly Locale[] = ['en', 'ar', 'ja', 'pt', 'es', 'pl', 'fr', 'it', 'de', 'sv', 'nl'];
+/** Locales whose EMPTY set (after a good read) means "nothing approved → noindex". */
+const CLOSED_IF_EMPTY: ReadonlySet<string> = new Set(['pl', 'fr', 'it', 'de', 'sv', 'nl']);
+/** readOk = the sets come from a complete, successful read (now or the last good copy).
+ *  false → the allowlist is unavailable and every caller fails open. */
+export type Allowlist = Record<Locale, Set<string>> & { readOk: boolean };
 
 type AllowlistArrays = Record<Locale, string[]>;
-const EMPTY_ARRAYS: AllowlistArrays = { en: [], ar: [], ja: [] };
+const emptyArrays = (): AllowlistArrays =>
+  Object.fromEntries(ALLOWLIST_LOCALES.map((l) => [l, [] as string[]])) as unknown as AllowlistArrays;
+const EMPTY_ARRAYS: AllowlistArrays = emptyArrays();
+
+export function isAllowlistLocale(locale: string): locale is Locale {
+  return (ALLOWLIST_LOCALES as readonly string[]).includes(locale);
+}
 
 const PAGE_SIZE = 1000;                    // PostgREST max rows per request
 const VERSION_DEDUPE_MS = 2_000;           // reuse a version check made this recently
@@ -112,7 +137,7 @@ async function readVersion(client: SupabaseClient): Promise<string | null> {
 
 // Full list, all-or-nothing: ANY page error → null (never a partial list).
 async function readAll(client: SupabaseClient): Promise<AllowlistArrays | null> {
-  const out: AllowlistArrays = { en: [], ar: [], ja: [] };
+  const out: AllowlistArrays = emptyArrays();
   try {
     for (let from = 0; ; from += PAGE_SIZE) {
       const { data, error } = await client
@@ -126,7 +151,7 @@ async function readAll(client: SupabaseClient): Promise<AllowlistArrays | null> 
       if (error || !data) return null;
       for (const r of data as { locale: string; slug: string }[]) {
         const s = r.slug?.toLowerCase();
-        if (s && (r.locale === 'en' || r.locale === 'ar' || r.locale === 'ja')) {
+        if (s && isAllowlistLocale(r.locale)) {
           out[r.locale].push(s);
         }
       }
@@ -162,18 +187,31 @@ async function getIndexAllowlistArrays(): Promise<AllowlistArrays> {
   return inflight;
 }
 
-// PUBLIC: Sets rebuilt per call from the memoized arrays (cheap: ~3×1K strings).
+// PUBLIC: Sets rebuilt per call from the memoized arrays (cheap: a few K strings).
+// readOk: the arrays are a complete good read (a memo is only ever stored from one); the
+// EMPTY_ARRAYS fallback (read failed / no env, no previous good copy) is the only not-ok case.
 export async function getIndexAllowlist(): Promise<Allowlist> {
   const a = await getIndexAllowlistArrays();
-  return { en: new Set(a.en), ar: new Set(a.ar), ja: new Set(a.ja) };
+  const sets = Object.fromEntries(ALLOWLIST_LOCALES.map((l) => [l, new Set(a[l])])) as Record<Locale, Set<string>>;
+  return { ...sets, readOk: a !== EMPTY_ARRAYS };
 }
 
-// True if this (locale, slug) may be indexed per the allowlist. FAIL-OPEN: an
-// empty set for the locale means "allowlist unavailable/not built" → do not
-// restrict (index as before). Callers still AND this with their own gates
-// (e.g. ar/ja noun+BYG), so an empty set never over-indexes untranslated pages.
-export function isAllowlisted(allow: Allowlist, locale: Locale, slug: string): boolean {
+// The set that restricts this locale, or null = "do not restrict".
+//   • read failed (readOk false)              → null (FAIL-OPEN, every locale)
+//   • set has rows                            → that set
+//   • empty + OPEN_IF_EMPTY (en ar ja pt es)  → null (not seeded → as before)
+//   • empty + CLOSED_IF_EMPTY (pl fr it de sv nl) → the empty set (nothing approved → noindex)
+export function allowlistRestriction(allow: Allowlist, locale: Locale): Set<string> | null {
   const set = allow[locale];
-  if (!set || set.size === 0) return true; // fail-open
-  return set.has(slug.toLowerCase());
+  if (!allow.readOk) return null;
+  if (set && set.size > 0) return set;
+  return CLOSED_IF_EMPTY.has(locale) ? (set ?? new Set<string>()) : null;
+}
+
+// True if this (locale, slug) may be indexed per the allowlist (see allowlistRestriction).
+// Callers still AND this with their own gates (noun + BYG + products), so "not restricted"
+// never over-indexes untranslated pages.
+export function isAllowlisted(allow: Allowlist, locale: Locale, slug: string): boolean {
+  const set = allowlistRestriction(allow, locale);
+  return set === null || set.has(slug.toLowerCase());
 }
