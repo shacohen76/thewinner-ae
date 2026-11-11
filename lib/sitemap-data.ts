@@ -63,13 +63,16 @@ export async function chunkIds(): Promise<string[]> {
 // base slugs whose base page passed a production Googlebot check, 2026-11-11) — never the full
 // keyword set (Aug-21 index-bloat lesson). Empty when the flag is off or BF_TWINS_NOINDEX_AFTER
 // is reached, so the sitemap stops listing twins the moment they turn noindex.
+// 2026-11-11 (6.8): listed ONLY on the canonical host (thewinner.ae), with absolute canonical URLs —
+// on the other host (thewinners.ae, whose pages canonicalize to thewinner.ae) the chunk is omitted.
 export function bfSitemapLive(): boolean {
-  return BF_TWINS_ENABLED && !bfTwinsNoindex();
+  const onCanonicalHost = new URL(CONFIG.siteUrl).host === new URL(CONFIG.canonicalUrl).host;
+  return BF_TWINS_ENABLED && !bfTwinsNoindex() && onCanonicalHost;
 }
 
 export function bfTwinEntries(): SitemapEntry[] {
   if (!bfSitemapLive()) return [];
-  const base = CONFIG.siteUrl;
+  const base = CONFIG.canonicalUrl;
   return (BF_SITEMAP_SLUGS as string[])
     .filter((slug) => bfTwinBaseSlug(slug + BF_SUFFIX, 'en') === slug)   // same guard as the route (no -spc)
     .map((slug) => ({ url: `${base}/best/${encodeURIComponent(slug)}${BF_SUFFIX}`, changefreq: 'daily', priority: 0.8 }));
