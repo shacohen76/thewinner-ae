@@ -17,8 +17,10 @@ import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getSlugCreated
 import { getIndexAllowlist } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
-import { BR_PT_ENABLED } from '@/lib/feature-flags';
+import { BR_PT_ENABLED, BF_TWINS_ENABLED } from '@/lib/feature-flags';
 import { EU_NATIVE_CODES } from '@/lib/native-locales';
+import { BF_SUFFIX, bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';
+import BF_SITEMAP_SLUGS from '@/lib/bf-sitemap-slugs.json';
 
 export const CHUNK_SIZE = 20000; // English /best URLs per chunk — well under the 50k cap
 
@@ -51,8 +53,26 @@ export async function bestChunkCount(): Promise<number> {
 export async function chunkIds(): Promise<string[]> {
   // 2026-09-27 (BR 1): + 'indexable-pt' when the /pt locale is enabled.
   // 2026-11-08 (EU NATIVE 1): + 'indexable-<code>' per enabled EU native locale (none by default).
+  // 2026-11-11 (BF 1, owner): + 'black-friday' while the BF twins are on and not yet switched to noindex.
   return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja', ...(BR_PT_ENABLED ? ['indexable-pt'] : []),
-    ...EU_NATIVE_CODES.map((c) => `indexable-${c}`)];
+    ...EU_NATIVE_CODES.map((c) => `indexable-${c}`), ...(bfSitemapLive() ? ['black-friday'] : [])];
+}
+
+// 2026-11-11 (BF 1, owner "lets sitemap separately"): the Black Friday twins get their OWN sitemap,
+// separate from the allowlisted ones. The list is FIXED (lib/bf-sitemap-slugs.json = the Tier 1
+// base slugs whose base page passed a production Googlebot check, 2026-11-11) — never the full
+// keyword set (Aug-21 index-bloat lesson). Empty when the flag is off or BF_TWINS_NOINDEX_AFTER
+// is reached, so the sitemap stops listing twins the moment they turn noindex.
+export function bfSitemapLive(): boolean {
+  return BF_TWINS_ENABLED && !bfTwinsNoindex();
+}
+
+export function bfTwinEntries(): SitemapEntry[] {
+  if (!bfSitemapLive()) return [];
+  const base = CONFIG.siteUrl;
+  return (BF_SITEMAP_SLUGS as string[])
+    .filter((slug) => bfTwinBaseSlug(slug + BF_SUFFIX, 'en') === slug)   // same guard as the route (no -spc)
+    .map((slug) => ({ url: `${base}/best/${encodeURIComponent(slug)}${BF_SUFFIX}`, changefreq: 'daily', priority: 0.8 }));
 }
 
 // 2026-11-08 (EU NATIVE 1, owner D-3 "copy PT"): every page with a native noun in an enabled EU
