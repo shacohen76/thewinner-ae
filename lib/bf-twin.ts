@@ -20,9 +20,21 @@ import { BF_TWINS_ENABLED } from '@/lib/feature-flags';
 
 export const BF_SUFFIX = '-black-friday-deals';
 
-/** Base slug of an ENGLISH twin request, or null (flag off, other locale, no suffix, -spc base). */
+// 2026-11-11 (BF 1, owner "very very important"): twins also for the non-English locales. A
+// locale gets twins only if it has a row in BF_COPY (lib/title-bf.ts — compile-checked against
+// this list) AND is enabled in routing (pt / EU locales behind their own flags). To add a
+// language (fr/it/de/sv/nl via LOCALE SITE 1): add its code here + its copy row in title-bf.ts.
+// The page then also requires the base LOCALE page to be complete (page.tsx bfTwinLocaleReady).
+export const BF_LOCALES = ['en', 'ar', 'ja', 'pt', 'es'] as const;
+export type BfLocale = (typeof BF_LOCALES)[number];
+
+export function isBfLocale(locale: string): locale is BfLocale {
+  return (BF_LOCALES as readonly string[]).includes(locale);
+}
+
+/** Base slug of a twin request, or null (flag off, locale without BF copy, no suffix, -spc base). */
 export function bfTwinBaseSlug(slug: string, locale: string): string | null {
-  if (!BF_TWINS_ENABLED || locale !== 'en') return null;
+  if (!BF_TWINS_ENABLED || !isBfLocale(locale)) return null;
   const s = slug.toLowerCase();
   if (!s.endsWith(BF_SUFFIX)) return null;
   const base = s.slice(0, -BF_SUFFIX.length);

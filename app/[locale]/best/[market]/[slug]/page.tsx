@@ -52,16 +52,9 @@ import LocaleLinks from '@/components/LocaleLinks';         // 2026-09-29: cross
 import BestAuthorByline from '@/components/BestAuthorByline';
 import { getTranslations } from 'next-intl/server';
 import { getShopeeForPage } from '@/lib/shopee';
-import { bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';   // 2026-11-10 (BF 1): Black Friday twins
-import {
-  generateBfHeadline,
-  generateBfSubHeadline,
-  generateBfPageTitle,
-  generateBfPageDescription,
-  generateBfStrip,
-  generateBfIntro,
-  generateBfCardBadge,
-} from '@/lib/title-bf';
+import { bfTwinBaseSlug, bfTwinsNoindex, BF_LOCALES, type BfLocale } from '@/lib/bf-twin';   // 2026-11-10 (BF 1): Black Friday twins
+import { BF_COPY, BF_HREFLANG } from '@/lib/title-bf';
+import { BR_PT_ENABLED } from '@/lib/feature-flags';
 
 // ============================================
 // Keyword Page — /best/[slug] (internal route /[locale]/best/[market]/[slug])
@@ -172,6 +165,29 @@ async function getKeywordOrBfTwin(slug: string, locale: string) {
   return { keyword: baseKeyword, bfBase: baseKeyword ? base : null };
 }
 
+// 2026-11-11 (BF 1, non-English twins): a twin exists in a locale only where that locale's BASE
+// page is complete — the same gate its own index flag uses: native noun + native BYG, and for
+// ja / pt / EU locales ≥1 product in the locale's own store (en: always). Returns the noun the
+// BF copy is built from, or null (→ no twin, 404 like any unknown slug).
+async function bfTwinNoun(keyword: { id: number; keyword_text: string }, locale: string): Promise<string | null> {
+  if (locale === 'en') return keyword.keyword_text;
+  const eu = getEuNativeLocale(locale);
+  const store = locale === 'ja' ? 'jp' : locale === 'pt' ? 'br' : eu ? eu.markets[0] : null;
+  if (locale === 'pt' && !BR_PT_ENABLED) return null;
+  if (locale !== 'ar' && !store) return null;
+  const tr = await getKeywordTranslation(keyword.id, locale);
+  const noun = tr?.keyword_text?.trim();
+  if (!noun || !hasBuyingGuide(tr?.qa_guide)) return null;
+  if (store && (await getKeywordMarketplaceCount(keyword.id, store)) < 1) return null;
+  return noun;
+}
+
+// BF locales whose /<locale> URLs exist on this deployment (pt + EU locales sit behind their flags).
+function enabledBfLocales(): BfLocale[] {
+  return BF_LOCALES.filter((l) => l === 'en' || l === 'ar' || l === 'ja'
+    || (l === 'pt' && BR_PT_ENABLED) || !!getEuNativeLocale(l));
+}
+
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { keyword, bfBase } = await getKeywordOrBfTwin(decodeURIComponent(params.slug), params.locale);
@@ -181,16 +197,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // BF 1 (owner 2026-11-10): a Black Friday twin is INDEXABLE on its own URL — index,follow,
-  // SELF-canonical, no hreflang cluster (English only), allowlist not consulted; it is kept out of
-  // every sitemap simply because it has no DB row. BF_TWINS_NOINDEX_AFTER flips it to noindex.
+  // SELF-canonical, allowlist not consulted; it is kept out of the allowlisted sitemaps simply
+  // because it has no DB row. BF_TWINS_NOINDEX_AFTER flips it to noindex.
+  // 2026-11-11 (non-English twins): copy per locale (lib/title-bf.ts). hreflang between the locale
+  // twins ONLY when every enabled BF locale has its twin for this slug; otherwise none (owner rule).
   if (bfBase) {
-    const twinUrl = `${CONFIG.canonicalUrl}/best/${decodeURIComponent(params.slug).toLowerCase()}`;
-    const title = generateBfPageTitle(keyword.keyword_text, getCurrentYear());
-    const description = generateBfPageDescription(keyword.keyword_text, getCurrentYear());
+    const noun = await bfTwinNoun(keyword, params.locale);
+    if (noun === null) return { title: 'Not Found' };
+    const copy = BF_COPY[params.locale as BfLocale];
+    const year = getCurrentYear();
+    const twinSlug = decodeURIComponent(params.slug).toLowerCase();
+    const twinUrlFor = (l: string) => `${CONFIG.canonicalUrl}${l === 'en' ? '' : `/${l}`}/best/${twinSlug}`;
+    const twinUrl = twinUrlFor(params.locale);
+    const locales = enabledBfLocales();
+    const allTwins = !bfTwinsNoindex() && locales.length > 1 && (await Promise.all(
+      locales.map((l) => (l === params.locale ? noun : bfTwinNoun(keyword, l))),
+    )).every((n) => n !== null);
+    const languages = allTwins
+      ? { ...Object.fromEntries(locales.map((l) => [BF_HREFLANG[l], twinUrlFor(l)])), 'x-default': twinUrlFor('en') }
+      : undefined;
+    const title = copy.pageTitle(noun, year);
+    const description = copy.description(noun, year);
     return {
       title: { absolute: title },
       description,
-      alternates: { canonical: twinUrl },
+      alternates: languages ? { canonical: twinUrl, languages } : { canonical: twinUrl },
       robots: { index: !bfTwinsNoindex(), follow: true },
       openGraph: { title, description, url: twinUrl },
     };
@@ -383,6 +414,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // chip — lib/title-bf.ts). dataSlug === slug otherwise.
   const isBf = !!bfBase;
   const dataSlug = bfBase ?? slug;
+  // 2026-11-11: no twin where the base LOCALE page is not complete (see bfTwinNoun).
+  const bfNoun = bfBase ? await bfTwinNoun(keyword, params.locale) : null;
+  if (isBf && bfNoun === null) notFound();
+  const bfCopy = isBf ? BF_COPY[params.locale as BfLocale] : null;
 
   // BR 1 (2026-09-26): /pt without a Portuguese noun → never English on /pt, never
   // 404 (owner) → temporary redirect to the same slug's English page.
@@ -541,8 +576,8 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   let mainHeadline: string;
   let subHeadline: string;
   if (isBf) {
-    mainHeadline = generateBfHeadline(keyword.keyword_text, currentYear);   // BF 1 (English only)
-    subHeadline = generateBfSubHeadline(keyword.keyword_text, currentYear);
+    mainHeadline = bfCopy!.headline(bfNoun!, currentYear);   // BF 1 (per-locale copy, lib/title-bf.ts)
+    subHeadline = bfCopy!.subHeadline(bfNoun!, currentYear);
   } else if (noun && isPt) {
     mainHeadline = generatePortugueseHeadline(noun, currentYear);   // BR 1
     subHeadline = generatePortugueseSubHeadline(noun);
@@ -610,10 +645,10 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         {isBf && (
           <div className="mb-6">
             <div className="bg-gray-900 text-white rounded-xl px-5 py-4 mb-4">
-              <p className="font-bold text-lg">🛍️ {generateBfStrip(currentYear).title}</p>
-              <p className="text-gray-200 text-sm mt-1">{generateBfStrip(currentYear).body}</p>
+              <p className="font-bold text-lg">🛍️ {bfCopy!.strip(currentYear).title}</p>
+              <p className="text-gray-200 text-sm mt-1">{bfCopy!.strip(currentYear).body}</p>
             </div>
-            <p className="text-gray-700 leading-relaxed">{generateBfIntro(keyword.keyword_text)}</p>
+            <p className="text-gray-700 leading-relaxed">{bfCopy!.intro(bfNoun!)}</p>
           </div>
         )}
         {isPt && productsForList.length === 0 ? (
@@ -645,7 +680,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             </a>
           </div>
         ) : (
-          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} bfBadge={isBf ? generateBfCardBadge(currentYear) : undefined} />
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} bfBadge={bfCopy ? bfCopy.cardBadge(currentYear) : undefined} />
         )}
       </main>
 
