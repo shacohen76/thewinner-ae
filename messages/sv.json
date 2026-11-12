@@ -34,7 +34,7 @@
     "contact": "Kontakt",
     "privacy": "Integritetspolicy",
     "terms": "Användarvillkor",
-    "disclosure": "Information: vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Som Amazon-partner tjänar vi pengar på kvalificerade köp. Lojalitet och förtroende går alltid först.",
+    "disclosure": "Information: Vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Som Amazon-partner tjänar vi pengar på kvalificerande köp. Lojalitet och förtroende går alltid först.",
     "copyright": "© {year} {siteName} — {tagline}. Alla rättigheter förbehållna.",
     "trademark": "Amazon och Amazon-logotypen är varumärken som tillhör Amazon.com, Inc. eller dess dotterbolag."
   },
@@ -140,7 +140,7 @@
     "bags-backpacks": "Väskor och ryggsäckar",
     "wallets-small-leather-goods": "Plånböcker och smålädervaror",
     "hats-scarves-gloves": "Mössor, halsdukar och handskar",
-    "sunglasses-eyewear-belts": "Glasögon och bälten",
+    "sunglasses-eyewear-belts": "Solglasögon, glasögon och bälten",
     "jewelry": "Smycken",
     "other": "Övrigt"
   },
@@ -151,7 +151,7 @@
     "viewCategory": "Visa kategori",
     "moreCategories": "Fler kategorier",
     "comparisonsCount": "{count} produktjämförelser",
-    "subcatIntro": "Produktjämförelser – {name}: hitta den som passar dig bäst",
+    "subcatIntro": "Produktjämförelser i {name} – hitta det som passar dig bäst",
     "comparisonsHere": "Jämförelser i den här kategorin",
     "comparisonsHereHint": "Välj en jämförelse för att se de 10 bästa produkterna",
     "viewComparison": "Visa jämförelse",
@@ -177,7 +177,7 @@
       "washing-machines": { "title": "De 10 bästa tvättmaskinerna", "desc": "Rekommenderade tvättmaskiner för alla budgetar och behov" },
       "televisions": { "title": "De 10 bästa TV-apparaterna", "desc": "4K, OLED, QLED: vi jämför alla ledande tekniker" },
       "earbuds": { "title": "De 10 bästa trådlösa hörlurarna", "desc": "Trådlösa hörlurar för musik, samtal och en aktiv livsstil" },
-      "hair-straightener": { "title": "De 10 bästa plattångerna", "desc": "Plattänger i proffskvalitet för salongsresultat hemma" }
+      "hair-straightener": { "title": "De 10 bästa plattängerna", "desc": "Plattänger i proffskvalitet för salongsresultat hemma" }
     },
     "viewComparison": "Visa jämförelse",
     "viewAllComparisons": "Visa alla jämförelser",
@@ -217,7 +217,7 @@
       "sara": { "role": "Expert på familj och barn", "bio": "Mamma till tre barn. Granskar babyprodukter, leksaker och det viktigaste för familjen." }
     },
     "disclosureTitle": "Information",
-    "disclosure": "Vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Provisionerna påverkar inte våra rankningar eller rekommendationer, som enbart bygger på produktens kvalitet och hur väl den passar dina behov. Som Amazon-partner tjänar vi pengar på kvalificerade köp. Lojalitet och förtroende går alltid först."
+    "disclosure": "Vi samarbetar med pålitliga partner för att ge våra användare bästa möjliga resultat. Vi kan få provision, men aldrig på våra användares bekostnad. Provisionerna påverkar inte våra rankningar eller rekommendationer, som enbart bygger på produktens kvalitet och hur väl den passar dina behov. Som Amazon-partner tjänar vi pengar på kvalificerande köp. Lojalitet och förtroende går alltid först."
   },
   "Contact": {
     "title": "Kontakt",
