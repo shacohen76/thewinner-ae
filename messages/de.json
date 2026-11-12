@@ -22,7 +22,7 @@
     "categories": "Kategorien",
     "popular": "Beliebt",
     "info": "Informationen",
-    "tagline": "Produktvergleichsseite. Wir helfen Ihnen, das perfekte Produkt zu finden.",
+    "tagline": "Produktvergleichsseite für Deutschland. Wir helfen Ihnen, das perfekte Produkt zu finden.",
     "popularItems": {
       "portable-speakers": "Tragbare Lautsprecher",
       "coffee-machines": "Kaffeemaschinen",
@@ -86,8 +86,8 @@
     "updated": "Aktualisiert im {date}",
     "morePicks": "Weitere Empfehlungen",
     "howWeChoseTitle": "So wählen wir aus",
-    "howWeChoseBody": "Unsere Redakteure sind Menschen, die Produkte wirklich gern ausprobieren und darüber schreiben. Wir vergleichen den praktischen Nutzen und die Stärken jedes Produkts und fassen das Wichtigste in unseren eigenen „Warum wir es lieben“-Punkten zusammen – damit Sie auf einen Blick und ehrlich sehen, worauf es vor dem Kauf ankommt.",
-    "reviewerRole": "Produktredakteur",
+    "howWeChoseBody": "Unsere Redakteure sind Menschen, die Produkte wirklich gern ausprobieren und darüber schreiben. Wir vergleichen den praktischen Nutzen und die Stärken jedes Produkts und fassen das Wichtigste in unseren eigenen „Warum wir es lieben“-Punkten zusammen – damit Sie vor dem Kauf auf einen Blick ein ehrliches Bild davon bekommen, worauf es ankommt.",
+    "reviewerRole": "Produktredaktion",
     "consNote": "Nicht in allen Programmen verfügbar"
   },
   "CategoryDesc": {
@@ -99,7 +99,7 @@
     "hobbies-main": "Videospiele, Spielzeug, Sport, Kameras und Musikinstrumente.",
     "home-main": "Möbel, Bad, Beleuchtung, Smart Home, Garten und Elektrowerkzeuge.",
     "fashion-main": "Taschen, Rucksäcke, Geldbörsen, Schmuck, Mützen, Schals, Handschuhe, Sonnenbrillen und Gürtel.",
-    "other-main": "Auto & Motorrad und mehr."
+    "other-main": "Auto, Motorrad und mehr."
   },
   "Subcategories": {
     "large-appliances": "Großgeräte",
@@ -140,7 +140,7 @@
     "bags-backpacks": "Taschen und Rucksäcke",
     "wallets-small-leather-goods": "Geldbörsen und Kleinlederwaren",
     "hats-scarves-gloves": "Mützen, Schals und Handschuhe",
-    "sunglasses-eyewear-belts": "Brillen und Gürtel",
+    "sunglasses-eyewear-belts": "Sonnenbrillen, Brillen und Gürtel",
     "jewelry": "Schmuck",
     "other": "Sonstiges"
   },
@@ -158,25 +158,25 @@
     "products10": "10 Produkte"
   },
   "Home": {
-    "heroTitle": "Finden Sie das <hl>Gewinner</hl>-Produkt für sich",
+    "heroTitle": "Finden Sie Ihren persönlichen <hl>Gewinner</hl>",
     "heroSub": "Intelligente und objektive Produktvergleiche. Wir recherchieren, Sie wählen das Beste.",
     "popularSearchesLabel": "Beliebte Suchen:",
     "searches": {
       "portable-speakers": "Tragbare Lautsprecher",
       "my-perfume-perfume-100ml": "Parfums",
       "roborock-vacuum-cleaners": "Roborock-Staubsauger",
-      "earbuds": "Kabellose Kopfhörer"
+      "earbuds": "In-Ear-Kopfhörer"
     },
     "browseByCategory": "Nach Kategorie stöbern",
     "browseByCategorySub": "Wählen Sie eine Kategorie und finden Sie die besten Produkte",
     "popularComparisons": "Beliebte Vergleiche",
-    "popularComparisonsSub": "Die von unseren Nutzern am häufigsten gefragten Vergleiche",
+    "popularComparisonsSub": "Die bei unseren Nutzern gefragtesten Vergleiche",
     "comparisons": {
       "portable-speakers": { "title": "Die 10 besten tragbaren Lautsprecher", "desc": "Umfassender Vergleich tragbarer Bluetooth-Lautsprecher für jedes Budget" },
       "coffee-machines": { "title": "Die 10 besten Kaffeemaschinen", "desc": "Von Kapselmaschinen bis zu professionellen Espressomaschinen für zu Hause" },
       "washing-machines": { "title": "Die 10 besten Waschmaschinen", "desc": "Empfohlene Waschmaschinen für jedes Budget und jeden Bedarf" },
       "televisions": { "title": "Die 10 besten Fernseher", "desc": "4K, OLED, QLED: Wir vergleichen alle führenden Technologien" },
-      "earbuds": { "title": "Die 10 besten kabellosen Kopfhörer", "desc": "Kabellose Kopfhörer für Musik, Telefonate und einen aktiven Lebensstil" },
+      "earbuds": { "title": "Die 10 besten In-Ear-Kopfhörer", "desc": "Kabellose In-Ear-Kopfhörer für Musik, Telefonate und einen aktiven Lebensstil" },
       "hair-straightener": { "title": "Die 10 besten Glätteisen", "desc": "Glätteisen in Profiqualität für Salonergebnisse zu Hause" }
     },
     "viewComparison": "Zum Vergleich",
@@ -213,7 +213,7 @@
       "adham": { "role": "Experte für Haushaltsgeräte", "bio": "Leidenschaftlicher Koch und Bäcker. Bewertet Küchengeräte, Kaffeemaschinen und Elektronik für den Haushalt." },
       "mariam": { "role": "Audioexpertin", "bio": "Musikerin mit einem Faible für guten Klang. Bewertet Lautsprecher, Kopfhörer und Audiogeräte." },
       "fatima": { "role": "Expertin für Beauty und Wohnen", "bio": "Liebt Inneneinrichtung und Beauty. Bewertet Kosmetik, Hautpflege und Wohnaccessoires." },
-      "abdulla": { "role": "Experte für Sport und Fitness", "bio": "Sportler und Personal Trainer. Bewertet Smartwatches, Fitnessgeräte und Sportelektronik." },
+      "abdulla": { "role": "Experte für Sport und Fitness", "bio": "Sportler und Fitnesstrainer. Bewertet Smartwatches, Fitnessgeräte und Sportelektronik." },
       "sara": { "role": "Expertin für Familie und Kinder", "bio": "Mutter von drei Kindern. Bewertet Babyprodukte, Spielzeug und Alltagshelfer für die Familie." }
     },
     "disclosureTitle": "Transparenzhinweis",
@@ -223,7 +223,7 @@
     "title": "Kontakt",
     "subtitle": "Wir freuen uns, von Ihnen zu hören!",
     "emailTitle": "📧 E-Mail",
-    "emailIntro": "Für Fragen, Anregungen oder Kooperationen schreiben Sie uns:",
+    "emailIntro": "Bei Fragen, Anregungen oder Kooperationsanfragen schreiben Sie uns eine E-Mail:",
     "suggestions": { "title": "💡 Anregungen", "desc": "Sie haben eine Idee für eine neue Kategorie oder ein Produkt, das wir aufnehmen sollten? Lassen Sie es uns wissen!" },
     "partnerships": { "title": "🤝 Kooperationen", "desc": "Sie interessieren sich für eine geschäftliche Zusammenarbeit? Schreiben Sie uns, wir sprechen gern darüber." },
     "report": { "title": "🐛 Problem melden", "desc": "Sie haben einen Fehler auf der Website oder eine falsche Angabe entdeckt? Sagen Sie uns Bescheid, wir korrigieren es umgehend." }

@@ -58,7 +58,7 @@
     }
   },
   "Cookie": {
-    "consent": "Nous utilisons des cookies pour comprendre comment notre site est utilisé et pour mesurer notre marketing. Choisissez votre préférence ci-dessous ; vous pourrez la modifier plus tard depuis le pied de page.",
+    "consent": "Nous utilisons des cookies pour comprendre comment notre site est utilisé et pour mesurer l'efficacité de nos actions marketing. Faites votre choix ci-dessous ; vous pourrez le modifier plus tard depuis le pied de page.",
     "privacyPolicy": "Politique de confidentialité",
     "rejectAll": "Tout refuser",
     "acceptAll": "Tout accepter",
@@ -98,7 +98,7 @@
     "care-main": "Parfums, maquillage, soins des cheveux, soins de la peau et produits pour bébé.",
     "hobbies-main": "Jeux vidéo, jouets, sport, appareils photo et instruments de musique.",
     "home-main": "Meubles, salle de bain, éclairage, maison connectée, jardin et outillage électrique.",
-    "fashion-main": "Sacs, sacs à dos, portefeuilles, bijoux, bonnets, écharpes, gants, lunettes de soleil et ceintures.",
+    "fashion-main": "Sacs, sacs à dos, portefeuilles, bijoux, chapeaux, écharpes, gants, lunettes de soleil et ceintures.",
     "other-main": "Auto, moto et plus encore."
   },
   "Subcategories": {
@@ -121,7 +121,7 @@
     "headphones-earbuds": "Casques et écouteurs",
     "perfumes-fragrances": "Parfums",
     "makeup": "Maquillage",
-    "hair-care-styling": "Soins et coiffure",
+    "hair-care-styling": "Soins des cheveux et coiffure",
     "skincare": "Soins de la peau",
     "personal-care": "Hygiène et soins du corps",
     "baby-kids": "Bébé et enfant",
@@ -139,7 +139,7 @@
     "automotive": "Auto et moto",
     "bags-backpacks": "Sacs et sacs à dos",
     "wallets-small-leather-goods": "Portefeuilles et petite maroquinerie",
-    "hats-scarves-gloves": "Bonnets, écharpes et gants",
+    "hats-scarves-gloves": "Chapeaux, écharpes et gants",
     "sunglasses-eyewear-belts": "Lunettes et ceintures",
     "jewelry": "Bijoux",
     "other": "Autres"
@@ -151,7 +151,7 @@
     "viewCategory": "Voir la catégorie",
     "moreCategories": "Plus de catégories",
     "comparisonsCount": "{count} comparatifs de produits",
-    "subcatIntro": "Comparatifs de produits – {name} : trouvez celui qu'il vous faut",
+    "subcatIntro": "Comparatifs de produits – {name} : trouvez le produit qu'il vous faut",
     "comparisonsHere": "Comparatifs dans cette catégorie",
     "comparisonsHereHint": "Choisissez un comparatif pour voir les 10 meilleurs produits",
     "viewComparison": "Voir le comparatif",
@@ -186,14 +186,14 @@
     "features": {
       "research": { "title": "Des recherches approfondies", "desc": "Nous examinons et comparons des centaines de produits pour trouver le meilleur de chaque catégorie" },
       "objective": { "title": "Totalement objectifs", "desc": "Nos classements reposent sur les performances réelles, pas sur la publicité ni le marketing" },
-      "savings": { "title": "Gagnez du temps et de l'argent", "desc": "Au lieu de passer des heures à chercher, obtenez la réponse en quelques minutes, au meilleur prix" }
+      "savings": { "title": "Gagnez du temps et de l'argent", "desc": "Au lieu de passer des heures à chercher, obtenez la réponse en quelques minutes et trouvez la meilleure offre" }
     }
   },
   "About": {
     "title": "À propos de {siteName}",
     "subtitle": "Plateforme de comparaison de produits",
     "missionTitle": "Notre mission",
-    "mission": "Chez « {siteName} », nous pensons que chaque consommateur mérite une information fiable et objective avant d'acheter. Notre mission : vous épargner des heures de recherche et vous donner la conclusion, à savoir quels sont les meilleurs produits de chaque catégorie.",
+    "mission": "Chez « {siteName} », nous pensons que chaque consommateur mérite une information fiable et objective avant d'acheter. Notre mission : vous épargner des heures de recherche et aller droit à l'essentiel, c'est-à-dire vous indiquer les meilleurs produits de chaque catégorie.",
     "howWeWorkTitle": "Notre méthode",
     "work": {
       "research": { "title": "Des recherches approfondies", "desc": "Nous examinons des centaines de produits et analysons les caractéristiques techniques, les avis des utilisateurs et les données de vente" },
@@ -221,7 +221,7 @@
   },
   "Contact": {
     "title": "Contact",
-    "subtitle": "Nous serons ravis d'avoir de vos nouvelles !",
+    "subtitle": "Nous serons ravis de vous lire !",
     "emailTitle": "📧 E-mail",
     "emailIntro": "Pour vos questions, suggestions ou propositions de partenariat, écrivez-nous :",
     "suggestions": { "title": "💡 Suggestions", "desc": "Vous avez une idée de nouvelle catégorie ou un produit que nous devrions ajouter ? Dites-le-nous !" },

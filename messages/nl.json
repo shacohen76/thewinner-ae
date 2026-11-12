@@ -34,9 +34,9 @@
     "contact": "Contact",
     "privacy": "Privacybeleid",
     "terms": "Gebruiksvoorwaarden",
-    "disclosure": "Transparantie: we werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Als Amazon Partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop.",
+    "disclosure": "Transparantie: we werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Als Amazon-partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop.",
     "copyright": "© {year} {siteName} — {tagline}. Alle rechten voorbehouden.",
-    "trademark": "Amazon en het Amazon-logo zijn handelsmerken van Amazon.com, Inc. of haar dochterondernemingen."
+    "trademark": "Amazon en het Amazon-logo zijn handelsmerken van Amazon.com, Inc. of van aan haar gelieerde ondernemingen."
   },
   "ProductCard": {
     "topPick": "Onze topkeuze",
@@ -99,7 +99,7 @@
     "hobbies-main": "Games, speelgoed, sport, camera's en muziekinstrumenten.",
     "home-main": "Meubels, badkamer, verlichting, slim wonen, tuin en elektrisch gereedschap.",
     "fashion-main": "Tassen, rugzakken, portemonnees, sieraden, mutsen, sjaals, handschoenen, zonnebrillen en riemen.",
-    "other-main": "Auto en motor en meer."
+    "other-main": "Auto, motor en meer."
   },
   "Subcategories": {
     "large-appliances": "Grote huishoudelijke apparaten",
@@ -140,7 +140,7 @@
     "bags-backpacks": "Tassen en rugzakken",
     "wallets-small-leather-goods": "Portemonnees en kleine lederwaren",
     "hats-scarves-gloves": "Mutsen, sjaals en handschoenen",
-    "sunglasses-eyewear-belts": "Brillen en riemen",
+    "sunglasses-eyewear-belts": "Zonnebrillen, brillen en riemen",
     "jewelry": "Sieraden",
     "other": "Overig"
   },
@@ -193,7 +193,7 @@
     "title": "Over {siteName}",
     "subtitle": "Platform voor productvergelijkingen",
     "missionTitle": "Onze missie",
-    "mission": "Bij ‘{siteName}’ vinden we dat elke consument betrouwbare en objectieve informatie verdient voordat hij iets koopt. Onze missie is je uren zoekwerk te besparen en je de conclusie te geven: welke producten in elke categorie het beste zijn.",
+    "mission": "Bij ‘{siteName}’ vinden we dat elke consument betrouwbare en objectieve informatie verdient vóór een aankoop. Onze missie is je uren zoekwerk te besparen en je de conclusie te geven: welke producten in elke categorie het beste zijn.",
     "howWeWorkTitle": "Zo werken we",
     "work": {
       "research": { "title": "Grondig onderzoek", "desc": "We bekijken honderden producten en analyseren technische specificaties, gebruikersreviews en verkoopcijfers" },
@@ -204,20 +204,20 @@
     "values": {
       "reliability": { "term": "Betrouwbaarheid", "desc": ": onze informatie is nauwkeurig en actueel. We raden geen producten aan die we zelf niet zouden kopen." },
       "transparency": { "term": "Transparantie", "desc": ": we zijn duidelijk over hoe we geld verdienen. Als je via onze links koopt, kunnen we een commissie ontvangen." },
-      "consumerFirst": { "term": "De consument eerst", "desc": ": we beoordelen elke beslissing vanuit jouw standpunt, dat van de consument." }
+      "consumerFirst": { "term": "De consument voorop", "desc": ": we beoordelen elke beslissing vanuit jouw standpunt, dat van de consument." }
     },
     "teamTitle": "Ons team",
     "teamIntro": "Maak kennis met de experts achter onze aanbevelingen:",
     "team": {
-      "alex": { "role": "Techexpert", "bio": "Gek op gadgets en games. Beoordeelt computers, smartphones en gaminguitrusting." },
-      "adham": { "role": "Expert huishoudelijke apparaten", "bio": "Gepassioneerd door koken en bakken. Beoordeelt keukenapparaten, koffiemachines en elektronica voor in huis." },
+      "alex": { "role": "Techexpert", "bio": "Gek op gadgets en games. Beoordeelt computers, smartphones en gamingaccessoires." },
+      "adham": { "role": "Expert huishoudelijke apparaten", "bio": "Liefhebber van koken en bakken. Beoordeelt keukenapparaten, koffiemachines en elektronica voor in huis." },
       "mariam": { "role": "Audio-expert", "bio": "Muzikant en liefhebber van goed geluid. Beoordeelt speakers, koptelefoons en audioapparatuur." },
       "fatima": { "role": "Expert beauty en wonen", "bio": "Houdt van interieur en beauty. Beoordeelt cosmetica, huidverzorging en woonaccessoires." },
       "abdulla": { "role": "Expert sport en fitness", "bio": "Sporter en personal trainer. Beoordeelt smartwatches, fitnessapparatuur en sportelektronica." },
       "sara": { "role": "Expert gezin en kinderen", "bio": "Moeder van drie kinderen. Beoordeelt babyproducten, speelgoed en onmisbare spullen voor het gezin." }
     },
     "disclosureTitle": "Transparantie",
-    "disclosure": "We werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Commissies hebben geen invloed op onze ranglijsten of aanbevelingen; die zijn uitsluitend gebaseerd op de kwaliteit van het product en hoe goed het bij jouw behoeften past. Als Amazon Partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop."
+    "disclosure": "We werken samen met betrouwbare partners om onze gebruikers de beste resultaten te bieden. We kunnen een commissie ontvangen, maar nooit ten koste van onze gebruikers. Commissies hebben geen invloed op onze ranglijsten of aanbevelingen; die zijn uitsluitend gebaseerd op de kwaliteit van het product en hoe goed het bij jouw behoeften past. Als Amazon-partner verdienen we aan in aanmerking komende aankopen. Loyaliteit en vertrouwen staan altijd voorop."
   },
   "Contact": {
     "title": "Contact",
