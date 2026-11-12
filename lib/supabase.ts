@@ -593,6 +593,41 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
   return slugs;
 }
 
+// 2026-11-12 (LOCALE SITE 1): the /pt + EU native page's FULL index gate as one paginated read —
+// a `locale` noun + BYG AND ≥1 keyword_products row in `marketplace` (the same test as the page's
+// getKeywordMarketplaceCount(id, market) >= 1). The product join is an inner embed limited to 1
+// row per keyword, so the request count equals getTranslatedSlugs' (no per-market full scan:
+// getMarketplaceSlugs('es') would page through ~494K product rows). Returns NULL on any read
+// error, so the caller falls back to the noun+BYG list (a DB blip never shrinks the sitemap).
+export async function getCompleteTranslatedSlugs(locale: string, marketplace: string): Promise<Set<string> | null> {
+  const slugs = new Set<string>();
+  const page = 1000;
+  for (let from = 0; ; from += page) {
+    const { data, error } = await supabase
+      .from('keyword_translations')
+      .select('keyword_text, qa_guide, keywords!inner(slug, keyword_products!inner(asin))')
+      .eq('locale', locale)
+      .not('qa_guide', 'is', null)   // pre-filter only (null never passes hasBuyingGuide): es 17.9K → 3K rows
+      .eq('keywords.keyword_products.marketplace', marketplace)
+      .limit(1, { referencedTable: 'keywords.keyword_products' })
+      .order('keyword_id', { ascending: true })   // stable total order for range() (see getTranslatedSlugs)
+      .range(from, from + page - 1);
+    if (error) {
+      console.error(`Error fetching ${locale} complete slugs (${marketplace}):`, error);
+      return null;
+    }
+    const rows = (data ?? []) as any[];
+    for (const r of rows) {
+      if (!r?.keyword_text?.trim() || !hasBuyingGuide(r?.qa_guide)) continue; // noun + BYG, as the page
+      const kw = r?.keywords;
+      const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
+      if (slug) slugs.add(slug.toLowerCase());
+    }
+    if (rows.length < page) break;
+  }
+  return slugs;
+}
+
 // Set of keyword slugs (lowercased) that have >=1 catalog product in `marketplace`.
 // One paginated join (mirrors getTranslatedSlugs) so a sitemap can apply the SAME catalog
 // gate the page uses for jaIndexed — jaIndexed requires getKeywordMarketplaceCount('jp')>=1

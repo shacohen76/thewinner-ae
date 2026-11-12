@@ -13,12 +13,12 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getCompleteTranslatedSlugs, getMarketplaceSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
 import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 import { BR_PT_ENABLED, BF_TWINS_ENABLED } from '@/lib/feature-flags';
-import { EU_NATIVE_CODES } from '@/lib/native-locales';
+import { EU_NATIVE_CODES, getEuNativeLocale } from '@/lib/native-locales';
 import { BF_SUFFIX, bfTwinBaseSlug, bfTwinsNoindex } from '@/lib/bf-twin';
 import BF_SITEMAP_SLUGS from '@/lib/bf-sitemap-slugs.json';
 
@@ -88,13 +88,22 @@ async function allowlisted(locale: string, slugs: string[]): Promise<string[]> {
   return only === null ? slugs : slugs.filter((s) => only.has(s.toLowerCase()));
 }
 
+// 2026-11-12 (LOCALE SITE 1): list only COMPLETE pages = noun + BYG + ≥1 product in the locale's
+// market (pt → br, EU → its markets[0]) — the page's own index test, so the sitemap never lists a
+// noindex page. Read error → the previous noun+BYG list (never shrink the sitemap on a DB blip).
+async function completeSlugs(locale: string, market: string): Promise<string[]> {
+  const complete = await getCompleteTranslatedSlugs(locale, market);
+  return Array.from(complete ?? (await getTranslatedSlugs(locale)));
+}
+
 // 2026-11-08 (EU NATIVE 1, owner D-3 "copy PT"): every page with a native noun in an enabled EU
 // locale. Same shape as ptIndexableEntries; the page itself re-checks BYG + ≥1 product before it
 // emits index (a listed page that is not complete yet stays noindex until its text lands).
 export async function euNativeIndexableEntries(locale: string): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await allowlisted(locale, Array.from(await getTranslatedSlugs(locale)));
+    const market = getEuNativeLocale(locale)?.markets[0];
+    const slugs = await allowlisted(locale, market ? await completeSlugs(locale, market) : Array.from(await getTranslatedSlugs(locale)));
     const dates = await getSlugCreatedAt(slugs);
     return slugs.map((slug) => ({
       url: `${base}/${locale}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
@@ -114,7 +123,7 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
 export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await allowlisted('pt', Array.from(await getTranslatedSlugs('pt')));
+    const slugs = await allowlisted('pt', await completeSlugs('pt', 'br'));
     const dates = await getSlugCreatedAt(slugs);
     return slugs.map((slug) => ({
       url: `${base}/pt/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
