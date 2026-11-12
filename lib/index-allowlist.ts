@@ -75,7 +75,8 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 export type Locale = 'en' | 'ar' | 'ja' | 'pt' | 'es' | 'pl' | 'fr' | 'it' | 'de' | 'sv' | 'nl';
 export const ALLOWLIST_LOCALES: readonly Locale[] = ['en', 'ar', 'ja', 'pt', 'es', 'pl', 'fr', 'it', 'de', 'sv', 'nl'];
 /** Locales whose EMPTY set (after a good read) means "nothing approved → noindex". */
-const CLOSED_IF_EMPTY: ReadonlySet<string> = new Set(['pl', 'fr', 'it', 'de', 'sv', 'nl']);
+// owner 11-12 decision A: every complete page indexes in every locale → no locale is closed-if-empty (was pl fr it de sv nl).
+const CLOSED_IF_EMPTY: ReadonlySet<string> = new Set<string>([]);
 /** readOk = the sets come from a complete, successful read (now or the last good copy).
  *  false → the allowlist is unavailable and every caller fails open. */
 export type Allowlist = Record<Locale, Set<string>> & { readOk: boolean };
@@ -200,7 +201,7 @@ export async function getIndexAllowlist(): Promise<Allowlist> {
 //   • read failed (readOk false)              → null (FAIL-OPEN, every locale)
 //   • set has rows                            → that set
 //   • empty + OPEN_IF_EMPTY (en ar ja pt es)  → null (not seeded → as before)
-//   • empty + CLOSED_IF_EMPTY (pl fr it de sv nl) → the empty set (nothing approved → noindex)
+//   • empty + CLOSED_IF_EMPTY (none since owner 11-12 decision A) → the empty set (noindex)
 export function allowlistRestriction(allow: Allowlist, locale: Locale): Set<string> | null {
   const set = allow[locale];
   if (!allow.readOk) return null;
