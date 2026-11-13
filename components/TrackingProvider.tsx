@@ -244,7 +244,23 @@ function rewriteAmazonLinks(tag: string, domain?: string): void {
     link.href = pinnedAffiliateUrl(pinMarket, pinAsin, pinQuery || '', { tag, domain: domain || 'amazon.ae' });
   });
 
-  const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="amazon.ae"]:not([data-pin-market])');
+  // 2026-11-13 (LOCALE SITE 1): links on an EU native page (/es …) are rendered on the page's
+  // own store (data-home-domain/-tag, lib/utils HomeStore) instead of amazon.ae. Known visitor
+  // store → swap to it with the visitor's tag (same as the amazon.ae swap below). No store
+  // (tag-assign catch path / pre-GEOS1 session) → keep the page's store AND its own tag, so
+  // the link never pairs that store with the UAE tag.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-home-domain]:not([data-pin-market])').forEach(link => {
+    try {
+      const url = new URL(link.href);
+      if (domain) url.hostname = `www.${domain}`;
+      url.searchParams.set('tag', domain ? tag : (link.dataset.homeTag || tag));
+      link.href = url.toString();
+    } catch {
+      // Invalid URL — skip
+    }
+  });
+
+  const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="amazon.ae"]:not([data-pin-market]):not([data-home-domain])');
   links.forEach(link => {
     try {
       const url = new URL(link.href);

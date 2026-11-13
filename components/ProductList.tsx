@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import ProductCard from './ProductCard';
 import ShareButton from './ShareButton';
 import type { ShopeeForPage } from '@/lib/shopee';
+import type { HomeStore } from '@/lib/utils';
 
 interface Product {
   asin: string;
@@ -39,6 +40,7 @@ interface ProductListProps {
   shopee?: ShopeeForPage;
   pageSlug?: string;
   pinMarket?: string; // 2026-09-26 (BR 1): /pt → 'br', passed to each card's link rule
+  homeStore?: HomeStore; // 2026-11-13: EU native page's own store, passed to each card's link rule
   bfBadge?: string;   // 2026-11-10 (BF 1): Black Friday twin chip on every card; undefined elsewhere
 }
 
@@ -54,7 +56,7 @@ function seededReviewCount(asin: string): number {
 
 type SortOption = 'rank' | 'price';
 
-export default function ProductList({ products, searchFallback, keywordEn, shopee, pageSlug, pinMarket, bfBadge }: ProductListProps) {
+export default function ProductList({ products, searchFallback, keywordEn, shopee, pageSlug, pinMarket, homeStore, bfBadge }: ProductListProps) {
   const [sortBy, setSortBy] = useState<SortOption>('rank');
   const t = useTranslations('ProductList');
 
@@ -151,6 +153,7 @@ export default function ProductList({ products, searchFallback, keywordEn, shope
             searchFallback={searchFallback}
             keywordEn={keywordEn}
             pinMarket={pinMarket}
+            homeStore={homeStore}
             reviewCount={seededReviewCount(product.asin)}
             showDeal={dealAsins.has(product.asin)}
             shopeeLink={

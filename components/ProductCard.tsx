@@ -24,6 +24,8 @@ import {
   buildAffiliateUrl,
   buildAffiliateSearchUrl,
   buildPinnedAffiliateUrl,
+  buildHomeAffiliateUrl,
+  type HomeStore,
   cleanSearchQuery,
   extractBrand,
   formatNumber,
@@ -54,6 +56,9 @@ interface ProductCardProps {
   // 2026-09-26 (BR 1): market this page is pinned to (/pt → 'br'). When set, the Amazon
   // link follows the owner's pinned rule (lib/utils pinnedAffiliateUrl). Unset = legacy.
   pinMarket?: string;
+  // 2026-11-13: EU native page's own store (lib/utils HomeStore). Server HTML links there
+  // instead of amazon.ae; TrackingProvider still swaps to the visitor's store. Unset = legacy.
+  homeStore?: HomeStore;
   // 2026-09-09 (Shopee): per-card Shopee CTA, shown directly under the Amazon
   // button for SEA visitors only. shopeeLink = this product's Shopee listing
   // (per-product) or the page's hero fallback; pageSlug is for click logging.
@@ -226,6 +231,7 @@ export default function ProductCard({
   searchFallback = false,
   keywordEn = '',
   pinMarket,
+  homeStore,
   shopeeLink,
   pageSlug = '',
   bfBadge,
@@ -290,10 +296,14 @@ export default function ProductCard({
     ? buildPinnedAffiliateUrl(pinMarket, asin, pinQuery)
     : searchFallback
       ? buildAffiliateSearchUrl(searchText)
-      : buildAffiliateUrl(asin, title);
+      : homeStore
+        ? buildHomeAffiliateUrl(asin, homeStore)
+        : buildAffiliateUrl(asin, title);
   const pinAttrs = pinMarket
     ? { 'data-pin-market': pinMarket, 'data-pin-asin': asin, 'data-pin-query': pinQuery }
-    : {};
+    : homeStore
+      ? { 'data-home-domain': homeStore.domain, 'data-home-tag': homeStore.tag }
+      : {};
 
   // WWL points; when a product has none, fall back to the rank-based placeholder set
   // (3 points for this position), else the single generic default. (2026-08-28)
