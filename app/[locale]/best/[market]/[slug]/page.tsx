@@ -425,6 +425,15 @@ export default async function ProductComparisonPage({ params }: PageProps) {
   // 2026-11-08 (EU NATIVE 1): EU native locales follow the same single-language rules as /pt.
   const eu = getEuNativeLocale(params.locale);
   const singleLang = isPt || !!eu;
+  // 2026-11-13 (LOCALE SITE 1, 6.8 GO): an EU native page's server HTML links to its OWN store
+  // (rendered market's domain + that program's default tag: /es → amazon.es) instead of the
+  // amazon.ae default, so crawlers (AdsBot) and a failed tag-assign see the page's store.
+  // TrackingProvider still swaps to the visitor's store + tag. en/ar/ja/pt: undefined (unchanged).
+  const homeProgram = eu ? getProgramConfig(
+    (eu.markets.includes(params.market) ? params.market : eu.markets[0]) as GeoProgram) : null;
+  // Spread only when set: an explicit `homeStore: undefined` would add a key to the RSC payload of
+  // every en/ar/ja page (they must stay byte-identical).
+  const homeStoreProp = homeProgram ? { homeStore: { domain: homeProgram.amazonDomain, tag: homeProgram.defaultTag } } : {};
   const translation = await readTranslation(keyword.id, params.locale);
   if (singleLang && !translation?.keyword_text?.trim()) {
     redirect(`/best/${params.slug}`);
@@ -680,7 +689,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
             </a>
           </div>
         ) : (
-          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} bfBadge={bfCopy ? bfCopy.cardBadge(currentYear) : undefined} />
+          <ProductList products={productsForList} searchFallback={searchFallback} keywordEn={keywordEn} shopee={shopee} pageSlug={slug} pinMarket={isPt ? 'br' : undefined} {...homeStoreProp} bfBadge={bfCopy ? bfCopy.cardBadge(currentYear) : undefined} />
         )}
       </main>
 
@@ -696,7 +705,7 @@ export default async function ProductComparisonPage({ params }: PageProps) {
         </div>
       </section>
       {/* BR 1: pinMarket 'br' on /pt → owner link rule (BR /dp · amazon.es search · else BR /dp + BR tag) */}
-      <ProductGallery products={galleryProducts} searchFallback={searchFallback} keywordEn={keywordEn} pinMarket={isPt ? 'br' : undefined} />
+      <ProductGallery products={galleryProducts} searchFallback={searchFallback} keywordEn={keywordEn} pinMarket={isPt ? 'br' : undefined} {...homeStoreProp} />
 
       {/* Buying Guide Section with TOC */}
       {buyingGuide.length > 0 && (

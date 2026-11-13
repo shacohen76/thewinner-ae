@@ -62,7 +62,7 @@ export function rankToStars(rank: number): number {
 // direct tag for SSR, pre-GEOS1 sessions, or when storage is unavailable.
 // Shared by buildAffiliateUrl (product /dp link) and buildAffiliateSearchUrl
 // (ML 3 search fallback) so both always route to the SAME store + tag.
-function readSessionTagDomain(): { tag: string; domain: string } {
+function readSessionTagDomain(home?: HomeStore): { tag: string; domain: string } {
   let tag = CONFIG.amazonTag;
   let domain = 'amazon.ae';
 
@@ -71,6 +71,10 @@ function readSessionTagDomain(): { tag: string; domain: string } {
       const session = sessionStorage.getItem('tw_tracking_session');
       if (session) {
         const parsed = JSON.parse(session);
+        // A home-store page takes the session only as a pair (store + its tag), so a link
+        // never mixes the page's store with another store's tag.
+        if (home) return parsed.assigned_tag && parsed.amazon_domain
+          ? { tag: parsed.assigned_tag, domain: parsed.amazon_domain } : home;
         if (parsed.assigned_tag) tag = parsed.assigned_tag;
         if (parsed.amazon_domain) domain = parsed.amazon_domain;
       }
@@ -78,7 +82,19 @@ function readSessionTagDomain(): { tag: string; domain: string } {
       // sessionStorage unavailable — use defaults
     }
   }
-  return { tag, domain };
+  return home ?? { tag, domain };
+}
+
+/** 2026-11-13 (LOCALE SITE 1, 6.8 GO): the store a page links to before the visitor's own
+ *  store is known (server HTML, crawlers incl. AdsBot, tag-assign failure). Set only on EU
+ *  native pages (/es …) = the rendered market's domain + that program's default tag. Unset =
+ *  amazon.ae + the UAE tag (en/ar/ja unchanged). */
+export type HomeStore = { domain: string; tag: string };
+
+/** /dp link on the visitor's session store, else on the page's home store. */
+export function buildHomeAffiliateUrl(asin: string, home: HomeStore): string {
+  const { tag, domain } = readSessionTagDomain(home);
+  return `https://www.${domain}/dp/${asin}?tag=${tag}`;
 }
 
 export function buildAffiliateUrl(

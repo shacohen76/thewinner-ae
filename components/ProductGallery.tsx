@@ -7,7 +7,7 @@
 
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
-import { buildAffiliateUrl, buildAffiliateSearchUrl, buildPinnedAffiliateUrl, cleanSearchQuery } from '@/lib/utils';
+import { buildAffiliateUrl, buildAffiliateSearchUrl, buildPinnedAffiliateUrl, buildHomeAffiliateUrl, cleanSearchQuery, type HomeStore } from '@/lib/utils';
 
 interface Product {
   asin: string;
@@ -26,9 +26,10 @@ interface ProductGalleryProps {
   searchFallback?: boolean;
   keywordEn?: string;
   pinMarket?: string; // 2026-09-26 (BR 1): /pt → 'br' — same pinned link rule as ProductCard
+  homeStore?: HomeStore; // 2026-11-13: EU native page's own store — same rule as ProductCard
 }
 
-export default function ProductGallery({ products, searchFallback, keywordEn, pinMarket }: ProductGalleryProps) {
+export default function ProductGallery({ products, searchFallback, keywordEn, pinMarket, homeStore }: ProductGalleryProps) {
   const locale = useLocale();
   // INTL1 JP Phase 2 (2026-07-06): localize the carousel heading (was hardcoded
   // English "Quick Pick", which leaked onto /ar and /ja). English value in
@@ -52,10 +53,14 @@ export default function ProductGallery({ products, searchFallback, keywordEn, pi
                 ? buildPinnedAffiliateUrl(pinMarket, product.asin, cleanSearchQuery(product.title))
                 : searchFallback
                   ? buildAffiliateSearchUrl(locale === 'en' ? cleanSearchQuery(product.title) : (keywordEn || cleanSearchQuery(product.title)))
-                  : buildAffiliateUrl(product.asin, product.title)}
+                  : homeStore
+                    ? buildHomeAffiliateUrl(product.asin, homeStore)
+                    : buildAffiliateUrl(product.asin, product.title)}
               {...(pinMarket
                 ? { 'data-pin-market': pinMarket, 'data-pin-asin': product.asin, 'data-pin-query': cleanSearchQuery(product.title) }
-                : {})}
+                : homeStore
+                  ? { 'data-home-domain': homeStore.domain, 'data-home-tag': homeStore.tag }
+                  : {})}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-none w-64 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl"
