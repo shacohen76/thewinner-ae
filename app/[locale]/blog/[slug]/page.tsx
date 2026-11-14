@@ -12,10 +12,25 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae';
 const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL || SITE_URL;
 const SITE_NAME = 'The Winners';
 
+// Hybrid blog (2026-11-14): existing file posts are prebuilt; NEW Supabase-sourced posts
+// render on first hit (dynamicParams) then cache for `revalidate` seconds — no rebuild.
+export const dynamicParams = true;
+export const revalidate = 3600;
+
+// Slugs are ASCII today, but decode defensively (mirrors app/[locale]/best/[market]/[slug])
+// so a percent-encoded or non-ASCII slug still matches the DB/file row.
+function decodeSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 // ── Static params ──────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
+  const slugs = await getAllSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -27,7 +42,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlug(decodeSlug(slug));
   if (!post) return { title: 'Post Not Found' };
 
   return {
@@ -62,10 +77,11 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const decoded = decodeSlug(slug);
+  const post = await getPostBySlug(decoded);
   if (!post) notFound();
 
-  const related = getRelatedPosts(slug, 3);
+  const related = await getRelatedPosts(decoded, 3);
 
   // Format date
   const pubDate = new Date(post.publish_date);

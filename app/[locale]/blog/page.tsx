@@ -38,10 +38,13 @@ const TIER_INFO: Record<number, { label: string; color: string }> = {
   4: { label: 'Recipes & Entertainment', color: 'bg-amber-100 text-amber-700 border-amber-200' },
 };
 
-export default function BlogIndexPage({ params }: { params: { locale: string } }) {
+// Hybrid blog (2026-11-14): index merges file + Supabase posts at request time, cached hourly.
+export const revalidate = 3600;
+
+export default async function BlogIndexPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
 
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   // Group by tier for section headers
   const tiers = [1, 2, 3, 4];
