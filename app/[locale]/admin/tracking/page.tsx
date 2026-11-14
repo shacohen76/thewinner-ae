@@ -329,6 +329,13 @@ export default function AdminTracking() {
         setLoading(false);
         return;
       }
+      if (res.status === 503) {
+        // Server has no ADMIN_PASSWORD configured — route fails closed (2026-11-14).
+        setError('Admin access is not configured on the server (ADMIN_PASSWORD missing)');
+        setAuthenticated(false);
+        setLoading(false);
+        return;
+      }
       const json = await res.json();
       setData(json);
       setAuthenticated(true);
