@@ -39,7 +39,10 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   return new Response(urlsetXml(entries), {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      // 2026-11-14: + stale-if-error. A failed render now throws (5xx, never an empty 200);
+      // Vercel's CDN does not cache errors and, with stale-if-error, keeps serving the last good
+      // copy for up to 1 day instead of the error (vercel.com/docs/caching/cache-control-headers).
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400',
     },
   });
 }

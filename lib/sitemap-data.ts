@@ -101,8 +101,10 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
       lastmod: dates.get(slug.toLowerCase()),
     }));
   } catch (error) {
+    // 2026-11-14: rethrow (was `return []`). The route then fails this render, so ISR keeps the
+    // last good copy instead of caching an empty 200; with no good copy yet it answers 5xx.
     console.error(`sitemap euNativeIndexableEntries(${locale}) failed:`, error);
-    return [];
+    throw error;
   }
 }
 
@@ -122,7 +124,7 @@ export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
     }));
   } catch (error) {
     console.error('sitemap ptIndexableEntries failed:', error);
-    return [];
+    throw error;   // 2026-11-14: same as euNativeIndexableEntries — never cache an empty 200
   }
 }
 

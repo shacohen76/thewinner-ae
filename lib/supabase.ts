@@ -576,7 +576,10 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
       .range(from, from + page - 1);
     if (error) {
       console.error(`Error fetching ${locale} translated slugs:`, error);
-      break;
+      // 2026-11-14 (LOCALE SITE 1, 6.9 GO): THROW, never return a partial set. A `break` here
+      // returned an empty set on a page-1 statement timeout (57014, measured 2026-11-14 04:40 UTC
+      // on /sitemap/indexable-pl.xml) and the sitemap route cached a 200 with 0 URLs for an hour.
+      throw new Error(`getTranslatedSlugs(${locale}) failed at offset ${from}: ${error.message}`);
     }
     // supabase-js types the embedded relation as an array; at runtime a to-one
     // FK returns a single object. Handle both.
