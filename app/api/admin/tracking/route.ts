@@ -2,7 +2,7 @@
 // Admin Tracking Data API — /api/admin/tracking
 // ============================================
 // Created: 2026-03-28
-// Last Modified: 2026-05-25 (Phase 2 — dashboard truth fix)
+// Last Modified: 2026-11-14 (auth fails closed: no built-in ADMIN_PASSWORD fallback)
 // v1.1: Fixed timezone — uses Dubai time (UTC+4) for calendar day boundaries
 // v1.2: Added user_id + site to session query. Added user-level aggregation.
 // v1.3: Added session_details array per user for expandable journey view.
@@ -21,6 +21,7 @@
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 import { getGeoGroup, getGeoProgram, getProgramConfig, ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 // 2026-10-22: bot UA list comes from public.junk_traffic_rules (was lib/bot-signatures.ts).
@@ -66,11 +67,19 @@ interface GeoBucket { sessions: number; with_gclid: number; with_clicks: number;
 const emptyBucket = (): GeoBucket => ({ sessions: 0, with_gclid: 0, with_clicks: 0, total_asins: 0 });
 
 export async function GET(request: NextRequest) {
-  // Simple password protection
-  const password = request.nextUrl.searchParams.get('key');
-  const adminPassword = process.env.ADMIN_PASSWORD || 'tw2026admin';
-
-  if (password !== adminPassword) {
+  // Password protection — FAIL CLOSED (2026-11-14).
+  // ADMIN_PASSWORD must be set (non-empty) in the environment. There is no
+  // built-in fallback: if it is missing, the route refuses every request (503)
+  // instead of accepting a default value.
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    console.error('[admin/tracking] ADMIN_PASSWORD is not set — refusing request');
+    return NextResponse.json({ error: 'Admin access not configured' }, { status: 503 });
+  }
+  const password = request.nextUrl.searchParams.get('key') ?? '';
+  const given = Buffer.from(password, 'utf8');
+  const expected = Buffer.from(adminPassword, 'utf8');
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
