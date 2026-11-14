@@ -144,7 +144,14 @@ export async function structuralEntries(): Promise<SitemapEntry[]> {
   // localized /best (ar/ja) now live in their own indexable-ar / indexable-ja
   // sitemaps (allowlisted pages only) — no longer dumped here. 2026-09-10.
 
-  for (const slug of getAllSlugs()) out.push({ url: `${base}/blog/${slug}`, changefreq: 'monthly', priority: 0.7 });
+  // Blog slugs (file + DB merged). 2026-11-14: getAllSlugs is now async (hybrid blog) and
+  // wrapped so a blog/DB failure can NEVER drop the structural pages above (home, categories)
+  // or fail the build — it just yields zero blog URLs for this render.
+  try {
+    for (const slug of await getAllSlugs()) out.push({ url: `${base}/blog/${slug}`, changefreq: 'monthly', priority: 0.7 });
+  } catch (error) {
+    console.error('sitemap structuralEntries blog slugs failed, skipping blog URLs:', error);
+  }
   return out;
 }
 
