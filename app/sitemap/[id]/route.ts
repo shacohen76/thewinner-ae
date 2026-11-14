@@ -6,6 +6,14 @@ import { BR_PT_ENABLED } from '@/lib/feature-flags';
 import { EU_NATIVE_CODES } from '@/lib/native-locales';
 
 export const revalidate = 3600;
+// 2026-11-14 (LOCALE SITE 1, 6.9 GO): every DB read in a sitemap chunk is LIVE — never from
+// Next's data cache. With only `revalidate` above, Next 14.2 "auto cache"s these fetches
+// (patch-fetch.js) but silently skips writing any entry over 2 MB (incremental-cache
+// index.js:383). A locale's 1000-row slug page is ~2 MB, so an old small entry could never
+// be refreshed: measured 2026-11-14 11:34 UTC, thewinner.ae/sitemap/indexable-pl.xml rendered
+// 0 URLs with ZERO pl slug requests reaching Supabase. The CDN copy (Cache-Control below) is
+// unchanged and is still what absorbs crawler traffic.
+export const fetchCache = 'force-no-store';
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const id = params.id.replace(/\.xml$/, '');
