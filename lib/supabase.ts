@@ -561,25 +561,27 @@ export async function getKeywordMarketplaceCount(keywordId: number, marketplace:
 // reuses the identical gate. Callers pass 'ar' or 'ja'.
 export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
   const slugs = new Set<string>();
-  let from = 0;
+  let after = -1;            // keyset cursor: last keyword_id read (ids are positive)
   const page = 1000;
   for (;;) {
     const { data, error } = await supabase
       .from('keyword_translations')
-      .select('qa_guide, keywords(slug)')
+      .select('keyword_id, qa_guide, keywords(slug)')
       .eq('locale', locale)
-      // 2026-08-30: stable sort is REQUIRED for range() pagination — without it PostgREST
-      // returns rows in unspecified order and pages silently skip/duplicate rows, so the
-      // set came back short & non-deterministically (same bug getAllKeywords documents).
-      // keyword_id is unique within a locale, so it's a stable total order.
+      // 2026-11-14 (LOCALE SITE 1, 6.9 GO): KEYSET paging (keyword_id > last) instead of
+      // OFFSET. With OFFSET every deep page read and sorted the WHOLE locale (EXPLAIN 2026-11-14:
+      // pt offset 13000 = bitmap scan + external-merge sort, 1,595 ms; it hit the anon 3 s
+      // statement_timeout at 11:12:55 UTC). Keyset keeps each page on the (locale, keyword_id)
+      // index. keyword_id is unique within a locale (unique (keyword_id, locale)), so the order
+      // is total and no row is skipped or repeated — same guarantee the 2026-08-30 sort gave.
+      .gt('keyword_id', after)
       .order('keyword_id', { ascending: true })
-      .range(from, from + page - 1);
+      .limit(page);
     if (error) {
       console.error(`Error fetching ${locale} translated slugs:`, error);
-      // 2026-11-14 (LOCALE SITE 1, 6.9 GO): THROW, never return a partial set. A `break` here
-      // returned an empty set on a page-1 statement timeout (57014, measured 2026-11-14 04:40 UTC
-      // on /sitemap/indexable-pl.xml) and the sitemap route cached a 200 with 0 URLs for an hour.
-      throw new Error(`getTranslatedSlugs(${locale}) failed at offset ${from}: ${error.message}`);
+      // 2026-11-14 (#133): THROW, never return a partial set. A `break` here returned an empty
+      // set on a first-page statement timeout (57014) and the sitemap answered 200 with 0 URLs.
+      throw new Error(`getTranslatedSlugs(${locale}) failed after keyword_id ${after}: ${error.message}`);
     }
     // supabase-js types the embedded relation as an array; at runtime a to-one
     // FK returns a single object. Handle both.
@@ -591,7 +593,12 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
       if (slug) slugs.add(slug.toLowerCase());
     }
     if (rows.length < page) break;
-    from += page;
+    const last = Number(rows[rows.length - 1]?.keyword_id);
+    if (!Number.isFinite(last) || last <= after) {
+      // cannot advance the cursor → fail rather than loop or return a partial set
+      throw new Error(`getTranslatedSlugs(${locale}) keyset cursor did not advance after ${after}`);
+    }
+    after = last;
   }
   return slugs;
 }
