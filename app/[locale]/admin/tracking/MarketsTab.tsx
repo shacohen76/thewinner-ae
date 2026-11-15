@@ -29,8 +29,12 @@ interface Hour { market: string; local_date: string; local_hour: number; gads_co
 type Day = Omit<Hour, 'market' | 'local_hour'>;
 interface Base { market: string; local_hour: number; normal: number | null; normal_cost?: number | null }
 interface Camp { customer_id: string; campaign_id: string; market: string; name: string | null; budget_amount: number | null;
-  budget_shared: boolean; spend_today: number | null; spend_date: string | null; updated_at: string }
-interface Order { id: number; market: string; kind: 'seasonality' | 'budget'; target_id: string | null; target_name: string | null;
+  budget_shared: boolean; spend_today: number | null; spend_date: string | null; updated_at: string;
+  bid_type: string | null; bid_target: number | null; strategy_id: string | null }
+interface Strat { customer_id: string; strategy_id: string; market: string; name: string | null; strategy_type: string | null;
+  target_kind: 'troas' | 'tcpa' | null; target_value: number | null; max_cpc: number | null; campaign_count: number | null; updated_at: string }
+type OrderKind = 'seasonality' | 'budget' | 'campaign_target' | 'strategy_target' | 'strategy_max_cpc';
+interface Order { id: number; market: string; kind: OrderKind; target_id: string | null; target_name: string | null; target_type: string | null;
   from_value: number; to_value: number; status: 'queued' | 'running' | 'done' | 'failed' | 'expired'; requested_at: string;
   done_at: string | null; read_back: number | null; message: string | null }
 interface Alert { market: string; rule: string; message: string; sent_at: string }
@@ -39,8 +43,11 @@ interface Pulse {
   generated_at: string; settings: Json; markets: Mkt[]; unmatched_accounts: { customer_id: string; account_name: string | null }[];
   today: Hour[]; baseline: Base[]; month: Day[]; fx: { currency: string; to_ils: number }[]; comm_actual: { program: string; rate: number | null }[];
   amazon_mtd?: { market: string; items: number | null; revenue: number | null; earnings: number | null; last_new_order: string | null }[];
-  status?: Status[]; campaigns?: Camp[]; orders?: Order[]; alerts?: Alert[];
+  status?: Status[]; campaigns?: Camp[]; bid_strategies?: Strat[]; orders?: Order[]; alerts?: Alert[];
 }
+const ROAS_TYPES = ['MAXIMIZE_CONVERSION_VALUE', 'TARGET_ROAS'], CPA_TYPES = ['MAXIMIZE_CONVERSIONS', 'TARGET_CPA'];
+const roasTxt = (v: number | null | undefined) => (v == null ? '—' : Math.round(v * 100) + '%');
+const cur2 = (c: string | null | undefined, v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v < 0 ? '−' : '') + sym(c).trim() + Math.abs(v).toFixed(2));
 
 const REG: Record<string, { label: string; color: string }> = {
   gulf: { label: 'Gulf', color: '#6ee7b7' }, europe: { label: 'Europe', color: '#93c5fd' },
@@ -120,6 +127,9 @@ function derive(m: Mkt, P: Pulse) {
   const cs = (P.campaigns ?? []).filter(c => c.market === m.market && c.customer_id === m.customer_id);
   const newest = cs.reduce((a, c) => Math.max(a, new Date(c.updated_at).getTime()), 0);
   const campaigns = cs.filter(c => newest - new Date(c.updated_at).getTime() < 30 * 60e3);
+  const ss = (P.bid_strategies ?? []).filter(s => s.market === m.market && s.customer_id === m.customer_id);
+  const newestS = ss.reduce((a, s) => Math.max(a, new Date(s.updated_at).getTime()), 0);
+  const strategies = ss.filter(s => newestS - new Date(s.updated_at).getTime() < 90 * 60e3);
   const ahead = S('budget_ahead_pts', 0.2);
   const rank = used != null && used >= 1 ? 0.5 : used != null && normBy != null && used - normBy > ahead ? 2 : { stuck: 0, watch: 1, flowing: 3, waking: 4, asleep: 5 }[st];
   return {
@@ -127,7 +137,7 @@ function derive(m: Mkt, P: Pulse) {
     vis: sum('vis'), outs: sum('outs'), items: sum('items'), rev: sum('rev'), earn, earnAcct: hasAcct ? toAcct(earn) : null,
     earnIls: fxA == null ? null : earn * fxA, net: hasAcct && spend != null && toAcct(earn) != null ? (toAcct(earn) as number) - spend : null,
     normT: Math.round(hours.slice(0, L.h).reduce((a, x) => a + x.norm, 0) + hours[L.h].norm * L.m / 60),
-    amzStale: readAge == null || readAge > lagH, readAge, lagH, status, campaigns,
+    amzStale: readAge == null || readAge > lagH, readAge, lagH, status, campaigns, strategies,
     act: P.comm_actual.find(c => c.program === m.amazon_program)?.rate ?? null,
     mtd: P.amazon_mtd?.find(a => a.market === m.market) ?? null,
     judgeCo: S('watch_clickout', 0.2), stuckRatio: S('stuck_ratio', 0.5), stuckMin: S('stuck_min_normal', 2),
@@ -196,7 +206,9 @@ function Chart({ x }: { x: D }) {
   );
 }
 
-interface Ask { x: D; kind: 'seasonality' | 'budget'; from: number; to: number; camp?: Camp }
+// one confirm request. key = the stepper key to reset after a successful queue.
+interface Ask { x: D; kind: OrderKind; from: number; to: number; targetId?: string; name?: string; unit: 'pts' | 'money' | 'roas';
+  title: string; moves?: string[]; key: string }
 
 export default function MarketsTab({ adminKey }: { adminKey: string }) {
   const [P, setP] = useState<Pulse | null>(null);
@@ -204,11 +216,10 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [V, setV] = useState({ reg: 'all', prob: true, sleep: false, hide: [] as string[], open: null as string | null });
+  const [V, setV] = useState({ reg: 'all', prob: true, sleep: false, hide: [] as string[], open: null as string | null, dt: 'today' });
   const [view, setView] = useState<'h' | 'd'>('h');
-  const [sd, setSd] = useState<Record<string, number>>({});           // seasonality step per market (points)
-  const [bsel, setBsel] = useState<Record<string, string | null>>({}); // selected campaign per market
-  const [bd, setBd] = useState<Record<string, number>>({});            // budget step per campaign (account currency)
+  const [steps, setSteps] = useState<Record<string, number>>({});     // stepper values: `${market}:${kind}:${id}`
+  const [sel, setSel] = useState<Record<string, string | null>>({});  // open campaign (c:<id>) or strategy (s:<id>) per market
   const [ask, setAsk] = useState<Ask | null>(null);
   const [toast, setToast] = useState('');
   const toastT = useRef<ReturnType<typeof setTimeout>>();
@@ -288,12 +299,12 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
     try {
       const r = await fetch('/api/admin/markets/orders', {
         method: 'POST', headers: { ...hdr, 'content-type': 'application/json' },
-        body: JSON.stringify({ market: a.x.m.market, kind: a.kind, target_id: a.camp?.campaign_id ?? null, from_value: a.from, to_value: a.to }),
+        body: JSON.stringify({ market: a.x.m.market, kind: a.kind, target_id: a.targetId ?? null, from_value: a.from, to_value: a.to }),
       });
       const j = await r.json();
       if (!r.ok) { say(`✗ ${a.x.m.market}: ${j.error ?? 'not queued'}`); return; }
       setOrders(o => [j as Order, ...o]);
-      if (a.kind === 'seasonality') setSd(s => ({ ...s, [a.x.m.market]: 0 })); else setBd(s => ({ ...s, [a.camp!.campaign_id]: 0 }));
+      setSteps(s => ({ ...s, [a.key]: 0 }));
       say(`${a.x.m.market}: sent — waiting for the worker`);
     } catch { say(`✗ ${a.x.m.market}: could not reach the server`); }
   }
@@ -384,9 +395,9 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                 <span className={`hidden lg:block text-lg transition-transform ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
               </button>
               {open && <Detail x={x} P={P} view={view} setView={setView} month={month?.market === x.m.market ? month.rows : null}
-                orders={orders.filter(o => o.market === x.m.market)} sd={sd[x.m.market] ?? 0} setSd={v => setSd(s => ({ ...s, [x.m.market]: v }))}
-                sel={bsel[x.m.market] ?? null} setSel={v => setBsel(s => ({ ...s, [x.m.market]: v }))} bd={bd} setBd={(id, v) => setBd(s => ({ ...s, [id]: v }))}
-                onAsk={setAsk} S={S} />}
+                orders={orders.filter(o => o.market === x.m.market)} dt={V.dt || 'today'} setDt={t => saveV({ ...V, dt: t })}
+                steps={steps} setStep={(k, v) => setSteps(s => ({ ...s, [k]: v }))}
+                sel={sel[x.m.market] ?? null} setSel={v => setSel(s => ({ ...s, [x.m.market]: v }))} onAsk={setAsk} S={S} />}
             </div>
           );
         })}
@@ -434,29 +445,31 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
   );
 }
 
+const fmtVal = (a: { unit: Ask['unit'] }, ac: string | null, v: number) =>
+  a.unit === 'pts' ? sp((v - 1) * 100) : a.unit === 'roas' ? roasTxt(v) : cur2(ac, v);
+
 function Confirm({ a, onNo, onYes }: { a: Ask; onNo: () => void; onYes: () => void }) {
   const ac = a.x.m.acct_currency;
   useEffect(() => { const k = (e: KeyboardEvent) => { if (e.key === 'Escape') onNo(); }; document.addEventListener('keydown', k); return () => document.removeEventListener('keydown', k); }, [onNo]);
-  const seas = a.kind === 'seasonality';
+  const dd = 'm-0', dt = 'text-[#94a0bd]';
+  const when = a.kind === 'budget' ? 'from now, today and the next days, until changed again'
+    : a.kind === 'seasonality' ? 'now' : 'now; Google Ads bids toward it from the next auctions';
   return (
     <div className="fixed inset-0 z-40 bg-[#03060f]/70 flex items-center justify-center p-4">
-      <div role="dialog" aria-modal="true" aria-labelledby="mp-c" className="bg-[#121a2e] border border-[#33416a] rounded-2xl max-w-[420px] w-full p-5 flex flex-col gap-3.5 shadow-2xl">
-        <h3 id="mp-c" className="m-0 text-lg font-bold text-white">{a.x.m.market} · {seas ? 'Seasonality' : 'Daily budget'}</h3>
+      <div role="dialog" aria-modal="true" aria-labelledby="mp-c" className="bg-[#121a2e] border border-[#33416a] rounded-2xl max-w-[440px] w-full p-5 flex flex-col gap-3.5 shadow-2xl">
+        <h3 id="mp-c" className="m-0 text-lg font-bold text-white">{a.x.m.market} · {a.title}</h3>
         <div className="flex items-center gap-3 text-[26px] font-extrabold text-white">
-          {seas ? sp((a.from - 1) * 100) : money(ac, a.from)} <span className="text-xl text-[#94a0bd]">→</span> {seas ? sp((a.to - 1) * 100) : money(ac, a.to)}
+          {a.kind === 'budget' ? money(ac, a.from) : fmtVal(a, ac, a.from)} <span className="text-xl text-[#94a0bd]">→</span> {a.kind === 'budget' ? money(ac, a.to) : fmtVal(a, ac, a.to)}
         </div>
         <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
-          {seas ? <>
-            <dt className="text-[#94a0bd]">Account</dt><dd className="m-0">{a.x.m.customer_id} · {a.x.m.label}</dd>
-            <dt className="text-[#94a0bd]">What</dt><dd className="m-0">the account&apos;s one active seasonality adjustment; nothing is created or deleted</dd>
-            <dt className="text-[#94a0bd]">When</dt><dd className="m-0">now</dd>
-          </> : <>
-            <dt className="text-[#94a0bd]">Campaign</dt><dd className="m-0">{a.camp?.name} (only this one)</dd>
-            <dt className="text-[#94a0bd]">Account</dt><dd className="m-0">{a.x.m.customer_id} · {a.x.m.label}</dd>
-            <dt className="text-[#94a0bd]">When</dt><dd className="m-0">from now, today and the next days, until changed again</dd>
-          </>}
-          <dt className="text-[#94a0bd]">Safety</dt><dd className="m-0">stops if the value changed since you looked, or if it is outside the limits</dd>
-          <dt className="text-[#94a0bd]">Check</dt><dd className="m-0">read back from Google Ads and shown in the orders box</dd>
+          {a.kind === 'seasonality'
+            ? <><dt className={dt}>What</dt><dd className={dd}>the account&apos;s one active seasonality adjustment; nothing is created or deleted</dd></>
+            : a.moves ? <><dt className={dt}>Strategy</dt><dd className={dd}>{a.name}</dd><dt className={dt}>Moves</dt><dd className={dd}><b>{a.moves.length} campaign{a.moves.length > 1 ? 's' : ''}</b>: {a.moves.join(' · ')}</dd></>
+            : <><dt className={dt}>Campaign</dt><dd className={dd}>{a.name} (only this one)</dd></>}
+          <dt className={dt}>Account</dt><dd className={dd}>{a.x.m.customer_id} · {a.x.m.label}</dd>
+          <dt className={dt}>When</dt><dd className={dd}>{when}</dd>
+          <dt className={dt}>Safety</dt><dd className={dd}>stops if the value or bidding type changed since you looked, or if the step is over the limit</dd>
+          <dt className={dt}>Check</dt><dd className={dd}>read back from Google Ads and shown in the orders list</dd>
         </dl>
         <div className="flex gap-2 justify-end">
           <button type="button" onClick={onNo} className="rounded-xl px-4 py-2.5 font-bold border border-[#33416a] bg-[#1a2440]">Cancel</button>
@@ -467,25 +480,48 @@ function Confirm({ a, onNo, onYes }: { a: Ask; onNo: () => void; onYes: () => vo
   );
 }
 
-function Stepper({ steps, value, onStep, big, small, cls }: { steps: [number, string][]; value: string; onStep: (d: number) => void; big?: boolean; small: string; cls: string }) {
-  const btn = 'bg-[#1a2440] border border-[#33416a] rounded-xl text-base font-bold min-h-[48px] hover:border-blue-400';
+// compact stepper (owner 11-15: smaller text): [−big][−small] value [+small][+big] + apply button
+function Stepper({ steps, value, small, cls, onStep, apply, onApply }: { steps: [number, string][]; value: string; small: string; cls: string;
+  onStep: (d: number) => void; apply: string | null; onApply: () => void }) {
+  const btn = 'bg-[#1a2440] border border-[#33416a] rounded-xl text-sm font-semibold text-[#c3cbe0] min-h-[44px] px-2 whitespace-nowrap hover:border-blue-400';
   return (
-    <div className="grid grid-cols-[48px_44px_1fr_44px_48px] gap-1.5" role="group">
-      {steps.slice(0, 2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
-      <output aria-live="polite" className="flex flex-col items-center justify-center bg-[#0b1020] border border-[#33416a] rounded-xl p-1">
-        <span className={`${big ? 'text-2xl' : 'text-xl'} font-extrabold leading-tight ${cls}`}>{value}</span><small className="text-[13px] text-[#c3cbe0]">{small}</small>
-      </output>
-      {steps.slice(2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
+    <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-[minmax(46px,auto)_minmax(46px,auto)_minmax(110px,1fr)_minmax(46px,auto)_minmax(46px,auto)] gap-1.5" role="group">
+        {steps.slice(0, 2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
+        <output aria-live="polite" className="flex flex-col items-center justify-center bg-[#0b1020] border border-[#33416a] rounded-xl p-1">
+          <span className={`text-xl font-extrabold leading-tight ${cls}`}>{value}</span><small className="text-[13px] text-[#c3cbe0]">{small}</small>
+        </output>
+        {steps.slice(2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
+      </div>
+      <button type="button" disabled={!apply} onClick={onApply}
+        className="rounded-xl px-3.5 py-2.5 font-bold text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd]">{apply ?? 'Pick a change'}</button>
     </div>
   );
 }
 
-function Detail({ x, P, view, setView, month, orders, sd, setSd, sel, setSel, bd, setBd, onAsk, S }: {
-  x: D; P: Pulse; view: 'h' | 'd'; setView: (v: 'h' | 'd') => void; month: Day[] | null; orders: Order[];
-  sd: number; setSd: (v: number) => void; sel: string | null; setSel: (v: string | null) => void;
-  bd: Record<string, number>; setBd: (id: string, v: number) => void; onAsk: (a: Ask) => void; S: (k: string, d: number) => number;
+const SUB = 'text-[13px] font-bold text-[#c3cbe0]';
+const CARD = 'bg-[#121a2e] border border-[#24304d] rounded-xl p-3 flex flex-col gap-2 min-w-0';
+const CENTS: [number, string][] = [[-0.05, '−0.05'], [-0.01, '−0.01'], [0.01, '+0.01'], [0.05, '+0.05']];
+const PTS: [number, string][] = [[-0.05, '−5'], [-0.01, '−1'], [0.01, '+1'], [0.05, '+5']];
+const r2 = (v: number) => Math.round(v * 100) / 100;
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+const dCls = (d: number) => (d > 0 ? 'text-emerald-400' : d < 0 ? 'text-red-400' : 'text-[#94a0bd]');
+
+function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep, sel, setSel, onAsk, S }: {
+  x: D; P: Pulse; view: 'h' | 'd'; setView: (v: 'h' | 'd') => void; month: Day[] | null; orders: Order[]; dt: string; setDt: (t: string) => void;
+  steps: Record<string, number>; setStep: (k: string, v: number) => void; sel: string | null; setSel: (v: string | null) => void;
+  onAsk: (a: Ask) => void; S: (k: string, d: number) => number;
 }) {
-  const ac = x.m.acct_currency, H = view === 'h', ilNow = localNow(IL);
+  const ac = x.m.acct_currency, mk = x.m.market;
+  const st = (k: string) => steps[`${mk}:${k}`] ?? 0;
+  const set = (k: string, v: number) => setStep(`${mk}:${k}`, r2(v));
+  const pctLim = S('bid_step_pct', 0.5), ptsLim = S('troas_step_pts', 50) / 100, minB = S('bid_min_amount', 0.01), minR = S('troas_min', 0.05);
+  const stratOf = (id: string | null) => x.strategies.find(s => s.strategy_id === id) ?? null;
+  const usedBy = (id: string) => x.campaigns.filter(c => c.strategy_id === id).map(c => c.name ?? c.campaign_id);
+  const tabs: [string, string][] = [['today', 'Today'], ['camps', `Campaigns & bids${x.campaigns.length ? ` (${x.campaigns.length})` : ''}`], ['money', 'Money']];
+
+  // ── Today tab
+  const H = view === 'h', ilNow = localNow(IL);
   const dayNormal = x.hours.reduce((a, h) => a + h.norm, 0);
   const rows = H
     ? x.hours.map(h => ({ key: String(h.h), label: pad(h.h) + ':00', il: pad(((h.h - x.L.h + ilNow.h) % 24 + 24) % 24) + ':00', vis: h.vis, norm: h.norm, outs: h.outs,
@@ -497,160 +533,273 @@ function Detail({ x, P, view, setView, month, orders, sd, setSd, sel, setSel, bd
   const td = 'px-2.5 py-1.5 text-right whitespace-nowrap border-b border-[#24304d]';
   const th = 'px-2.5 py-1.5 text-right whitespace-nowrap bg-[#1a2440] text-[#94a0bd] text-xs uppercase tracking-wide font-bold';
   const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 text-xs font-bold';
-  const now = Math.round(((x.m.seasonality ?? 1) - 1) * 100), range = S('seas_step_range_pts', 25), cap = S('seas_cap_pts', 60), floor = S('seas_floor_pts', -50);
-  const tgt = now + sd;
-  const camp = x.campaigns.find(c => c.campaign_id === sel) ?? null;
-  const cb = camp ? num(camp.budget_amount, 0) : 0, cd = camp ? bd[camp.campaign_id] ?? 0 : 0;
-  const maxF = S('budget_max_factor', 3), minB = S('budget_min_amount', 1);
-  const stateTxt = (o: Order) => o.status === 'queued' ? 'Sending…' : o.status === 'running' ? 'Working…' : o.status === 'done' ? '✓ Done' : o.status === 'expired' ? '✗ Expired' : '✗ Not applied';
-  const stateCls = (o: Order) => o.status === 'done' ? 'text-emerald-400' : o.status === 'queued' || o.status === 'running' ? 'text-blue-400' : 'text-red-400';
-  const fmtV = (o: Order, v: number) => (o.kind === 'seasonality' ? sp((v - 1) * 100) : money(ac, v));
-  return (
-    <section className="border-t border-[#33416a] bg-[#0f1730] p-4 flex flex-col gap-3.5" aria-label={`${x.m.market} detail`}>
-      <div className="text-[15px] text-[#c3cbe0] bg-[#1a2440] rounded-xl px-3.5 py-2.5 [&_b]:text-white">{why(x)}</div>
-      <div className="grid xl:grid-cols-[minmax(0,1fr)_340px] gap-3.5">
-        <div className="flex flex-col gap-3.5 min-w-0">
-          {x.hasAcct && (
-            <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3.5 flex flex-col gap-2.5">
-              <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Daily budget</h3><span className="text-[13px] text-[#94a0bd]">own account {x.m.customer_id} · account day · {ac}</span></div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-3 gap-y-2">
-                {[['Used', money(ac, x.spend), ''], ['Budget', money(ac, x.budget), ''], ['Left', money(ac, x.budget != null && x.spend != null ? Math.max(0, x.budget - x.spend) : null), ''],
-                  ['Used %', pct(x.used), x.used != null && x.used >= 1 ? 'text-red-400' : ''], ['Normal by now', pct(x.normBy), 'text-[#94a0bd]']].map(([k, v, c]) => (
-                  <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>
-                ))}
-              </div>
-              <Bar x={x} big />
-            </div>
-          )}
-          <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3.5 flex flex-col gap-2">
-            <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Today by local hour</h3><span className="text-[13px] text-[#94a0bd]">bars = ad visitors · dashed = normal · strip = clickout rate</span></div>
-            <Chart x={x} />
-          </div>
-          <div className="flex gap-1" role="tablist">
-            {(['h', 'd'] as const).map(v => (
-              <button key={v} type="button" role="tab" aria-selected={view === v} onClick={() => setView(v)}
-                className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border ${view === v ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>
-                {v === 'h' ? 'Today by hour' : 'This month by day'}</button>
+
+  const todayTab = (
+    <div className="flex flex-col gap-3.5">
+      {x.hasAcct && (
+        <div className={CARD}>
+          <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Daily budget</h3><span className="text-[13px] text-[#94a0bd]">own account {x.m.customer_id} · account day · {ac}</span></div>
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-3 gap-y-2">
+            {[['Used', money(ac, x.spend), ''], ['Budget', money(ac, x.budget), ''], ['Left', money(ac, x.budget != null && x.spend != null ? Math.max(0, x.budget - x.spend) : null), ''],
+              ['Used %', pct(x.used), x.used != null && x.used >= 1 ? 'text-red-400' : ''], ['Normal by now', pct(x.normBy), 'text-[#94a0bd]']].map(([k, v, c]) => (
+              <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>
             ))}
           </div>
-          {!H && !month && <p className="text-sm text-[#94a0bd]">Loading month…</p>}
-          <div className="overflow-x-auto border border-[#24304d] rounded-xl">
-            <table className="w-full min-w-[900px] text-sm border-separate border-spacing-0">
-              <thead><tr>
-                <th className={`${th} text-left sticky left-0 z-10`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
-                <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th>
-                <th className={`${th} border-l border-[#33416a]`}>Visitors</th><th className={th}>Normal</th><th className={th}>Clickouts</th><th className={th}>Rate</th><th className={th}>Cost / clickout</th>
-                <th className={`${th} border-l border-[#33416a]`}>Amazon items</th><th className={th}>Revenue {x.m.currency}</th><th className={th}>Net ≈{sym(ac).trim()}</th>
-              </tr></thead>
-              <tbody>
-                {rows.map(r => {
-                  const rate = r.vis ? (r.outs ?? 0) / r.vis : null;
-                  const lowV = H && r.vis != null && !r.now && r.norm >= x.stuckMin && r.vis < x.stuckRatio * r.norm;
-                  const e = x.hasAcct ? x.toAcct(r.earn) : null, net = e != null && r.cost != null ? e - r.cost : null;
-                  const lag = x.amzStale || r.lag ? 'bg-violet-400/10' : '';
-                  return (
-                    <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now ? 'bg-yellow-400/10' : ''}`}>
-                      <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{H && <td className={td}>{r.il}</td>}
-                      <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.cost) : '—'}</td><td className={td}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
-                      <td className={`${td} border-l border-[#33416a]`}>{n0(r.vis)}</td>
-                      <td className={td}>{lowV ? <span className={flag}>{n1(r.norm)}</span> : H ? n1(r.norm) : n0(r.norm)}</td>
-                      <td className={td}>{n0(r.outs)}</td>
-                      <td className={td}>{rate != null && rate < x.judgeCo && (r.vis ?? 0) >= 4 ? <span className={flag}>{pct(rate)}</span> : pct(rate)}</td>
-                      <td className={td}>{r.cost && r.outs ? (r.cost / r.outs).toFixed(2) : '—'}</td>
-                      <td className={`${td} border-l border-[#33416a] ${lag}`}>{n0(r.items)}</td><td className={`${td} ${lag}`}>{money(x.m.currency, r.rev)}</td>
-                      <td className={`${td} ${net == null ? '' : net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{net == null ? '—' : (net >= 0 ? '+' : '') + Math.round(net)}</td>
-                    </tr>
-                  );
-                })}
-                <tr className="font-bold">
-                  <td className={`${td} text-left sticky left-0 bg-[#1a2440]`}>Total</td>{H && <td className={`${td} bg-[#1a2440]`} />}
-                  <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n0(T('cost')) : '—'}</td><td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? n0(T('clicks')) : '—'}</td>
-                  <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('vis'))}</td><td className={`${td} bg-[#1a2440]`}>{H ? `${n0(x.normT)} by now` : '—'}</td>
-                  <td className={`${td} bg-[#1a2440]`}>{n0(T('outs'))}</td><td className={`${td} bg-[#1a2440]`}>{T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
-                  <td className={`${td} bg-[#1a2440]`}>{T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
-                  <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('items'))}</td><td className={`${td} bg-[#1a2440]`}>{money(x.m.currency, T('rev'))}</td>
-                  <td className={`${td} bg-[#1a2440]`}>{(() => { const e = x.hasAcct ? x.toAcct(T('earn')) : null; return e == null ? '—' : signed(ac, e - T('cost')); })()}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] text-[#94a0bd]">
-            <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-yellow-400/20" />current hour</span>
-            <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-violet-400/20" />Amazon still coming in</span>
-            <span>Amazon read {agoTxt(x.readAge)}{x.mtd?.last_new_order ? ` · last new order ${ilTime(x.mtd.last_new_order)} IL` : ''}</span>
-          </div>
+          <Bar x={x} big />
         </div>
+      )}
+      <div className={CARD}>
+        <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Today by local hour</h3><span className="text-[13px] text-[#94a0bd]">bars = ad visitors · dashed = normal · strip = clickout rate</span></div>
+        <Chart x={x} />
+      </div>
+      <div className="flex gap-1" role="tablist">
+        {(['h', 'd'] as const).map(v => (
+          <button key={v} type="button" role="tab" aria-selected={view === v} onClick={() => setView(v)}
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border ${view === v ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>
+            {v === 'h' ? 'By hour' : 'This month by day'}</button>
+        ))}
+      </div>
+      {!H && !month && <p className="text-sm text-[#94a0bd]">Loading month…</p>}
+      <div className="overflow-x-auto border border-[#24304d] rounded-xl">
+        <table className="w-full min-w-[900px] text-sm border-separate border-spacing-0">
+          <thead><tr>
+            <th className={`${th} text-left sticky left-0 z-10`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
+            <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th>
+            <th className={`${th} border-l border-[#33416a]`}>Visitors</th><th className={th}>Normal</th><th className={th}>Clickouts</th><th className={th}>Rate</th><th className={th}>Cost / clickout</th>
+            <th className={`${th} border-l border-[#33416a]`}>Amazon items</th><th className={th}>Revenue {x.m.currency}</th><th className={th}>Net ≈{sym(ac).trim()}</th>
+          </tr></thead>
+          <tbody>
+            {rows.map(r => {
+              const rate = r.vis ? (r.outs ?? 0) / r.vis : null;
+              const lowV = H && r.vis != null && !r.now && r.norm >= x.stuckMin && r.vis < x.stuckRatio * r.norm;
+              const e = x.hasAcct ? x.toAcct(r.earn) : null, net = e != null && r.cost != null ? e - r.cost : null;
+              const lag = x.amzStale || r.lag ? 'bg-violet-400/10' : '';
+              return (
+                <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now ? 'bg-yellow-400/10' : ''}`}>
+                  <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{H && <td className={td}>{r.il}</td>}
+                  <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.cost) : '—'}</td><td className={td}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
+                  <td className={`${td} border-l border-[#33416a]`}>{n0(r.vis)}</td>
+                  <td className={td}>{lowV ? <span className={flag}>{n1(r.norm)}</span> : H ? n1(r.norm) : n0(r.norm)}</td>
+                  <td className={td}>{n0(r.outs)}</td>
+                  <td className={td}>{rate != null && rate < x.judgeCo && (r.vis ?? 0) >= 4 ? <span className={flag}>{pct(rate)}</span> : pct(rate)}</td>
+                  <td className={td}>{r.cost && r.outs ? (r.cost / r.outs).toFixed(2) : '—'}</td>
+                  <td className={`${td} border-l border-[#33416a] ${lag}`}>{n0(r.items)}</td><td className={`${td} ${lag}`}>{money(x.m.currency, r.rev)}</td>
+                  <td className={`${td} ${net == null ? '' : net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{net == null ? '—' : (net >= 0 ? '+' : '') + Math.round(net)}</td>
+                </tr>
+              );
+            })}
+            <tr className="font-bold">
+              <td className={`${td} text-left sticky left-0 bg-[#1a2440]`}>Total</td>{H && <td className={`${td} bg-[#1a2440]`} />}
+              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n0(T('cost')) : '—'}</td><td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? n0(T('clicks')) : '—'}</td>
+              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('vis'))}</td><td className={`${td} bg-[#1a2440]`}>{H ? `${n0(x.normT)} by now` : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{n0(T('outs'))}</td><td className={`${td} bg-[#1a2440]`}>{T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
+              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('items'))}</td><td className={`${td} bg-[#1a2440]`}>{money(x.m.currency, T('rev'))}</td>
+              <td className={`${td} bg-[#1a2440]`}>{(() => { const e = x.hasAcct ? x.toAcct(T('earn')) : null; return e == null ? '—' : signed(ac, e - T('cost')); })()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] text-[#94a0bd]">
+        <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-yellow-400/20" />current hour</span>
+        <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-violet-400/20" />Amazon still coming in</span>
+        <span>Amazon read {agoTxt(x.readAge)}{x.mtd?.last_new_order ? ` · last new order ${ilTime(x.mtd.last_new_order)} IL` : ''}</span>
+      </div>
+    </div>
+  );
 
-        <div className="flex flex-col gap-3.5 min-w-0">
-          {/* orders */}
-          <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3.5 flex flex-col gap-2.5">
-            <span className="self-start text-xs font-bold tracking-wide uppercase text-blue-400 bg-blue-500/15 px-2 py-0.5 rounded">Orders{x.hasAcct ? ` · Google Ads ${x.m.customer_id}` : ''}</span>
-            {!x.hasAcct ? <p className="text-[13px] text-[#94a0bd] m-0">No own Google Ads account yet. When an account named like the others (e.g. <b>thewinnerS.ae {x.m.market}</b>) appears, this row links itself and spend, budget and these controls appear. No code change.</p> : <>
-              <div className="flex justify-between items-baseline"><span>Seasonality now</span><b className="text-lg text-white">{x.m.seasonality == null ? 'none active' : sp(now)}</b></div>
-              {x.m.seasonality != null && <>
-                <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} big value={sd === 0 ? '±0' : sp(sd)} small={`new ${sp(tgt)}`}
-                  cls={sd > 0 ? 'text-emerald-400' : sd < 0 ? 'text-red-400' : 'text-[#94a0bd]'}
-                  onStep={d => setSd(Math.max(Math.max(-range, floor - now), Math.min(Math.min(range, cap - now), sd + d)))} />
-                <span className="text-[13px] text-[#94a0bd]">Range {sp(Math.max(now - range, floor))} … {sp(Math.min(now + range, cap))} (now ±{range}, cap {sp(cap)})</span>
-                <button type="button" disabled={sd === 0} onClick={() => onAsk({ x, kind: 'seasonality', from: x.m.seasonality ?? 1, to: Math.round((1 + tgt / 100) * 1000) / 1000 })}
-                  className="rounded-xl px-3.5 py-3 font-bold text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd]">
-                  {sd === 0 ? 'Pick a change' : `Apply ${x.m.market} seasonality ${sp(now)} → ${sp(tgt)}`}</button>
-              </>}
-              <hr className="border-0 border-t border-[#24304d] my-1" />
-              <div className="flex justify-between items-baseline"><span>Daily budget · {x.campaigns.length} enabled campaigns</span><b className="text-lg text-white">{money(ac, x.budget)}</b></div>
-              <div className="flex flex-col gap-1.5">
-                {x.campaigns.map(c => {
-                  const b = num(c.budget_amount, 0), s = num(c.spend_today, 0), on = sel === c.campaign_id;
-                  return (
-                    <button key={c.campaign_id} type="button" disabled={c.budget_shared} aria-pressed={on} onClick={() => setSel(on ? null : c.campaign_id)}
-                      className={`grid grid-cols-[1fr_auto] gap-x-2.5 gap-y-1 text-left bg-[#1a2440] border rounded-xl px-2.5 py-2 disabled:opacity-55 ${on ? 'border-blue-500 ring-1 ring-blue-500' : 'border-[#33416a]'}`}>
-                      <span className="text-sm font-semibold">{c.name}{c.budget_shared ? ' · shared budget' : ''}</span>
-                      <span className="text-[13px] text-[#c3cbe0] whitespace-nowrap">{money(ac, s)} of {money(ac, b)} · {pct(b ? s / b : null)}</span>
-                      <span className="col-span-2 relative h-1.5 rounded-full bg-[#2a3657]"><i className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${Math.min(b ? s / b : 0, 1) * 100}%`, background: s >= b ? '#f87171' : '#3b82f6' }} /></span>
-                    </button>
-                  );
-                })}
-                {!x.campaigns.length && <span className="text-[13px] text-[#94a0bd]">Campaign list appears after the next job run.</span>}
-              </div>
-              {camp ? <>
-                <Stepper steps={[[-5, `−${sym(ac).trim()}5`], [-1, `−${sym(ac).trim()}1`], [1, `+${sym(ac).trim()}1`], [5, `+${sym(ac).trim()}5`]]}
-                  value={cd === 0 ? '±0' : (cd > 0 ? '+' : '') + money(ac, cd)} small={`${money(ac, cb)} → ${money(ac, cb + cd)}`}
-                  cls={cd > 0 ? 'text-emerald-400' : cd < 0 ? 'text-red-400' : 'text-[#94a0bd]'}
-                  onStep={d => setBd(camp.campaign_id, Math.max(minB - cb, Math.min((maxF - 1) * cb, cd + d)))} />
-                <button type="button" disabled={cd === 0} onClick={() => onAsk({ x, kind: 'budget', from: cb, to: Math.round((cb + cd) * 100) / 100, camp })}
-                  className="rounded-xl px-3.5 py-3 font-bold text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd]">
-                  {cd === 0 ? 'Pick a change' : `Apply ${camp.name}: ${money(ac, cb)} → ${money(ac, cb + cd)}`}</button>
-              </> : <span className="text-[13px] text-[#94a0bd]">Tap a campaign to change its own daily budget, in {ac === 'ILS' ? '₪' : ac}. Shared budgets are changed in Google Ads.</span>}
-              <div className="flex flex-col gap-1.5 text-sm">
-                {orders.slice(0, 6).map(o => (
-                  <div key={o.id} className="bg-[#1a2440] rounded-lg px-2.5 py-2 flex flex-col gap-0.5">
-                    <span className={`font-bold ${stateCls(o)}`}>{stateTxt(o)}</span>
-                    <span>{ilTime(o.requested_at)} · {o.kind === 'seasonality' ? 'seasonality' : o.target_name} {fmtV(o, o.from_value)} → {fmtV(o, o.to_value)}</span>
-                    {o.message && <span className="text-[13px] text-[#94a0bd]">{o.message}</span>}
-                  </div>
-                ))}
-                {!orders.length && <span className="text-[13px] text-[#94a0bd]">No orders in the last 48 h. Each change asks you once to confirm, then shows the result here.</span>}
-                {P.settings.orders_dry_run === true && <span className="text-[13px] text-amber-400">Test mode (orders_dry_run): orders are checked but not written to Google Ads.</span>}
-              </div>
-            </>}
+  // ── Campaigns & bids tab (full width; owner 11-15: not a side panel)
+  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 100);
+  const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
+  const campEditor = (c: Camp) => {
+    const b = num(c.budget_amount, 0), bk = `bud:${c.campaign_id}`, bd = st(bk);
+    const tk = `tgt:${c.campaign_id}`, tdv = st(tk), t0 = num(c.bid_target, 0);
+    const isR = ROAS_TYPES.includes(c.bid_type ?? ''), isC = CPA_TYPES.includes(c.bid_type ?? '');
+    const s = stratOf(c.strategy_id);
+    return (
+      <div className="grid md:grid-cols-2 gap-3.5">
+        <div className={CARD}>
+          <span className={SUB}>Daily budget · {ac}</span>
+          {c.budget_shared ? <span className="text-[13px] text-[#94a0bd]">Shared budget: change it in Google Ads.</span> :
+            <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={bd === 0 ? '±0' : (bd > 0 ? '+' : '') + money(ac, bd)}
+              small={`${money(ac, b)} → ${money(ac, b + bd)}`} cls={dCls(bd)}
+              onStep={d => set(bk, clamp(bd + d, S('budget_min_amount', 1) - b, (S('budget_max_factor', 3) - 1) * b))}
+              apply={bd ? `Apply budget ${money(ac, b)} → ${money(ac, b + bd)}` : null}
+              onApply={() => onAsk({ x, kind: 'budget', from: b, to: r2(b + bd), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'Daily budget', key: `${mk}:${bk}` })} />}
+        </div>
+        <div className={CARD}>
+          {isC && !c.strategy_id && c.bid_target != null ? <>
+            <span className={SUB}>Bid target · tCPA · {ac}</span>
+            <Stepper steps={CENTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))} small={`${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} cls={dCls(tdv)}
+              onStep={d => set(tk, clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
+              apply={tdv ? `Apply tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}` : null}
+              onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'tCPA (bid target)', key: `${mk}:${tk}` })} />
+          </> : isR && !c.strategy_id && c.bid_target != null ? <>
+            <span className={SUB}>Bid target · tROAS</span>
+            <Stepper steps={PTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts'} small={`${roasTxt(t0)} → ${roasTxt(t0 + tdv)}`} cls={dCls(tdv)}
+              onStep={d => set(tk, clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim))}
+              apply={tdv ? `Apply tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : null}
+              onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'roas', title: 'tROAS (bid target)', key: `${mk}:${tk}` })} />
+          </> : c.strategy_id ? <>
+            <span className={SUB}>Bid target</span>
+            <span className="text-[13px] text-[#c3cbe0]">Comes from the shared strategy <b className="text-violet-300">{s?.name ?? c.strategy_id}</b> (moves {usedBy(c.strategy_id).length}).{' '}
+              <button type="button" className="text-blue-400 font-bold" onClick={() => setSel(`s:${c.strategy_id}`)}>Open it ›</button></span>
+          </> : <><span className={SUB}>Bid target</span><span className="text-[13px] text-[#94a0bd]">{c.bid_type === 'TARGET_SPEND' ? 'Maximize clicks: no target to change.' : 'No target the panel can change.'}</span></>}
+        </div>
+      </div>
+    );
+  };
+  const stratEditor = (s: Strat) => {
+    const uses = usedBy(s.strategy_id), t0 = num(s.target_value, 0), tk = `str:${s.strategy_id}`, tdv = st(tk);
+    const ck = `cpc:${s.strategy_id}`, cdv = st(ck), c0 = num(s.max_cpc, 0), isR = s.target_kind === 'troas';
+    const nC = `${uses.length} campaign${uses.length > 1 ? 's' : ''}`;
+    return (
+      <div className="flex flex-col gap-2.5">
+        <span className="text-[13px] text-[#94a0bd]">Moves <b className="text-[#e8edf7]">{nC}</b>: {uses.join(' · ') || '—'} · the name is the label in Google Ads; values are live.</span>
+        <div className="grid md:grid-cols-2 gap-3.5">
+          <div className={CARD}>
+            <span className={SUB}>{isR ? 'tROAS' : `tCPA · ${ac}`}</span>
+            {s.target_value == null ? <span className="text-[13px] text-[#94a0bd]">No target set.</span> :
+              <Stepper steps={isR ? PTS : CENTS} cls={dCls(tdv)}
+                value={tdv === 0 ? '±0' : isR ? (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))}
+                small={isR ? `${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`}
+                onStep={d => set(tk, isR ? clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim) : clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
+                apply={tdv ? `Apply ${isR ? `tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} (${nC})` : null}
+                onApply={() => onAsk({ x, kind: 'strategy_target', from: t0, to: r2(t0 + tdv), targetId: s.strategy_id, name: s.name ?? '', unit: isR ? 'roas' : 'money',
+                  title: isR ? 'Shared tROAS' : 'Shared tCPA', moves: uses, key: `${mk}:${tk}` })} />}
           </div>
-          {/* money */}
-          <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3.5 flex flex-col gap-2.5">
-            <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Money</h3>
-              <span className="text-[13px] text-[#94a0bd]">Amazon {x.m.currency}{x.fxA != null ? ` · ${x.fxA < 0.1 ? `${x.m.currency} 100 = ₪${(x.fxA * 100).toFixed(2)}` : `${x.m.currency} 1 = ₪${x.fxA.toFixed(2)}`}` : ''}</span></div>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-              {[['Amazon today', `${n0(x.items)} items`, ''], ['Revenue', money(x.m.currency, x.rev), ''],
-                ['Earnings ≈', x.hasAcct ? money(ac, x.earnAcct) : (x.earnIls != null ? '₪' + n0(x.earnIls) : '—'), 'text-emerald-400'],
-                ['Net ≈', signed(ac, x.net), x.net == null ? '' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'],
-                ['Comm set', x.m.comm_rate != null ? (x.m.comm_rate * 100).toFixed(1) + '%' : 'unset', ''],
-                ['Actual this month', x.act != null ? (x.act * 100).toFixed(1) + '%' : '—', x.act != null && x.m.comm_rate != null && Math.abs(x.act - x.m.comm_rate) >= 0.005 ? 'text-amber-400' : ''],
-              ].map(([k, v, c]) => <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>)}
-            </div>
-            {x.mtd && <span className="text-[13px] text-[#94a0bd]">This month (Amazon&apos;s own month-to-date, ads tags): {n0(x.mtd.items)} items · {money(x.m.currency, x.mtd.revenue)} · earnings {money(x.m.currency, x.mtd.earnings)}</span>}
-            {x.status?.job_last_error && <span className="text-[13px] text-amber-400">Last job error: {x.status.job_last_error}</span>}
+          <div className={CARD}>
+            <span className={SUB}>Max CPC (bid limit) · {ac}</span>
+            {s.max_cpc == null ? <span className="text-[13px] text-[#94a0bd]">No bid limit set on this strategy.</span> :
+              <Stepper steps={CENTS} cls={dCls(cdv)} value={cdv === 0 ? '±0' : (cdv > 0 ? '+' : '−') + cur2(ac, Math.abs(cdv))}
+                small={`${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)}`}
+                onStep={d => set(ck, clamp(cdv + d, Math.max(minB - c0, -pctLim * c0), pctLim * c0))}
+                apply={cdv ? `Apply max CPC ${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)} (${nC})` : null}
+                onApply={() => onAsk({ x, kind: 'strategy_max_cpc', from: c0, to: r2(c0 + cdv), targetId: s.strategy_id, name: s.name ?? '', unit: 'money',
+                  title: 'Shared max CPC (bid limit)', moves: uses, key: `${mk}:${ck}` })} />}
           </div>
         </div>
       </div>
+    );
+  };
+  const bidLabel = (c: Camp) => c.strategy_id ? `shared · ${stratOf(c.strategy_id)?.target_kind === 'tcpa' ? 'tCPA' : 'tROAS'}`
+    : CPA_TYPES.includes(c.bid_type ?? '') ? 'tCPA' : ROAS_TYPES.includes(c.bid_type ?? '') ? 'tROAS' : c.bid_type === 'TARGET_SPEND' ? 'Max clicks' : (c.bid_type ?? '—').toLowerCase().replace(/_/g, ' ');
+  const targetLabel = (c: Camp) => {
+    const s = stratOf(c.strategy_id);
+    if (s) return s.target_kind === 'troas' ? roasTxt(s.target_value) : cur2(ac, s.target_value);
+    return c.bid_target == null ? '—' : ROAS_TYPES.includes(c.bid_type ?? '') ? roasTxt(c.bid_target) : cur2(ac, c.bid_target);
+  };
+  const rowCls = 'w-full text-left grid gap-x-3 gap-y-1 items-center px-3.5 py-2.5 border-t border-[#24304d] hover:bg-white/[.03]';
+  const cGrid = 'grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2.4fr)_1.2fr_.8fr_.9fr_1.3fr_22px]';
+  const sGrid = 'grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2.4fr)_.8fr_.8fr_.9fr_1.1fr_22px]';
+  const stateTxt = (o: Order) => o.status === 'queued' ? 'Sending…' : o.status === 'running' ? 'Working…' : o.status === 'done' ? '✓ Done' : o.status === 'expired' ? '✗ Expired' : '✗ Not applied';
+  const stateCls = (o: Order) => o.status === 'done' ? 'text-emerald-400' : o.status === 'queued' || o.status === 'running' ? 'text-blue-400' : 'text-red-400';
+  const oVal = (o: Order, v: number) => o.kind === 'seasonality' ? sp((v - 1) * 100) : o.kind === 'budget' ? money(ac, v)
+    : (o.kind === 'strategy_max_cpc' ? cur2(ac, v) : (ROAS_TYPES.includes(o.target_type ?? '') ? roasTxt(v) : cur2(ac, v)));
+  const oWhat = (o: Order) => o.kind === 'seasonality' ? 'seasonality' : o.kind === 'budget' ? `${o.target_name} · budget`
+    : o.kind === 'campaign_target' ? `${o.target_name} · target` : o.kind === 'strategy_target' ? `${o.target_name} · shared target` : `${o.target_name} · max CPC`;
+
+  const campsTab = !x.hasAcct ? (
+    <p className="text-[14px] text-[#94a0bd] m-0">No own Google Ads account yet. When an account named like the others (e.g. <b>thewinnerS.ae {mk}</b>) appears under the manager account, this market links itself and its campaigns, budgets and bids appear here. No code change.</p>
+  ) : (
+    <div className="flex flex-col gap-3.5">
+      {/* seasonality strip */}
+      <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3 grid md:grid-cols-[minmax(170px,1fr)_minmax(280px,1.6fr)] gap-3 items-center">
+        <div className="flex flex-col"><K>Account seasonality</K><b className="text-[26px] font-extrabold text-white">{seasNow == null ? 'none active' : sp(nowPts)}</b>
+          {seasNow != null && <span className="text-[13px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
+        {seasNow != null && <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sd)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
+          onStep={d => set('seas', clamp(sd + d, Math.max(-sRange, sFloor - nowPts), Math.min(sRange, sCap - nowPts)))}
+          apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
+          onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} />}
+      </div>
+      {/* campaigns */}
+      <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-hidden" role="list">
+        <div className={`hidden md:grid ${cGrid} gap-x-3 px-3.5 py-2 bg-[#1a2440]`}>{[`Campaign · ${x.campaigns.length} enabled`, 'Bidding', 'Target', 'Budget / day', 'Spent today', ''].map((h, i) => <K key={i}>{h}</K>)}</div>
+        {x.campaigns.map(c => {
+          const open = sel === `c:${c.campaign_id}`, b = num(c.budget_amount, 0), s = num(c.spend_today, 0);
+          return (
+            <div key={c.campaign_id} role="listitem">
+              <button type="button" aria-expanded={open} onClick={() => setSel(open ? null : `c:${c.campaign_id}`)} className={`${rowCls} ${cGrid} ${open ? 'bg-[#1a2440]' : ''}`}>
+                <span className="col-span-2 md:col-span-1 font-semibold truncate">{c.name}</span>
+                <span className={c.strategy_id ? 'text-violet-300 text-sm' : 'text-sm'}>{bidLabel(c)}</span>
+                <span className="font-bold text-white whitespace-nowrap">{targetLabel(c)}</span>
+                <span className="font-bold text-white whitespace-nowrap">{money(ac, b)}</span>
+                <span className="flex flex-col gap-1 text-sm text-[#c3cbe0] whitespace-nowrap">{money(ac, s)} · {pct(b ? s / b : null)}
+                  <span className="relative h-1.5 rounded-full bg-[#2a3657]"><i className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${Math.min(b ? s / b : 0, 1) * 100}%`, background: s >= b ? '#f87171' : '#3b82f6' }} /></span></span>
+                <span className={`hidden md:block text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
+              </button>
+              {open && <div className="bg-[#0f1730] border-t border-[#33416a] p-3.5">{campEditor(c)}</div>}
+            </div>
+          );
+        })}
+        {!x.campaigns.length && <div className="px-3.5 py-3 text-[13px] text-[#94a0bd]">Campaign list appears after the next job run.</div>}
+      </div>
+      {/* shared strategies */}
+      {x.strategies.length > 0 && (
+        <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-hidden" role="list">
+          <div className={`hidden md:grid ${sGrid} gap-x-3 px-3.5 py-2 bg-[#1a2440]`}>{['Shared bid strategy · name in Google Ads', 'Type', 'Target', 'Max CPC', 'Moves', ''].map((h, i) => <K key={i}>{h}</K>)}</div>
+          {x.strategies.map(s => {
+            const open = sel === `s:${s.strategy_id}`, n = usedBy(s.strategy_id).length;
+            return (
+              <div key={s.strategy_id} role="listitem">
+                <button type="button" aria-expanded={open} onClick={() => setSel(open ? null : `s:${s.strategy_id}`)} className={`${rowCls} ${sGrid} ${open ? 'bg-[#1a2440]' : ''}`}>
+                  <span className="col-span-2 md:col-span-1 font-semibold text-violet-300 truncate">{s.name}</span>
+                  <span className="text-sm">{s.target_kind === 'troas' ? 'tROAS' : 'tCPA'}</span>
+                  <span className="font-bold text-white whitespace-nowrap">{s.target_kind === 'troas' ? roasTxt(s.target_value) : cur2(ac, s.target_value)}</span>
+                  <span className="font-bold text-white whitespace-nowrap">{s.max_cpc != null ? cur2(ac, s.max_cpc) : '—'}</span>
+                  <span className="text-sm">{n} campaign{n === 1 ? '' : 's'}</span>
+                  <span className={`hidden md:block text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
+                </button>
+                {open && <div className="bg-[#0f1730] border-t border-[#33416a] p-3.5">{stratEditor(s)}</div>}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {/* orders */}
+      <div className={CARD}>
+        <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Orders</h3><span className="text-[13px] text-[#94a0bd]">last 48 h · each change asks once, then shows the result here</span></div>
+        {orders.slice(0, 10).map(o => (
+          <div key={o.id} className="bg-[#1a2440] rounded-lg px-2.5 py-2 flex flex-col gap-0.5 text-sm">
+            <span className={`font-bold ${stateCls(o)}`}>{stateTxt(o)}</span>
+            <span>{ilTime(o.requested_at)} · {oWhat(o)} {oVal(o, o.from_value)} → {oVal(o, o.to_value)}</span>
+            {o.message && <span className="text-[13px] text-[#94a0bd]">{o.message}</span>}
+          </div>
+        ))}
+        {!orders.length && <span className="text-[13px] text-[#94a0bd]">No orders in the last 48 h.</span>}
+        {P.settings.orders_dry_run === true && <span className="text-[13px] text-amber-400">Test mode (orders_dry_run): orders are checked but not written to Google Ads.</span>}
+      </div>
+    </div>
+  );
+
+  // ── Money tab
+  const moneyTab = (
+    <div className={CARD}>
+      <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Money</h3>
+        <span className="text-[13px] text-[#94a0bd]">Amazon {x.m.currency}{x.fxA != null ? ` · ${x.fxA < 0.1 ? `${x.m.currency} 100 = ₪${(x.fxA * 100).toFixed(2)}` : `${x.m.currency} 1 = ₪${x.fxA.toFixed(2)}`}` : ''}</span></div>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-2">
+        {[['Amazon today', `${n0(x.items)} items`, ''], ['Revenue', money(x.m.currency, x.rev), ''],
+          ['Earnings ≈', x.hasAcct ? money(ac, x.earnAcct) : (x.earnIls != null ? '₪' + n0(x.earnIls) : '—'), 'text-emerald-400'],
+          ['Net ≈', signed(ac, x.net), x.net == null ? '' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'],
+          ['Comm set', x.m.comm_rate != null ? (x.m.comm_rate * 100).toFixed(1) + '%' : 'unset', ''],
+          ['Actual this month', x.act != null ? (x.act * 100).toFixed(1) + '%' : '—', x.act != null && x.m.comm_rate != null && Math.abs(x.act - x.m.comm_rate) >= 0.005 ? 'text-amber-400' : ''],
+        ].map(([k, v, c]) => <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>)}
+      </div>
+      {x.mtd && <span className="text-[13px] text-[#94a0bd]">This month (Amazon&apos;s own month-to-date, ads tags): {n0(x.mtd.items)} items · {money(x.m.currency, x.mtd.revenue)} · earnings {money(x.m.currency, x.mtd.earnings)}</span>}
+      {x.status?.job_last_error && <span className="text-[13px] text-amber-400">Last job error: {x.status.job_last_error}</span>}
+    </div>
+  );
+
+  return (
+    <section className="border-t border-[#33416a] bg-[#0f1730] p-4 flex flex-col gap-3.5" aria-label={`${mk} detail`}>
+      <div className="text-[15px] text-[#c3cbe0] bg-[#1a2440] rounded-xl px-3.5 py-2.5 [&_b]:text-white">{why(x)}</div>
+      <div className="flex gap-1 flex-wrap" role="tablist">
+        {tabs.map(([k, l]) => (
+          <button key={k} type="button" role="tab" aria-selected={dt === k} onClick={() => setDt(k)}
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border ${dt === k ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>{l}</button>
+        ))}
+      </div>
+      {dt === 'camps' ? campsTab : dt === 'money' ? moneyTab : todayTab}
     </section>
   );
 }
