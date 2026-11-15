@@ -46,7 +46,13 @@ interface Pulse {
   today: Hour[]; baseline: Base[]; month: Day[]; fx: { currency: string; to_ils: number }[]; comm_actual: { program: string; rate: number | null }[];
   amazon_mtd?: { market: string; items: number | null; revenue: number | null; earnings: number | null; last_new_order: string | null }[];
   status?: Status[]; campaigns?: Camp[]; bid_strategies?: Strat[]; orders?: Order[]; alerts?: Alert[];
+  campaign_daily?: CampDay[];   // job v1.4: last 3 days for all markets; the month for ?market=
 }
+// job v1.4: Google Ads per campaign per account day; conv = the "Clickouts" conversion
+interface CampDay { customer_id: string; campaign_id: string; local_date: string; market: string; name: string | null;
+  cost: number | null; clicks: number | null; conv: number | null }
+// Avg. CPC / cost per clickout / clickout rate (owner 11-15: same as the Google Ads columns)
+const ratio = (a: number | null | undefined, b: number | null | undefined) => (a == null || b == null || !b ? null : a / b);
 const ROAS_TYPES = ['MAXIMIZE_CONVERSION_VALUE', 'TARGET_ROAS'], CPA_TYPES = ['MAXIMIZE_CONVERSIONS', 'TARGET_CPA'];
 const roasTxt = (v: number | null | undefined) => (v == null ? '—' : Math.round(v * 100) + '%');
 const cur2 = (c: string | null | undefined, v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v < 0 ? '−' : '') + sym(c).trim() + Math.abs(v).toFixed(2));
@@ -150,6 +156,10 @@ function derive(m: Mkt, P: Pulse) {
   const rank = used != null && used >= 1 ? 0.5 : used != null && normBy != null && used - normBy > ahead ? 2 : { stuck: 0, watch: 1, flowing: 3, waking: 4, asleep: 5 }[st];
   return {
     m, L, hours, hasAcct, spend, budget, used, normBy, ahead, v60, o60, n60, c60, st, fxA, toAcct, rank,
+    // today, account day: site (our click log, ad visits only) is the main number; Google Ads' own stats beside it
+    clicks: hasAcct ? sum('clicks') : null, conv: hasAcct ? sum('conv') : null,
+    cpc: hasAcct ? ratio(spend, sum('clicks')) : null, cpoSite: hasAcct ? ratio(spend, sum('outs')) : null,
+    cpoAds: hasAcct ? ratio(spend, sum('conv')) : null, crSite: ratio(sum('outs'), sum('vis')), crAds: hasAcct ? ratio(sum('conv'), sum('clicks')) : null,
     vis: sum('vis'), outs: sum('outs'), items, rev, earn, earnAcct: hasAcct && comm != null ? toAcct(earn) : null,
     earnIls: fxA == null || comm == null ? null : earn * fxA, revIls: fxA == null ? null : rev * fxA, commUnset: comm == null, amzDay,
     net: hasAcct && comm != null && spend != null && toAcct(earn) != null ? (toAcct(earn) as number) - spend : null,
@@ -383,8 +393,8 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
 
       {/* board */}
       <div className="bg-[#121a2e] border border-[#24304d] rounded-2xl overflow-hidden" role="list">
-        <div className="hidden lg:grid grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1fr_1fr_28px] gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d]">
-          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Amazon today (all tags)', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
+        <div className="hidden lg:grid grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1.1fr_1fr_1fr_28px] gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d]">
+          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Cost / clickout', 'Amazon today (all tags)', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
         </div>
         {!shown.length && <div className="px-4 py-5 text-[#94a0bd]">No market matches the filter. Pick a region or tap a market chip above.</div>}
         {shown.map(x => {
@@ -392,7 +402,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
           return (
             <div key={x.m.market} role="listitem">
               <button type="button" aria-expanded={open} onClick={() => saveV({ ...V, open: open ? null : x.m.market })}
-                className={`w-full text-left grid grid-cols-[1fr_auto] lg:grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1fr_1fr_28px] gap-x-3.5 gap-y-2.5 items-center px-4 py-3 lg:py-2 lg:min-h-[66px] border-t border-[#24304d] first:border-t-0 hover:bg-white/[.025] ${open ? 'bg-[#1a2440]' : ''}`}>
+                className={`w-full text-left grid grid-cols-[1fr_auto] lg:grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1.1fr_1fr_1fr_28px] gap-x-3.5 gap-y-2.5 items-center px-4 py-3 lg:py-2 lg:min-h-[66px] border-t border-[#24304d] first:border-t-0 hover:bg-white/[.025] ${open ? 'bg-[#1a2440]' : ''}`}>
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-xl font-extrabold text-white w-[42px] flex-none">{x.m.market}</span>
                   <span className="flex flex-col min-w-0"><span className="text-sm font-semibold truncate">{x.m.label}</span><span className="text-[13px] text-[#94a0bd]">{pad(x.L.h)}:{pad(x.L.m)} local</span></span>
@@ -406,6 +416,12 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                   <div className="flex flex-col gap-1 min-w-0"><span className="lg:hidden"><K>Budget today</K></span>
                     {x.hasAcct ? <><span className="text-[17px] font-bold text-white whitespace-nowrap">{pct(x.used)} <small className="text-[13px] font-medium text-[#94a0bd]">{money(ac, x.spend)} / {money(ac, x.budget)}</small></span><Bar x={x} /></>
                       : <span className="text-[13px] text-[#94a0bd] border border-dashed border-[#33416a] rounded-lg px-2 py-0.5 self-start whitespace-nowrap">no own Google Ads account</span>}</div>
+                  <div className="flex flex-col gap-0.5 min-w-0"><span className="lg:hidden"><K>Cost / clickout</K></span>
+                    {x.hasAcct ? <>
+                      <span className="text-[17px] font-bold text-white whitespace-nowrap" title="site: today's spend ÷ site clickouts (ad visits)">{cur2(ac, x.cpoSite)} <small className="text-[13px] font-medium text-[#94a0bd]">site</small></span>
+                      <span className="text-[13px] text-[#94a0bd] whitespace-nowrap">Ads {cur2(ac, x.cpoAds)} · CPC {cur2(ac, x.cpc)}</span>
+                      <span className="text-[13px] text-[#94a0bd] whitespace-nowrap">rate {pct(x.crSite)} · Ads {pct(x.crAds)}</span></>
+                      : <span className="text-[13px] text-[#94a0bd]">—</span>}</div>
                 </div>
                 <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className="text-[17px] font-bold text-white">{n0(x.items)} <small className="text-[13px] font-medium text-[#94a0bd]">items</small></span><span className={`text-[13px] truncate ${x.amzStale ? 'text-amber-400' : 'text-[#94a0bd]'}`}>{money(x.m.currency, x.rev)}{x.earnIls != null ? ` · ≈₪${n0(x.earnIls)}` : ''}{x.amzStale ? ' · read old' : ''}</span>
                   {x.amzDay ? <span className="text-[12px] font-semibold text-amber-400">Amazon day {x.amzDay.slice(8)}/{x.amzDay.slice(5, 7)}</span>
@@ -542,13 +558,25 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
   // ── Today tab
   const H = view === 'h', ilNow = localNow(IL);
   const dayNormal = x.hours.reduce((a, h) => a + h.norm, 0);
+  // v1.4: by-day view can show ONE campaign's Google Ads numbers (site numbers exist per account only)
+  const [campF, setCampF] = useState<string>('all');
+  const cdays = (P.campaign_daily ?? []).filter(c => c.market === mk && c.customer_id === x.m.customer_id);
+  const cdOf = (id: string, d: string) => cdays.find(c => c.campaign_id === id && c.local_date === d);
+  const campNames = Array.from(new Map(cdays.filter(c => num(c.clicks, 0) > 0 || num(c.cost, 0) > 0).map(c => [c.campaign_id, c.name ?? c.campaign_id])).entries());
+  const one = !H && campF !== 'all';
   const rows = H
     ? x.hours.map(h => ({ key: String(h.h), label: pad(h.h) + ':00', il: pad(((h.h - x.L.h + ilNow.h) % 24 + 24) % 24) + ':00', vis: h.vis, norm: h.norm, outs: h.outs,
-        cost: h.cost, clicks: h.clicks, items: h.items, rev: h.rev, earn: h.earn, fut: h.fut, now: h.now, lag: h.lag }))
-    : (month ?? []).map(d => ({ key: d.local_date, label: d.local_date.slice(5), il: '', vis: num(d.visitors, 0), norm: dayNormal, outs: num(d.clickouts, 0),
-        cost: x.hasAcct ? num(d.gads_cost, 0) : null, clicks: num(d.gads_clicks, 0), items: num(d.amz_items, 0), rev: num(d.amz_revenue, 0),
-        earn: num(d.amz_earnings, 0), fut: false, now: d.local_date === x.L.date, lag: d.local_date === x.L.date }));
-  const T = (k: 'vis' | 'outs' | 'cost' | 'clicks' | 'items' | 'rev' | 'earn') => rows.reduce((a, r) => a + (r[k] ?? 0), 0);
+        cost: h.cost, clicks: h.clicks, conv: h.conv, items: h.items, rev: h.rev, earn: h.earn, fut: h.fut, now: h.now, lag: h.lag }))
+    : (month ?? []).map(d => {
+        const c1 = one ? cdOf(campF, d.local_date) : null;
+        return { key: d.local_date, label: d.local_date.slice(5), il: '', vis: one ? null : num(d.visitors, 0), norm: dayNormal, outs: one ? null : num(d.clickouts, 0),
+          cost: !x.hasAcct ? null : one ? num(c1?.cost, 0) : num(d.gads_cost, 0), clicks: one ? num(c1?.clicks, 0) : num(d.gads_clicks, 0),
+          conv: one ? num(c1?.conv, 0) : num(d.gads_conv, 0), items: num(d.amz_items, 0), rev: num(d.amz_revenue, 0),
+          earn: d.amz_earnings != null ? num(d.amz_earnings, 0) : num(d.amz_revenue, 0) * num(x.m.comm_rate, 0),
+          fut: false, now: d.local_date === x.L.date, lag: d.local_date === x.L.date };
+      });
+  const T = (k: 'vis' | 'outs' | 'cost' | 'clicks' | 'conv' | 'items' | 'rev' | 'earn') => rows.reduce((a, r) => a + (r[k] ?? 0), 0);
+  const c2 = (v: number | null) => (v == null ? '—' : v.toFixed(2));
   const td = 'px-2.5 py-1.5 text-right whitespace-nowrap border-b border-[#24304d]';
   const th = 'px-2.5 py-1.5 text-right whitespace-nowrap bg-[#1a2440] text-[#94a0bd] text-xs uppercase tracking-wide font-bold';
   const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 text-xs font-bold';
@@ -579,12 +607,22 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
         ))}
       </div>
       {!H && !month && <p className="text-sm text-[#94a0bd]">Loading month…</p>}
+      {!H && x.hasAcct && campNames.length > 0 && (
+        <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="group" aria-label="Campaign">
+          {[['all', 'All campaigns'] as [string, string], ...campNames].map(([id, nm]) => (
+            <button key={id} type="button" aria-pressed={campF === id} onClick={() => setCampF(id)}
+              className={`flex-none px-3 py-1 rounded-full text-[13px] font-semibold border whitespace-nowrap ${campF === id ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#1a2440] border-[#33416a] text-[#94a0bd]'}`}>{nm}</button>
+          ))}
+        </div>
+      )}
+      {one && <p className="text-[13px] text-[#94a0bd] m-0">One campaign: Google Ads numbers only. Our click log keeps the Google click id but not the campaign, so site visitors and clickouts exist per account.</p>}
       <div className="overflow-x-auto border border-[#24304d] rounded-xl">
-        <table className="w-full min-w-[900px] text-sm border-separate border-spacing-0">
+        <table className="w-full min-w-[1180px] text-sm border-separate border-spacing-0">
           <thead><tr>
             <th className={`${th} text-left sticky left-0 z-10`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
-            <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th>
+            <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th><th className={th}>CPC</th>
             <th className={`${th} border-l border-[#33416a]`}>Visitors</th><th className={th}>Normal</th><th className={th}>Clickouts</th><th className={th}>Rate</th><th className={th}>Cost / clickout</th>
+            <th className={`${th} border-l border-[#33416a]`} title="Google Ads Clickouts conversion">Ads clickouts</th><th className={th}>Ads rate</th><th className={th}>Ads cost / clickout</th>
             <th className={`${th} border-l border-[#33416a]`}>Amazon items</th><th className={th}>Revenue {x.m.currency}</th><th className={th}>Net ≈{sym(ac).trim()}</th>
           </tr></thead>
           <tbody>
@@ -597,11 +635,15 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
                 <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now ? 'bg-yellow-400/10' : ''}`}>
                   <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{H && <td className={td}>{r.il}</td>}
                   <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.cost) : '—'}</td><td className={td}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
+                  <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.clicks)) : '—'}</td>
                   <td className={`${td} border-l border-[#33416a]`}>{n0(r.vis)}</td>
-                  <td className={td}>{lowV ? <span className={flag}>{n1(r.norm)}</span> : H ? n1(r.norm) : n0(r.norm)}</td>
+                  <td className={td}>{one ? '—' : lowV ? <span className={flag}>{n1(r.norm)}</span> : H ? n1(r.norm) : n0(r.norm)}</td>
                   <td className={td}>{n0(r.outs)}</td>
                   <td className={td}>{rate != null && rate < x.judgeCo && (r.vis ?? 0) >= 4 ? <span className={flag}>{pct(rate)}</span> : pct(rate)}</td>
                   <td className={td}>{r.cost && r.outs ? (r.cost / r.outs).toFixed(2) : '—'}</td>
+                  <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.conv) : '—'}</td>
+                  <td className={td}>{x.hasAcct ? pct(ratio(r.conv, r.clicks)) : '—'}</td>
+                  <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.conv)) : '—'}</td>
                   <td className={`${td} border-l border-[#33416a] ${lag}`}>{n0(r.items)}</td><td className={`${td} ${lag}`}>{money(x.m.currency, r.rev)}</td>
                   <td className={`${td} ${net == null ? '' : net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{net == null ? '—' : (net >= 0 ? '+' : '') + Math.round(net)}</td>
                 </tr>
@@ -610,9 +652,13 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
             <tr className="font-bold">
               <td className={`${td} text-left sticky left-0 bg-[#1a2440]`}>Total</td>{H && <td className={`${td} bg-[#1a2440]`} />}
               <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n0(T('cost')) : '—'}</td><td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? n0(T('clicks')) : '—'}</td>
-              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('vis'))}</td><td className={`${td} bg-[#1a2440]`}>{H ? `${n0(x.normT)} by now` : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{n0(T('outs'))}</td><td className={`${td} bg-[#1a2440]`}>{T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? c2(ratio(T('cost'), T('clicks'))) : '—'}</td>
+              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{one ? '—' : n0(T('vis'))}</td><td className={`${td} bg-[#1a2440]`}>{H ? `${n0(x.normT)} by now` : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{one ? '—' : n0(T('outs'))}</td><td className={`${td} bg-[#1a2440]`}>{!one && T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{!one && T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
+              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n1(T('conv')) : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? pct(ratio(T('conv'), T('clicks'))) : '—'}</td>
+              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? c2(ratio(T('cost'), T('conv'))) : '—'}</td>
               <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('items'))}</td><td className={`${td} bg-[#1a2440]`}>{money(x.m.currency, T('rev'))}</td>
               <td className={`${td} bg-[#1a2440]`}>{(() => { const e = x.hasAcct ? x.toAcct(T('earn')) : null; return e == null ? '—' : signed(ac, e - T('cost')); })()}</td>
             </tr>
@@ -763,6 +809,37 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
         })}
         {!x.campaigns.length && <div className="px-3.5 py-3 text-[13px] text-[#94a0bd]">Campaign list appears after the next job run.</div>}
       </div>
+      {/* v1.4: performance per campaign — Google Ads stats (Clickouts = the Google Ads conversion), today or month so far */}
+      {(() => {
+        const mStart = x.L.date.slice(0, 8) + '01';
+        const pick = cdays.filter(c => (H ? c.local_date === x.L.date : c.local_date >= mStart));
+        const agg = new Map<string, { name: string; cost: number; clicks: number; conv: number }>();
+        pick.forEach(c => { const a = agg.get(c.campaign_id) ?? { name: c.name ?? c.campaign_id, cost: 0, clicks: 0, conv: 0 };
+          a.cost += num(c.cost, 0); a.clicks += num(c.clicks, 0); a.conv += num(c.conv, 0); agg.set(c.campaign_id, a); });
+        const list = Array.from(agg.values()).filter(a => a.cost > 0 || a.clicks > 0).sort((p, q) => q.cost - p.cost);
+        const tot = list.reduce((a, r) => ({ cost: a.cost + r.cost, clicks: a.clicks + r.clicks, conv: a.conv + r.conv }), { cost: 0, clicks: 0, conv: 0 });
+        const thc = 'px-2.5 py-1.5 text-right whitespace-nowrap text-[#94a0bd] text-xs uppercase tracking-wide font-bold';
+        const tdc = 'px-2.5 py-1.5 text-right whitespace-nowrap border-t border-[#24304d]';
+        const cells = (a: { cost: number; clicks: number; conv: number }) => <>
+          <td className={tdc}>{money(ac, a.cost)}</td><td className={tdc}>{n0(a.clicks)}</td><td className={`${tdc} bg-blue-500/5`}>{cur2(ac, ratio(a.cost, a.clicks))}</td>
+          <td className={tdc}>{n1(a.conv)}</td><td className={`${tdc} bg-blue-500/5`}>{cur2(ac, ratio(a.cost, a.conv))}</td><td className={`${tdc} bg-blue-500/5`}>{pct(ratio(a.conv, a.clicks))}</td></>;
+        return (
+          <div className={CARD}>
+            <div className="flex flex-wrap gap-x-3 gap-y-1.5 items-center justify-between">
+              <span className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Campaign performance</h3><span className="text-[13px] text-[#94a0bd]">Google Ads · Clickouts = the Google Ads conversion · account day</span></span>
+              <span className="inline-flex gap-1">{(['h', 'd'] as const).map(v => (
+                <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}
+                  className={`px-3 py-1 rounded-lg text-[13px] font-semibold border ${view === v ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>{v === 'h' ? 'Today' : 'Month so far'}</button>))}</span>
+            </div>
+            {!H && !month ? <span className="text-[13px] text-[#94a0bd]">Loading month…</span> : !list.length ? <span className="text-[13px] text-[#94a0bd]">No campaign clicks yet{H ? ' today' : ' this month'} (filled by the job from v1.4).</span> : (
+              <div className="overflow-x-auto"><table className="w-full min-w-[720px] text-sm border-separate border-spacing-0">
+                <thead><tr><th className={`${thc} text-left`}>Campaign</th><th className={thc}>Cost</th><th className={thc}>Clicks</th><th className={thc}>Avg. CPC</th><th className={thc}>Clickouts</th><th className={thc}>Cost / clickout</th><th className={thc}>Clickout rate</th></tr></thead>
+                <tbody>{list.map(a => <tr key={a.name}><td className={`${tdc} text-left max-w-[280px] truncate`} title={a.name}>{a.name}</td>{cells(a)}</tr>)}</tbody>
+                <tfoot><tr className="font-bold text-white"><td className={`${tdc} text-left`}>Account</td>{cells(tot)}</tr></tfoot>
+              </table></div>)}
+          </div>
+        );
+      })()}
       {/* shared strategies */}
       {x.strategies.length > 0 && (
         <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-hidden" role="list">
