@@ -61,7 +61,8 @@ const pct = (v: number | null | undefined) => (v == null || !isFinite(v) ? '—'
 const money = (c: string | null | undefined, v: number | null | undefined) =>
   v == null || !isFinite(v) ? '—' : (v < 0 ? '−' : '') + sym(c) + n0(Math.abs(v));
 const signed = (c: string | null | undefined, v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v >= 0 ? '+' : '') + money(c, v));
-const sp = (v: number) => (v >= 0 ? '+' : '−') + Math.abs(Math.round(v)) + '%';
+// percent with one decimal when needed (seasonality ×1.001 = "+0.1%", never shown as "+0%")
+const sp = (v: number) => { const a = Math.abs(Math.round(v * 10) / 10); return (v >= 0 ? '+' : '−') + (Number.isInteger(a) ? a : a.toFixed(1)) + '%'; };
 const pad = (n: number) => String(n).padStart(2, '0');
 const num = (v: unknown, d: number) => (typeof v === 'number' ? v : v == null || v === '' ? d : Number(v));
 const IL = 'Asia/Jerusalem';
@@ -609,7 +610,13 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
   );
 
   // ── Campaigns & bids tab (full width; owner 11-15: not a side panel)
-  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 100);
+  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 1000) / 10;
+  // owner 11-15: Google Ads does not take exactly 0% seasonality -> a step that lands on 0 moves on to ±0.1
+  const seasStep = (d: number) => {
+    let n = r2(clamp(sd + d, Math.max(-sRange, sFloor - nowPts), Math.min(sRange, sCap - nowPts)));
+    if (Math.abs(nowPts + n) < 0.05) n = r2(n + (d > 0 ? 0.1 : -0.1));
+    set('seas', n);
+  };
   const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
   const campEditor = (c: Camp) => {
     const b = num(c.budget_amount, 0), bk = `bud:${c.campaign_id}`, bd = st(bk);
@@ -708,7 +715,7 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
         <div className="flex flex-col"><K>Account seasonality</K><b className="text-[26px] font-extrabold text-white">{seasNow == null ? 'none active' : sp(nowPts)}</b>
           {seasNow != null && <span className="text-[13px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
         {seasNow != null && <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sd)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
-          onStep={d => set('seas', clamp(sd + d, Math.max(-sRange, sFloor - nowPts), Math.min(sRange, sCap - nowPts)))}
+          onStep={seasStep}
           apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
           onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} />}
       </div>
