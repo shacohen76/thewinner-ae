@@ -201,6 +201,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // because it has no DB row. BF_TWINS_NOINDEX_AFTER flips it to noindex.
   // 2026-11-11 (non-English twins): copy per locale (lib/title-bf.ts). hreflang between the locale
   // twins ONLY when every enabled BF locale has its twin for this slug; otherwise none (owner rule).
+  // 2026-11-15 (owner via 6.9): CHANGED → hreflang among the enabled locales that HAVE the twin (below).
   if (bfBase) {
     const noun = await bfTwinNoun(keyword, params.locale);
     if (noun === null) return { title: 'Not Found' };
@@ -209,15 +210,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const twinSlug = decodeURIComponent(params.slug).toLowerCase();
     const twinUrlFor = (l: string) => `${CONFIG.canonicalUrl}${l === 'en' ? '' : `/${l}`}/best/${twinSlug}`;
     const twinUrl = twinUrlFor(params.locale);
+    // 2026-11-15 (EU NATIVE 1, owner via 6.9): the cluster = the enabled BF locales that DO have
+    // their twin for this slug (was: all-or-nothing — adding pl/fr/it/de/sv/nl would have removed
+    // the hreflang from every en/es/pt/ar/ja twin whose new-locale twin does not exist yet). Every
+    // member computes the same set (same gate per locale), so the tags stay reciprocal. en always
+    // has its twin → x-default = en. A cluster of 1 (only this page) → no hreflang.
     const locales = enabledBfLocales();
-    const allTwins = !bfTwinsNoindex() && locales.length > 1 && (await Promise.all(
+    const twinNouns = bfTwinsNoindex() || locales.length < 2 ? [] : await Promise.all(
       locales.map((l) => (l === params.locale ? noun : bfTwinNoun(keyword, l))),
-    )).every((n) => n !== null);
-    const languages = allTwins
-      ? { ...Object.fromEntries(locales.map((l) => [BF_HREFLANG[l], twinUrlFor(l)])), 'x-default': twinUrlFor('en') }
+    );
+    const withTwin = locales.filter((_, i) => twinNouns[i] != null);
+    const languages = withTwin.length > 1
+      ? { ...Object.fromEntries(withTwin.map((l) => [BF_HREFLANG[l], twinUrlFor(l)])), 'x-default': twinUrlFor('en') }
       : undefined;
-    const title = copy.pageTitle(noun, year);
-    const description = copy.description(noun, year);
+    const title = copy.pageTitle(noun, year, params.market);
+    const description = copy.description(noun, year, params.market);
     return {
       title: { absolute: title },
       description,

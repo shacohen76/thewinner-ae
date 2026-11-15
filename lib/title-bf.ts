@@ -18,8 +18,9 @@ import type { BfLocale } from '@/lib/bf-twin';
 export interface BfCopy {
   headline: (noun: string, year: number) => string;
   subHeadline: (noun: string, year: number) => string;
-  pageTitle: (noun: string, year: number) => string;
-  description: (noun: string, year: number) => string;
+  /** `market` (2026-11-15) = the rendered catalog market: /fr and /nl name FR|BE / NL|BE as on their base pages. */
+  pageTitle: (noun: string, year: number, market?: string) => string;
+  description: (noun: string, year: number, market?: string) => string;
   strip: (year: number) => { title: string; body: string };
   intro: (noun: string) => string;
   cardBadge: (year: number) => string;
@@ -96,7 +97,102 @@ const ES: BfCopy = {
   cardBadge: (y) => `ELECCIÓN BLACK FRIDAY ${y}`,
 };
 
-export const BF_COPY: Record<BfLocale, BfCopy> = { en: EN, ar: AR, ja: JA, pt: PT, es: ES };
+// 2026-11-15 (EU NATIVE 1, owner via 6.9): pl / fr / it / de / sv / nl rows. Each was checked by a
+// separate native reviewer (one per language). Stricter than the 2026-11-11 rows: "Black Friday" is
+// the ONLY event name (no "Cyber Monday" / "Black Week"). The noun is stored in its singular
+// search form and cannot be declined, so it sits only in case-neutral slots ("{Noun}: …",
+// "…: {noun}", quoted after "category"). /fr and /nl name the rendered market's country, exactly
+// as their base pages do (lib/native-locales.ts FR_GEO / NL_GEO).
+const geo = (names: Record<string, string>, first: string, market?: string) =>
+  names[market && names[market] ? market : first];
+const FR_GEO: Record<string, string> = { fr: 'en France', be: 'en Belgique' };
+const NL_GEO: Record<string, string> = { nl: 'in Nederland', be: 'in België' };
 
-/** hreflang key per BF locale (matches lib/seo-alternates: en-AE, plain ar/ja, region for pt/es). */
-export const BF_HREFLANG: Record<BfLocale, string> = { en: 'en-AE', ar: 'ar', ja: 'ja', pt: 'pt-BR', es: 'es-ES' };
+const PL: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'pl-PL')}: 10 najlepszych modeli na Black Friday ${y}`,
+  subHeadline: (n, y) => `Ranking i poradnik zakupowy: ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y) => `${PL.headline(n, y)} w Polsce | ${brand}`,
+  description: (n, y) => `Black Friday ${y}: porównaliśmy 10 najlepszych modeli w kategorii „${n.trim()}”, z ich zaletami i krótkim poradnikiem zakupowym. Przed zakupem sprawdź aktualną cenę w sklepie.`,
+  strip: (y) => ({
+    title: `Tydzień Black Friday ${y}`,
+    body: 'W tygodniu Black Friday ceny szybko się zmieniają: przed zakupem sprawdź aktualną cenę każdego produktu w sklepie.',
+  }),
+  intro: (n) => `Szukasz modelu w kategorii „${n.trim()}” na Black Friday? Porównaliśmy najpopularniejsze modele i wybraliśmy 10 najlepszych, żeby zakupy były łatwiejsze.`,
+  cardBadge: (y) => `WYBÓR NA BLACK FRIDAY ${y}`,
+};
+
+const FR: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'fr-FR')} : les 10 meilleurs modèles pour le Black Friday ${y}`,
+  subHeadline: (n, y) => `Notre classement et notre guide d'achat : ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y, m) => `${FR.headline(n, y)} ${geo(FR_GEO, 'fr', m)} | ${brand}`,
+  description: (n, y, m) => `Black Friday ${y} : nous avons comparé les 10 meilleurs modèles de la catégorie « ${n.trim()} » ${geo(FR_GEO, 'fr', m)}, avec leurs points forts et un guide d'achat rapide. Vérifiez le prix actuel sur le site marchand avant d'acheter.`,
+  strip: (y) => ({
+    title: `Semaine du Black Friday ${y}`,
+    body: 'Les prix changent vite pendant la semaine du Black Friday : vérifiez le prix actuel de chaque produit sur le site marchand avant d\'acheter.',
+  }),
+  intro: (n) => `Vous cherchez un produit de la catégorie « ${n.trim()} » pour le Black Friday ? Nous avons comparé les modèles les plus populaires et retenu les 10 meilleurs pour vous aider à acheter en toute confiance.`,
+  cardBadge: (y) => `SÉLECTION BLACK FRIDAY ${y}`,
+};
+
+const IT: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'it-IT')}: i 10 migliori modelli per il Black Friday ${y}`,
+  subHeadline: (n, y) => `La nostra classifica e guida all'acquisto: ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y) => `${IT.headline(n, y)} in Italia | ${brand}`,
+  description: (n, y) => `Black Friday ${y}: abbiamo confrontato i 10 migliori modelli nella categoria «${n.trim()}», con i loro punti di forza e una rapida guida all'acquisto. Controlla il prezzo attuale sul sito del negozio prima di acquistare.`,
+  strip: (y) => ({
+    title: `Settimana del Black Friday ${y}`,
+    body: 'Durante la settimana del Black Friday i prezzi cambiano rapidamente: controlla il prezzo attuale di ogni prodotto sul sito del negozio prima di acquistare.',
+  }),
+  intro: (n) => `Cerchi un prodotto nella categoria «${n.trim()}» per il Black Friday? Abbiamo confrontato i modelli più popolari e scelto i 10 migliori, per aiutarti ad acquistare in tutta tranquillità.`,
+  cardBadge: (y) => `SCELTA BLACK FRIDAY ${y}`,
+};
+
+const DE: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'de-DE')}: die 10 besten Modelle zum Black Friday ${y}`,
+  subHeadline: (n, y) => `Ranking und Kaufberatung: ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y) => `${DE.headline(n, y)} in Deutschland | ${brand}`,
+  description: (n, y) => `Black Friday ${y}: Wir haben die 10 besten Modelle in der Kategorie „${n.trim()}“ mit ihren Stärken und einer kurzen Kaufberatung verglichen. Prüfen Sie vor dem Kauf den aktuellen Preis im Shop.`,
+  strip: (y) => ({
+    title: `Black-Friday-Woche ${y}`,
+    body: 'In der Black-Friday-Woche ändern sich die Preise schnell: Prüfen Sie vor dem Kauf den aktuellen Preis jedes Produkts im Shop.',
+  }),
+  intro: (n) => `Sie suchen zum Black Friday ein Produkt in der Kategorie „${n.trim()}“? Wir haben die beliebtesten Modelle verglichen und die 10 besten ausgewählt, damit Sie sicher einkaufen können.`,
+  cardBadge: (y) => `BLACK-FRIDAY-TIPP ${y}`,
+};
+
+const SV: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'sv-SE')}: de 10 bästa modellerna till Black Friday ${y}`,
+  subHeadline: (n, y) => `Vår topplista och köpguide: ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y) => `${SV.headline(n, y)} i Sverige | ${brand}`,
+  description: (n, y) => `Black Friday ${y}: vi har jämfört de 10 bästa modellerna i kategorin ”${n.trim()}”, med deras styrkor och en kort köpguide. Kontrollera det aktuella priset i butiken innan du köper.`,
+  strip: (y) => ({
+    title: `Black Friday-veckan ${y}`,
+    body: 'Priserna ändras snabbt under Black Friday-veckan: kontrollera det aktuella priset på varje produkt i butiken innan du köper.',
+  }),
+  intro: (n) => `Letar du efter en produkt i kategorin ”${n.trim()}” till Black Friday? Vi har jämfört de populäraste modellerna och valt ut de 10 bästa, så att du kan handla tryggt.`,
+  cardBadge: (y) => `BLACK FRIDAY-TIPS ${y}`,
+};
+
+const NL: BfCopy = {
+  headline: (n, y) => `${capFirst(n, 'nl-NL')}: de 10 beste modellen voor Black Friday ${y}`,
+  subHeadline: (n, y) => `Onze ranglijst en koopgids: ${n.trim()} · Black Friday ${y}`,
+  pageTitle: (n, y, m) => `${NL.headline(n, y)} ${geo(NL_GEO, 'nl', m)} | ${brand}`,
+  description: (n, y, m) => `Black Friday ${y}: we hebben de 10 beste modellen in de categorie ‘${n.trim()}’ ${geo(NL_GEO, 'nl', m)} vergeleken, met hun sterke punten en een korte koopgids. Controleer de actuele prijs in de winkel voordat je koopt.`,
+  strip: (y) => ({
+    title: `Black Friday-week ${y}`,
+    body: 'Tijdens de Black Friday-week veranderen de prijzen snel: controleer de actuele prijs van elk product in de winkel voordat je koopt.',
+  }),
+  intro: (n) => `Op zoek naar een product in de categorie ‘${n.trim()}’ voor Black Friday? We hebben de populairste modellen vergeleken en de 10 beste geselecteerd, zodat je met een gerust hart kunt kopen.`,
+  cardBadge: (y) => `BLACK FRIDAY-KEUZE ${y}`,
+};
+
+export const BF_COPY: Record<BfLocale, BfCopy> = {
+  en: EN, ar: AR, ja: JA, pt: PT, es: ES, pl: PL, fr: FR, it: IT, de: DE, sv: SV, nl: NL,
+};
+
+/** hreflang key per BF locale (matches lib/seo-alternates: en-AE, plain ar/ja, region for pt/es;
+ *  EU locales = their htmlLang in lib/native-locales.ts — fr / nl plain because they serve two countries). */
+export const BF_HREFLANG: Record<BfLocale, string> = {
+  en: 'en-AE', ar: 'ar', ja: 'ja', pt: 'pt-BR', es: 'es-ES',
+  pl: 'pl-PL', fr: 'fr', it: 'it-IT', de: 'de-DE', sv: 'sv-SE', nl: 'nl',
+};
