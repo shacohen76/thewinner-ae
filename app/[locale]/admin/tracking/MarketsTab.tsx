@@ -371,7 +371,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           ['Budget used today', bt0 ? pct(sp0 / bt0) : '—', <>₪{n0(sp0)} of ₪{n0(bt0)}{others.map(x => <span key={x.m.market}> · {x.m.market} {money(x.m.acct_currency, x.spend)} of {money(x.m.acct_currency, x.budget)}</span>)}</>, ''],
-          ['Amazon earnings today', `≈₪${n0(earnIls)}`, "Amazon's today report · revenue × comm % × FX", 'text-emerald-400'],
+          ['Amazon earnings today (all tags)', `≈₪${n0(earnIls)}`, "Amazon's today report, organic included · revenue × comm % × FX", 'text-emerald-400'],
           ['Needs a push', stuck.join(' ') || 'none', 'visitors under half of normal', stuck.length ? 'text-red-400' : ''],
           ['Watch quality', watch.join(' ') || 'none', "land but don't click out", watch.length ? 'text-amber-400' : ''],
         ].map(([k, v, s, c], i) => (
@@ -384,7 +384,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       {/* board */}
       <div className="bg-[#121a2e] border border-[#24304d] rounded-2xl overflow-hidden" role="list">
         <div className="hidden lg:grid grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1fr_1fr_28px] gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d]">
-          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Amazon today', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
+          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Amazon today (all tags)', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
         </div>
         {!shown.length && <div className="px-4 py-5 text-[#94a0bd]">No market matches the filter. Pick a region or tap a market chip above.</div>}
         {shown.map(x => {
@@ -807,7 +807,7 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
       <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Money</h3>
         <span className="text-[13px] text-[#94a0bd]">Amazon {x.m.currency}{x.fxA != null ? ` · ${x.fxA < 0.1 ? `${x.m.currency} 100 = ₪${(x.fxA * 100).toFixed(2)}` : `${x.m.currency} 1 = ₪${x.fxA.toFixed(2)}`}` : ''}</span></div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-2">
-        {[['Amazon today', `${n0(x.items)} items`, ''], ['Revenue', `${money(x.m.currency, x.rev)}${x.revIls != null && x.m.currency !== 'ILS' ? ` ≈₪${n0(x.revIls)}` : ''}`, ''],
+        {[['Amazon today (all tags)', `${n0(x.items)} items`, ''], ['Revenue', `${money(x.m.currency, x.rev)}${x.revIls != null && x.m.currency !== 'ILS' ? ` ≈₪${n0(x.revIls)}` : ''}`, ''],
           ['Earnings ≈', x.commUnset ? 'Set comm %' : x.earnIls != null ? '₪' + n0(x.earnIls) : '—', x.commUnset ? 'text-amber-400' : 'text-emerald-400'],
           ['Net ≈', signed(ac, x.net), x.net == null ? '' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'],
           ['Comm set', x.m.comm_rate != null ? (x.m.comm_rate * 100).toFixed(1) + '%' : 'unset', ''],
