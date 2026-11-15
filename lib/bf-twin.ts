@@ -25,7 +25,10 @@ export const BF_SUFFIX = '-black-friday-deals';
 // this list) AND is enabled in routing (pt / EU locales behind their own flags). To add a
 // language (fr/it/de/sv/nl via LOCALE SITE 1): add its code here + its copy row in title-bf.ts.
 // The page then also requires the base LOCALE page to be complete (page.tsx bfTwinLocaleReady).
-export const BF_LOCALES = ['en', 'ar', 'ja', 'pt', 'es'] as const;
+// 2026-11-15 (EU NATIVE 1, owner via 6.9): + pl fr it de sv nl. Each EU locale still renders a twin
+// only while it is in NEXT_PUBLIC_EU_NATIVE_LOCALES AND its base page is complete (bfTwinNoun);
+// otherwise the twin URL stays an unknown slug exactly as before.
+export const BF_LOCALES = ['en', 'ar', 'ja', 'pt', 'es', 'pl', 'fr', 'it', 'de', 'sv', 'nl'] as const;
 export type BfLocale = (typeof BF_LOCALES)[number];
 
 export function isBfLocale(locale: string): locale is BfLocale {
