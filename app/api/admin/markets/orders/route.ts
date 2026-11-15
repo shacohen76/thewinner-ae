@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
   if (kind === 'seasonality') {
     const range = num(S.seas_step_range_pts, 25) / 100, cap = 1 + num(S.seas_cap_pts, 60) / 100, floor = 1 + num(S.seas_floor_pts, -50) / 100;
     if (Math.abs(to - from) > range + 1e-9 || to > cap + 1e-9 || to < floor - 1e-9) return bad('Seasonality target outside the limits');
+    // owner 11-15: Google Ads does not take exactly 0% (×1.000) — use ±0.1% or more
+    if (Math.abs(to - 1) < 0.0005) return bad('Exactly 0% is not allowed; use +0.1% / −0.1% or more');
   } else if (kind === 'budget' || kind === 'campaign_target') {
     if (!targetId || !/^\d+$/.test(targetId)) return bad('Pick a campaign');
     const { data: c } = await db.from('pulse_campaigns').select('name,budget_shared,bid_type,strategy_id')

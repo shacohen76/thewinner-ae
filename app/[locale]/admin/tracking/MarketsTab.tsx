@@ -61,7 +61,13 @@ const pct = (v: number | null | undefined) => (v == null || !isFinite(v) ? '—'
 const money = (c: string | null | undefined, v: number | null | undefined) =>
   v == null || !isFinite(v) ? '—' : (v < 0 ? '−' : '') + sym(c) + n0(Math.abs(v));
 const signed = (c: string | null | undefined, v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v >= 0 ? '+' : '') + money(c, v));
-const sp = (v: number) => (v >= 0 ? '+' : '−') + Math.abs(Math.round(v)) + '%';
+// percent, whole numbers — except the ±0.1% stop around zero (owner 11-15: Google Ads takes no exact 0%;
+// the decimal is ONLY for passing 0, everything else is rounded): ×1.001 = "+0.1%", ×1.17 = "+17%"
+const sp = (v: number) => {
+  const a = Math.abs(v);
+  const t = a > 0 && a < 1 ? (Math.round(a * 10) / 10).toFixed(1) : String(Math.round(a));
+  return (v < 0 && t !== '0' ? '−' : '+') + t + '%';
+};
 const pad = (n: number) => String(n).padStart(2, '0');
 const num = (v: unknown, d: number) => (typeof v === 'number' ? v : v == null || v === '' ? d : Number(v));
 const IL = 'Asia/Jerusalem';
@@ -609,7 +615,17 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
   );
 
   // ── Campaigns & bids tab (full width; owner 11-15: not a side panel)
-  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 100);
+  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 1000) / 10;
+  // owner 11-15: targets are WHOLE percents; only a step that lands on 0 stops at ±0.1 (Google Ads takes no exact 0%).
+  // e.g. now +0.1 → +1 gives +1 (not +1.1); now −1 → +1 gives +0.1; now +0.1 → +5 gives +5.
+  const seasStep = (d: number) => {
+    const cur = nowPts + sd;
+    let t = Math.round(cur + d);
+    if (t === 0) t = d > 0 ? 0.1 : -0.1;
+    t = clamp(t, Math.max(nowPts - sRange, sFloor), Math.min(nowPts + sRange, sCap));
+    set('seas', r2(t - nowPts));
+  };
+  const sdShown = sd === 0 ? 0 : (nowPts + sd) - Math.round(nowPts);   // the change in whole points, as the owner reads it
   const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
   const campEditor = (c: Camp) => {
     const b = num(c.budget_amount, 0), bk = `bud:${c.campaign_id}`, bd = st(bk);
@@ -707,8 +723,8 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
       <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3 grid md:grid-cols-[minmax(170px,1fr)_minmax(280px,1.6fr)] gap-3 items-center">
         <div className="flex flex-col"><K>Account seasonality</K><b className="text-[26px] font-extrabold text-white">{seasNow == null ? 'none active' : sp(nowPts)}</b>
           {seasNow != null && <span className="text-[13px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
-        {seasNow != null && <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sd)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
-          onStep={d => set('seas', clamp(sd + d, Math.max(-sRange, sFloor - nowPts), Math.min(sRange, sCap - nowPts)))}
+        {seasNow != null && <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
+          onStep={seasStep}
           apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
           onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} />}
       </div>
