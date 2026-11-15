@@ -38,7 +38,9 @@ interface Order { id: number; market: string; kind: OrderKind; target_id: string
   from_value: number; to_value: number; status: 'queued' | 'running' | 'done' | 'failed' | 'expired'; requested_at: string;
   done_at: string | null; read_back: number | null; message: string | null }
 interface Alert { market: string; rule: string; message: string; sent_at: string }
-interface Status { market: string; job_last_run: string | null; job_last_error: string | null; amazon_last_read: string | null }
+interface Status { market: string; job_last_run: string | null; job_last_error: string | null; amazon_last_read: string | null;
+  // job v1.3: Amazon's own "today" report (by date, all tags of the program), exact
+  amz_today_date?: string | null; amz_today_items?: number | null; amz_today_revenue?: number | null; amz_today_read_at?: string | null }
 interface Pulse {
   generated_at: string; settings: Json; markets: Mkt[]; unmatched_accounts: { customer_id: string; account_name: string | null }[];
   today: Hour[]; baseline: Base[]; month: Day[]; fx: { currency: string; to_ils: number }[]; comm_actual: { program: string; rate: number | null }[];
@@ -97,12 +99,16 @@ function derive(m: Mkt, P: Pulse) {
   const byH = new Map(P.today.filter(r => r.market === m.market).map(r => [r.local_hour, r]));
   const bH = new Map(P.baseline.filter(b => b.market === m.market).map(b => [b.local_hour, b]));
   const lagH = S('amazon_lag_h', 3);
+  // Earnings: Amazon's today report has none, so ≈ revenue × commission % (pulse_markets.comm_rate row);
+  // cells that still carry a real amz_earnings value (older by-tag rows) keep it.
+  const comm = m.comm_rate == null ? null : num(m.comm_rate, 0);
+  const estEarn = (r: Hour | undefined) => (r?.amz_earnings != null ? num(r.amz_earnings, 0) : comm == null ? 0 : num(r?.amz_revenue, 0) * comm);
   const hours: HourRow[] = Array.from({ length: 24 }, (_, h) => {
     const r = byH.get(h); const fut = h > L.h;
     return { h, fut, now: h === L.h, lag: !fut && h > L.h - lagH, vis: fut ? null : r?.visitors ?? 0, outs: fut ? null : r?.clickouts ?? 0,
       norm: num(bH.get(h)?.normal, 0), cost: fut || !m.customer_id ? null : num(r?.gads_cost, 0), clicks: fut ? null : num(r?.gads_clicks, 0),
       conv: fut ? null : num(r?.gads_conv, 0), items: fut ? null : num(r?.amz_items, 0), rev: fut ? null : num(r?.amz_revenue, 0),
-      earn: fut ? null : num(r?.amz_earnings, 0) };
+      earn: fut ? null : estEarn(r) };
   });
   const sum = (k: keyof HourRow) => hours.reduce((a, x) => a + (typeof x[k] === 'number' ? (x[k] as number) : 0), 0);
   const hasAcct = !!m.customer_id;
@@ -126,9 +132,13 @@ function derive(m: Mkt, P: Pulse) {
   const fx = (c: string | null) => P.fx.find(f => f.currency === c)?.to_ils ?? null;
   const fxA = fx(m.currency), fxAcc = fx(m.acct_currency ?? 'ILS');
   const toAcct = (v: number | null) => (v == null || fxA == null || fxAcc == null ? null : (v * fxA) / fxAcc);
-  const earn = sum('earn');
   const status = P.status?.find(s => s.market === m.market) ?? null;
   const readAge = ageH(status?.amazon_last_read);
+  // Today totals = Amazon's own today report when the job has it (v1.3); else the sum of the hourly cells.
+  const tday = status?.amz_today_read_at ? { date: status.amz_today_date ?? null, items: num(status.amz_today_items, 0), rev: num(status.amz_today_revenue, 0) } : null;
+  const items = tday ? tday.items : sum('items'), rev = tday ? tday.rev : sum('rev');
+  const earn = tday ? (comm == null ? 0 : tday.rev * comm) : sum('earn');
+  const amzDay = tday?.date && tday.date !== L.date ? tday.date : null;   // Amazon's day ≠ the account's day
   // fresh campaigns only (written by the job's latest pass over this account)
   const cs = (P.campaigns ?? []).filter(c => c.market === m.market && c.customer_id === m.customer_id);
   const newest = cs.reduce((a, c) => Math.max(a, new Date(c.updated_at).getTime()), 0);
@@ -140,8 +150,9 @@ function derive(m: Mkt, P: Pulse) {
   const rank = used != null && used >= 1 ? 0.5 : used != null && normBy != null && used - normBy > ahead ? 2 : { stuck: 0, watch: 1, flowing: 3, waking: 4, asleep: 5 }[st];
   return {
     m, L, hours, hasAcct, spend, budget, used, normBy, ahead, v60, o60, n60, c60, st, fxA, toAcct, rank,
-    vis: sum('vis'), outs: sum('outs'), items: sum('items'), rev: sum('rev'), earn, earnAcct: hasAcct ? toAcct(earn) : null,
-    earnIls: fxA == null ? null : earn * fxA, net: hasAcct && spend != null && toAcct(earn) != null ? (toAcct(earn) as number) - spend : null,
+    vis: sum('vis'), outs: sum('outs'), items, rev, earn, earnAcct: hasAcct && comm != null ? toAcct(earn) : null,
+    earnIls: fxA == null || comm == null ? null : earn * fxA, revIls: fxA == null ? null : rev * fxA, commUnset: comm == null, amzDay,
+    net: hasAcct && comm != null && spend != null && toAcct(earn) != null ? (toAcct(earn) as number) - spend : null,
     normT: Math.round(hours.slice(0, L.h).reduce((a, x) => a + x.norm, 0) + hours[L.h].norm * L.m / 60),
     amzStale: readAge == null || readAge > lagH, readAge, lagH, status, campaigns, strategies,
     act: P.comm_actual.find(c => c.program === m.amazon_program)?.rate ?? null,
@@ -360,7 +371,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           ['Budget used today', bt0 ? pct(sp0 / bt0) : '—', <>₪{n0(sp0)} of ₪{n0(bt0)}{others.map(x => <span key={x.m.market}> · {x.m.market} {money(x.m.acct_currency, x.spend)} of {money(x.m.acct_currency, x.budget)}</span>)}</>, ''],
-          ['Amazon earnings today', `≈₪${n0(earnIls)}`, 'counted when seen · Amazon lags', 'text-emerald-400'],
+          ['Amazon earnings today (all tags)', `≈₪${n0(earnIls)}`, "Amazon's today report, organic included · revenue × comm % × FX", 'text-emerald-400'],
           ['Needs a push', stuck.join(' ') || 'none', 'visitors under half of normal', stuck.length ? 'text-red-400' : ''],
           ['Watch quality', watch.join(' ') || 'none', "land but don't click out", watch.length ? 'text-amber-400' : ''],
         ].map(([k, v, s, c], i) => (
@@ -373,7 +384,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       {/* board */}
       <div className="bg-[#121a2e] border border-[#24304d] rounded-2xl overflow-hidden" role="list">
         <div className="hidden lg:grid grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1fr_1fr_28px] gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d]">
-          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Amazon today', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
+          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Amazon today (all tags)', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
         </div>
         {!shown.length && <div className="px-4 py-5 text-[#94a0bd]">No market matches the filter. Pick a region or tap a market chip above.</div>}
         {shown.map(x => {
@@ -396,7 +407,9 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                     {x.hasAcct ? <><span className="text-[17px] font-bold text-white whitespace-nowrap">{pct(x.used)} <small className="text-[13px] font-medium text-[#94a0bd]">{money(ac, x.spend)} / {money(ac, x.budget)}</small></span><Bar x={x} /></>
                       : <span className="text-[13px] text-[#94a0bd] border border-dashed border-[#33416a] rounded-lg px-2 py-0.5 self-start whitespace-nowrap">no own Google Ads account</span>}</div>
                 </div>
-                <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className="text-[17px] font-bold text-white">{n0(x.items)} <small className="text-[13px] font-medium text-[#94a0bd]">items</small></span><span className={`text-[13px] truncate ${x.amzStale ? 'text-amber-400' : 'text-[#94a0bd]'}`}>{money(x.m.currency, x.rev)}{x.amzStale ? ' · read old' : ''}</span></div>
+                <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className="text-[17px] font-bold text-white">{n0(x.items)} <small className="text-[13px] font-medium text-[#94a0bd]">items</small></span><span className={`text-[13px] truncate ${x.amzStale ? 'text-amber-400' : 'text-[#94a0bd]'}`}>{money(x.m.currency, x.rev)}{x.earnIls != null ? ` · ≈₪${n0(x.earnIls)}` : ''}{x.amzStale ? ' · read old' : ''}</span>
+                  {x.amzDay ? <span className="text-[12px] font-semibold text-amber-400">Amazon day {x.amzDay.slice(8)}/{x.amzDay.slice(5, 7)}</span>
+                    : x.commUnset && x.items > 0 ? <span className="text-[12px] font-semibold text-amber-400">Set commission %</span> : null}</div>
                 <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className={`text-[17px] font-bold ${x.net == null ? 'text-white' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{signed(ac, x.net)}</span><span className="text-[13px] text-[#94a0bd]">earnings − spend</span></div>
                 <span className={`hidden lg:block text-lg transition-transform ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
               </button>
@@ -442,7 +455,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       <p className="text-[13px] text-[#94a0bd] leading-relaxed">
         Rows = pulse_markets with active = true; a market without its own Google Ads account shows site + Amazon until an account with its code appears.
         Hours = each Google Ads account&apos;s clock. Budget and spend stay in the account currency (never converted); FX only converts Amazon amounts.
-        Amazon is counted in the hour the job first saw it. Orders: your click + confirm is the GO for that one change; the worker re-checks it, writes it and reads it back.
+        Amazon today = Amazon&apos;s own today report (all tags, read hourly); each hour shows what was added, in the hour it was first seen (late orders go to Amazon&apos;s own day). Earnings ≈ revenue × commission % × FX. Orders: your click + confirm is the GO for that one change; the worker re-checks it, writes it and reads it back.
       </p>
 
       {ask && <Confirm a={ask} onNo={() => setAsk(null)} onYes={confirm} />}
@@ -794,13 +807,17 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
       <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Money</h3>
         <span className="text-[13px] text-[#94a0bd]">Amazon {x.m.currency}{x.fxA != null ? ` · ${x.fxA < 0.1 ? `${x.m.currency} 100 = ₪${(x.fxA * 100).toFixed(2)}` : `${x.m.currency} 1 = ₪${x.fxA.toFixed(2)}`}` : ''}</span></div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-2">
-        {[['Amazon today', `${n0(x.items)} items`, ''], ['Revenue', money(x.m.currency, x.rev), ''],
-          ['Earnings ≈', x.hasAcct ? money(ac, x.earnAcct) : (x.earnIls != null ? '₪' + n0(x.earnIls) : '—'), 'text-emerald-400'],
+        {[['Amazon today (all tags)', `${n0(x.items)} items`, ''], ['Revenue', `${money(x.m.currency, x.rev)}${x.revIls != null && x.m.currency !== 'ILS' ? ` ≈₪${n0(x.revIls)}` : ''}`, ''],
+          ['Earnings ≈', x.commUnset ? 'Set comm %' : x.earnIls != null ? '₪' + n0(x.earnIls) : '—', x.commUnset ? 'text-amber-400' : 'text-emerald-400'],
           ['Net ≈', signed(ac, x.net), x.net == null ? '' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'],
           ['Comm set', x.m.comm_rate != null ? (x.m.comm_rate * 100).toFixed(1) + '%' : 'unset', ''],
           ['Actual this month', x.act != null ? (x.act * 100).toFixed(1) + '%' : '—', x.act != null && x.m.comm_rate != null && Math.abs(x.act - x.m.comm_rate) >= 0.005 ? 'text-amber-400' : ''],
         ].map(([k, v, c]) => <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>)}
       </div>
+      <span className="text-[13px] text-[#94a0bd]">
+        {x.commUnset ? `No commission % on the ${x.m.market} market row yet, so no ₪ estimate.`
+          : `Earnings ≈ revenue ${money(x.m.currency, x.rev)} × ${(num(x.m.comm_rate, 0) * 100).toFixed(2)}% × FX = ₪${n0(x.earnIls)}. Amazon's today report has no earnings, so this is an estimate.`}
+        {x.amzDay ? ` Amazon is on ${x.amzDay} (its own day).` : ''}</span>
       {x.mtd && <span className="text-[13px] text-[#94a0bd]">This month (Amazon&apos;s own month-to-date, ads tags): {n0(x.mtd.items)} items · {money(x.m.currency, x.mtd.revenue)} · earnings {money(x.m.currency, x.mtd.earnings)}</span>}
       {x.status?.job_last_error && <span className="text-[13px] text-amber-400">Last job error: {x.status.job_last_error}</span>}
     </div>
