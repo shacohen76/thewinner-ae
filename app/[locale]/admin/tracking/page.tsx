@@ -12,10 +12,13 @@
 //       Geo column in Sessions + Users. Per-geo cards + Share Clickouts in
 //       Funnel. By-Program panel in Tag Pool. See geos1-workspace/
 //       admin-mockup.html for the approved design.
+// v1.5 (2026-11-15): + "Markets" tab (Market Pulse panel) → MarketsTab.tsx,
+//       data from /api/admin/markets (admin_market_pulse RPC).
 // ============================================
 
 import { useState, useEffect, useCallback, Fragment } from 'react';
 import { CONFIG } from '@/lib/utils';
+import MarketsTab from './MarketsTab';
 import { ALL_PROGRAMS, type GeoGroup, type GeoProgram } from '@/lib/geo-config';
 import { adminRegionOf, type AdminRegion } from '@/lib/admin-regions';
 
@@ -297,7 +300,7 @@ export default function AdminTracking() {
   // GEOS1: 5-state geo filter + per-country drilldown. Country overrides geo.
   const [geoFilter, setGeoFilter] = useState<GeoFilter>('all');
   const [countryFilter, setCountryFilter] = useState<string>('');
-  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users' | 'languages'>('overview');
+  const [tab, setTab] = useState<'overview' | 'sessions' | 'tags' | 'funnel' | 'users' | 'languages' | 'markets'>('overview');
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
   // MG4.3 (2026-08-01): Tag Pool tab program scope so each program's pool
   // health / utilization / busy can be trusted individually (not just the AE
@@ -436,14 +439,14 @@ export default function AdminTracking() {
     <div className="min-h-screen bg-gray-950 text-gray-200">
       {/* Header */}
       <div className="border-b border-gray-800 px-4 md:px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex flex-wrap gap-3 items-center justify-between">
           <div>
             <h1 className="text-lg font-bold text-white">{new URL(CONFIG.siteUrl).hostname} — Tracking</h1>
             <p className="text-xs text-gray-500 mt-0.5">
               {meta.total_sessions} sessions · {rangeMeta.label} · Updated {meta.generated_at ? timeAgo(meta.generated_at) : '—'}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <select value={range} onChange={e => setRange(e.target.value as RangePreset)}
               className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-lg px-3 py-1.5 outline-none">
               <option value="today">Today</option>
@@ -498,10 +501,10 @@ export default function AdminTracking() {
 
       {/* Tabs */}
       <div className="border-b border-gray-800 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto flex gap-1 pt-2">
-          {(['overview', 'funnel', 'languages', 'sessions', 'users', 'tags'] as const).map(t => (
+        <div className="max-w-7xl mx-auto flex gap-1 pt-2 overflow-x-auto">
+          {(['overview', 'funnel', 'languages', 'sessions', 'users', 'tags', 'markets'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${tab === t ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap ${tab === t ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
               {t === 'tags' ? 'Tag Pool' : t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
@@ -509,6 +512,9 @@ export default function AdminTracking() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
+
+        {/* MARKETS (Market Pulse panel, 2026-11-15) — own data source (/api/admin/markets), ignores the range/geo filters above */}
+        {tab === 'markets' && <MarketsTab adminKey={password} />}
 
         {/* OVERVIEW */}
         {tab === 'overview' && (
