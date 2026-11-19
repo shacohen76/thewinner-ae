@@ -577,8 +577,11 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
       });
   const T = (k: 'vis' | 'outs' | 'cost' | 'clicks' | 'conv' | 'items' | 'rev' | 'earn') => rows.reduce((a, r) => a + (r[k] ?? 0), 0);
   const c2 = (v: number | null) => (v == null ? '—' : v.toFixed(2));
-  const td = 'px-2.5 py-1.5 text-right whitespace-nowrap border-b border-[#24304d]';
-  const th = 'px-2.5 py-1.5 text-right whitespace-nowrap bg-[#1a2440] text-[#94a0bd] text-xs uppercase tracking-wide font-bold';
+  // owner 11-15: (1) the header row must stay visible while scrolling to later hours -> the table scrolls inside its own
+  // box (max 70% of the screen) and the header is sticky to it; (2) no hidden right-hand columns -> tighter cells and
+  // headers that wrap onto two lines, so all 16 columns fit a ~1200 px panel without the side scrollbar.
+  const td = 'px-1.5 py-1.5 text-right whitespace-nowrap border-b border-[#24304d]';
+  const th = 'px-1.5 py-1.5 text-right align-bottom leading-tight bg-[#1a2440] text-[#94a0bd] text-[11px] uppercase tracking-wide font-bold sticky top-0 z-20 border-b border-[#33416a]';
   const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 text-xs font-bold';
 
   const todayTab = (
@@ -616,10 +619,10 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
         </div>
       )}
       {one && <p className="text-[13px] text-[#94a0bd] m-0">One campaign: Google Ads numbers only. Our click log keeps the Google click id but not the campaign, so site visitors and clickouts exist per account.</p>}
-      <div className="overflow-x-auto border border-[#24304d] rounded-xl">
-        <table className="w-full min-w-[1180px] text-sm border-separate border-spacing-0">
+      <div className="overflow-auto max-h-[70vh] border border-[#24304d] rounded-xl">
+        <table className="w-full min-w-[900px] text-[13px] border-separate border-spacing-0">
           <thead><tr>
-            <th className={`${th} text-left sticky left-0 z-10`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
+            <th className={`${th} text-left left-0 z-30`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
             <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th><th className={th}>CPC</th>
             <th className={`${th} border-l border-[#33416a]`}>Visitors</th><th className={th}>Normal</th><th className={th}>Clickouts</th><th className={th}>Rate</th><th className={th}>Cost / clickout</th>
             <th className={`${th} border-l border-[#33416a]`} title="Google Ads Clickouts conversion">Ads clickouts</th><th className={th}>Ads rate</th><th className={th}>Ads cost / clickout</th>
