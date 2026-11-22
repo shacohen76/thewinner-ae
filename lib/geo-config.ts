@@ -149,7 +149,10 @@ const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   it: { program: 'it', group: 'europe',        amazonDomain: 'amazon.it',      defaultTag: 'thewinnerit-21' },
   es: { program: 'es', group: 'europe',        amazonDomain: 'amazon.es',      defaultTag: 'thewinneres-21' },
   fr: { program: 'fr', group: 'europe',        amazonDomain: 'amazon.fr',      defaultTag: 'thewinnerfr-21' },
-  pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: 'thewinnerpl-21' },
+  // 2026-11-22: Poland store rotated thewinnerpl-21 → thewinnerpl2-21. The first
+  // PL Associates account was closed; the owner opened a new store. Same pattern
+  // as the CA rotation above: old click_log rows keep the old tag for history.
+  pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: 'thewinnerpl2-21' },
   // Sweden tag uses 'sw' suffix (legacy from Amazon store creation) — intentional.
   se: { program: 'se', group: 'europe',        amazonDomain: 'amazon.se',      defaultTag: 'thewinnersw-21' },
   // Ireland ('ir') + Belgium ('bg') tags carry legacy suffixes from Amazon
