@@ -32,6 +32,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const denied = adminAuthError(request, 'admin/markets/orders');
   if (denied) return denied;
+  // local design preview (env set only in the git-ignored .env.development.local): never queue a real Google Ads change
+  if (process.env.PULSE_PREVIEW_READONLY === '1') return bad('Preview mode: orders are off here', 403);
   let body: Record<string, unknown>;
   try { body = await request.json(); } catch { return bad('Bad request'); }
 

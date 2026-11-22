@@ -12,7 +12,7 @@
 // Everything tunable = Supabase rows (pulse_markets / pulse_settings / pulse_fx). No market list here.
 // Clock = each market's Google Ads ACCOUNT time zone (or the row's overrides.time_zone until an account exists).
 // ============================================
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, Fragment } from 'react';
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
@@ -51,6 +51,17 @@ interface Pulse {
 // job v1.4: Google Ads per campaign per account day; conv = the "Clickouts" conversion
 interface CampDay { customer_id: string; campaign_id: string; local_date: string; market: string; name: string | null;
   cost: number | null; clicks: number | null; conv: number | null }
+// Round 2 (owner 11-21): ONE period switch for the whole tab. Today = live (admin_market_pulse); the rest come from
+// admin_market_pulse_range(31) = per market per day for the last 31 account days + yesterday by hour + campaign days.
+type Per = 'today' | 'yday' | '7' | '14' | '30' | 'month';
+const PERS: [Per, string][] = [['today', 'Today'], ['yday', 'Yesterday'], ['7', '7 days'], ['14', '14 days'], ['30', '30 days'], ['month', 'Month']];
+const PER_LABEL = Object.fromEntries(PERS) as Record<Per, string>;
+interface Range { generated_at: string; days_back: number; days: (Day & { market: string })[]; yesterday: Hour[]; campaign_daily: CampDay[] }
+const addDays = (d: string, n: number) => new Date(Date.parse(d + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+const perFrom = (today: string, per: Per) => per === 'today' ? today : per === 'yday' ? addDays(today, -1)
+  : per === 'month' ? today.slice(0, 8) + '01' : addDays(today, 1 - Number(per));
+const perTo = (today: string, per: Per) => (per === 'yday' ? addDays(today, -1) : today);
+const dm = (d: string) => `${d.slice(8)}/${d.slice(5, 7)}`;
 // Avg. CPC / cost per clickout / clickout rate (owner 11-15: same as the Google Ads columns)
 const ratio = (a: number | null | undefined, b: number | null | undefined) => (a == null || b == null || !b ? null : a / b);
 const ROAS_TYPES = ['MAXIMIZE_CONVERSION_VALUE', 'TARGET_ROAS'], CPA_TYPES = ['MAXIMIZE_CONVERSIONS', 'TARGET_CPA'];
@@ -140,10 +151,15 @@ function derive(m: Mkt, P: Pulse) {
   const toAcct = (v: number | null) => (v == null || fxA == null || fxAcc == null ? null : (v * fxA) / fxAcc);
   const status = P.status?.find(s => s.market === m.market) ?? null;
   const readAge = ageH(status?.amazon_last_read);
-  // Today totals = Amazon's own today report when the job has it (v1.3); else the sum of the hourly cells.
+  // Round 2 (owner 11-21 "cost and revenue are not aligned by day"): Amazon is paired with the SAME date as the cost.
+  // The job writes Amazon's day into that day's cells (a late order goes to Amazon's own day), so the cells of date D
+  // = Amazon's total for D. Amazon's own today report is used only when its date IS the account's today.
+  // When Amazon is still on the previous day, today shows "not in yet" and that day's pair stays under Yesterday.
   const tday = status?.amz_today_read_at ? { date: status.amz_today_date ?? null, items: num(status.amz_today_items, 0), rev: num(status.amz_today_revenue, 0) } : null;
-  const items = tday ? tday.items : sum('items'), rev = tday ? tday.rev : sum('rev');
-  const earn = tday ? (comm == null ? 0 : tday.rev * comm) : sum('earn');
+  const same = !!tday && tday.date === L.date;
+  const items = same ? tday!.items : sum('items'), rev = same ? tday!.rev : sum('rev');
+  const earn = same ? (comm == null ? 0 : tday!.rev * comm) : sum('earn');
+  const amzNotIn = tday?.date && tday.date < L.date ? L.date : null;      // Amazon's report has not reached the account's today yet
   const amzDay = tday?.date && tday.date !== L.date ? tday.date : null;   // Amazon's day ≠ the account's day
   // fresh campaigns only (written by the job's latest pass over this account)
   const cs = (P.campaigns ?? []).filter(c => c.market === m.market && c.customer_id === m.customer_id);
@@ -161,7 +177,9 @@ function derive(m: Mkt, P: Pulse) {
     cpc: hasAcct ? ratio(spend, sum('clicks')) : null, cpoSite: hasAcct ? ratio(spend, sum('outs')) : null,
     cpoAds: hasAcct ? ratio(spend, sum('conv')) : null, crSite: ratio(sum('outs'), sum('vis')), crAds: hasAcct ? ratio(sum('conv'), sum('clicks')) : null,
     vis: sum('vis'), outs: sum('outs'), items, rev, earn, earnAcct: hasAcct && comm != null ? toAcct(earn) : null,
-    earnIls: fxA == null || comm == null ? null : earn * fxA, revIls: fxA == null ? null : rev * fxA, commUnset: comm == null, amzDay,
+    earnIls: fxA == null || comm == null ? null : earn * fxA, revIls: fxA == null ? null : rev * fxA, commUnset: comm == null, amzDay, amzNotIn, tday, comm, fxAcc,
+    spendIls: spend == null || fxAcc == null ? null : spend * fxAcc, budgetIls: budget == null || fxAcc == null ? null : budget * fxAcc,
+    amzNote: typeof (m.overrides as Json | null)?.amazon_note === 'string' ? String((m.overrides as Json).amazon_note) : null,
     net: hasAcct && comm != null && spend != null && toAcct(earn) != null ? (toAcct(earn) as number) - spend : null,
     normT: Math.round(hours.slice(0, L.h).reduce((a, x) => a + x.norm, 0) + hours[L.h].norm * L.m / 60),
     amzStale: readAge == null || readAge > lagH, readAge, lagH, status, campaigns, strategies,
@@ -233,44 +251,95 @@ function Chart({ x }: { x: D }) {
   );
 }
 
+// one market's numbers for the chosen period. Today = the live derive(); the rest = range data (account days).
+// Board money is in ₪ for every market (owner 11-21 "normalize to ILS"); per-click ratios stay in the account currency.
+interface PV { per: Per; from: string; to: string; ready: boolean; spend: number | null; spendIls: number | null; budgetIls: number | null;
+  used: number | null; normBy: number | null; vis: number; outs: number; clicks: number | null; conv: number | null; items: number; rev: number;
+  earnIls: number | null; netIls: number | null; cpc: number | null; cpoSite: number | null; cpoAds: number | null; crSite: number | null;
+  crAds: number | null; notIn: string | null; nDays: number }
+type RowSrc = Day & { market: string; local_hour?: number };
+function pview(x: D, per: Per, R: Range | null): PV {
+  const from = perFrom(x.L.date, per), to = perTo(x.L.date, per);
+  const nDays = Math.round((Date.parse(to) - Date.parse(from)) / 864e5) + 1;
+  if (per === 'today') return { per, from, to, ready: true, spend: x.spend, spendIls: x.spendIls, budgetIls: x.budgetIls, used: x.used, normBy: x.normBy,
+    vis: x.vis, outs: x.outs, clicks: x.clicks, conv: x.conv, items: x.items, rev: x.rev, earnIls: x.earnIls,
+    netIls: x.hasAcct && x.earnIls != null && x.spendIls != null ? x.earnIls - x.spendIls : null,
+    cpc: x.cpc, cpoSite: x.cpoSite, cpoAds: x.cpoAds, crSite: x.crSite, crAds: x.crAds, notIn: x.amzNotIn, nDays };
+  const rows: RowSrc[] = !R ? [] : per === 'yday' ? (R.yesterday as RowSrc[]).filter(r => r.market === x.m.market)
+    : R.days.filter(r => r.market === x.m.market && r.local_date >= from && r.local_date <= to);
+  const s = (k: keyof Day) => rows.reduce((a, r) => a + num((r as unknown as Json)[k], 0), 0);
+  const earn = rows.reduce((a, r) => a + (r.amz_earnings != null ? num(r.amz_earnings, 0) : x.comm == null ? 0 : num(r.amz_revenue, 0) * x.comm), 0);
+  const spend = x.hasAcct ? s('gads_cost') : null, clicks = x.hasAcct ? s('gads_clicks') : null, conv = x.hasAcct ? s('gads_conv') : null;
+  const vis = s('visitors'), outs = s('clickouts');
+  const spendIls = spend == null || x.fxAcc == null ? null : spend * x.fxAcc;
+  const earnIls = x.fxA == null || x.comm == null ? null : earn * x.fxA;
+  return { per, from, to, ready: !!R, spend, spendIls, budgetIls: null, used: null, normBy: null, vis, outs, clicks, conv,
+    items: s('amz_items'), rev: s('amz_revenue'), earnIls, netIls: x.hasAcct && earnIls != null && spendIls != null ? earnIls - spendIls : null,
+    cpc: ratio(spend, clicks), cpoSite: ratio(spend, outs), cpoAds: ratio(spend, conv), crSite: ratio(outs, vis), crAds: ratio(conv, clicks),
+    notIn: x.tday?.date && x.tday.date < to ? to : null, nDays };
+}
+const ils = (v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v < 0 ? '−' : '') + '₪' + n0(Math.abs(v)));
+const ilsS = (v: number | null | undefined) => (v == null || !isFinite(v) ? '—' : (v >= 0 ? '+' : '−') + '₪' + n0(Math.abs(v)));
+const netCls = (v: number | null | undefined) => (v == null ? 'text-white' : v >= 0 ? 'text-emerald-400' : 'text-red-400');
+const BOARD = 'lg:grid-cols-[minmax(150px,1.25fr)_112px_1.25fr_1.25fr_.85fr_1fr_.7fr_1.15fr_24px]';
+
 // one confirm request. key = the stepper key to reset after a successful queue.
 interface Ask { x: D; kind: OrderKind; from: number; to: number; targetId?: string; name?: string; unit: 'pts' | 'money' | 'roas';
   title: string; moves?: string[]; key: string }
 
 export default function MarketsTab({ adminKey }: { adminKey: string }) {
   const [P, setP] = useState<Pulse | null>(null);
-  const [month, setMonth] = useState<{ market: string; rows: Day[] } | null>(null);
+  const [R, setR] = useState<Range | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [V, setV] = useState({ reg: 'all', prob: true, sleep: false, hide: [] as string[], open: null as string | null, dt: 'today' });
-  const [view, setView] = useState<'h' | 'd'>('h');
+  const [V, setV] = useState({ reg: 'all', prob: true, sleep: false, only: null as string | null, open: null as string | null, dt: 'today' });
+  const [per, setPer] = useState<Per>('today');   // owner 11-21: a reload always opens on Today (not saved)
   const [steps, setSteps] = useState<Record<string, number>>({});     // stepper values: `${market}:${kind}:${id}`
   const [sel, setSel] = useState<Record<string, string | null>>({});  // open campaign (c:<id>) or strategy (s:<id>) per market
   const [ask, setAsk] = useState<Ask | null>(null);
   const [toast, setToast] = useState('');
   const toastT = useRef<ReturnType<typeof setTimeout>>();
+  const rootRef = useRef<HTMLDivElement>(null), barRef = useRef<HTMLDivElement>(null);
   const hdr = useMemo(() => ({ 'x-admin-key': adminKey }), [adminKey]);
 
-  useEffect(() => { try { const s = JSON.parse(localStorage.getItem('mp_view') || '{}'); setV(v => ({ ...v, ...s })); } catch { /* storage off */ } }, []);
+  useEffect(() => { try {
+    const s = JSON.parse(localStorage.getItem('mp_view') || '{}');
+    setV(v => ({ ...v, ...s, dt: s.dt === 'camps' ? 'camps' : 'today', only: typeof s.only === 'string' ? s.only : null }));
+  } catch { /* storage off */ } }, []);
   const saveV = (n: typeof V) => { setV(n); try { localStorage.setItem('mp_view', JSON.stringify(n)); } catch { /* storage off */ } };
   const say = (t: string) => { setToast(t); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(''), 4000); };
 
-  const load = useCallback(async (market?: string) => {
+  // the table header sticks right under the sticky filter bar (owner 11-21: header must not scroll away)
+  useEffect(() => {
+    const b = barRef.current, r = rootRef.current;
+    if (!b || !r || typeof ResizeObserver === 'undefined') return;
+    const o = new ResizeObserver(() => r.style.setProperty('--mp-top', `${b.offsetHeight}px`));
+    o.observe(b); return () => o.disconnect();
+  }, [P]);
+
+  const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/markets${market ? `?market=${market}` : ''}`, { headers: hdr, cache: 'no-store' });
+      const res = await fetch('/api/admin/markets', { headers: hdr, cache: 'no-store' });
       if (!res.ok) { setErr(res.status === 401 ? 'Wrong password' : `Load failed (${res.status})`); setLoading(false); return; }
       const j: Pulse = await res.json();
       setP(j); setErr(''); setOrders(j.orders ?? []);
-      if (market) setMonth({ market, rows: j.month });
     } catch { setErr('Load failed'); }
     setLoading(false);
   }, [hdr]);
+  const [rErr, setRErr] = useState('');
+  const loadR = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/markets?range=31', { headers: hdr, cache: 'no-store' });
+      if (!res.ok) { setRErr(`Past days not available yet (${res.status})`); return; }
+      setR(await res.json()); setRErr('');
+    } catch { setRErr('Past days: load failed'); }
+  }, [hdr]);
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (per !== 'today' && !R) loadR(); }, [per, R, loadR]);
   const refreshSec = P ? Math.max(60, num(P.settings.panel_refresh_sec, 300)) : 300;
-  useEffect(() => { const t = setInterval(() => load(view === 'd' && V.open ? V.open : undefined), refreshSec * 1000); return () => clearInterval(t); }, [load, refreshSec, view, V.open]);
-  useEffect(() => { if (view === 'd' && V.open && month?.market !== V.open) load(V.open); }, [view, V.open, month, load]);
+  useEffect(() => { const t = setInterval(() => { load(); if (per !== 'today') loadR(); }, refreshSec * 1000); return () => clearInterval(t); }, [load, loadR, refreshSec, per]);
 
   // while an order is open, poll its status every 4 s (light read), then refresh the panel once
   const pending = orders.some(o => o.status === 'queued' || o.status === 'running');
@@ -301,24 +370,27 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
   }, [pending, hdr, load]);
 
   const data = useMemo(() => (P ? P.markets.map(m => derive(m, P)) : []), [P]);
+  const pvs = useMemo(() => new Map(data.map(x => [x.m.market, pview(x, per, R)])), [data, per, R]);
   if (err && !P) return <p className="text-red-400 text-sm">{err}</p>;
   if (!P) return <p className="text-gray-400 text-sm">Loading markets…</p>;
 
   const S = (k: string, d: number) => num(P.settings[k], d);
+  const inView = (x: D) => (V.only ? x.m.market === V.only : V.reg === 'all' || x.m.region === V.reg);
   const shown = (() => {
-    let a = data.filter(x => (V.reg === 'all' || x.m.region === V.reg) && !V.hide.includes(x.m.market) && !(V.sleep && x.st === 'asleep'));
-    if (V.prob) a = a.slice().sort((p, q) => p.rank - q.rank || (q.spend ?? 0) - (p.spend ?? 0));
+    let a = data.filter(x => inView(x) && !(V.sleep && !V.only && x.st === 'asleep'));
+    if (V.prob) a = a.slice().sort((p, q) => p.rank - q.rank || (q.spendIls ?? 0) - (p.spendIls ?? 0));
     return a;
   })();
   const lastRun = (P.status ?? []).map(s => s.job_last_run).filter(Boolean).sort().pop() ?? null;
   const errs = (P.status ?? []).filter(s => s.job_last_error);
-  const ils = data.filter(x => x.m.acct_currency === 'ILS' && x.budget);
-  const sp0 = ils.reduce((a, x) => a + (x.spend ?? 0), 0), bt0 = ils.reduce((a, x) => a + (x.budget ?? 0), 0);
-  const others = data.filter(x => x.hasAcct && x.m.acct_currency !== 'ILS' && x.budget);
-  const earnIls = data.reduce((a, x) => a + (x.earnIls ?? 0), 0);
+  const pv = (x: D) => pvs.get(x.m.market) as PV;
+  const totSpend = data.reduce((a, x) => a + (pv(x).spendIls ?? 0), 0), totBudget = data.reduce((a, x) => a + (pv(x).budgetIls ?? 0), 0);
+  const totEarn = data.reduce((a, x) => a + (pv(x).earnIls ?? 0), 0);
   const stuck = data.filter(x => x.st === 'stuck').map(x => x.m.market), watch = data.filter(x => x.st === 'watch').map(x => x.m.market);
   const bfDays = Math.ceil((new Date('2026-11-27T00:00:00+02:00').getTime() - Date.now()) / 864e5);
   const regions = ['all', ...Object.keys(REG).filter(r => data.some(x => x.m.region === r))];
+  const isToday = per === 'today', waitR = !isToday && !R;
+  const pl = PER_LABEL[per].toLowerCase();
 
   async function confirm() {
     if (!ask) return;
@@ -336,40 +408,43 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
     } catch { say(`✗ ${a.x.m.market}: could not reach the server`); }
   }
 
+  const seg = (on: boolean) => `px-2.5 sm:px-3 py-1.5 rounded-lg text-[13px] sm:text-sm font-semibold whitespace-nowrap ${on ? 'bg-blue-500/20 text-white ring-1 ring-blue-500' : 'text-[#c3cbe0]'}`;
   return (
-    <div className={`${inter.className} flex flex-col gap-4 text-[15px] leading-normal text-[#e8edf7] [font-feature-settings:'tnum']`}>
+    <div ref={rootRef} className={`${inter.className} flex flex-col gap-3 sm:gap-4 text-[15px] leading-normal text-[#e8edf7] [font-feature-settings:'tnum']`}>
       {/* sticky filter bar */}
-      <div className="sticky top-0 z-20 -mx-4 md:-mx-6 px-4 md:px-6 py-2.5 bg-[#0b1020]/95 backdrop-blur border-b border-[#24304d] flex flex-wrap gap-2.5 items-center">
-        <div className="flex gap-0.5 bg-[#121a2e] border border-[#33416a] rounded-xl p-1" role="group" aria-label="Region">
+      <div ref={barRef} className="sticky top-0 z-30 -mx-4 md:-mx-6 px-4 md:px-6 py-2 sm:py-2.5 bg-[#0b1020]/95 backdrop-blur border-b border-[#24304d] flex flex-wrap gap-2 sm:gap-2.5 items-center">
+        <div className="flex gap-0.5 bg-[#121a2e] border border-[#33416a] rounded-xl p-1 overflow-x-auto max-w-full" role="group" aria-label="Period">
+          {PERS.map(([k, l]) => <button key={k} type="button" aria-pressed={per === k} onClick={() => setPer(k)} className={seg(per === k)}>{l}</button>)}
+        </div>
+        <div className="flex gap-0.5 bg-[#121a2e] border border-[#33416a] rounded-xl p-1 overflow-x-auto max-w-full" role="group" aria-label="Region">
           {regions.map(r => (
-            <button key={r} type="button" aria-pressed={V.reg === r} onClick={() => saveV({ ...V, reg: r })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-semibold whitespace-nowrap ${V.reg === r ? 'bg-blue-500/20 text-white ring-1 ring-blue-500' : 'text-[#c3cbe0]'}`}>
+            <button key={r} type="button" aria-pressed={!V.only && V.reg === r} onClick={() => saveV({ ...V, reg: r, only: null })} className={seg(!V.only && V.reg === r)}>
               {r === 'all' ? 'All' : REG[r].label}
             </button>
           ))}
         </div>
         {([['prob', 'Problems first'], ['sleep', 'Hide asleep']] as const).map(([k, l]) => (
           <button key={k} type="button" aria-pressed={V[k]} onClick={() => saveV({ ...V, [k]: !V[k] })}
-            className={`flex items-center gap-2 text-sm rounded-xl px-3 py-1.5 border ${V[k] ? 'border-blue-500 text-white' : 'border-[#33416a] text-[#c3cbe0]'} bg-[#121a2e]`}>
+            className={`hidden sm:flex items-center gap-2 text-sm rounded-xl px-3 py-1.5 border ${V[k] ? 'border-blue-500 text-white' : 'border-[#33416a] text-[#c3cbe0]'} bg-[#121a2e]`}>
             <i className={`relative w-[30px] h-[18px] rounded-full ${V[k] ? 'bg-blue-500' : 'bg-[#2a3657]'}`}>
               <i className={`absolute top-0.5 w-3.5 h-3.5 rounded-full transition-all ${V[k] ? 'left-[14px] bg-white' : 'left-0.5 bg-[#94a0bd]'}`} />
             </i>{l}
           </button>
         ))}
-        <span className="ml-auto text-[13px] text-[#94a0bd] whitespace-nowrap">
+        <span className="ml-auto text-[12px] sm:text-[13px] text-[#94a0bd] whitespace-nowrap">
           Israel <b className="text-[#e8edf7]">{ilTime(new Date().toISOString())}</b> · job <b className={errs.length ? 'text-amber-400' : 'text-[#e8edf7]'}>{agoTxt(ageH(lastRun))}</b>
-          {errs.length > 0 && <> · errors {errs.map(e => e.market).join(' ')}</>}
-          {' '}· <b className="text-[#e8edf7]">{bfDays > 0 ? `Black Friday in ${bfDays} days` : 'Black Friday week'}</b>
-          <button type="button" onClick={() => load(view === 'd' && V.open ? V.open : undefined)} disabled={loading}
+          {errs.length > 0 && <span className="hidden sm:inline"> · errors {errs.map(e => e.market).join(' ')}</span>}
+          <span className="hidden md:inline"> · <b className="text-[#e8edf7]">{bfDays > 0 ? `Black Friday in ${bfDays} days` : 'Black Friday week'}</b></span>
+          <button type="button" onClick={() => { load(); if (!isToday) loadR(); }} disabled={loading}
             className="ml-2 px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-semibold disabled:opacity-50">{loading ? '…' : 'Refresh'}</button>
         </span>
-        <div className="flex gap-1.5 overflow-x-auto basis-full pb-0.5" role="group" aria-label="Markets to show">
+        <div className="flex gap-1.5 overflow-x-auto basis-full pb-0.5" role="group" aria-label="Show one market">
           {data.map(x => {
-            const on = !V.hide.includes(x.m.market);
+            const one = V.only === x.m.market, on = inView(x);
             return (
-              <button key={x.m.market} type="button" aria-pressed={on}
-                onClick={() => saveV({ ...V, hide: on ? [...V.hide, x.m.market] : V.hide.filter(z => z !== x.m.market) })}
-                className={`flex-none flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold border ${on ? 'border-[#c3cbe0] bg-[#1a2440] text-white' : 'border-[#33416a] bg-[#121a2e] text-[#94a0bd]'}`}>
+              <button key={x.m.market} type="button" aria-pressed={one} title={one ? 'Show all again' : `Show only ${x.m.label}`}
+                onClick={() => saveV({ ...V, only: one ? null : x.m.market, open: one ? V.open : x.m.market })}
+                className={`flex-none flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold border ${one ? 'border-blue-500 bg-blue-500/20 text-white' : on ? 'border-[#c3cbe0] bg-[#1a2440] text-white' : 'border-[#33416a] bg-[#121a2e] text-[#94a0bd]'}`}>
                 <b className="w-2 h-2 rounded-full" style={{ background: ST_DOT[x.st] }} />{x.m.market}
               </button>
             );
@@ -377,60 +452,94 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
         </div>
       </div>
 
-      {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {rErr && !isToday && <p className="text-[13px] text-amber-400 m-0">{rErr}. Today works as before.</p>}
+
+      {/* KPIs — one row on every screen (owner 11-21) */}
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-3">
         {[
-          ['Budget used today', bt0 ? pct(sp0 / bt0) : '—', <>₪{n0(sp0)} of ₪{n0(bt0)}{others.map(x => <span key={x.m.market}> · {x.m.market} {money(x.m.acct_currency, x.spend)} of {money(x.m.acct_currency, x.budget)}</span>)}</>, ''],
-          ['Amazon earnings today (all tags)', `≈₪${n0(earnIls)}`, "Amazon's today report, organic included · revenue × comm % × FX", 'text-emerald-400'],
-          ['Needs a push', stuck.join(' ') || 'none', 'visitors under half of normal', stuck.length ? 'text-red-400' : ''],
-          ['Watch quality', watch.join(' ') || 'none', "land but don't click out", watch.length ? 'text-amber-400' : ''],
-        ].map(([k, v, s, c], i) => (
-          <div key={i} className="bg-[#121a2e] border border-[#24304d] rounded-2xl px-4 py-3.5 flex flex-col gap-1 min-w-0">
-            <K>{k}</K><span className={`text-[28px] font-extrabold leading-tight text-white ${c}`}>{v}</span><span className="text-[13px] text-[#94a0bd]">{s}</span>
+          [`Spend ${pl}`, ils(totSpend), isToday && totBudget ? `${pct(totSpend / totBudget)} of ${ils(totBudget)} budget` : 'all accounts, in ₪', '', 'Spend'],
+          [`Commission ${pl} ≈`, `≈${ils(totEarn)}`, "Amazon's own report, all tags · revenue × comm % × FX", 'text-emerald-400', 'Comm ≈'],
+          ['Needs a push', stuck.join(' ') || 'none', 'visitors under half of normal', stuck.length ? 'text-red-400' : '', 'Push'],
+          ['Watch quality', watch.join(' ') || 'none', "land but don't click out", watch.length ? 'text-amber-400' : '', 'Quality'],
+        ].map(([k, v, s, c, short], i) => (
+          <div key={i} className="bg-[#121a2e] border border-[#24304d] rounded-xl sm:rounded-2xl px-2 py-1.5 sm:px-4 sm:py-3.5 flex flex-col gap-0.5 sm:gap-1 min-w-0">
+            <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-[#94a0bd] truncate"><span className="sm:hidden">{short}</span><span className="hidden sm:inline">{k}</span></span>
+            <span className={`text-[15px] sm:text-[28px] font-extrabold leading-tight text-white truncate ${c}`}>{waitR && i < 2 ? '…' : v}</span>
+            <span className="hidden sm:block text-[13px] text-[#94a0bd]">{s}</span>
           </div>
         ))}
       </div>
 
       {/* board */}
-      <div className="bg-[#121a2e] border border-[#24304d] rounded-2xl overflow-hidden" role="list">
-        <div className="hidden lg:grid grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1.1fr_1fr_1fr_28px] gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d]">
-          {['Market', 'Status', 'Visitors 60 min', 'Clickout', 'Budget today', 'Cost / clickout', 'Amazon today (all tags)', 'Net ≈', ''].map((h, i) => <K key={i}>{h}</K>)}
+      <div className="bg-[#121a2e] border border-[#24304d] rounded-2xl" role="list">
+        <div className={`hidden lg:grid ${BOARD} gap-3.5 items-center px-4 h-10 bg-[#1a2440] border-b border-[#24304d] rounded-t-2xl`}>
+          {['Market', 'Status', `Spend ${pl}`, `Amazon ${pl}`, 'Net ≈', isToday ? 'Visitors 60 min' : 'Visitors', isToday ? 'Clickout' : 'Clickout rate', 'Cost / clickout', ''].map((h, i) => <K key={i}>{h}</K>)}
+        </div>
+        <div className="lg:hidden grid grid-cols-[minmax(58px,.8fr)_1fr_1fr_1fr] gap-2 px-3 py-1.5 bg-[#1a2440] border-b border-[#24304d] rounded-t-2xl">
+          {['Market', 'Spend', 'Comm ≈', 'Net'].map(h => <span key={h} className="text-[11px] font-semibold uppercase tracking-wide text-[#94a0bd]">{h}</span>)}
         </div>
         {!shown.length && <div className="px-4 py-5 text-[#94a0bd]">No market matches the filter. Pick a region or tap a market chip above.</div>}
         {shown.map(x => {
-          const open = V.open === x.m.market, ac = x.m.acct_currency;
+          const open = V.open === x.m.market, ac = x.m.acct_currency, p = pv(x);
+          const amzWarn = x.amzNote ? x.amzNote : p.notIn ? `Amazon not in yet for ${dm(p.notIn)}` : x.commUnset && p.items > 0 ? 'Set commission %' : isToday && x.amzStale ? 'Amazon read old' : null;
+          const sub = 'text-[13px] text-[#94a0bd] whitespace-nowrap truncate';
           return (
-            <div key={x.m.market} role="listitem">
+            <div key={x.m.market} role="listitem" className="border-t border-[#24304d] first:border-t-0">
               <button type="button" aria-expanded={open} onClick={() => saveV({ ...V, open: open ? null : x.m.market })}
-                className={`w-full text-left grid grid-cols-[1fr_auto] lg:grid-cols-[minmax(170px,1.5fr)_128px_1.1fr_.8fr_1.5fr_1.1fr_1fr_1fr_28px] gap-x-3.5 gap-y-2.5 items-center px-4 py-3 lg:py-2 lg:min-h-[66px] border-t border-[#24304d] first:border-t-0 hover:bg-white/[.025] ${open ? 'bg-[#1a2440]' : ''}`}>
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xl font-extrabold text-white w-[42px] flex-none">{x.m.market}</span>
-                  <span className="flex flex-col min-w-0"><span className="text-sm font-semibold truncate">{x.m.label}</span><span className="text-[13px] text-[#94a0bd]">{pad(x.L.h)}:{pad(x.L.m)} local</span></span>
+                className={`w-full text-left hover:bg-white/[.025] ${open ? 'bg-[#1a2440]' : ''}`}>
+                {/* phone: ONE line per market (owner 11-21) */}
+                <div className="lg:hidden grid grid-cols-[minmax(58px,.8fr)_1fr_1fr_1fr] gap-2 items-center px-3 py-2">
+                  <span className="flex items-center gap-1.5"><b className="w-2 h-2 rounded-full flex-none" style={{ background: ST_DOT[x.st] }} /><span className="text-[16px] font-extrabold text-white">{x.m.market}</span></span>
+                  <span className="text-[15px] font-bold text-white whitespace-nowrap">{x.hasAcct ? (waitR ? '…' : ils(p.spendIls)) : '—'}</span>
+                  <span className={`text-[15px] font-bold whitespace-nowrap ${amzWarn && p.notIn ? 'text-amber-400' : 'text-emerald-400'}`}>{waitR ? '…' : p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
+                  <span className={`text-[15px] font-bold whitespace-nowrap ${netCls(p.netIls)}`}>{waitR ? '…' : ilsS(p.netIls)}</span>
                 </div>
-                <span className={`justify-self-end lg:justify-self-start text-[13px] font-bold px-3 py-0.5 rounded-full whitespace-nowrap ${ST_CLS[x.st]}`}>{ST_LABEL[x.st]}</span>
-                <div className="col-span-2 lg:col-span-1 grid grid-cols-3 gap-3 lg:contents">
-                  <div className="flex flex-col gap-1 min-w-0"><span className="lg:hidden"><K>Visitors 60 min</K></span>
-                    <span className="text-[17px] font-bold text-white whitespace-nowrap">{x.v60} <small className="text-[13px] font-medium text-[#94a0bd]">/ {n1(x.n60)} normal</small></span><Pace x={x} /></div>
-                  <div className="flex flex-col gap-1 min-w-0"><span className="lg:hidden"><K>Clickout</K></span>
-                    <span className={`text-[17px] font-bold whitespace-nowrap ${x.c60 != null && x.c60 < x.judgeCo && x.v60 >= 3 ? 'text-red-400' : 'text-white'}`}>{pct(x.c60)}</span><span className="text-[13px] text-[#94a0bd]">60 min</span></div>
-                  <div className="flex flex-col gap-1 min-w-0"><span className="lg:hidden"><K>Budget today</K></span>
-                    {x.hasAcct ? <><span className="text-[17px] font-bold text-white whitespace-nowrap">{pct(x.used)} <small className="text-[13px] font-medium text-[#94a0bd]">{money(ac, x.spend)} / {money(ac, x.budget)}</small></span><Bar x={x} /></>
-                      : <span className="text-[13px] text-[#94a0bd] border border-dashed border-[#33416a] rounded-lg px-2 py-0.5 self-start whitespace-nowrap">no own Google Ads account</span>}</div>
-                  <div className="flex flex-col gap-0.5 min-w-0"><span className="lg:hidden"><K>Cost / clickout</K></span>
-                    {x.hasAcct ? <>
-                      <span className="text-[17px] font-bold text-white whitespace-nowrap" title="site: today's spend ÷ site clickouts (ad visits)">{cur2(ac, x.cpoSite)} <small className="text-[13px] font-medium text-[#94a0bd]">site</small></span>
-                      <span className="text-[13px] text-[#94a0bd] whitespace-nowrap">Ads {cur2(ac, x.cpoAds)} · CPC {cur2(ac, x.cpc)}</span>
-                      <span className="text-[13px] text-[#94a0bd] whitespace-nowrap">rate {pct(x.crSite)} · Ads {pct(x.crAds)}</span></>
-                      : <span className="text-[13px] text-[#94a0bd]">—</span>}</div>
+                {/* desktop */}
+                <div className={`hidden lg:grid ${BOARD} gap-x-3.5 items-center px-4 py-2 min-h-[66px]`}>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-xl font-extrabold text-white w-[42px] flex-none">{x.m.market}</span>
+                    <span className="flex flex-col min-w-0"><span className="text-sm font-semibold truncate">{x.m.label}</span><span className="text-[13px] text-[#94a0bd]">{pad(x.L.h)}:{pad(x.L.m)} local</span></span>
+                  </div>
+                  <span className={`justify-self-start text-[13px] font-bold px-3 py-0.5 rounded-full whitespace-nowrap ${ST_CLS[x.st]}`}>{ST_LABEL[x.st]}</span>
+                  {/* Spend: the money big, budget % small (owner 11-21) */}
+                  <div className="flex flex-col gap-1 min-w-0">
+                    {!x.hasAcct ? <span className="text-[13px] text-[#94a0bd] border border-dashed border-[#33416a] rounded-lg px-2 py-0.5 self-start whitespace-nowrap">no own Google Ads account</span>
+                      : waitR ? <span className={sub}>loading…</span> : <>
+                        <span className="text-[19px] font-extrabold text-white whitespace-nowrap leading-tight" title={ac !== 'ILS' ? `${money(ac, p.spend)} in the account currency` : undefined}>{ils(p.spendIls)}</span>
+                        {isToday ? <><span className={sub} title={`normal by now ${pct(x.normBy)} (the white mark on the bar)`}>{pct(x.used)} of {ils(x.budgetIls)} · norm {pct(x.normBy)}</span><Bar x={x} /></>
+                          : <span className={sub}>{p.nDays > 1 ? `≈${ils((p.spendIls ?? 0) / p.nDays)} a day` : dm(p.from)}</span>}
+                      </>}
+                  </div>
+                  {/* Amazon: commission first and bold; items + revenue + assumption small (owner 11-21) */}
+                  <div className="flex flex-col gap-0.5 min-w-0">
+                    {waitR ? <span className={sub}>loading…</span> : <>
+                      <span className="text-[19px] font-extrabold text-emerald-400 whitespace-nowrap leading-tight">{p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
+                      <span className={sub}>{n0(p.items)} items · {money(x.m.currency, p.rev)}</span>
+                      {amzWarn ? <span className="text-[12px] font-semibold text-amber-400 truncate">{amzWarn}</span>
+                        : <span className="text-[12px] text-[#7d89a8] truncate">× {x.comm != null ? (x.comm * 100).toFixed(1) + '%' : '?'} × FX</span>}
+                    </>}
+                  </div>
+                  <div className="flex flex-col gap-0.5 min-w-0"><span className={`text-[19px] font-extrabold leading-tight ${netCls(p.netIls)}`}>{waitR ? '…' : ilsS(p.netIls)}</span><span className={sub}>comm − spend</span></div>
+                  <div className="flex flex-col gap-1 min-w-0">
+                    {isToday ? <><span className="text-[17px] font-bold text-white whitespace-nowrap">{x.v60} <small className="text-[13px] font-medium text-[#94a0bd]">/ {n1(x.n60)} normal</small></span><Pace x={x} /></>
+                      : <><span className="text-[17px] font-bold text-white">{waitR ? '…' : n0(p.vis)}</span><span className={sub}>{n0(p.outs)} clickouts</span></>}
+                  </div>
+                  <div className="flex flex-col gap-1 min-w-0">
+                    {isToday ? <><span className={`text-[17px] font-bold whitespace-nowrap ${x.c60 != null && x.c60 < x.judgeCo && x.v60 >= 3 ? 'text-red-400' : 'text-white'}`}>{pct(x.c60)}</span><span className={sub}>60 min</span></>
+                      : <><span className="text-[17px] font-bold text-white">{waitR ? '…' : pct(p.crSite)}</span><span className={sub}>site</span></>}
+                  </div>
+                  <div className="flex flex-col gap-0.5 min-w-0">
+                    {x.hasAcct && !waitR ? <>
+                      <span className="text-[17px] font-bold text-white whitespace-nowrap" title="site: spend ÷ site clickouts (ad visits)">{cur2(ac, p.cpoSite)} <small className="text-[13px] font-medium text-[#94a0bd]">site</small></span>
+                      <span className={sub}>Ads {cur2(ac, p.cpoAds)} · CPC {cur2(ac, p.cpc)}</span>
+                      <span className={sub}>rate {pct(p.crSite)} · Ads {pct(p.crAds)}</span></>
+                      : <span className="text-[13px] text-[#94a0bd]">—</span>}
+                  </div>
+                  <span className={`text-lg transition-transform ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
                 </div>
-                <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className="text-[17px] font-bold text-white">{n0(x.items)} <small className="text-[13px] font-medium text-[#94a0bd]">items</small></span><span className={`text-[13px] truncate ${x.amzStale ? 'text-amber-400' : 'text-[#94a0bd]'}`}>{money(x.m.currency, x.rev)}{x.earnIls != null ? ` · ≈₪${n0(x.earnIls)}` : ''}{x.amzStale ? ' · read old' : ''}</span>
-                  {x.amzDay ? <span className="text-[12px] font-semibold text-amber-400">Amazon day {x.amzDay.slice(8)}/{x.amzDay.slice(5, 7)}</span>
-                    : x.commUnset && x.items > 0 ? <span className="text-[12px] font-semibold text-amber-400">Set commission %</span> : null}</div>
-                <div className="hidden lg:flex flex-col gap-1 min-w-0"><span className={`text-[17px] font-bold ${x.net == null ? 'text-white' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{signed(ac, x.net)}</span><span className="text-[13px] text-[#94a0bd]">earnings − spend</span></div>
-                <span className={`hidden lg:block text-lg transition-transform ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
               </button>
-              {open && <Detail x={x} P={P} view={view} setView={setView} month={month?.market === x.m.market ? month.rows : null}
-                orders={orders.filter(o => o.market === x.m.market)} dt={V.dt || 'today'} setDt={t => saveV({ ...V, dt: t })}
+              {open && <Detail x={x} p={p} per={per} R={R} P={P}
+                orders={orders.filter(o => o.market === x.m.market)} dt={V.dt === 'camps' ? 'camps' : 'today'} setDt={t => saveV({ ...V, dt: t })}
                 steps={steps} setStep={(k, v) => setSteps(s => ({ ...s, [k]: v }))}
                 sel={sel[x.m.market] ?? null} setSel={v => setSel(s => ({ ...s, [x.m.market]: v }))} onAsk={setAsk} S={S} />}
             </div>
@@ -470,8 +579,8 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
 
       <p className="text-[13px] text-[#94a0bd] leading-relaxed">
         Rows = pulse_markets with active = true; a market without its own Google Ads account shows site + Amazon until an account with its code appears.
-        Hours = each Google Ads account&apos;s clock. Budget and spend stay in the account currency (never converted); FX only converts Amazon amounts.
-        Amazon today = Amazon&apos;s own today report (all tags, read hourly); each hour shows what was added, in the hour it was first seen (late orders go to Amazon&apos;s own day). Earnings ≈ revenue × commission % × FX. Orders: your click + confirm is the GO for that one change; the worker re-checks it, writes it and reads it back.
+        Days and hours = each Google Ads account&apos;s clock. Board money is in ₪ (spend × FX of the account currency; commission ≈ Amazon revenue × commission % × FX); per-click numbers stay in the account currency, like Google Ads.
+        Amazon is paired with the same day as the spend: a late order goes to Amazon&apos;s own day. Orders: your click + confirm is the GO for that one change; the worker re-checks it, writes it and reads it back.
       </p>
 
       {ask && <Confirm a={ask} onNo={() => setAsk(null)} onYes={confirm} />}
@@ -542,8 +651,8 @@ const r2 = (v: number) => Math.round(v * 100) / 100;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const dCls = (d: number) => (d > 0 ? 'text-emerald-400' : d < 0 ? 'text-red-400' : 'text-[#94a0bd]');
 
-function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep, sel, setSel, onAsk, S }: {
-  x: D; P: Pulse; view: 'h' | 'd'; setView: (v: 'h' | 'd') => void; month: Day[] | null; orders: Order[]; dt: string; setDt: (t: string) => void;
+function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSel, onAsk, S }: {
+  x: D; p: PV; per: Per; R: Range | null; P: Pulse; orders: Order[]; dt: string; setDt: (t: string) => void;
   steps: Record<string, number>; setStep: (k: string, v: number) => void; sel: string | null; setSel: (v: string | null) => void;
   onAsk: (a: Ask) => void; S: (k: string, d: number) => number;
 }) {
@@ -553,64 +662,83 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
   const pctLim = S('bid_step_pct', 0.5), ptsLim = S('troas_step_pts', 50) / 100, minB = S('bid_min_amount', 0.01), minR = S('troas_min', 0.05);
   const stratOf = (id: string | null) => x.strategies.find(s => s.strategy_id === id) ?? null;
   const usedBy = (id: string) => x.campaigns.filter(c => c.strategy_id === id).map(c => c.name ?? c.campaign_id);
-  const tabs: [string, string][] = [['today', 'Today'], ['camps', `Campaigns & bids${x.campaigns.length ? ` (${x.campaigns.length})` : ''}`], ['money', 'Money']];
-
-  // ── Today tab
-  const H = view === 'h', ilNow = localNow(IL);
-  const dayNormal = x.hours.reduce((a, h) => a + h.norm, 0);
-  // v1.4: by-day view can show ONE campaign's Google Ads numbers (site numbers exist per account only)
+  // owner 11-21: two tabs — the period view (always first, default) and Campaigns; the Money tab is folded into the first
+  const tabs: [string, string][] = [['today', PER_LABEL[per]], ['camps', `Campaigns${x.campaigns.length ? ` (${x.campaigns.length})` : ''}`]];
   const [campF, setCampF] = useState<string>('all');
-  const cdays = (P.campaign_daily ?? []).filter(c => c.market === mk && c.customer_id === x.m.customer_id);
-  const cdOf = (id: string, d: string) => cdays.find(c => c.campaign_id === id && c.local_date === d);
+
+  const isH = per === 'today' || per === 'yday', ilNow = localNow(IL), waitR = per !== 'today' && !R;
+  const fxA = x.fxA, fxAcc = x.fxAcc;
+  // campaign days: today from the live read; other periods from the range read
+  const cdSrc = per === 'today' ? (P.campaign_daily ?? []) : (R?.campaign_daily ?? []);
+  const cdays = cdSrc.filter(c => c.market === mk && c.customer_id === x.m.customer_id && c.local_date >= p.from && c.local_date <= p.to);
+  const cdOf = (id: string, d: string) => cdays.filter(c => c.campaign_id === id && c.local_date === d);
   const campNames = Array.from(new Map(cdays.filter(c => num(c.clicks, 0) > 0 || num(c.cost, 0) > 0).map(c => [c.campaign_id, c.name ?? c.campaign_id])).entries());
-  const one = !H && campF !== 'all';
-  const rows = H
-    ? x.hours.map(h => ({ key: String(h.h), label: pad(h.h) + ':00', il: pad(((h.h - x.L.h + ilNow.h) % 24 + 24) % 24) + ':00', vis: h.vis, norm: h.norm, outs: h.outs,
+  const one = !isH && campF !== 'all';
+  const estE = (r: { amz_earnings: number | null; amz_revenue: number | null }) => (r.amz_earnings != null ? num(r.amz_earnings, 0) : num(r.amz_revenue, 0) * num(x.comm, 0));
+  type Row = { key: string; label: string; il: string; vis: number | null; norm: number; outs: number | null; cost: number | null; clicks: number | null;
+    conv: number | null; items: number | null; rev: number | null; earn: number | null; fut: boolean; now: boolean; lag: boolean };
+  const hourIl = (h: number) => pad(((h - x.L.h + ilNow.h) % 24 + 24) % 24) + ':00';
+  const rows: Row[] = per === 'today'
+    ? x.hours.map(h => ({ key: String(h.h), label: pad(h.h) + ':00', il: hourIl(h.h), vis: h.vis, norm: h.norm, outs: h.outs,
         cost: h.cost, clicks: h.clicks, conv: h.conv, items: h.items, rev: h.rev, earn: h.earn, fut: h.fut, now: h.now, lag: h.lag }))
-    : (month ?? []).map(d => {
-        const c1 = one ? cdOf(campF, d.local_date) : null;
-        return { key: d.local_date, label: d.local_date.slice(5), il: '', vis: one ? null : num(d.visitors, 0), norm: dayNormal, outs: one ? null : num(d.clickouts, 0),
-          cost: !x.hasAcct ? null : one ? num(c1?.cost, 0) : num(d.gads_cost, 0), clicks: one ? num(c1?.clicks, 0) : num(d.gads_clicks, 0),
-          conv: one ? num(c1?.conv, 0) : num(d.gads_conv, 0), items: num(d.amz_items, 0), rev: num(d.amz_revenue, 0),
-          earn: d.amz_earnings != null ? num(d.amz_earnings, 0) : num(d.amz_revenue, 0) * num(x.m.comm_rate, 0),
-          fut: false, now: d.local_date === x.L.date, lag: d.local_date === x.L.date };
-      });
+    : per === 'yday'
+      ? Array.from({ length: 24 }, (_, h) => {
+          const r = (R?.yesterday ?? []).find(y => y.market === mk && y.local_hour === h);
+          return { key: String(h), label: pad(h) + ':00', il: hourIl(h), vis: num(r?.visitors, 0), norm: x.hours[h].norm, outs: num(r?.clickouts, 0),
+            cost: x.hasAcct ? num(r?.gads_cost, 0) : null, clicks: num(r?.gads_clicks, 0), conv: num(r?.gads_conv, 0), items: num(r?.amz_items, 0),
+            rev: num(r?.amz_revenue, 0), earn: r ? estE(r) : 0, fut: false, now: false, lag: false };
+        })
+      : (R?.days ?? []).filter(d => d.market === mk && d.local_date >= p.from && d.local_date <= p.to)
+          .sort((a, b) => (a.local_date < b.local_date ? 1 : -1))   // newest first: the previous days right at the top
+          .map(d => {
+            const c1 = one ? cdOf(campF, d.local_date) : [];
+            const cs = (k: 'cost' | 'clicks' | 'conv') => c1.reduce((a, c) => a + num(c[k], 0), 0);
+            return { key: d.local_date, label: `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(d.local_date + 'T12:00:00Z').getUTCDay()]} ${dm(d.local_date)}`, il: '',
+              vis: one ? null : num(d.visitors, 0), norm: x.hours.reduce((a, h) => a + h.norm, 0), outs: one ? null : num(d.clickouts, 0),
+              cost: !x.hasAcct ? null : one ? cs('cost') : num(d.gads_cost, 0), clicks: one ? cs('clicks') : num(d.gads_clicks, 0),
+              conv: one ? cs('conv') : num(d.gads_conv, 0), items: num(d.amz_items, 0), rev: num(d.amz_revenue, 0), earn: estE(d),
+              fut: false, now: d.local_date === x.L.date, lag: d.local_date === x.L.date };
+          });
   const T = (k: 'vis' | 'outs' | 'cost' | 'clicks' | 'conv' | 'items' | 'rev' | 'earn') => rows.reduce((a, r) => a + (r[k] ?? 0), 0);
   const c2 = (v: number | null) => (v == null ? '—' : v.toFixed(2));
-  // owner 11-15: (1) the header row must stay visible while scrolling to later hours -> the table scrolls inside its own
-  // box (max 70% of the screen) and the header is sticky to it; (2) no hidden right-hand columns -> tighter cells and
-  // headers that wrap onto two lines, so all 16 columns fit a ~1200 px panel without the side scrollbar.
-  const td = 'px-1.5 py-1.5 text-right whitespace-nowrap border-b border-[#24304d]';
-  const th = 'px-1.5 py-1.5 text-right align-bottom leading-tight bg-[#1a2440] text-[#94a0bd] text-[11px] uppercase tracking-wide font-bold sticky top-0 z-20 border-b border-[#33416a]';
+  const toIls = (v: number | null, fx: number | null) => (v == null || fx == null ? null : v * fx);
+  // owner 11-15 + 11-21: the header stays visible while the PAGE scrolls (sticky right under the filter bar); spend,
+  // commission and net come first; Amazon items/revenue at the end. Wide screens: no inner scroll box.
+  // owner 11-22: left-aligned, bigger numbers (15 px), headers centred vertically
+  const td = 'px-2 py-1.5 text-left whitespace-nowrap border-b border-[#24304d]';
+  const th = 'px-2 py-2 text-left align-middle leading-tight bg-[#1a2440] text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold sticky z-20 border-b border-[#33416a]';
+  const thTop = { top: 'var(--mp-top, 0px)' };
   const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 text-xs font-bold';
+  const B = 'border-l border-[#33416a]';
 
-  const todayTab = (
-    <div className="flex flex-col gap-3.5">
-      {x.hasAcct && (
-        <div className={CARD}>
-          <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Daily budget</h3><span className="text-[13px] text-[#94a0bd]">own account {x.m.customer_id} · account day · {ac}</span></div>
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-3 gap-y-2">
-            {[['Used', money(ac, x.spend), ''], ['Budget', money(ac, x.budget), ''], ['Left', money(ac, x.budget != null && x.spend != null ? Math.max(0, x.budget - x.spend) : null), ''],
-              ['Used %', pct(x.used), x.used != null && x.used >= 1 ? 'text-red-400' : ''], ['Normal by now', pct(x.normBy), 'text-[#94a0bd]']].map(([k, v, c]) => (
-              <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>
-            ))}
-          </div>
-          <Bar x={x} big />
-        </div>
-      )}
-      <div className={CARD}>
-        <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Today by local hour</h3><span className="text-[13px] text-[#94a0bd]">bars = ad visitors · dashed = normal · strip = clickout rate</span></div>
-        <Chart x={x} />
-      </div>
-      <div className="flex gap-1" role="tablist">
-        {(['h', 'd'] as const).map(v => (
-          <button key={v} type="button" role="tab" aria-selected={view === v} onClick={() => setView(v)}
-            className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border ${view === v ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>
-            {v === 'h' ? 'By hour' : 'This month by day'}</button>
-        ))}
-      </div>
-      {!H && !month && <p className="text-sm text-[#94a0bd]">Loading month…</p>}
-      {!H && x.hasAcct && campNames.length > 0 && (
+  // ── seasonality (owner 11-21: first in the period tab, also kept in Bids & budgets)
+  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 1000) / 10;
+  const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
+  // owner 11-15: targets are WHOLE percents; only a step that lands on 0 stops at ±0.1 (Google Ads takes no exact 0%).
+  const seasStep = (d: number) => {
+    const cur = nowPts + sd;
+    let t = Math.round(cur + d);
+    if (t === 0) t = d > 0 ? 0.1 : -0.1;
+    t = clamp(t, Math.max(nowPts - sRange, sFloor), Math.min(nowPts + sRange, sCap));
+    set('seas', r2(t - nowPts));
+  };
+  const sdShown = sd === 0 ? 0 : (nowPts + sd) - Math.round(nowPts);
+  // owner 11-22: compact — the label sits right next to the stepper (not at the far side)
+  const seasStrip = x.hasAcct && (
+    <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-2.5 flex flex-wrap gap-x-5 gap-y-2.5 items-center">
+      <div className="flex flex-col min-w-[150px]"><K>Account seasonality</K><b className="text-[22px] font-extrabold text-white leading-tight">{seasNow == null ? 'none active' : sp(nowPts)}</b>
+        {seasNow != null && <span className="text-[12px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
+      {seasNow != null && <div className="w-full max-w-[460px]"><Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
+        onStep={seasStep}
+        apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
+        onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} /></div>}
+    </div>
+  );
+
+  const periodTab = (
+    <div className="flex flex-col gap-3">
+      {seasStrip}
+      {!isH && x.hasAcct && campNames.length > 0 && (
         <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="group" aria-label="Campaign">
           {[['all', 'All campaigns'] as [string, string], ...campNames].map(([id, nm]) => (
             <button key={id} type="button" aria-pressed={campF === id} onClick={() => setCampF(id)}
@@ -619,157 +747,178 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
         </div>
       )}
       {one && <p className="text-[13px] text-[#94a0bd] m-0">One campaign: Google Ads numbers only. Our click log keeps the Google click id but not the campaign, so site visitors and clickouts exist per account.</p>}
-      <div className="overflow-auto max-h-[70vh] border border-[#24304d] rounded-xl">
-        <table className="w-full min-w-[900px] text-[13px] border-separate border-spacing-0">
-          <thead><tr>
-            <th className={`${th} text-left left-0 z-30`}>{H ? 'Local' : 'Day'}</th>{H && <th className={th}>IL</th>}
-            <th className={`${th} border-l border-[#33416a]`}>Spend {x.hasAcct ? ac : ''}</th><th className={th}>Clicks</th><th className={th}>CPC</th>
-            <th className={`${th} border-l border-[#33416a]`}>Visitors</th><th className={th}>Normal</th><th className={th}>Clickouts</th><th className={th}>Rate</th><th className={th}>Cost / clickout</th>
-            <th className={`${th} border-l border-[#33416a]`} title="Google Ads Clickouts conversion">Ads clickouts</th><th className={th}>Ads rate</th><th className={th}>Ads cost / clickout</th>
-            <th className={`${th} border-l border-[#33416a]`}>Amazon items</th><th className={th}>Revenue {x.m.currency}</th><th className={th}>Net ≈{sym(ac).trim()}</th>
-          </tr></thead>
-          <tbody>
-            {rows.map(r => {
-              const rate = r.vis ? (r.outs ?? 0) / r.vis : null;
-              const lowV = H && r.vis != null && !r.now && r.norm >= x.stuckMin && r.vis < x.stuckRatio * r.norm;
-              const e = x.hasAcct ? x.toAcct(r.earn) : null, net = e != null && r.cost != null ? e - r.cost : null;
-              const lag = x.amzStale || r.lag ? 'bg-violet-400/10' : '';
-              return (
-                <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now ? 'bg-yellow-400/10' : ''}`}>
-                  <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{H && <td className={td}>{r.il}</td>}
-                  <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.cost) : '—'}</td><td className={td}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
-                  <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.clicks)) : '—'}</td>
-                  <td className={`${td} border-l border-[#33416a]`}>{n0(r.vis)}</td>
-                  <td className={td}>{one ? '—' : lowV ? <span className={flag}>{n1(r.norm)}</span> : H ? n1(r.norm) : n0(r.norm)}</td>
-                  <td className={td}>{n0(r.outs)}</td>
-                  <td className={td}>{rate != null && rate < x.judgeCo && (r.vis ?? 0) >= 4 ? <span className={flag}>{pct(rate)}</span> : pct(rate)}</td>
-                  <td className={td}>{r.cost && r.outs ? (r.cost / r.outs).toFixed(2) : '—'}</td>
-                  <td className={`${td} border-l border-[#33416a]`}>{x.hasAcct ? n1(r.conv) : '—'}</td>
-                  <td className={td}>{x.hasAcct ? pct(ratio(r.conv, r.clicks)) : '—'}</td>
-                  <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.conv)) : '—'}</td>
-                  <td className={`${td} border-l border-[#33416a] ${lag}`}>{n0(r.items)}</td><td className={`${td} ${lag}`}>{money(x.m.currency, r.rev)}</td>
-                  <td className={`${td} ${net == null ? '' : net >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{net == null ? '—' : (net >= 0 ? '+' : '') + Math.round(net)}</td>
-                </tr>
-              );
-            })}
-            <tr className="font-bold">
-              <td className={`${td} text-left sticky left-0 bg-[#1a2440]`}>Total</td>{H && <td className={`${td} bg-[#1a2440]`} />}
-              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n0(T('cost')) : '—'}</td><td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? n0(T('clicks')) : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? c2(ratio(T('cost'), T('clicks'))) : '—'}</td>
-              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{one ? '—' : n0(T('vis'))}</td><td className={`${td} bg-[#1a2440]`}>{H ? `${n0(x.normT)} by now` : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{one ? '—' : n0(T('outs'))}</td><td className={`${td} bg-[#1a2440]`}>{!one && T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{!one && T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
-              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{x.hasAcct ? n1(T('conv')) : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? pct(ratio(T('conv'), T('clicks'))) : '—'}</td>
-              <td className={`${td} bg-[#1a2440]`}>{x.hasAcct ? c2(ratio(T('cost'), T('conv'))) : '—'}</td>
-              <td className={`${td} bg-[#1a2440] border-l border-[#33416a]`}>{n0(T('items'))}</td><td className={`${td} bg-[#1a2440]`}>{money(x.m.currency, T('rev'))}</td>
-              <td className={`${td} bg-[#1a2440]`}>{(() => { const e = x.hasAcct ? x.toAcct(T('earn')) : null; return e == null ? '—' : signed(ac, e - T('cost')); })()}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {waitR ? <p className="text-sm text-[#94a0bd] m-0">Loading {PER_LABEL[per].toLowerCase()}…</p> : (
+        <div className="overflow-x-auto lg:overflow-visible border border-[#24304d] rounded-xl">
+          <table className="w-full min-w-[1060px] text-[15px] border-separate border-spacing-0">
+            <thead><tr>
+              <th style={thTop} className={`${th} text-left left-0 z-30 rounded-tl-xl`}>{isH ? 'Local' : 'Day'}</th>{isH && <th style={thTop} className={th}>IL</th>}
+              <th style={thTop} className={`${th} ${B} text-white`}>Spend ₪</th><th style={thTop} className={`${th} text-emerald-300`}>Comm ≈₪</th><th style={thTop} className={th}>Net ₪</th>
+              <th style={thTop} className={`${th} ${B}`}>Clicks</th><th style={thTop} className={th}>CPC {sym(ac).trim()}</th>
+              <th style={thTop} className={`${th} ${B}`}>Visitors</th><th style={thTop} className={th}>Normal</th><th style={thTop} className={th}>Clickouts</th><th style={thTop} className={th}>Rate</th><th style={thTop} className={th}>Cost / clickout</th>
+              <th style={thTop} className={`${th} ${B}`} title="Google Ads Clickouts conversion">Ads clickouts</th><th style={thTop} className={th}>Ads rate</th><th style={thTop} className={th}>Ads cost / clickout</th>
+              <th style={thTop} className={`${th} ${B}`}>Amazon items</th><th style={thTop} className={`${th} rounded-tr-xl`}>Revenue {x.m.currency}</th>
+            </tr></thead>
+            <tbody>
+              {rows.map(r => {
+                const rate = r.vis ? (r.outs ?? 0) / r.vis : null;
+                const lowV = isH && r.vis != null && !r.now && r.norm >= x.stuckMin && r.vis < x.stuckRatio * r.norm;
+                const sI = x.hasAcct ? toIls(r.cost, fxAcc) : null, eI = x.comm == null ? null : toIls(r.earn, fxA);
+                const net = sI != null && eI != null ? eI - sI : null;
+                const lag = per === 'today' && (x.amzStale || r.lag) ? 'bg-violet-400/10' : '';
+                return (
+                  <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now && per === 'today' ? 'bg-yellow-400/10' : ''}`}>
+                    <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{isH && <td className={td}>{r.il}</td>}
+                    <td className={`${td} ${B} font-bold text-white`}>{x.hasAcct ? (r.fut ? '—' : n0(sI)) : '—'}</td>
+                    <td className={`${td} font-bold text-emerald-300 ${lag}`}>{r.fut || eI == null ? '—' : n0(eI)}</td>
+                    <td className={`${td} ${netCls(net)}`}>{r.fut || net == null ? '—' : (net >= 0 ? '+' : '−') + n0(Math.abs(net))}</td>
+                    <td className={`${td} ${B}`}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
+                    <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.clicks)) : '—'}</td>
+                    <td className={`${td} ${B}`}>{n0(r.vis)}</td>
+                    <td className={td}>{one ? '—' : lowV ? <span className={flag}>{n1(r.norm)}</span> : isH ? n1(r.norm) : n0(r.norm)}</td>
+                    <td className={td}>{n0(r.outs)}</td>
+                    <td className={td}>{rate != null && rate < x.judgeCo && (r.vis ?? 0) >= 4 ? <span className={flag}>{pct(rate)}</span> : pct(rate)}</td>
+                    <td className={td}>{r.cost && r.outs ? (r.cost / r.outs).toFixed(2) : '—'}</td>
+                    <td className={`${td} ${B}`}>{x.hasAcct ? n1(r.conv) : '—'}</td>
+                    <td className={td}>{x.hasAcct ? pct(ratio(r.conv, r.clicks)) : '—'}</td>
+                    <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.conv)) : '—'}</td>
+                    <td className={`${td} ${B} ${lag}`}>{n0(r.items)}</td><td className={`${td} ${lag}`}>{money(x.m.currency, r.rev)}</td>
+                  </tr>
+                );
+              })}
+              {(() => {
+                const sI = x.hasAcct ? toIls(T('cost'), fxAcc) : null, eI = x.comm == null ? null : toIls(T('earn'), fxA), net = sI != null && eI != null ? eI - sI : null;
+                const f = 'bg-[#1a2440]';
+                return (
+                  <tr className="font-bold">
+                    <td className={`${td} ${f} text-left sticky left-0`}>Total</td>{isH && <td className={`${td} ${f}`} />}
+                    <td className={`${td} ${f} ${B} text-white`}>{x.hasAcct ? ils(sI) : '—'}</td>
+                    <td className={`${td} ${f} text-emerald-300`}>{eI == null ? '—' : '≈' + ils(eI)}</td>
+                    <td className={`${td} ${f} ${netCls(net)}`}>{ilsS(net)}</td>
+                    <td className={`${td} ${f} ${B}`}>{x.hasAcct ? n0(T('clicks')) : '—'}</td>
+                    <td className={`${td} ${f}`}>{x.hasAcct ? c2(ratio(T('cost'), T('clicks'))) : '—'}</td>
+                    <td className={`${td} ${f} ${B}`}>{one ? '—' : n0(T('vis'))}</td><td className={`${td} ${f}`}>{per === 'today' ? `${n0(x.normT)} by now` : '—'}</td>
+                    <td className={`${td} ${f}`}>{one ? '—' : n0(T('outs'))}</td><td className={`${td} ${f}`}>{!one && T('vis') ? pct(T('outs') / T('vis')) : '—'}</td>
+                    <td className={`${td} ${f}`}>{!one && T('cost') && T('outs') ? (T('cost') / T('outs')).toFixed(2) : '—'}</td>
+                    <td className={`${td} ${f} ${B}`}>{x.hasAcct ? n1(T('conv')) : '—'}</td>
+                    <td className={`${td} ${f}`}>{x.hasAcct ? pct(ratio(T('conv'), T('clicks'))) : '—'}</td>
+                    <td className={`${td} ${f}`}>{x.hasAcct ? c2(ratio(T('cost'), T('conv'))) : '—'}</td>
+                    <td className={`${td} ${f} ${B}`}>{n0(T('items'))}</td><td className={`${td} ${f}`}>{money(x.m.currency, T('rev'))}</td>
+                  </tr>
+                );
+              })()}
+            </tbody>
+          </table>
+        </div>
+      )}
       <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] text-[#94a0bd]">
-        <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-yellow-400/20" />current hour</span>
-        <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-violet-400/20" />Amazon still coming in</span>
+        {per === 'today' && <><span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-yellow-400/20" />current hour</span>
+          <span><i className="inline-block w-[11px] h-[11px] rounded-sm mr-1 align-[-1px] bg-violet-400/20" />Amazon still coming in</span></>}
+        {p.notIn && <span className="text-amber-400">Amazon&apos;s report is still on the day before; {dm(p.notIn)} is not in yet (see Yesterday for the full pair).</span>}
         <span>Amazon read {agoTxt(x.readAge)}{x.mtd?.last_new_order ? ` · last new order ${ilTime(x.mtd.last_new_order)} IL` : ''}</span>
       </div>
+      {/* was the Money tab (owner 11-21: fold it in) */}
+      <p className="text-[13px] text-[#94a0bd] m-0 leading-relaxed">
+        {x.commUnset ? <span className="text-amber-400">No commission % on the {mk} market row yet, so no ₪ estimate. </span>
+          : <>Commission ≈ revenue × <b className="text-[#c3cbe0]">{(num(x.comm, 0) * 100).toFixed(2)}%</b>{x.act != null && <> (actual this month <b className={Math.abs(x.act - num(x.comm, 0)) >= 0.005 ? 'text-amber-400' : 'text-[#c3cbe0]'}>{(x.act * 100).toFixed(1)}%</b>)</>}
+            {' '}× FX{fxA != null ? ` (${x.m.currency} ${fxA < 0.1 ? `100 = ₪${(fxA * 100).toFixed(2)}` : `1 = ₪${fxA.toFixed(2)}`})` : ''}. Amazon&apos;s report has no earnings, so this is an estimate. </>}
+        {x.mtd && <>Month-to-date (Amazon, ads tags): {n0(x.mtd.items)} items · {money(x.m.currency, x.mtd.revenue)} · earnings {money(x.m.currency, x.mtd.earnings)}. </>}
+        {x.status?.job_last_error && <span className="text-amber-400">Last job error: {x.status.job_last_error}</span>}
+      </p>
+      {per === 'today' && (
+        <div className={`${CARD} max-w-[620px]`}>
+          <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[13px] font-bold text-white">By local hour</h3><span className="text-[12px] text-[#94a0bd]">bars = ad visitors · dashed = normal · strip = clickout rate</span></div>
+          <Chart x={x} />
+        </div>
+      )}
     </div>
   );
 
-  // ── Campaigns & bids tab (full width; owner 11-15: not a side panel)
-  const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 1000) / 10;
-  // owner 11-15: targets are WHOLE percents; only a step that lands on 0 stops at ±0.1 (Google Ads takes no exact 0%).
-  // e.g. now +0.1 → +1 gives +1 (not +1.1); now −1 → +1 gives +0.1; now +0.1 → +5 gives +5.
-  const seasStep = (d: number) => {
-    const cur = nowPts + sd;
-    let t = Math.round(cur + d);
-    if (t === 0) t = d > 0 ? 0.1 : -0.1;
-    t = clamp(t, Math.max(nowPts - sRange, sFloor), Math.min(nowPts + sRange, sCap));
-    set('seas', r2(t - nowPts));
+  // ── Campaigns tab (owner 11-22): ONE view, no sub-tabs. Seasonality on top; one campaign table that joins
+  // performance (period = the switch at the top) with budget + bidding; a click on a campaign opens its changes
+  // right under it, the 2–3 change boxes on one line.
+  const stratCards = (s: Strat) => {
+    const uses = usedBy(s.strategy_id), t0 = num(s.target_value, 0), tk = `str:${s.strategy_id}`, tdv = st(tk);
+    const ck = `cpc:${s.strategy_id}`, cdv = st(ck), c0 = num(s.max_cpc, 0), isR = s.target_kind === 'troas';
+    const nC = `${uses.length} campaign${uses.length > 1 ? 's' : ''}`;
+    return [
+      <div key="t" className={CARD}>
+        <span className={SUB}>{isR ? 'tROAS' : `tCPA · ${ac}`} · <span className="text-violet-300">shared</span></span>
+        {s.target_value == null ? <span className="text-[13px] text-[#94a0bd]">No target set.</span> :
+          <Stepper steps={isR ? PTS : CENTS} cls={dCls(tdv)}
+            value={tdv === 0 ? '±0' : isR ? (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))}
+            small={isR ? `${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`}
+            onStep={d => set(tk, isR ? clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim) : clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
+            apply={tdv ? `Apply ${isR ? `tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} (${nC})` : null}
+            onApply={() => onAsk({ x, kind: 'strategy_target', from: t0, to: r2(t0 + tdv), targetId: s.strategy_id, name: s.name ?? '', unit: isR ? 'roas' : 'money',
+              title: isR ? 'Shared tROAS' : 'Shared tCPA', moves: uses, key: `${mk}:${tk}` })} />}
+      </div>,
+      <div key="c" className={CARD}>
+        <span className={SUB}>Max CPC (bid limit) · {ac} · <span className="text-violet-300">shared</span></span>
+        {s.max_cpc == null ? <span className="text-[13px] text-[#94a0bd]">No bid limit set on this strategy.</span> :
+          <Stepper steps={CENTS} cls={dCls(cdv)} value={cdv === 0 ? '±0' : (cdv > 0 ? '+' : '−') + cur2(ac, Math.abs(cdv))}
+            small={`${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)}`}
+            onStep={d => set(ck, clamp(cdv + d, Math.max(minB - c0, -pctLim * c0), pctLim * c0))}
+            apply={cdv ? `Apply max CPC ${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)} (${nC})` : null}
+            onApply={() => onAsk({ x, kind: 'strategy_max_cpc', from: c0, to: r2(c0 + cdv), targetId: s.strategy_id, name: s.name ?? '', unit: 'money',
+              title: 'Shared max CPC (bid limit)', moves: uses, key: `${mk}:${ck}` })} />}
+      </div>,
+    ];
   };
-  const sdShown = sd === 0 ? 0 : (nowPts + sd) - Math.round(nowPts);   // the change in whole points, as the owner reads it
-  const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
+  const sharedNote = (s: Strat) => {
+    const uses = usedBy(s.strategy_id);
+    return <span className="text-[13px] text-[#94a0bd]">Shared strategy <b className="text-violet-300">{s.name}</b>: a change moves <b className="text-[#e8edf7]">{uses.length} campaign{uses.length > 1 ? 's' : ''}</b> — {uses.join(' · ') || '—'}.</span>;
+  };
   const campEditor = (c: Camp) => {
     const b = num(c.budget_amount, 0), bk = `bud:${c.campaign_id}`, bd = st(bk);
     const tk = `tgt:${c.campaign_id}`, tdv = st(tk), t0 = num(c.bid_target, 0);
     const isR = ROAS_TYPES.includes(c.bid_type ?? ''), isC = CPA_TYPES.includes(c.bid_type ?? '');
     const s = stratOf(c.strategy_id);
-    return (
-      <div className="grid md:grid-cols-2 gap-3.5">
-        <div className={CARD}>
-          <span className={SUB}>Daily budget · {ac}</span>
-          {c.budget_shared ? <span className="text-[13px] text-[#94a0bd]">Shared budget: change it in Google Ads.</span> :
-            <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={bd === 0 ? '±0' : (bd > 0 ? '+' : '') + money(ac, bd)}
-              small={`${money(ac, b)} → ${money(ac, b + bd)}`} cls={dCls(bd)}
-              onStep={d => set(bk, clamp(bd + d, S('budget_min_amount', 1) - b, (S('budget_max_factor', 3) - 1) * b))}
-              apply={bd ? `Apply budget ${money(ac, b)} → ${money(ac, b + bd)}` : null}
-              onApply={() => onAsk({ x, kind: 'budget', from: b, to: r2(b + bd), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'Daily budget', key: `${mk}:${bk}` })} />}
-        </div>
-        <div className={CARD}>
-          {isC && !c.strategy_id && c.bid_target != null ? <>
-            <span className={SUB}>Bid target · tCPA · {ac}</span>
-            <Stepper steps={CENTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))} small={`${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} cls={dCls(tdv)}
-              onStep={d => set(tk, clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
-              apply={tdv ? `Apply tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}` : null}
-              onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'tCPA (bid target)', key: `${mk}:${tk}` })} />
-          </> : isR && !c.strategy_id && c.bid_target != null ? <>
-            <span className={SUB}>Bid target · tROAS</span>
-            <Stepper steps={PTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts'} small={`${roasTxt(t0)} → ${roasTxt(t0 + tdv)}`} cls={dCls(tdv)}
-              onStep={d => set(tk, clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim))}
-              apply={tdv ? `Apply tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : null}
-              onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'roas', title: 'tROAS (bid target)', key: `${mk}:${tk}` })} />
-          </> : c.strategy_id ? <>
-            <span className={SUB}>Bid target</span>
-            <span className="text-[13px] text-[#c3cbe0]">Comes from the shared strategy <b className="text-violet-300">{s?.name ?? c.strategy_id}</b> (moves {usedBy(c.strategy_id).length}).{' '}
-              <button type="button" className="text-blue-400 font-bold" onClick={() => setSel(`s:${c.strategy_id}`)}>Open it ›</button></span>
-          </> : <><span className={SUB}>Bid target</span><span className="text-[13px] text-[#94a0bd]">{c.bid_type === 'TARGET_SPEND' ? 'Maximize clicks: no target to change.' : 'No target the panel can change.'}</span></>}
-        </div>
+    const budgetCard = (
+      <div key="b" className={CARD}>
+        <span className={SUB}>Daily budget · {ac}</span>
+        {c.budget_shared ? <span className="text-[13px] text-[#94a0bd]">Shared budget: change it in Google Ads.</span> :
+          <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={bd === 0 ? '±0' : (bd > 0 ? '+' : '') + money(ac, bd)}
+            small={`${money(ac, b)} → ${money(ac, b + bd)}`} cls={dCls(bd)}
+            onStep={d => set(bk, clamp(bd + d, S('budget_min_amount', 1) - b, (S('budget_max_factor', 3) - 1) * b))}
+            apply={bd ? `Apply budget ${money(ac, b)} → ${money(ac, b + bd)}` : null}
+            onApply={() => onAsk({ x, kind: 'budget', from: b, to: r2(b + bd), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'Daily budget', key: `${mk}:${bk}` })} />}
       </div>
     );
-  };
-  const stratEditor = (s: Strat) => {
-    const uses = usedBy(s.strategy_id), t0 = num(s.target_value, 0), tk = `str:${s.strategy_id}`, tdv = st(tk);
-    const ck = `cpc:${s.strategy_id}`, cdv = st(ck), c0 = num(s.max_cpc, 0), isR = s.target_kind === 'troas';
-    const nC = `${uses.length} campaign${uses.length > 1 ? 's' : ''}`;
+    const ownCard = (
+      <div key="o" className={CARD}>
+        {isC && c.bid_target != null ? <>
+          <span className={SUB}>Bid target · tCPA · {ac}</span>
+          <Stepper steps={CENTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))} small={`${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} cls={dCls(tdv)}
+            onStep={d => set(tk, clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
+            apply={tdv ? `Apply tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}` : null}
+            onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'money', title: 'tCPA (bid target)', key: `${mk}:${tk}` })} />
+        </> : isR && c.bid_target != null ? <>
+          <span className={SUB}>Bid target · tROAS</span>
+          <Stepper steps={PTS} value={tdv === 0 ? '±0' : (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts'} small={`${roasTxt(t0)} → ${roasTxt(t0 + tdv)}`} cls={dCls(tdv)}
+            onStep={d => set(tk, clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim))}
+            apply={tdv ? `Apply tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : null}
+            onApply={() => onAsk({ x, kind: 'campaign_target', from: t0, to: r2(t0 + tdv), targetId: c.campaign_id, name: c.name ?? '', unit: 'roas', title: 'tROAS (bid target)', key: `${mk}:${tk}` })} />
+        </> : <><span className={SUB}>Bid target</span><span className="text-[13px] text-[#94a0bd]">{c.bid_type === 'TARGET_SPEND' ? 'Maximize clicks: no target to change.' : 'No target the panel can change.'}</span></>}
+      </div>
+    );
+    const cards = s ? [budgetCard, ...stratCards(s)] : [budgetCard, ownCard];
     return (
       <div className="flex flex-col gap-2.5">
-        <span className="text-[13px] text-[#94a0bd]">Moves <b className="text-[#e8edf7]">{nC}</b>: {uses.join(' · ') || '—'} · the name is the label in Google Ads; values are live.</span>
-        <div className="grid md:grid-cols-2 gap-3.5">
-          <div className={CARD}>
-            <span className={SUB}>{isR ? 'tROAS' : `tCPA · ${ac}`}</span>
-            {s.target_value == null ? <span className="text-[13px] text-[#94a0bd]">No target set.</span> :
-              <Stepper steps={isR ? PTS : CENTS} cls={dCls(tdv)}
-                value={tdv === 0 ? '±0' : isR ? (tdv > 0 ? '+' : '−') + Math.round(Math.abs(tdv) * 100) + ' pts' : (tdv > 0 ? '+' : '−') + cur2(ac, Math.abs(tdv))}
-                small={isR ? `${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`}
-                onStep={d => set(tk, isR ? clamp(tdv + d, Math.max(minR - t0, -ptsLim), ptsLim) : clamp(tdv + d, Math.max(minB - t0, -pctLim * t0), pctLim * t0))}
-                apply={tdv ? `Apply ${isR ? `tROAS ${roasTxt(t0)} → ${roasTxt(t0 + tdv)}` : `tCPA ${cur2(ac, t0)} → ${cur2(ac, t0 + tdv)}`} (${nC})` : null}
-                onApply={() => onAsk({ x, kind: 'strategy_target', from: t0, to: r2(t0 + tdv), targetId: s.strategy_id, name: s.name ?? '', unit: isR ? 'roas' : 'money',
-                  title: isR ? 'Shared tROAS' : 'Shared tCPA', moves: uses, key: `${mk}:${tk}` })} />}
-          </div>
-          <div className={CARD}>
-            <span className={SUB}>Max CPC (bid limit) · {ac}</span>
-            {s.max_cpc == null ? <span className="text-[13px] text-[#94a0bd]">No bid limit set on this strategy.</span> :
-              <Stepper steps={CENTS} cls={dCls(cdv)} value={cdv === 0 ? '±0' : (cdv > 0 ? '+' : '−') + cur2(ac, Math.abs(cdv))}
-                small={`${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)}`}
-                onStep={d => set(ck, clamp(cdv + d, Math.max(minB - c0, -pctLim * c0), pctLim * c0))}
-                apply={cdv ? `Apply max CPC ${cur2(ac, c0)} → ${cur2(ac, c0 + cdv)} (${nC})` : null}
-                onApply={() => onAsk({ x, kind: 'strategy_max_cpc', from: c0, to: r2(c0 + cdv), targetId: s.strategy_id, name: s.name ?? '', unit: 'money',
-                  title: 'Shared max CPC (bid limit)', moves: uses, key: `${mk}:${ck}` })} />}
-          </div>
-        </div>
+        <div className={`grid gap-3 ${cards.length === 3 ? 'lg:grid-cols-3' : 'md:grid-cols-2'}`}>{cards}</div>
+        {s && sharedNote(s)}
       </div>
     );
   };
-  const bidLabel = (c: Camp) => c.strategy_id ? `shared · ${stratOf(c.strategy_id)?.target_kind === 'tcpa' ? 'tCPA' : 'tROAS'}`
-    : CPA_TYPES.includes(c.bid_type ?? '') ? 'tCPA' : ROAS_TYPES.includes(c.bid_type ?? '') ? 'tROAS' : c.bid_type === 'TARGET_SPEND' ? 'Max clicks' : (c.bid_type ?? '—').toLowerCase().replace(/_/g, ' ');
+  const bidType = (c: Camp) => {
+    const s = stratOf(c.strategy_id);
+    if (s) return s.target_kind === 'tcpa' ? 'tCPA' : 'tROAS';
+    return CPA_TYPES.includes(c.bid_type ?? '') ? 'tCPA' : ROAS_TYPES.includes(c.bid_type ?? '') ? 'tROAS' : c.bid_type === 'TARGET_SPEND' ? 'Max clicks' : (c.bid_type ?? '—').toLowerCase().replace(/_/g, ' ');
+  };
   const targetLabel = (c: Camp) => {
     const s = stratOf(c.strategy_id);
     if (s) return s.target_kind === 'troas' ? roasTxt(s.target_value) : cur2(ac, s.target_value);
     return c.bid_target == null ? '—' : ROAS_TYPES.includes(c.bid_type ?? '') ? roasTxt(c.bid_target) : cur2(ac, c.bid_target);
   };
-  const rowCls = 'w-full text-left grid gap-x-3 gap-y-1 items-center px-3.5 py-2.5 border-t border-[#24304d] hover:bg-white/[.03]';
-  const cGrid = 'grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2.4fr)_1.2fr_.8fr_.9fr_1.3fr_22px]';
-  const sGrid = 'grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2.4fr)_.8fr_.8fr_.9fr_1.1fr_22px]';
   const stateTxt = (o: Order) => o.status === 'queued' ? 'Sending…' : o.status === 'running' ? 'Working…' : o.status === 'done' ? '✓ Done' : o.status === 'expired' ? '✗ Expired' : '✗ Not applied';
   const stateCls = (o: Order) => o.status === 'done' ? 'text-emerald-400' : o.status === 'queued' || o.status === 'running' ? 'text-blue-400' : 'text-red-400';
   const oVal = (o: Order, v: number) => o.kind === 'seasonality' ? sp((v - 1) * 100) : o.kind === 'budget' ? money(ac, v)
@@ -777,95 +926,90 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
   const oWhat = (o: Order) => o.kind === 'seasonality' ? 'seasonality' : o.kind === 'budget' ? `${o.target_name} · budget`
     : o.kind === 'campaign_target' ? `${o.target_name} · target` : o.kind === 'strategy_target' ? `${o.target_name} · shared target` : `${o.target_name} · max CPC`;
 
+  // campaign rows = enabled campaigns (can be changed) + any campaign that has numbers in the period
+  type CRow = { id: string; name: string; c: Camp | null; cost: number; clicks: number; conv: number };
+  const cmap = new Map<string, CRow>();
+  x.campaigns.forEach(c => cmap.set(c.campaign_id, { id: c.campaign_id, name: c.name ?? c.campaign_id, c, cost: 0, clicks: 0, conv: 0 }));
+  cdays.forEach(d => { const r = cmap.get(d.campaign_id) ?? { id: d.campaign_id, name: d.name ?? d.campaign_id, c: null, cost: 0, clicks: 0, conv: 0 };
+    r.cost += num(d.cost, 0); r.clicks += num(d.clicks, 0); r.conv += num(d.conv, 0); cmap.set(d.campaign_id, r); });
+  const crows = Array.from(cmap.values()).filter(r => r.c || r.cost > 0 || r.clicks > 0).sort((a, b) => b.cost - a.cost || (b.c ? 1 : 0) - (a.c ? 1 : 0));
+  const ctot = crows.reduce((a, r) => ({ cost: a.cost + r.cost, clicks: a.clicks + r.clicks, conv: a.conv + r.conv }), { cost: 0, clicks: 0, conv: 0 });
+  const ctd = 'px-2.5 py-2 text-left whitespace-nowrap border-t border-[#24304d]';
+  const cth = 'px-2.5 py-2 text-left align-middle whitespace-nowrap text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold bg-[#1a2440]';
+  const COLS = 11;
+  const campTable = (
+    <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-x-auto">
+      <table className="w-full min-w-[980px] text-[15px] border-separate border-spacing-0">
+        <thead><tr>
+          <th className={`${cth} rounded-tl-xl`}>Campaign · {PER_LABEL[per].toLowerCase()}</th><th className={cth}>Budget / day</th>
+          <th className={`${cth} text-white`}>Spend ₪</th><th className={cth}>Clickouts</th><th className={cth}>Cost / clickout</th>
+          <th className={cth}>Clicks</th><th className={cth}>Avg. CPC</th><th className={cth}>Clickout rate</th>
+          <th className={cth}>Bidding</th><th className={cth}>Target</th><th className={`${cth} rounded-tr-xl`} />
+        </tr></thead>
+        <tbody>
+          {waitR && <tr><td colSpan={COLS} className={`${ctd} text-[#94a0bd]`}>Loading…</td></tr>}
+          {!waitR && crows.map(r => {
+            const open = sel === `c:${r.id}`, c = r.c, sh = c ? stratOf(c.strategy_id) : null;
+            return (
+              <Fragment key={r.id}>
+                <tr onClick={() => c && setSel(open ? null : `c:${r.id}`)} aria-expanded={c ? open : undefined}
+                  className={`${c ? 'cursor-pointer hover:bg-white/[.03]' : 'opacity-70'} ${open ? 'bg-[#1a2440]' : ''}`}>
+                  <td className={`${ctd} font-semibold max-w-[300px] truncate`} title={r.name}>{r.name}{!c && <small className="ml-1.5 text-[12px] text-[#94a0bd]">not enabled</small>}</td>
+                  <td className={ctd}>{c ? money(ac, num(c.budget_amount, 0)) : '—'}</td>
+                  <td className={`${ctd} font-bold text-white`}>{ils(toIls(r.cost, fxAcc))}</td>
+                  <td className={ctd}>{n1(r.conv)}</td>
+                  <td className={`${ctd} bg-blue-500/5`}>{cur2(ac, ratio(r.cost, r.conv))}</td>
+                  <td className={ctd}>{n0(r.clicks)}</td>
+                  <td className={`${ctd} bg-blue-500/5`}>{cur2(ac, ratio(r.cost, r.clicks))}</td>
+                  <td className={`${ctd} bg-blue-500/5`}>{pct(ratio(r.conv, r.clicks))}</td>
+                  <td className={ctd}>{c ? bidType(c) : '—'}</td>
+                  <td className={ctd}>{c ? <span className="flex flex-col leading-tight"><b className="text-white">{targetLabel(c)}</b>
+                    {sh && <small className="text-[12px] text-violet-300">shared · {usedBy(sh.strategy_id).length} campaigns</small>}</span> : '—'}</td>
+                  <td className={`${ctd} text-lg ${open ? 'text-white' : 'text-[#94a0bd]'}`}>{c ? <span className={`inline-block transition-transform ${open ? 'rotate-90' : ''}`}>›</span> : ''}</td>
+                </tr>
+                {open && c && <tr><td colSpan={COLS} className="bg-[#0f1730] border-t border-[#33416a] p-3">{campEditor(c)}</td></tr>}
+              </Fragment>
+            );
+          })}
+          {!waitR && !crows.length && <tr><td colSpan={COLS} className={`${ctd} text-[#94a0bd]`}>Campaign list appears after the next job run.</td></tr>}
+        </tbody>
+        {!waitR && crows.length > 0 && <tfoot><tr className="font-bold text-white bg-[#1a2440]">
+          <td className={ctd}>Account</td><td className={ctd}>{money(ac, x.campaigns.reduce((a, c) => a + num(c.budget_amount, 0), 0))}</td>
+          <td className={ctd}>{ils(toIls(ctot.cost, fxAcc))}</td><td className={ctd}>{n1(ctot.conv)}</td><td className={ctd}>{cur2(ac, ratio(ctot.cost, ctot.conv))}</td>
+          <td className={ctd}>{n0(ctot.clicks)}</td><td className={ctd}>{cur2(ac, ratio(ctot.cost, ctot.clicks))}</td><td className={ctd}>{pct(ratio(ctot.conv, ctot.clicks))}</td>
+          <td className={ctd} colSpan={3} />
+        </tr></tfoot>}
+      </table>
+    </div>
+  );
+
   const campsTab = !x.hasAcct ? (
     <p className="text-[14px] text-[#94a0bd] m-0">No own Google Ads account yet. When an account named like the others (e.g. <b>thewinnerS.ae {mk}</b>) appears under the manager account, this market links itself and its campaigns, budgets and bids appear here. No code change.</p>
   ) : (
-    <div className="flex flex-col gap-3.5">
-      {/* seasonality strip */}
-      <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-3 grid md:grid-cols-[minmax(170px,1fr)_minmax(280px,1.6fr)] gap-3 items-center">
-        <div className="flex flex-col"><K>Account seasonality</K><b className="text-[26px] font-extrabold text-white">{seasNow == null ? 'none active' : sp(nowPts)}</b>
-          {seasNow != null && <span className="text-[13px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
-        {seasNow != null && <Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
-          onStep={seasStep}
-          apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
-          onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} />}
-      </div>
-      {/* campaigns */}
-      <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-hidden" role="list">
-        <div className={`hidden md:grid ${cGrid} gap-x-3 px-3.5 py-2 bg-[#1a2440]`}>{[`Campaign · ${x.campaigns.length} enabled`, 'Bidding', 'Target', 'Budget / day', 'Spent today', ''].map((h, i) => <K key={i}>{h}</K>)}</div>
-        {x.campaigns.map(c => {
-          const open = sel === `c:${c.campaign_id}`, b = num(c.budget_amount, 0), s = num(c.spend_today, 0);
-          return (
-            <div key={c.campaign_id} role="listitem">
-              <button type="button" aria-expanded={open} onClick={() => setSel(open ? null : `c:${c.campaign_id}`)} className={`${rowCls} ${cGrid} ${open ? 'bg-[#1a2440]' : ''}`}>
-                <span className="col-span-2 md:col-span-1 font-semibold truncate">{c.name}</span>
-                <span className={c.strategy_id ? 'text-violet-300 text-sm' : 'text-sm'}>{bidLabel(c)}</span>
-                <span className="font-bold text-white whitespace-nowrap">{targetLabel(c)}</span>
-                <span className="font-bold text-white whitespace-nowrap">{money(ac, b)}</span>
-                <span className="flex flex-col gap-1 text-sm text-[#c3cbe0] whitespace-nowrap">{money(ac, s)} · {pct(b ? s / b : null)}
-                  <span className="relative h-1.5 rounded-full bg-[#2a3657]"><i className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${Math.min(b ? s / b : 0, 1) * 100}%`, background: s >= b ? '#f87171' : '#3b82f6' }} /></span></span>
-                <span className={`hidden md:block text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
-              </button>
-              {open && <div className="bg-[#0f1730] border-t border-[#33416a] p-3.5">{campEditor(c)}</div>}
-            </div>
-          );
-        })}
-        {!x.campaigns.length && <div className="px-3.5 py-3 text-[13px] text-[#94a0bd]">Campaign list appears after the next job run.</div>}
-      </div>
-      {/* v1.4: performance per campaign — Google Ads stats (Clickouts = the Google Ads conversion), today or month so far */}
-      {(() => {
-        const mStart = x.L.date.slice(0, 8) + '01';
-        const pick = cdays.filter(c => (H ? c.local_date === x.L.date : c.local_date >= mStart));
-        const agg = new Map<string, { name: string; cost: number; clicks: number; conv: number }>();
-        pick.forEach(c => { const a = agg.get(c.campaign_id) ?? { name: c.name ?? c.campaign_id, cost: 0, clicks: 0, conv: 0 };
-          a.cost += num(c.cost, 0); a.clicks += num(c.clicks, 0); a.conv += num(c.conv, 0); agg.set(c.campaign_id, a); });
-        const list = Array.from(agg.values()).filter(a => a.cost > 0 || a.clicks > 0).sort((p, q) => q.cost - p.cost);
-        const tot = list.reduce((a, r) => ({ cost: a.cost + r.cost, clicks: a.clicks + r.clicks, conv: a.conv + r.conv }), { cost: 0, clicks: 0, conv: 0 });
-        const thc = 'px-2.5 py-1.5 text-right whitespace-nowrap text-[#94a0bd] text-xs uppercase tracking-wide font-bold';
-        const tdc = 'px-2.5 py-1.5 text-right whitespace-nowrap border-t border-[#24304d]';
-        const cells = (a: { cost: number; clicks: number; conv: number }) => <>
-          <td className={tdc}>{money(ac, a.cost)}</td><td className={tdc}>{n0(a.clicks)}</td><td className={`${tdc} bg-blue-500/5`}>{cur2(ac, ratio(a.cost, a.clicks))}</td>
-          <td className={tdc}>{n1(a.conv)}</td><td className={`${tdc} bg-blue-500/5`}>{cur2(ac, ratio(a.cost, a.conv))}</td><td className={`${tdc} bg-blue-500/5`}>{pct(ratio(a.conv, a.clicks))}</td></>;
-        return (
-          <div className={CARD}>
-            <div className="flex flex-wrap gap-x-3 gap-y-1.5 items-center justify-between">
-              <span className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Campaign performance</h3><span className="text-[13px] text-[#94a0bd]">Google Ads · Clickouts = the Google Ads conversion · account day</span></span>
-              <span className="inline-flex gap-1">{(['h', 'd'] as const).map(v => (
-                <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}
-                  className={`px-3 py-1 rounded-lg text-[13px] font-semibold border ${view === v ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>{v === 'h' ? 'Today' : 'Month so far'}</button>))}</span>
-            </div>
-            {!H && !month ? <span className="text-[13px] text-[#94a0bd]">Loading month…</span> : !list.length ? <span className="text-[13px] text-[#94a0bd]">No campaign clicks yet{H ? ' today' : ' this month'} (filled by the job from v1.4).</span> : (
-              <div className="overflow-x-auto"><table className="w-full min-w-[720px] text-sm border-separate border-spacing-0">
-                <thead><tr><th className={`${thc} text-left`}>Campaign</th><th className={thc}>Cost</th><th className={thc}>Clicks</th><th className={thc}>Avg. CPC</th><th className={thc}>Clickouts</th><th className={thc}>Cost / clickout</th><th className={thc}>Clickout rate</th></tr></thead>
-                <tbody>{list.map(a => <tr key={a.name}><td className={`${tdc} text-left max-w-[280px] truncate`} title={a.name}>{a.name}</td>{cells(a)}</tr>)}</tbody>
-                <tfoot><tr className="font-bold text-white"><td className={`${tdc} text-left`}>Account</td>{cells(tot)}</tr></tfoot>
-              </table></div>)}
-          </div>
-        );
-      })()}
-      {/* shared strategies */}
+    <div className="flex flex-col gap-3">
+      {seasStrip}
+      {campTable}
+      <span className="text-[13px] text-[#94a0bd]">Google Ads numbers · Clickouts = the Google Ads conversion · account day · spend in ₪, budget / CPC / target in {ac} (as in Google Ads) · click a campaign to change its budget or bid.</span>
       {x.strategies.length > 0 && (
-        <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-hidden" role="list">
-          <div className={`hidden md:grid ${sGrid} gap-x-3 px-3.5 py-2 bg-[#1a2440]`}>{['Shared bid strategy · name in Google Ads', 'Type', 'Target', 'Max CPC', 'Moves', ''].map((h, i) => <K key={i}>{h}</K>)}</div>
+        <div className={CARD}>
+          <h3 className="m-0 text-[15px] font-bold text-white">Shared bid strategies</h3>
           {x.strategies.map(s => {
-            const open = sel === `s:${s.strategy_id}`, n = usedBy(s.strategy_id).length;
+            const open = sel === `s:${s.strategy_id}`;
             return (
-              <div key={s.strategy_id} role="listitem">
-                <button type="button" aria-expanded={open} onClick={() => setSel(open ? null : `s:${s.strategy_id}`)} className={`${rowCls} ${sGrid} ${open ? 'bg-[#1a2440]' : ''}`}>
-                  <span className="col-span-2 md:col-span-1 font-semibold text-violet-300 truncate">{s.name}</span>
-                  <span className="text-sm">{s.target_kind === 'troas' ? 'tROAS' : 'tCPA'}</span>
-                  <span className="font-bold text-white whitespace-nowrap">{s.target_kind === 'troas' ? roasTxt(s.target_value) : cur2(ac, s.target_value)}</span>
-                  <span className="font-bold text-white whitespace-nowrap">{s.max_cpc != null ? cur2(ac, s.max_cpc) : '—'}</span>
-                  <span className="text-sm">{n} campaign{n === 1 ? '' : 's'}</span>
-                  <span className={`hidden md:block text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
+              <div key={s.strategy_id} className="flex flex-col gap-2">
+                <button type="button" aria-expanded={open} onClick={() => setSel(open ? null : `s:${s.strategy_id}`)}
+                  className={`text-left flex flex-wrap gap-x-4 gap-y-1 items-baseline rounded-lg px-2.5 py-2 hover:bg-white/[.03] ${open ? 'bg-[#1a2440]' : ''}`}>
+                  <b className="text-white text-[17px]">{s.target_kind === 'troas' ? roasTxt(s.target_value) : cur2(ac, s.target_value)}</b>
+                  <span className="text-sm">{s.target_kind === 'troas' ? 'tROAS' : 'tCPA'}{s.max_cpc != null ? ` · max CPC ${cur2(ac, s.max_cpc)}` : ''}</span>
+                  <span className="text-[13px] text-violet-300">{s.name} · {usedBy(s.strategy_id).length} campaigns</span>
+                  <span className={`ml-auto text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>
                 </button>
-                {open && <div className="bg-[#0f1730] border-t border-[#33416a] p-3.5">{stratEditor(s)}</div>}
+                {open && <div className="flex flex-col gap-2.5"><div className="grid md:grid-cols-2 gap-3">{stratCards(s)}</div>{sharedNote(s)}</div>}
               </div>
             );
           })}
         </div>
       )}
-      {/* orders */}
       <div className={CARD}>
         <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Orders</h3><span className="text-[13px] text-[#94a0bd]">last 48 h · each change asks once, then shows the result here</span></div>
         {orders.slice(0, 10).map(o => (
@@ -881,38 +1025,16 @@ function Detail({ x, P, view, setView, month, orders, dt, setDt, steps, setStep,
     </div>
   );
 
-  // ── Money tab
-  const moneyTab = (
-    <div className={CARD}>
-      <div className="flex flex-wrap gap-x-3 items-baseline"><h3 className="m-0 text-[15px] font-bold text-white">Money</h3>
-        <span className="text-[13px] text-[#94a0bd]">Amazon {x.m.currency}{x.fxA != null ? ` · ${x.fxA < 0.1 ? `${x.m.currency} 100 = ₪${(x.fxA * 100).toFixed(2)}` : `${x.m.currency} 1 = ₪${x.fxA.toFixed(2)}`}` : ''}</span></div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-2">
-        {[['Amazon today (all tags)', `${n0(x.items)} items`, ''], ['Revenue', `${money(x.m.currency, x.rev)}${x.revIls != null && x.m.currency !== 'ILS' ? ` ≈₪${n0(x.revIls)}` : ''}`, ''],
-          ['Earnings ≈', x.commUnset ? 'Set comm %' : x.earnIls != null ? '₪' + n0(x.earnIls) : '—', x.commUnset ? 'text-amber-400' : 'text-emerald-400'],
-          ['Net ≈', signed(ac, x.net), x.net == null ? '' : x.net >= 0 ? 'text-emerald-400' : 'text-red-400'],
-          ['Comm set', x.m.comm_rate != null ? (x.m.comm_rate * 100).toFixed(1) + '%' : 'unset', ''],
-          ['Actual this month', x.act != null ? (x.act * 100).toFixed(1) + '%' : '—', x.act != null && x.m.comm_rate != null && Math.abs(x.act - x.m.comm_rate) >= 0.005 ? 'text-amber-400' : ''],
-        ].map(([k, v, c]) => <div key={k} className="flex flex-col min-w-0"><K>{k}</K><span className={`text-[19px] font-bold text-white whitespace-nowrap ${c}`}>{v}</span></div>)}
-      </div>
-      <span className="text-[13px] text-[#94a0bd]">
-        {x.commUnset ? `No commission % on the ${x.m.market} market row yet, so no ₪ estimate.`
-          : `Earnings ≈ revenue ${money(x.m.currency, x.rev)} × ${(num(x.m.comm_rate, 0) * 100).toFixed(2)}% × FX = ₪${n0(x.earnIls)}. Amazon's today report has no earnings, so this is an estimate.`}
-        {x.amzDay ? ` Amazon is on ${x.amzDay} (its own day).` : ''}</span>
-      {x.mtd && <span className="text-[13px] text-[#94a0bd]">This month (Amazon&apos;s own month-to-date, ads tags): {n0(x.mtd.items)} items · {money(x.m.currency, x.mtd.revenue)} · earnings {money(x.m.currency, x.mtd.earnings)}</span>}
-      {x.status?.job_last_error && <span className="text-[13px] text-amber-400">Last job error: {x.status.job_last_error}</span>}
-    </div>
-  );
-
   return (
-    <section className="border-t border-[#33416a] bg-[#0f1730] p-4 flex flex-col gap-3.5" aria-label={`${mk} detail`}>
-      <div className="text-[15px] text-[#c3cbe0] bg-[#1a2440] rounded-xl px-3.5 py-2.5 [&_b]:text-white">{why(x)}</div>
+    <section className="border-t border-[#33416a] bg-[#0f1730] p-3 sm:p-4 flex flex-col gap-3" aria-label={`${mk} detail`}>
+      <div className="text-[14px] text-[#c3cbe0] bg-[#1a2440] rounded-xl px-3.5 py-2 [&_b]:text-white">{why(x)}</div>
       <div className="flex gap-1 flex-wrap" role="tablist">
         {tabs.map(([k, l]) => (
           <button key={k} type="button" role="tab" aria-selected={dt === k} onClick={() => setDt(k)}
             className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border ${dt === k ? 'bg-blue-500/15 border-blue-500 text-white' : 'bg-[#121a2e] border-[#33416a] text-[#c3cbe0]'}`}>{l}</button>
         ))}
       </div>
-      {dt === 'camps' ? campsTab : dt === 'money' ? moneyTab : todayTab}
+      {dt === 'camps' ? campsTab : periodTab}
     </section>
   );
 }

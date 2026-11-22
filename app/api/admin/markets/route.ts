@@ -31,6 +31,20 @@ export async function GET(request: NextRequest) {
   const market = /^[A-Z]{2,3}$/.test(raw) ? raw : null;
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+  // Round 2 (2026-11-22): ?range=N → admin_market_pulse_range(N): per market per day for the last N account days,
+  // yesterday by hour, and campaign days (owner: Yesterday / 7d / 14d / 30d / Month switch). Read-only, GROUP BY in DB.
+  const rangeRaw = request.nextUrl.searchParams.get('range');
+  if (rangeRaw != null) {
+    const days = Math.min(62, Math.max(1, Number(rangeRaw) || 7));
+    const { data, error } = await supabase.rpc('admin_market_pulse_range', { p_days: days });
+    if (error) {
+      console.error('[admin/markets] admin_market_pulse_range failed:', error.message);
+      return NextResponse.json({ error: 'Range read failed' }, { status: 500 });
+    }
+    return NextResponse.json(data, { headers: { 'Cache-Control': 'no-store' } });
+  }
+
   const { data, error } = await supabase.rpc('admin_market_pulse', { p_market: market });
   if (error) {
     console.error('[admin/markets] admin_market_pulse failed:', error.message);
