@@ -79,6 +79,7 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { getGeoConfig, getProgramConfig, GeoGroup, GeoProgram, AmazonDomain } from './geo-config';
+import { STORE_TAGS } from './store-tags';
 // MULTIGEO lang-split (2026-07-20): the locale list lives in the router config,
 // so the static-tag language axis can never drift from the URL language axis.
 import { routing } from '@/i18n/routing';
@@ -107,7 +108,8 @@ function getSupabaseAdmin(): SupabaseClient {
 
 export const TRACKING_CONFIG = {
   tagHoldHours: parseInt(process.env.TAG_HOLD_HOURS || '4'),
-  defaultTag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
+  // TAGS 1: the literal moved to tag_pool (lib/store-tags.ts). DEFAULT_TAG env precedence kept as before.
+  defaultTag: process.env.DEFAULT_TAG || STORE_TAGS.ae,
   gadsTagType: 'gads',
   staticTagTypes: ['seo', 'fb', 'bing', 'chatgpt', 'direct', 'other_geo', 'other'],
   // Seeding cohort size: how many unstable tags are eligible alongside stables.

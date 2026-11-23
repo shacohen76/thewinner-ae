@@ -1,0 +1,23 @@
+{
+  "_comment": "GENERATED at build by scripts/fetch-store-tags.mjs from Supabase tag_pool (program=ae fixed rows). The committed copy is the snapshot for preview/local builds. To switch a store: change the tag_pool row, then Redeploy. Do not edit by hand.",
+  "tags": {
+    "ae": "twnraedirect01-21",
+    "sa": "thewinnersa-21",
+    "us": "thewinnerusa-20",
+    "ca": "thewinnerca2-20",
+    "au": "thewinnerau-22",
+    "sg": "thewinnersg-22",
+    "jp": "thewinnerjp-22",
+    "br": "thewinnerbr-20",
+    "uk": "thewinneruk-21",
+    "de": "thewinnerde-21",
+    "it": "thewinnerit-21",
+    "es": "thewinneres-21",
+    "fr": "thewinnerfr-21",
+    "pl": "thewinnerpl2-21",
+    "se": "thewinnersw-21",
+    "ie": "thewinnerir-21",
+    "be": "thewinnerbg-21",
+    "nl": "thewinnernl-21"
+  }
+}

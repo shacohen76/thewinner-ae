@@ -26,6 +26,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { assignTag, logAsinClick } from '@/lib/tracking';
 import { NO_TRACK_COOKIE, findRule, type VisitFacts } from '@/lib/junk-traffic';
 import { getJunkRules } from '@/lib/junk-rules';
+import { STORE_TAGS } from '@/lib/store-tags';
 
 const ASIN_RE = /^[A-Z0-9]{10}$/;
 
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
     if (!userAgent || findRule(rules, 'bot', visit)) {
       return NextResponse.json({
         session_id: null,
-        assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
+        assigned_tag: process.env.DEFAULT_TAG || STORE_TAGS.ae,
         expires_at: null,
         amazon_domain: 'amazon.ae',
         geo_group: 'gulf',
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
       return NextResponse.json({
         session_id: null,
-        assigned_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21',
+        assigned_tag: process.env.DEFAULT_TAG || STORE_TAGS.ae,
         expires_at: null,
         amazon_domain: 'amazon.ae',
         geo_group: 'gulf',
@@ -138,7 +139,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Tag assignment error:', error);
     return NextResponse.json(
-      { error: 'Failed to assign tag', fallback_tag: process.env.DEFAULT_TAG || 'twnraedirect01-21' },
+      { error: 'Failed to assign tag', fallback_tag: process.env.DEFAULT_TAG || STORE_TAGS.ae },
       { status: 500 }
     );
   }
