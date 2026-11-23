@@ -6,6 +6,8 @@
 // Adapted from KSP thewinner.co.il for Amazon UAE
 // ============================================
 
+import { STORE_TAGS } from './store-tags';
+
 // ============================================
 // CONFIGURATION
 // ============================================
@@ -15,7 +17,7 @@ export const CONFIG = {
   siteTagline: 'Product Reviews',
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinner.ae',
   canonicalUrl: process.env.NEXT_PUBLIC_CANONICAL_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://thewinners.ae',
-  amazonTag: 'twnraedirect01-21',
+  amazonTag: STORE_TAGS.ae, // AE fixed tag, from tag_pool at build (lib/store-tags.ts)
   amazonStoreId: 'thewinner02',
   gtmId: process.env.NEXT_PUBLIC_GTM_ID || 'GTM-MLB7SDHC',
 
@@ -187,7 +189,7 @@ function searchUrlFor(domain: string, tag: string, query: string): string {
 // rewrite, so both always produce the same link. Pages without a pinned market are
 // untouched (these helpers are only called when pinMarket is set).
 const PIN_DOMAIN: Record<string, string> = { br: 'amazon.com.br' };
-const PIN_DEFAULT_TAG: Record<string, string> = { br: 'thewinnerbr-20' }; // = PROGRAMS.br.defaultTag
+const PIN_DEFAULT_TAG: Record<string, string> = { br: STORE_TAGS.br }; // = PROGRAMS.br.defaultTag
 const PIN_SEARCH_STORES: Record<string, string[]> = { br: ['amazon.es'] };
 // Language to open the search store in (verified 2026-09-26 in a browser: amazon.es has an
 // official "português - PT" UI; `&language=pt_PT` opens it in Portuguese for a new

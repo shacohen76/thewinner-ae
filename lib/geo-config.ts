@@ -20,10 +20,12 @@
 //
 // Adding a new Amazon program:
 //   1. Add program to GeoProgram type below
-//   2. Add entry to PROGRAMS map (group, domain, tag)
+//   2. Add entry to PROGRAMS map (group, domain, defaultTag: STORE_TAGS.<m>) and the
+//      market to lib/store-tags.ts + scripts/fetch-store-tags.mjs (MARKETS)
 //   3. Add country code(s) to COUNTRY_PROGRAM map
 //   4. Optional: add display strings to COUNTRY_NAMES
-//   5. INSERT inventory row in tag_pool
+//   5. INSERT inventory rows in tag_pool, including the fixed row
+//      (program='ae', tag_type='<m>_static') that holds the store tag
 //
 // Pure data + helpers — no side effects, no env reads, no DB. Safe to import
 // from middleware / server / client.
@@ -33,6 +35,7 @@
 
 import { BR_PT_ENABLED } from './feature-flags';
 import { EU_NATIVE_LOCALE_MARKETS } from './native-locales';
+import { STORE_TAGS } from './store-tags';
 
 // ============================================
 // TYPES
@@ -114,53 +117,56 @@ export const DEFAULT_COUNTRY = 'AE';
 // ============================================
 // PROGRAMS — one config per Amazon Associates account
 // ============================================
+// defaultTag (TAGS 1, 2026-11-23): the store tag is NOT written here any more. It is the fixed
+// tag_pool row (program='ae', tag_type <m>_static; de = eu_static, ae = direct_legacy), read once
+// per build into lib/store-tags.generated.json. A store switch = change that row + Redeploy.
 const PROGRAMS: Record<GeoProgram, ProgramConfig> = {
   // Gulf — only program with a rotation pool (handled in lib/tracking.ts).
   // defaultTag is the static fallback for non-gads Gulf traffic; gads
   // visitors get a rotated tag from the pool.
-  ae: { program: 'ae', group: 'gulf',          amazonDomain: 'amazon.ae',      defaultTag: 'twnraedirect01-21' },
+  ae: { program: 'ae', group: 'gulf',          amazonDomain: 'amazon.ae',      defaultTag: STORE_TAGS.ae },
 
   // Saudi Arabia — separate Amazon Associates account (amazon.sa), group=gulf
   // for dashboard purposes (geographically Gulf, no consent banner needed).
   // Static tag only — no rotation pool, no gads granularity. If Google Ads
   // expands to SA later, revisit per-program rotation pool (see OPEN_ITEMS #4).
   // Added 2026-05-27 after Saudi Associates account approved.
-  sa: { program: 'sa', group: 'gulf',          amazonDomain: 'amazon.sa',      defaultTag: 'thewinnersa-21' },
+  sa: { program: 'sa', group: 'gulf',          amazonDomain: 'amazon.sa',      defaultTag: STORE_TAGS.sa },
 
   // International programs — single static tag each.
-  us: { program: 'us', group: 'international', amazonDomain: 'amazon.com',     defaultTag: 'thewinnerusa-20' },
+  us: { program: 'us', group: 'international', amazonDomain: 'amazon.com',     defaultTag: STORE_TAGS.us },
   // 2026-05-27: Canada tag rotated thewinnerca-20 → thewinnerca2-20 after
   // the first store was rejected and a new Amazon Associates Canada store
   // was approved. Old tag is no longer valid — Amazon will not credit
   // commissions to it. Any pre-rotation click_log rows / sessions stay on
   // the old tag for historical record but won't earn.
-  ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: 'thewinnerca2-20' },
-  au: { program: 'au', group: 'international', amazonDomain: 'amazon.com.au',  defaultTag: 'thewinnerau-22' },
-  sg: { program: 'sg', group: 'international', amazonDomain: 'amazon.sg',      defaultTag: 'thewinnersg-22' },
+  ca: { program: 'ca', group: 'international', amazonDomain: 'amazon.ca',      defaultTag: STORE_TAGS.ca },
+  au: { program: 'au', group: 'international', amazonDomain: 'amazon.com.au',  defaultTag: STORE_TAGS.au },
+  sg: { program: 'sg', group: 'international', amazonDomain: 'amazon.sg',      defaultTag: STORE_TAGS.sg },
   // Japan — dedicated Amazon Associates account (amazon.co.jp), static tag.
   // Added 2026-06-24 (Multi-country4). Previously JP fell through to the 'us'
   // catch-all; now routed to its own store.
-  jp: { program: 'jp', group: 'international', amazonDomain: 'amazon.co.jp',   defaultTag: 'thewinnerjp-22' },
-  br: { program: 'br', group: 'international', amazonDomain: 'amazon.com.br',  defaultTag: 'thewinnerbr-20' },
+  jp: { program: 'jp', group: 'international', amazonDomain: 'amazon.co.jp',   defaultTag: STORE_TAGS.jp },
+  br: { program: 'br', group: 'international', amazonDomain: 'amazon.com.br',  defaultTag: STORE_TAGS.br },
 
   // European programs — single static tag each.
-  de: { program: 'de', group: 'europe',        amazonDomain: 'amazon.de',      defaultTag: 'thewinnerde-21' },
-  uk: { program: 'uk', group: 'europe',        amazonDomain: 'amazon.co.uk',   defaultTag: 'thewinneruk-21' },
-  it: { program: 'it', group: 'europe',        amazonDomain: 'amazon.it',      defaultTag: 'thewinnerit-21' },
-  es: { program: 'es', group: 'europe',        amazonDomain: 'amazon.es',      defaultTag: 'thewinneres-21' },
-  fr: { program: 'fr', group: 'europe',        amazonDomain: 'amazon.fr',      defaultTag: 'thewinnerfr-21' },
+  de: { program: 'de', group: 'europe',        amazonDomain: 'amazon.de',      defaultTag: STORE_TAGS.de },
+  uk: { program: 'uk', group: 'europe',        amazonDomain: 'amazon.co.uk',   defaultTag: STORE_TAGS.uk },
+  it: { program: 'it', group: 'europe',        amazonDomain: 'amazon.it',      defaultTag: STORE_TAGS.it },
+  es: { program: 'es', group: 'europe',        amazonDomain: 'amazon.es',      defaultTag: STORE_TAGS.es },
+  fr: { program: 'fr', group: 'europe',        amazonDomain: 'amazon.fr',      defaultTag: STORE_TAGS.fr },
   // 2026-11-22: Poland store rotated thewinnerpl-21 → thewinnerpl2-21. The first
   // PL Associates account was closed; the owner opened a new store. Same pattern
   // as the CA rotation above: old click_log rows keep the old tag for history.
-  pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: 'thewinnerpl2-21' },
+  pl: { program: 'pl', group: 'europe',        amazonDomain: 'amazon.pl',      defaultTag: STORE_TAGS.pl },
   // Sweden tag uses 'sw' suffix (legacy from Amazon store creation) — intentional.
-  se: { program: 'se', group: 'europe',        amazonDomain: 'amazon.se',      defaultTag: 'thewinnersw-21' },
+  se: { program: 'se', group: 'europe',        amazonDomain: 'amazon.se',      defaultTag: STORE_TAGS.se },
   // Ireland ('ir') + Belgium ('bg') tags carry legacy suffixes from Amazon
   // store creation — same pattern as Sweden's 'sw'. Program keys stay ISO
   // ('ie','be'); only the tag string carries the legacy suffix. Added 2026-05-25.
-  ie: { program: 'ie', group: 'europe',        amazonDomain: 'amazon.ie',      defaultTag: 'thewinnerir-21' },
-  be: { program: 'be', group: 'europe',        amazonDomain: 'amazon.com.be',  defaultTag: 'thewinnerbg-21' },
-  nl: { program: 'nl', group: 'europe',        amazonDomain: 'amazon.nl',      defaultTag: 'thewinnernl-21' },
+  ie: { program: 'ie', group: 'europe',        amazonDomain: 'amazon.ie',      defaultTag: STORE_TAGS.ie },
+  be: { program: 'be', group: 'europe',        amazonDomain: 'amazon.com.be',  defaultTag: STORE_TAGS.be },
+  nl: { program: 'nl', group: 'europe',        amazonDomain: 'amazon.nl',      defaultTag: STORE_TAGS.nl },
 };
 
 // ============================================
