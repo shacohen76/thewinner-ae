@@ -225,11 +225,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : undefined;
     const title = copy.pageTitle(noun, year, params.market);
     const description = copy.description(noun, year, params.market);
+    // 2026-11-26 (BF sitemap, owner "≥1 product only, even without BYG"): a twin is indexable only
+    // when its base has ≥1 product in this locale's market. Non-English twins already require that
+    // (bfTwinNoun returns null without it); an English base did NOT, so an English twin with 0 AE
+    // products was indexable but empty — now noindex. The page still renders (never 404), so a live
+    // GAds landing keeps working. 'ae' = the English market.
+    const bfHasProduct = params.locale !== 'en' || (await getKeywordMarketplaceCount(keyword.id, 'ae')) >= 1;
     return {
       title: { absolute: title },
       description,
       alternates: languages ? { canonical: twinUrl, languages } : { canonical: twinUrl },
-      robots: { index: !bfTwinsNoindex(), follow: true },
+      robots: { index: !bfTwinsNoindex() && bfHasProduct, follow: true },
       openGraph: { title, description, url: twinUrl },
     };
   }
