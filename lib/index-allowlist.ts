@@ -77,9 +77,17 @@ export const ALLOWLIST_LOCALES: readonly Locale[] = ['en', 'ar', 'ja', 'pt', 'es
 /** Locales whose EMPTY set (after a good read) means "nothing approved → noindex". */
 // owner 11-12 decision A: every complete page indexes in every locale → no locale is closed-if-empty (was pl fr it de sv nl).
 const CLOSED_IF_EMPTY: ReadonlySet<string> = new Set<string>([]);
+/** Per-locale index mode (owner "code once, params in Supabase", 2026-11-26).
+ *  'allowlist'    = keep-best: index only the seo_index_allowlist rows (today's behavior).
+ *  'all_complete' = index + sitemap EVERY complete page (allowlistRestriction returns null;
+ *                   the page's own content gate — noun/BYG/product — still noindexes empties). */
+export type IndexMode = 'allowlist' | 'all_complete';
+/** Default when no seo_index_mode row exists / the table is missing / a read fails → unchanged behavior. */
+export const DEFAULT_INDEX_MODE: IndexMode = 'allowlist';
 /** readOk = the sets come from a complete, successful read (now or the last good copy).
- *  false → the allowlist is unavailable and every caller fails open. */
-export type Allowlist = Record<Locale, Set<string>> & { readOk: boolean };
+ *  false → the allowlist is unavailable and every caller fails open.
+ *  mode  = the effective per-locale index mode (defaulted). */
+export type Allowlist = Record<Locale, Set<string>> & { readOk: boolean; mode: Record<Locale, IndexMode> };
 
 type AllowlistArrays = Record<Locale, string[]>;
 const emptyArrays = (): AllowlistArrays =>
@@ -188,13 +196,65 @@ async function getIndexAllowlistArrays(): Promise<AllowlistArrays> {
   return inflight;
 }
 
+// ── index_mode (owner "code once, params in Supabase", 2026-11-26) ────────────────────────────
+// Per-locale switch read from Supabase table seo_index_mode(locale, mode). Default (no row / table
+// missing / read error / no env) = 'allowlist' = exactly today's behavior, so deploying this is a
+// NO-OP until a row is set. Read the SAME way as the allowlist: live fetch, small per-instance memo,
+// fail-safe to the default. The owner flips one locale at a time (a 1-row UPDATE); it takes effect
+// within MODE_TTL_MS per server instance — no redeploy.
+const MODE_TTL_MS = 5 * 60 * 1000;
+let modeMemo: { modes: Partial<Record<Locale, IndexMode>>; loadedAt: number } | null = null;
+let modeInflight: Promise<Partial<Record<Locale, IndexMode>>> | null = null;
+
+async function readModes(client: SupabaseClient): Promise<Partial<Record<Locale, IndexMode>> | null> {
+  try {
+    const { data, error } = await client.from('seo_index_mode').select('locale, mode');
+    if (error) return null;                        // table missing / unreadable → caller keeps the default
+    const out: Partial<Record<Locale, IndexMode>> = {};
+    for (const r of ((data as { locale: string; mode: string }[] | null) ?? [])) {
+      if (isAllowlistLocale(r.locale) && (r.mode === 'all_complete' || r.mode === 'allowlist')) out[r.locale] = r.mode;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+async function getIndexModes(): Promise<Partial<Record<Locale, IndexMode>>> {
+  const now = Date.now();
+  if (modeMemo && now - modeMemo.loadedAt < MODE_TTL_MS) return modeMemo.modes;
+  const client = db();
+  if (!client) return modeMemo?.modes ?? {};        // no env → last good copy, else all-default
+  if (!modeInflight) {
+    modeInflight = readModes(client)
+      .then((m) => {
+        // Cache success, AND rate-limit failures: on a failed read keep the last good copy (never
+        // flip an all_complete locale back to noindex on a transient blip) but bump loadedAt so we
+        // don't re-query on every page render while the table is missing (it doesn't exist until the
+        // owner creates it) — at most one attempt per TTL per instance.
+        if (m) modeMemo = { modes: m, loadedAt: Date.now() };
+        else modeMemo = { modes: modeMemo?.modes ?? {}, loadedAt: Date.now() };
+        return modeMemo.modes;
+      })
+      .finally(() => { modeInflight = null; });
+  }
+  return modeInflight;
+}
+
+// PUBLIC: the effective mode for ONE locale — for callers (the sitemap chunker) that need the mode
+// without the full allowlist read.
+export async function getIndexModeFor(locale: Locale): Promise<IndexMode> {
+  return (await getIndexModes())[locale] ?? DEFAULT_INDEX_MODE;
+}
+
 // PUBLIC: Sets rebuilt per call from the memoized arrays (cheap: a few K strings).
 // readOk: the arrays are a complete good read (a memo is only ever stored from one); the
 // EMPTY_ARRAYS fallback (read failed / no env, no previous good copy) is the only not-ok case.
 export async function getIndexAllowlist(): Promise<Allowlist> {
-  const a = await getIndexAllowlistArrays();
+  const [a, modesPartial] = await Promise.all([getIndexAllowlistArrays(), getIndexModes()]);
   const sets = Object.fromEntries(ALLOWLIST_LOCALES.map((l) => [l, new Set(a[l])])) as Record<Locale, Set<string>>;
-  return { ...sets, readOk: a !== EMPTY_ARRAYS };
+  const mode = Object.fromEntries(ALLOWLIST_LOCALES.map((l) => [l, modesPartial[l] ?? DEFAULT_INDEX_MODE])) as Record<Locale, IndexMode>;
+  return { ...sets, readOk: a !== EMPTY_ARRAYS, mode };
 }
 
 // The set that restricts this locale, or null = "do not restrict".
@@ -204,6 +264,7 @@ export async function getIndexAllowlist(): Promise<Allowlist> {
 //   • empty + CLOSED_IF_EMPTY (none since owner 11-12 decision A) → the empty set (noindex)
 export function allowlistRestriction(allow: Allowlist, locale: Locale): Set<string> | null {
   const set = allow[locale];
+  if (allow.mode[locale] === 'all_complete') return null;   // index every complete page (page gate still applies)
   if (!allow.readOk) return null;
   if (set && set.size > 0) return set;
   return CLOSED_IF_EMPTY.has(locale) ? (set ?? new Set<string>()) : null;
