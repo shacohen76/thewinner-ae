@@ -23,7 +23,7 @@
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { assignTag, logAsinClick } from '@/lib/tracking';
+import { assignTag, logAsinClick, cleanGadsId } from '@/lib/tracking';
 import { NO_TRACK_COOKIE, findRule, type VisitFacts } from '@/lib/junk-traffic';
 import { getJunkRules } from '@/lib/junk-rules';
 import { STORE_TAGS } from '@/lib/store-tags';
@@ -66,6 +66,8 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { gclid, fbclid, traffic_source, landing_page, user_id, site, clicked_asin, campaign } = body;
+    // AGT 1 Step 0 (2026-11-26): Google Ads ids from the final URL suffix — measure only.
+    const { ad_group_id, campaign_id, gads_account_id } = body;
 
     // Skip admin pages — don't track our own dashboard visits
     if (landing_page && EXCLUDED_PAGES.some((p: string) => landing_page.startsWith(p))) {
@@ -105,6 +107,9 @@ export async function POST(request: NextRequest) {
       as_name: asName,
       as_number: asNumber,
       persist,
+      ad_group_id: cleanGadsId(ad_group_id),
+      campaign_id: cleanGadsId(campaign_id),
+      gads_account_id: cleanGadsId(gads_account_id),
     });
 
     // Deferred (direct_junk) visitor just clicked out → log that ASIN on the
