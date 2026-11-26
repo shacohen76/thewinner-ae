@@ -9,7 +9,10 @@ const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL || SITE_URL;
 const SITE_NAME = 'The Winners';
 
 export const metadata: Metadata = {
-  title: `Blog | ${SITE_NAME}`,
+  // Bare title — the root layout's title.template ("%s | The Winners") appends the
+  // brand once. "Blog | The Winners" here would double it. (OG/Twitter titles below
+  // are not wrapped by the template, so they keep the explicit brand.)
+  title: 'Blog',
   description:
     'Expert buying guides, product tips, and honest advice from our team of reviewers. Learn how to shop smarter in the UAE.',
   alternates: { canonical: `${CANONICAL_URL}/blog` },
