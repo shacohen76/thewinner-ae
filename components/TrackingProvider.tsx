@@ -56,6 +56,23 @@ interface TrackingSession {
   // click_log row and no user_id exist yet. The session is created on the first clickout.
   deferred?: boolean;
   landing_page?: string | null;
+  // AGT 1 Step 0 (2026-11-26): Google Ads ids of THIS landing (measure only).
+  gads_ids?: GadsIds;
+}
+
+// AGT 1 Step 0 (2026-11-26): the account-level final URL suffix appends
+// agid={adgroupid}&cmpid={campaignid}&accid=<account id>. Read from THIS landing
+// URL only (never localStorage), so the ids always belong to this ad click.
+// Measure only: no tag / attribution logic reads them. The server validates them.
+interface GadsIds {
+  ad_group_id: string | null;
+  campaign_id: string | null;
+  gads_account_id: string | null;
+}
+function readGadsIds(): GadsIds {
+  if (typeof window === 'undefined') return { ad_group_id: null, campaign_id: null, gads_account_id: null };
+  const p = new URLSearchParams(window.location.search);
+  return { ad_group_id: p.get('agid'), campaign_id: p.get('cmpid'), gads_account_id: p.get('accid') };
 }
 
 const SESSION_KEY = 'tw_tracking_session';
@@ -384,6 +401,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
     // No valid session — request a new tag
     const trafficSource = detectTrafficSource();
     const { gclid, fbclid } = persistGclid();
+    const gadsIds = readGadsIds();
     // 2026-10-22: the server decides junk (public.junk_traffic_rules). The
     // user_id below only reaches the DB if the server writes a row — for a
     // direct_junk visit it writes none (until a clickout).
@@ -401,6 +419,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
           user_id: getUserId(),
           site: window.location.hostname,
           campaign,
+          ...gadsIds,
         }),
       });
 
@@ -421,6 +440,7 @@ export default function TrackingProvider({ children }: { children: React.ReactNo
         geo_group: data.geo_group,
         deferred: data.no_track === true && !data.session_id && !data.is_bot,
         landing_page: pathname,
+        gads_ids: gadsIds,
       };
       storeSession(session);
 
@@ -514,6 +534,7 @@ function promoteDeferredSession(session: TrackingSession, asin: string): void {
       user_id: getUserId(),
       site: window.location.hostname,
       clicked_asin: asin,
+      ...(session.gads_ids || {}),
     }),
   })
     .then(r => (r.ok ? r.json() : null))

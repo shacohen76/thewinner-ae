@@ -401,6 +401,50 @@ export interface TagAssignRequest {
   // lib/junk-traffic.ts). Only honoured for static (non-paid) traffic — a gads
   // visit or anything carrying a gclid ALWAYS persists (see shouldPersist).
   persist?: boolean;
+  // AGT 1 Step 0 (2026-11-26): Google Ads ids from the account-level final URL
+  // suffix (agid={adgroupid}&cmpid={campaignid}&accid=<account id>). MEASURE
+  // ONLY: no tag / attribution logic reads them. Already validated by cleanGadsId.
+  ad_group_id?: string | null;
+  campaign_id?: string | null;
+  gads_account_id?: string | null;
+}
+
+// AGT 1 Step 0: digits only, no leading zero, max 18 digits (fits Postgres bigint).
+// Anything else (blank ValueTrack, '0', junk) → null.
+const GADS_ID_RE = /^[1-9][0-9]{0,17}$/;
+export function cleanGadsId(v: unknown): string | null {
+  return typeof v === 'string' && GADS_ID_RE.test(v) ? v : null;
+}
+
+/** Only the ids that are present, so rows without them are byte-identical to before. */
+function gadsIdFields(req: TagAssignRequest): Record<string, string> {
+  const f: Record<string, string> = {};
+  if (req.ad_group_id) f.ad_group_id = req.ad_group_id;
+  if (req.campaign_id) f.campaign_id = req.campaign_id;
+  if (req.gads_account_id) f.gads_account_id = req.gads_account_id;
+  return f;
+}
+
+/**
+ * AGT 1 Step 0: click_log insert that can never lose a row because of the new
+ * Google Ads id columns. If the insert with ids fails for ANY reason (columns not
+ * created yet, bad value), it is retried once without them. Rows without ids take
+ * the old single-insert path. (Before 2026-11-26 insert errors were ignored silently;
+ * they are now written to the function log.)
+ */
+async function insertClickLog(client: SupabaseClient, row: Record<string, unknown>): Promise<void> {
+  const { error } = await client.from('click_log').insert(row);
+  if (!error) return;
+  const hasIds = 'ad_group_id' in row || 'campaign_id' in row || 'gads_account_id' in row;
+  if (!hasIds) {
+    console.error('click_log insert failed:', error.code, error.message);
+    return;
+  }
+  const rest = { ...row };
+  delete rest.ad_group_id; delete rest.campaign_id; delete rest.gads_account_id;
+  const retry = await client.from('click_log').insert(rest);
+  if (retry.error) console.error('click_log insert failed (also without gads ids):', retry.error.code, retry.error.message);
+  else console.warn('click_log: saved without gads ids after error', error.code, error.message);
 }
 
 /** 2026-10-05: the paid money path can never be skipped, whatever the caller says. */
@@ -494,7 +538,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
       // they still get the correct tag/domain below, just no row/user_id.
       const persist = shouldPersist(req);
       if (persist) {
-        await getSupabaseAdmin().from('click_log').insert({
+        await insertClickLog(getSupabaseAdmin(), {
           session_id: sessionId,
           gclid: req.gclid || null,
           fbclid: req.fbclid || null,
@@ -507,6 +551,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
           site: req.site || null,
           as_name: req.as_name || null,
           as_number: req.as_number ?? null,
+          ...gadsIdFields(req),
         });
       }
 
@@ -553,7 +598,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
     // 2026-10-05: skipped for obvious-junk direct visits (persist=false).
     const persist = shouldPersist(req);
     if (persist) {
-      await getSupabaseAdmin().from('click_log').insert({
+      await insertClickLog(getSupabaseAdmin(), {
         session_id: sessionId,
         gclid: req.gclid || null,
         fbclid: req.fbclid || null,
@@ -566,6 +611,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
         site: req.site || null,
         as_name: req.as_name || null,
         as_number: req.as_number ?? null,
+        ...gadsIdFields(req),
       });
     }
 
@@ -655,7 +701,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
   }
 
   // Step 5: Create click_log entry
-  await getSupabaseAdmin().from('click_log').insert({
+  await insertClickLog(getSupabaseAdmin(), {
       session_id: sessionId,
       gclid: req.gclid || null,
       fbclid: req.fbclid || null,
@@ -668,6 +714,7 @@ export async function assignTag(req: TagAssignRequest): Promise<TagAssignRespons
       site: req.site || null,
       as_name: req.as_name || null,
       as_number: req.as_number ?? null,
+      ...gadsIdFields(req),
     });
 
   return {
@@ -846,7 +893,7 @@ async function assignGadsTagV2(
       .eq('tag_id', assignedTag);
   }
 
-  await sb.from('click_log').insert({
+  await insertClickLog(sb, {
     session_id: sessionId,
     gclid: req.gclid || null,
     fbclid: req.fbclid || null,
@@ -859,6 +906,7 @@ async function assignGadsTagV2(
     site: req.site || null,
     as_name: req.as_name || null,
     as_number: req.as_number ?? null,
+    ...gadsIdFields(req),
   });
 
   return {
