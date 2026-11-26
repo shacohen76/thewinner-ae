@@ -13,8 +13,8 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
-import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale } from '@/lib/index-allowlist';
+import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale, getIndexModeFor } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
 import { BR_PT_ENABLED, BF_TWINS_ENABLED } from '@/lib/feature-flags';
@@ -54,8 +54,49 @@ export async function chunkIds(): Promise<string[]> {
   // 2026-09-27 (BR 1): + 'indexable-pt' when the /pt locale is enabled.
   // 2026-11-08 (EU NATIVE 1): + 'indexable-<code>' per enabled EU native locale (none by default).
   // 2026-11-11 (BF 1, owner): + 'black-friday' while the BF twins are on and not yet switched to noindex.
-  return ['structural', 'indexable-en', 'indexable-ar', 'indexable-ja', ...(BR_PT_ENABLED ? ['indexable-pt'] : []),
+  // 2026-11-26 (all-indexable): a locale in index_mode='all_complete' is split into 20K chunks
+  // ('indexable-en-0', …) — one file would exceed Google's 50K cap at ~46–62K URLs. 'allowlist' mode
+  // keeps the single 'indexable-<loc>' file. The [id] route resolves both forms.
+  const localeIds: string[] = [];
+  for (const loc of ['en', 'ar', 'ja'] as const) {
+    if ((await getIndexModeFor(loc)) === 'all_complete') {
+      const n = await indexableChunkCount(loc);
+      for (let i = 0; i < n; i++) localeIds.push(`indexable-${loc}-${i}`);
+    } else {
+      localeIds.push(`indexable-${loc}`);
+    }
+  }
+  return ['structural', ...localeIds, ...(BR_PT_ENABLED ? ['indexable-pt'] : []),
     ...EU_NATIVE_CODES.map((c) => `indexable-${c}`), ...(bfSitemapLive() ? ['black-friday'] : [])];
+}
+
+// All-indexable (2026-11-26): the COMPLETE slug set for a locale when index_mode='all_complete',
+// sorted by slug so the index chunk COUNT and the chunk-route SLICES agree across separate requests
+// (same stable-order rule as getAllKeywords). en → BYG keywords (page re-checks >=1 AE product);
+// ar/ja → noun+BYG translations (getTranslatedSlugs already filters BYG; the /ja page re-checks >=1
+// JP catalog product). Candidate lists only — the page's robots gate makes the final index decision.
+async function completeSlugsFor(locale: 'en' | 'ar' | 'ja'): Promise<string[]> {
+  const set = locale === 'en' ? await getEnglishByGSlugs() : await getTranslatedSlugs(locale);
+  return Array.from(set).sort();
+}
+
+// Number of 20K chunks for a locale's complete set (>=1 so the index always lists at least one file).
+export async function indexableChunkCount(locale: 'en' | 'ar' | 'ja'): Promise<number> {
+  return Math.max(1, Math.ceil((await completeSlugsFor(locale)).length / CHUNK_SIZE));
+}
+
+// One 20K chunk of a locale's complete set (index_mode='all_complete'). en → /best/<slug>;
+// ar/ja → /<locale>/best/<slug>, self-canonical. Mirrors allowlistEntries' URL + lastmod shape.
+export async function indexableChunkEntries(locale: 'en' | 'ar' | 'ja', chunk: number): Promise<SitemapEntry[]> {
+  const base = CONFIG.siteUrl;
+  const prefix = locale === 'en' ? '' : `/${locale}`;
+  const all = await completeSlugsFor(locale);
+  const slice = all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE);
+  const dates = await getSlugCreatedAt(slice);
+  return slice.map((slug) => ({
+    url: `${base}${prefix}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
+    lastmod: dates.get(slug.toLowerCase()),
+  }));
 }
 
 // 2026-11-11 (BF 1, owner "lets sitemap separately"): the Black Friday twins get their OWN sitemap,

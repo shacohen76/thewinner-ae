@@ -1,7 +1,7 @@
 // /sitemap/<id>.xml — one sitemap chunk (route handler). id ∈ { structural, best-0, best-1, … }.
 // See lib/sitemap-data.ts. 2026-08-25 (rerank-11 SEO split).
 import { CONFIG } from '@/lib/utils';
-import { structuralEntries, allowlistEntries, ptIndexableEntries, euNativeIndexableEntries, bfSitemapLive, bfTwinEntries, urlsetXml } from '@/lib/sitemap-data';
+import { structuralEntries, allowlistEntries, indexableChunkEntries, ptIndexableEntries, euNativeIndexableEntries, bfSitemapLive, bfTwinEntries, urlsetXml } from '@/lib/sitemap-data';
 import { BR_PT_ENABLED } from '@/lib/feature-flags';
 import { EU_NATIVE_CODES } from '@/lib/native-locales';
 
@@ -19,8 +19,12 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   const id = params.id.replace(/\.xml$/, '');
 
   let entries;
+  const chunkMatch = id.match(/^indexable-(en|ar|ja)-(\d+)$/);
   if (id === 'structural') {
     entries = await structuralEntries();
+  } else if (chunkMatch) {
+    // all-indexable (2026-11-26): a 20K chunk of a locale in index_mode='all_complete'.
+    entries = await indexableChunkEntries(chunkMatch[1] as 'en' | 'ar' | 'ja', parseInt(chunkMatch[2], 10));
   } else if (id === 'indexable-en' || id === 'indexable-ar' || id === 'indexable-ja') {
     // keep-best-~1K (2026-09-10): the three per-locale "indexable" sitemaps
     // listed by the index — only allowlisted pages (seo_index_allowlist).

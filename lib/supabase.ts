@@ -646,6 +646,35 @@ export async function getMarketplaceSlugs(marketplace: string): Promise<Set<stri
 // false, and re-sent each hour. A slug missing here (or a failed chunk) simply gets NO
 // <lastmod>, which is valid and never churns. created_at is immutable, so a page's lastmod
 // is fixed at its creation day and does not move once the page is crawled.
+// All-indexable (2026-11-26): English /best slugs that have a non-empty buying guide
+// (keywords.qa_guide). Candidate set for the EN sitemap when index_mode(en)='all_complete'. The
+// page's robots gate still ANDs ">=1 in-stock AE product", so a BYG page with no products is
+// listed-but-noindex — the same looseness the pt/es "noun" sitemaps already accept. ONE keyset read
+// on the (id) primary key (never the ~600K-row ae keyword_products join that getMarketplaceSlugs('ae')
+// would do). THROWS on a page error (never a partial set — a truncated sitemap wrongly drops URLs).
+export async function getEnglishByGSlugs(): Promise<Set<string>> {
+  const slugs = new Set<string>();
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return slugs;
+  let after = -1;            // keyset cursor on the (id) PK; ids are positive
+  const page = 1000;
+  for (;;) {
+    const { data, error } = await supabase
+      .from('keywords')
+      .select('id, slug, qa_guide')
+      .gt('id', after)
+      .order('id', { ascending: true })
+      .limit(page);
+    if (error) throw new Error(`getEnglishByGSlugs failed after id ${after}: ${error.message}`);
+    const rows = (data ?? []) as { id: number; slug: string | null; qa_guide: unknown }[];
+    for (const r of rows) {
+      if (r.slug && hasBuyingGuide(r.qa_guide)) slugs.add(r.slug.toLowerCase());
+    }
+    if (rows.length < page) break;
+    after = rows[rows.length - 1].id;
+  }
+  return slugs;
+}
+
 export async function getSlugCreatedAt(slugs: string[]): Promise<Map<string, string>> {
   const out = new Map<string, string>();
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || slugs.length === 0) return out;

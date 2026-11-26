@@ -294,7 +294,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // for ar/ja) is still ANDed, so ar/ja never over-index untranslated pages.
   const allow = await getIndexAllowlist();
   const slugLc = decodeURIComponent(params.slug).toLowerCase();
-  const enIndexed = isAllowlisted(allow, 'en', slugLc);
+  // 2026-11-26 (all-indexable): in 'allowlist' mode isAllowlisted is the only EN gate (unchanged).
+  // In 'all_complete' mode isAllowlisted is unrestricted, so AND a content check — EN has no content
+  // gate of its own and empty/blank pages (no BYG / no in-stock AE product) must stay noindex. The
+  // extra product read runs ONLY in all_complete mode. ar/ja already AND their own complete-gate, so
+  // they need no change: isAllowlisted goes true in all_complete and arComplete/jaComplete decide.
+  const enContentOk = allow.mode.en === 'all_complete'
+    ? (hasBuyingGuide(keyword.qa_guide) && (await getKeywordMarketplaceCount(keyword.id, 'ae')) >= 1)
+    : true;
+  const enIndexed = enContentOk && isAllowlisted(allow, 'en', slugLc);
   const arIndexed = arComplete && isAllowlisted(allow, 'ar', slugLc);
   const jaIndexed = jaComplete && isAllowlisted(allow, 'ja', slugLc);
   // 2026-11-09 (EU NATIVE 1, owner D-2 "organic visitors from es → es pages"): an enabled EU
