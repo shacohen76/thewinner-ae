@@ -566,14 +566,17 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
   for (;;) {
     const { data, error } = await supabase
       .from('keyword_translations')
-      .select('keyword_id, qa_guide, keywords(slug)')
+      .select('keyword_id, keywords(slug)')
       .eq('locale', locale)
-      // 2026-11-14 (LOCALE SITE 1, 6.9 GO): KEYSET paging (keyword_id > last) instead of
-      // OFFSET. With OFFSET every deep page read and sorted the WHOLE locale (EXPLAIN 2026-11-14:
-      // pt offset 13000 = bitmap scan + external-merge sort, 1,595 ms; it hit the anon 3 s
-      // statement_timeout at 11:12:55 UTC). Keyset keeps each page on the (locale, keyword_id)
-      // index. keyword_id is unique within a locale (unique (keyword_id, locale)), so the order
-      // is total and no row is skipped or repeated — same guarantee the 2026-08-30 sort gave.
+      // 2026-11-26 (timeout fix): filter the non-empty buying guide IN THE DB and never SELECT
+      // qa_guide — pulling that JSON per page detoasted ~MBs and blew the anon 3 s statement_timeout
+      // (measured on /sitemap/indexable-es.xml). `is not null` == hasBuyingGuide for every locale
+      // except ar, which has ~8K empty-array guides that then list-but-noindex (the page re-checks).
+      .not('qa_guide', 'is', null)
+      // 2026-11-14 (LOCALE SITE 1, 6.9 GO): KEYSET paging (keyword_id > last) instead of OFFSET. With
+      // OFFSET every deep page read and sorted the WHOLE locale (EXPLAIN 2026-11-14: pt offset 13000 =
+      // bitmap scan + external-merge sort, 1,595 ms; it hit the anon 3 s statement_timeout). Keyset
+      // keeps each page on the (locale, keyword_id) index; keyword_id is unique within a locale.
       .gt('keyword_id', after)
       .order('keyword_id', { ascending: true })
       .limit(page);
@@ -583,11 +586,9 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
       // set on a first-page statement timeout (57014) and the sitemap answered 200 with 0 URLs.
       throw new Error(`getTranslatedSlugs(${locale}) failed after keyword_id ${after}: ${error.message}`);
     }
-    // supabase-js types the embedded relation as an array; at runtime a to-one
-    // FK returns a single object. Handle both.
+    // supabase-js types the embedded relation as an array; at runtime a to-one FK returns one object.
     const rows = (data ?? []) as any[];
     for (const r of rows) {
-      if (!hasBuyingGuide(r?.qa_guide)) continue; // need noun + BYG to index
       const kw = r?.keywords;
       const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
       if (slug) slugs.add(slug.toLowerCase());
@@ -601,6 +602,54 @@ export async function getTranslatedSlugs(locale: string): Promise<Set<string>> {
     after = last;
   }
   return slugs;
+}
+
+// 2026-11-26 (AR/JA all_complete readiness + es/pt speed): a locale's complete BYG set as
+// { slug, createdAt } (keywords.created_at for <lastmod>), mirroring getEnglishByGSlugs. Fast path:
+// ONE call to public.translated_byg_slugs(p_locale) — a jsonb array sorted by slug with the EXACT BYG
+// filter (jsonb_array_length > 0, so ar's ~8K empty-array guides are excluded), under the function's
+// own raised statement_timeout. Fallback (function not created yet): keyset over keyword_translations
+// with the guide filtered in the DB (qa_guide is not null — loose for ar) and keywords(slug, created_at)
+// embedded; correct, never 500s, but ~1 round-trip per 1,000 rows. De-dupes by slug. THROWS on a hard error.
+export async function getTranslatedByGEntries(locale: string): Promise<EnBygEntry[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+  const bySlug = new Map<string, EnBygEntry>();
+  try {
+    const { data, error } = await supabase.rpc('translated_byg_slugs', { p_locale: locale });
+    if (error) throw error;
+    const arr = data as { s: string; c: string | null }[] | null;
+    if (!Array.isArray(arr)) throw new Error('translated_byg_slugs did not return a jsonb array');
+    for (const r of arr) if (r.s && !bySlug.has(r.s)) bySlug.set(r.s, { slug: r.s, createdAt: r.c });
+    return Array.from(bySlug.values());
+  } catch (e) {
+    console.error(`getTranslatedByGEntries(${locale}): translated_byg_slugs rpc unavailable, falling back to keyset:`, e);
+    let after = -1;
+    const page = 1000;
+    for (;;) {
+      const { data, error } = await supabase
+        .from('keyword_translations')
+        .select('keyword_id, keywords(slug, created_at)')
+        .eq('locale', locale)
+        .not('qa_guide', 'is', null)
+        .gt('keyword_id', after)
+        .order('keyword_id', { ascending: true })
+        .limit(page);
+      if (error) throw new Error(`getTranslatedByGEntries(${locale}) keyset failed after ${after}: ${error.message}`);
+      const rows = (data ?? []) as any[];
+      for (const r of rows) {
+        const kw = r?.keywords;
+        const slug: string | undefined = Array.isArray(kw) ? kw[0]?.slug : kw?.slug;
+        const cat: string | null = (Array.isArray(kw) ? kw[0]?.created_at : kw?.created_at) ?? null;
+        const s = slug?.toLowerCase();
+        if (s && !bySlug.has(s)) bySlug.set(s, { slug: s, createdAt: cat });
+      }
+      if (rows.length < page) break;
+      const last = Number(rows[rows.length - 1]?.keyword_id);
+      if (!Number.isFinite(last) || last <= after) throw new Error(`getTranslatedByGEntries(${locale}) cursor stuck at ${after}`);
+      after = last;
+    }
+    return Array.from(bySlug.values());
+  }
 }
 
 // Set of keyword slugs (lowercased) that have >=1 catalog product in `marketplace`.

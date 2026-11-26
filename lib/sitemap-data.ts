@@ -13,7 +13,7 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES, type EnBygEntry } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getTranslatedByGEntries, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES, type EnBygEntry } from '@/lib/supabase';
 import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale, getIndexModeFor } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
@@ -80,20 +80,32 @@ export async function chunkIds(): Promise<string[]> {
 // (id, slug, created_at) instead of one ~125 MB getEnglishByGSlugs call per caller. The entries carry
 // created_at, so EN chunks need no getSlugCreatedAt pass. Sorted by slug so the chunk COUNT and the
 // chunk SLICES agree across separate requests.
-let enBygMemo: { v: EnBygEntry[]; at: number } | null = null;
-const EN_BYG_TTL_MS = 10 * 60 * 1000;
-async function enCompleteEntries(): Promise<EnBygEntry[]> {
+// Read ONCE per request per locale and memoised (BYG_TTL), shared by the index chunk count AND every
+// chunk slice: en via getEnglishByGSlugs, every other locale via getTranslatedByGEntries — each a
+// single one-shot RPC (keyset fallback) that carries created_at, so chunks need no getSlugCreatedAt.
+const bygMemo = new Map<string, { v: EnBygEntry[]; at: number }>();
+const BYG_TTL_MS = 10 * 60 * 1000;
+async function localeCompleteEntries(locale: string): Promise<EnBygEntry[]> {
   const now = Date.now();
-  if (enBygMemo && now - enBygMemo.at < EN_BYG_TTL_MS) return enBygMemo.v;
-  const rows = await getEnglishByGSlugs();
+  const m = bygMemo.get(locale);
+  if (m && now - m.at < BYG_TTL_MS) return m.v;
+  const rows = locale === 'en' ? await getEnglishByGSlugs() : await getTranslatedByGEntries(locale);
   const v = rows.slice().sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
-  enBygMemo = { v, at: now };
+  bygMemo.set(locale, { v, at: now });
   return v;
 }
 
+// 2026-11-26: pt + EU sitemaps keep the allowlist filter, applied to the memoised entry set (the SAME
+// rule as the page robots gate: not seeded pt/es → no restriction; EU with no rows → none; read error
+// → no restriction).
+async function allowlistedEntries(locale: string, entries: EnBygEntry[]): Promise<EnBygEntry[]> {
+  if (!isAllowlistLocale(locale)) return entries;
+  const only = allowlistRestriction(await getIndexAllowlist(), locale);
+  return only === null ? entries : entries.filter((e) => only.has(e.slug));
+}
+
 async function completeSlugsFor(locale: 'en' | 'ar' | 'ja'): Promise<string[]> {
-  if (locale === 'en') return (await enCompleteEntries()).map((e) => e.slug);
-  return Array.from(await getTranslatedSlugs(locale)).sort();
+  return (await localeCompleteEntries(locale)).map((e) => e.slug);
 }
 
 // Number of 20K chunks for a locale's complete set (>=1 so the index always lists at least one file).
@@ -101,26 +113,17 @@ export async function indexableChunkCount(locale: 'en' | 'ar' | 'ja'): Promise<n
   return Math.max(1, Math.ceil((await completeSlugsFor(locale)).length / CHUNK_SIZE));
 }
 
-// One 20K chunk of a locale's complete set (index_mode='all_complete'). en → /best/<slug> with the
-// memoised created_at as <lastmod> (no getSlugCreatedAt); ar/ja → /<locale>/best/<slug>, self-canonical,
-// lastmod via getSlugCreatedAt over the small slice.
+// One 20K chunk of a locale's complete set (index_mode='all_complete'). en → /best/<slug>;
+// ar/ja → /<locale>/best/<slug>, self-canonical. created_at is carried from the memoised set, so no
+// getSlugCreatedAt pass (what made the ja/ar chunk renders slow).
 export async function indexableChunkEntries(locale: 'en' | 'ar' | 'ja', chunk: number): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
-  if (locale === 'en') {
-    const all = await enCompleteEntries();
-    const slice = all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE);
-    return slice.map((e) => ({
-      url: `${base}/best/${encodeURIComponent(e.slug)}`, changefreq: 'weekly', priority: 0.9,
-      lastmod: e.createdAt ?? undefined,
-    }));
-  }
-  const prefix = `/${locale}`;
-  const all = await completeSlugsFor(locale);
+  const prefix = locale === 'en' ? '' : `/${locale}`;
+  const all = await localeCompleteEntries(locale);
   const slice = all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE);
-  const dates = await getSlugCreatedAt(slice);
-  return slice.map((slug) => ({
-    url: `${base}${prefix}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
-    lastmod: dates.get(slug.toLowerCase()),
+  return slice.map((e) => ({
+    url: `${base}${prefix}/best/${encodeURIComponent(e.slug)}`, changefreq: 'weekly', priority: 0.9,
+    lastmod: e.createdAt ?? undefined,
   }));
 }
 
@@ -148,11 +151,7 @@ export function bfTwinEntries(): SitemapEntry[] {
 // allowlist lets index — the SAME rule as the page's robots gate (lib/index-allowlist.ts
 // allowlistRestriction: not seeded pt/es → no restriction; pl/fr/it/de/sv/nl with no rows → none;
 // read error → no restriction).
-async function allowlisted(locale: string, slugs: string[]): Promise<string[]> {
-  if (!isAllowlistLocale(locale)) return slugs;
-  const only = allowlistRestriction(await getIndexAllowlist(), locale);
-  return only === null ? slugs : slugs.filter((s) => only.has(s.toLowerCase()));
-}
+// (allowlisted(slugs[]) was replaced 2026-11-26 by allowlistedEntries(entries) above — same rule.)
 
 // 2026-11-08 (EU NATIVE 1, owner D-3 "copy PT"): every page with a native noun in an enabled EU
 // locale. Same shape as ptIndexableEntries; the page itself re-checks BYG + ≥1 product before it
@@ -160,11 +159,10 @@ async function allowlisted(locale: string, slugs: string[]): Promise<string[]> {
 export async function euNativeIndexableEntries(locale: string): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await allowlisted(locale, Array.from(await getTranslatedSlugs(locale)));
-    const dates = await getSlugCreatedAt(slugs);
-    return slugs.map((slug) => ({
-      url: `${base}/${locale}/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
-      lastmod: dates.get(slug.toLowerCase()),
+    const entries = await allowlistedEntries(locale, await localeCompleteEntries(locale));
+    return entries.map((e) => ({
+      url: `${base}/${locale}/best/${encodeURIComponent(e.slug)}`, changefreq: 'weekly', priority: 0.9,
+      lastmod: e.createdAt ?? undefined,
     }));
   } catch (error) {
     // 2026-11-14: rethrow (was `return []`). The route then fails this render, so ISR keeps the
@@ -182,11 +180,10 @@ export async function euNativeIndexableEntries(locale: string): Promise<SitemapE
 export async function ptIndexableEntries(): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
   try {
-    const slugs = await allowlisted('pt', Array.from(await getTranslatedSlugs('pt')));
-    const dates = await getSlugCreatedAt(slugs);
-    return slugs.map((slug) => ({
-      url: `${base}/pt/best/${encodeURIComponent(slug)}`, changefreq: 'weekly', priority: 0.9,
-      lastmod: dates.get(slug.toLowerCase()),
+    const entries = await allowlistedEntries('pt', await localeCompleteEntries('pt'));
+    return entries.map((e) => ({
+      url: `${base}/pt/best/${encodeURIComponent(e.slug)}`, changefreq: 'weekly', priority: 0.9,
+      lastmod: e.createdAt ?? undefined,
     }));
   } catch (error) {
     console.error('sitemap ptIndexableEntries failed:', error);
