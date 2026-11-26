@@ -53,8 +53,8 @@ interface CampDay { customer_id: string; campaign_id: string; local_date: string
   cost: number | null; clicks: number | null; conv: number | null }
 // Round 2 (owner 11-21): ONE period switch for the whole tab. Today = live (admin_market_pulse); the rest come from
 // admin_market_pulse_range(31) = per market per day for the last 31 account days + yesterday by hour + campaign days.
-type Per = 'today' | 'yday' | '7' | '14' | '30' | 'month';
-const PERS: [Per, string][] = [['today', 'Today'], ['yday', 'Yesterday'], ['7', '7 days'], ['14', '14 days'], ['30', '30 days'], ['month', 'Month']];
+type Per = 'today' | 'yday' | '3' | '7' | '14' | '30' | 'month';
+const PERS: [Per, string][] = [['today', 'Today'], ['yday', 'Yesterday'], ['3', '3 days'], ['7', '7 days'], ['14', '14 days'], ['30', '30 days'], ['month', 'Month']];
 const PER_LABEL = Object.fromEntries(PERS) as Record<Per, string>;
 interface Range { generated_at: string; days_back: number; days: (Day & { market: string })[]; yesterday: Hour[]; campaign_daily: CampDay[] }
 const addDays = (d: string, n: number) => new Date(Date.parse(d + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
@@ -458,7 +458,9 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
       <div className="grid grid-cols-4 gap-1.5 sm:gap-3">
         {[
           [`Spend ${pl}`, ils(totSpend), isToday && totBudget ? `${pct(totSpend / totBudget)} of ${ils(totBudget)} budget` : 'all accounts, in ₪', '', 'Spend'],
-          [`Commission ${pl} ≈`, `≈${ils(totEarn)}`, "Amazon's own report, all tags · revenue × comm % × FX", 'text-emerald-400', 'Comm ≈'],
+          [`Commission ${pl} ≈`, `≈${ils(totEarn)}`, data.some(x => x.commUnset)
+            ? `Commission % missing: ${data.filter(x => x.commUnset).map(x => x.m.market).join(' ')} (not counted)`
+            : "Amazon's own report, all tags · revenue × comm % × FX", 'text-emerald-400', 'Comm ≈'],
           ['Needs a push', stuck.join(' ') || 'none', 'visitors under half of normal', stuck.length ? 'text-red-400' : '', 'Push'],
           ['Watch quality', watch.join(' ') || 'none', "land but don't click out", watch.length ? 'text-amber-400' : '', 'Quality'],
         ].map(([k, v, s, c, short], i) => (
@@ -481,7 +483,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
         {!shown.length && <div className="px-4 py-5 text-[#94a0bd]">No market matches the filter. Pick a region or tap a market chip above.</div>}
         {shown.map(x => {
           const open = V.open === x.m.market, ac = x.m.acct_currency, p = pv(x);
-          const amzWarn = x.amzNote ? x.amzNote : p.notIn ? `Amazon not in yet for ${dm(p.notIn)}` : x.commUnset && p.items > 0 ? 'Set commission %' : isToday && x.amzStale ? 'Amazon read old' : null;
+          const amzWarn = x.amzNote ? x.amzNote : p.notIn ? `Amazon not in yet for ${dm(p.notIn)}` : isToday && x.amzStale ? 'Amazon read old' : null;
           const sub = 'text-[13px] text-[#94a0bd] whitespace-nowrap truncate';
           return (
             <div key={x.m.market} role="listitem" className="border-t border-[#24304d] first:border-t-0">
@@ -491,7 +493,7 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                 <div className="lg:hidden grid grid-cols-[minmax(58px,.8fr)_1fr_1fr_1fr] gap-2 items-center px-3 py-2">
                   <span className="flex items-center gap-1.5"><b className="w-2 h-2 rounded-full flex-none" style={{ background: ST_DOT[x.st] }} /><span className="text-[16px] font-extrabold text-white">{x.m.market}</span></span>
                   <span className="text-[15px] font-bold text-white whitespace-nowrap">{x.hasAcct ? (waitR ? '…' : ils(p.spendIls)) : '—'}</span>
-                  <span className={`text-[15px] font-bold whitespace-nowrap ${amzWarn && p.notIn ? 'text-amber-400' : 'text-emerald-400'}`}>{waitR ? '…' : p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
+                  <span className={`text-[15px] font-bold whitespace-nowrap ${x.commUnset || (amzWarn && p.notIn) ? 'text-amber-400' : 'text-emerald-400'}`}>{waitR ? '…' : x.commUnset ? '% missing' : p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
                   <span className={`text-[15px] font-bold whitespace-nowrap ${netCls(p.netIls)}`}>{waitR ? '…' : ilsS(p.netIls)}</span>
                 </div>
                 {/* desktop */}
@@ -513,7 +515,8 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                   {/* Amazon: commission first and bold; items + revenue + assumption small (owner 11-21) */}
                   <div className="flex flex-col gap-0.5 min-w-0">
                     {waitR ? <span className={sub}>loading…</span> : <>
-                      <span className="text-[19px] font-extrabold text-emerald-400 whitespace-nowrap leading-tight">{p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
+                      {x.commUnset ? <span className="text-[15px] font-extrabold text-amber-400 whitespace-nowrap leading-tight" title={`No commission % on the ${x.m.market} market row (pulse_markets.comm_rate)`}>Commission % missing</span>
+                        : <span className="text-[19px] font-extrabold text-emerald-400 whitespace-nowrap leading-tight">{p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>}
                       <span className={sub}>{n0(p.items)} items · {money(x.m.currency, p.rev)}</span>
                       {amzWarn ? <span className="text-[12px] font-semibold text-amber-400 truncate">{amzWarn}</span>
                         : <span className="text-[12px] text-[#7d89a8] truncate">× {x.comm != null ? (x.comm * 100).toFixed(1) + '%' : '?'} × FX</span>}
@@ -627,18 +630,18 @@ function Confirm({ a, onNo, onYes }: { a: Ask; onNo: () => void; onYes: () => vo
 // compact stepper (owner 11-15: smaller text): [−big][−small] value [+small][+big] + apply button
 function Stepper({ steps, value, small, cls, onStep, apply, onApply }: { steps: [number, string][]; value: string; small: string; cls: string;
   onStep: (d: number) => void; apply: string | null; onApply: () => void }) {
-  const btn = 'bg-[#1a2440] border border-[#33416a] rounded-xl text-sm font-semibold text-[#c3cbe0] min-h-[44px] px-2 whitespace-nowrap hover:border-blue-400';
+  const btn = 'bg-[#1a2440] border border-[#33416a] rounded-xl text-[13px] sm:text-sm font-semibold text-[#c3cbe0] min-h-[44px] px-1 sm:px-2 whitespace-nowrap hover:border-blue-400';
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-[minmax(46px,auto)_minmax(46px,auto)_minmax(110px,1fr)_minmax(46px,auto)_minmax(46px,auto)] gap-1.5" role="group">
+    <div className="flex flex-col gap-2 min-w-0">
+      <div className="grid grid-cols-[minmax(36px,auto)_minmax(36px,auto)_minmax(76px,1fr)_minmax(36px,auto)_minmax(36px,auto)] gap-1 sm:gap-1.5" role="group">
         {steps.slice(0, 2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
-        <output aria-live="polite" className="flex flex-col items-center justify-center bg-[#0b1020] border border-[#33416a] rounded-xl p-1">
-          <span className={`text-xl font-extrabold leading-tight ${cls}`}>{value}</span><small className="text-[13px] text-[#c3cbe0]">{small}</small>
+        <output aria-live="polite" className="flex flex-col items-center justify-center bg-[#0b1020] border border-[#33416a] rounded-xl p-1 min-w-0">
+          <span className={`text-lg sm:text-xl font-extrabold leading-tight ${cls}`}>{value}</span><small className="text-[11px] sm:text-[13px] text-[#c3cbe0] text-center leading-tight break-words">{small}</small>
         </output>
         {steps.slice(2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
       </div>
       <button type="button" disabled={!apply} onClick={onApply}
-        className="rounded-xl px-3.5 py-2.5 font-bold text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd]">{apply ?? 'Pick a change'}</button>
+        className="rounded-xl px-3 py-2.5 font-bold text-[14px] sm:text-[15px] text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd] break-words">{apply ?? 'Pick a change'}</button>
     </div>
   );
 }
@@ -666,19 +669,33 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
   const tabs: [string, string][] = [['today', PER_LABEL[per]], ['camps', `Campaigns${x.campaigns.length ? ` (${x.campaigns.length})` : ''}`]];
   const [campF, setCampF] = useState<string>('all');
 
-  const isH = per === 'today' || per === 'yday', ilNow = localNow(IL), waitR = per !== 'today' && !R;
+  const isH0 = per === 'today' || per === 'yday', ilNow = localNow(IL), waitR = per !== 'today' && !R;
   const fxA = x.fxA, fxAcc = x.fxAcc;
   // campaign days: today from the live read; other periods from the range read
   const cdSrc = per === 'today' ? (P.campaign_daily ?? []) : (R?.campaign_daily ?? []);
   const cdays = cdSrc.filter(c => c.market === mk && c.customer_id === x.m.customer_id && c.local_date >= p.from && c.local_date <= p.to);
   const cdOf = (id: string, d: string) => cdays.filter(c => c.campaign_id === id && c.local_date === d);
-  const campNames = Array.from(new Map(cdays.filter(c => num(c.clicks, 0) > 0 || num(c.cost, 0) > 0).map(c => [c.campaign_id, c.name ?? c.campaign_id])).entries());
-  const one = !isH && campF !== 'all';
+  const campNames = Array.from(new Map([...x.campaigns.map(c => [c.campaign_id, c.name ?? c.campaign_id] as [string, string]),
+    ...cdays.filter(c => num(c.clicks, 0) > 0 || num(c.cost, 0) > 0).map(c => [c.campaign_id, c.name ?? c.campaign_id] as [string, string])]).entries());
+  // owner 11-26: one campaign = its own day rows for ANY period (Today / Yesterday = one day row). Google Ads numbers
+  // only: click_log has no campaign, Amazon's report has no tag per campaign -> visitors, Amazon, commission, net = —
+  const one = campF !== 'all';
+  const isH = isH0 && !one;
   const estE = (r: { amz_earnings: number | null; amz_revenue: number | null }) => (r.amz_earnings != null ? num(r.amz_earnings, 0) : num(r.amz_revenue, 0) * num(x.comm, 0));
   type Row = { key: string; label: string; il: string; vis: number | null; norm: number; outs: number | null; cost: number | null; clicks: number | null;
     conv: number | null; items: number | null; rev: number | null; earn: number | null; fut: boolean; now: boolean; lag: boolean };
   const hourIl = (h: number) => pad(((h - x.L.h + ilNow.h) % 24 + 24) % 24) + ':00';
-  const rows: Row[] = per === 'today'
+  const dayLabel = (d: string) => `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(d + 'T12:00:00Z').getUTCDay()]} ${dm(d)}`;
+  const oneRows = (): Row[] => {
+    const out: Row[] = [];
+    for (let d = p.to; d >= p.from; d = addDays(d, -1)) {
+      const c1 = cdOf(campF, d), cs = (k: 'cost' | 'clicks' | 'conv') => c1.reduce((a, c) => a + num(c[k], 0), 0);
+      out.push({ key: d, label: dayLabel(d), il: '', vis: null, norm: 0, outs: null, cost: x.hasAcct ? cs('cost') : null, clicks: cs('clicks'),
+        conv: cs('conv'), items: null, rev: null, earn: null, fut: false, now: d === x.L.date, lag: false });
+    }
+    return out;
+  };
+  const rows: Row[] = one ? oneRows() : per === 'today'
     ? x.hours.map(h => ({ key: String(h.h), label: pad(h.h) + ':00', il: hourIl(h.h), vis: h.vis, norm: h.norm, outs: h.outs,
         cost: h.cost, clicks: h.clicks, conv: h.conv, items: h.items, rev: h.rev, earn: h.earn, fut: h.fut, now: h.now, lag: h.lag }))
     : per === 'yday'
@@ -693,7 +710,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
           .map(d => {
             const c1 = one ? cdOf(campF, d.local_date) : [];
             const cs = (k: 'cost' | 'clicks' | 'conv') => c1.reduce((a, c) => a + num(c[k], 0), 0);
-            return { key: d.local_date, label: `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(d.local_date + 'T12:00:00Z').getUTCDay()]} ${dm(d.local_date)}`, il: '',
+            return { key: d.local_date, label: dayLabel(d.local_date), il: '',
               vis: one ? null : num(d.visitors, 0), norm: x.hours.reduce((a, h) => a + h.norm, 0), outs: one ? null : num(d.clickouts, 0),
               cost: !x.hasAcct ? null : one ? cs('cost') : num(d.gads_cost, 0), clicks: one ? cs('clicks') : num(d.gads_clicks, 0),
               conv: one ? cs('conv') : num(d.gads_conv, 0), items: num(d.amz_items, 0), rev: num(d.amz_revenue, 0), earn: estE(d),
@@ -705,10 +722,12 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
   // owner 11-15 + 11-21: the header stays visible while the PAGE scrolls (sticky right under the filter bar); spend,
   // commission and net come first; Amazon items/revenue at the end. Wide screens: no inner scroll box.
   // owner 11-22: left-aligned, bigger numbers (15 px), headers centred vertically
-  const td = 'px-2 py-1.5 text-left whitespace-nowrap border-b border-[#24304d]';
-  const th = 'px-2 py-2 text-left align-middle leading-tight bg-[#1a2440] text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold sticky z-20 border-b border-[#33416a]';
-  const thTop = { top: 'var(--mp-top, 0px)' };
-  const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 text-xs font-bold';
+  // owner 11-22 (2nd look): bigger (16 px), centred, every other row a slightly lighter shade
+  const td = 'px-1.5 py-2 text-center whitespace-nowrap border-b border-[#24304d]';
+  const th = 'px-1.5 py-2 text-center align-middle leading-tight bg-[#1a2440] text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold sticky z-20 top-0 lg:top-[var(--mp-top,0px)] border-b border-[#33416a]';
+  // page-sticky under the filter bar on wide screens; on phones the table scrolls sideways in its own box, so top 0
+  const thTop = undefined;
+  const flag = 'inline-block px-1.5 rounded bg-red-400/15 text-red-400 font-bold';
   const B = 'border-l border-[#33416a]';
 
   // ── seasonality (owner 11-21: first in the period tab, also kept in Bids & budgets)
@@ -726,7 +745,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
   // owner 11-22: compact — the label sits right next to the stepper (not at the far side)
   const seasStrip = x.hasAcct && (
     <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-2.5 flex flex-wrap gap-x-5 gap-y-2.5 items-center">
-      <div className="flex flex-col min-w-[150px]"><K>Account seasonality</K><b className="text-[22px] font-extrabold text-white leading-tight">{seasNow == null ? 'none active' : sp(nowPts)}</b>
+      <div className="flex flex-col min-w-0"><K>Account seasonality</K><b className="text-[22px] font-extrabold text-white leading-tight">{seasNow == null ? 'none active' : sp(nowPts)}</b>
         {seasNow != null && <span className="text-[12px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
       {seasNow != null && <div className="w-full max-w-[460px]"><Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
         onStep={seasStep}
@@ -738,7 +757,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
   const periodTab = (
     <div className="flex flex-col gap-3">
       {seasStrip}
-      {!isH && x.hasAcct && campNames.length > 0 && (
+      {x.hasAcct && campNames.length > 0 && (
         <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="group" aria-label="Campaign">
           {[['all', 'All campaigns'] as [string, string], ...campNames].map(([id, nm]) => (
             <button key={id} type="button" aria-pressed={campF === id} onClick={() => setCampF(id)}
@@ -746,10 +765,12 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
           ))}
         </div>
       )}
-      {one && <p className="text-[13px] text-[#94a0bd] m-0">One campaign: Google Ads numbers only. Our click log keeps the Google click id but not the campaign, so site visitors and clickouts exist per account.</p>}
+      {one && <p className="text-[13px] text-[#94a0bd] m-0"><b className="text-[#c3cbe0]">One campaign, by day.</b> Per campaign: spend, clicks, CPC, Ads clickouts, Ads rate and Ads cost per clickout (Google Ads).
+        Not split per campaign (shown as —): site visitors and site clickouts (our click log keeps the Google click id but not the campaign) and
+        Amazon items, revenue, commission and so net (Amazon&apos;s report has no tag per campaign).</p>}
       {waitR ? <p className="text-sm text-[#94a0bd] m-0">Loading {PER_LABEL[per].toLowerCase()}…</p> : (
         <div className="overflow-x-auto lg:overflow-visible border border-[#24304d] rounded-xl">
-          <table className="w-full min-w-[1060px] text-[15px] border-separate border-spacing-0">
+          <table className="w-full min-w-[1060px] text-[16px] border-separate border-spacing-0">
             <thead><tr>
               <th style={thTop} className={`${th} text-left left-0 z-30 rounded-tl-xl`}>{isH ? 'Local' : 'Day'}</th>{isH && <th style={thTop} className={th}>IL</th>}
               <th style={thTop} className={`${th} ${B} text-white`}>Spend ₪</th><th style={thTop} className={`${th} text-emerald-300`}>Comm ≈₪</th><th style={thTop} className={th}>Net ₪</th>
@@ -759,18 +780,19 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
               <th style={thTop} className={`${th} ${B}`}>Amazon items</th><th style={thTop} className={`${th} rounded-tr-xl`}>Revenue {x.m.currency}</th>
             </tr></thead>
             <tbody>
-              {rows.map(r => {
+              {rows.map((r, ri) => {
+                const zb = ri % 2 ? 'bg-[#172140]' : 'bg-[#121a2e]';
                 const rate = r.vis ? (r.outs ?? 0) / r.vis : null;
                 const lowV = isH && r.vis != null && !r.now && r.norm >= x.stuckMin && r.vis < x.stuckRatio * r.norm;
                 const sI = x.hasAcct ? toIls(r.cost, fxAcc) : null, eI = x.comm == null ? null : toIls(r.earn, fxA);
                 const net = sI != null && eI != null ? eI - sI : null;
                 const lag = per === 'today' && (x.amzStale || r.lag) ? 'bg-violet-400/10' : '';
                 return (
-                  <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now && per === 'today' ? 'bg-yellow-400/10' : ''}`}>
-                    <td className={`${td} text-left sticky left-0 bg-[#121a2e]`}>{r.label}</td>{isH && <td className={td}>{r.il}</td>}
+                  <tr key={r.key} className={`${r.fut ? 'opacity-45 text-[#94a0bd]' : ''} ${r.now && per === 'today' ? 'bg-yellow-400/10' : zb}`}>
+                    <td className={`${td} sticky left-0 ${r.now && per === 'today' ? 'bg-[#2a2c2a]' : zb}`}>{r.label}</td>{isH && <td className={td}>{r.il}</td>}
                     <td className={`${td} ${B} font-bold text-white`}>{x.hasAcct ? (r.fut ? '—' : n0(sI)) : '—'}</td>
                     <td className={`${td} font-bold text-emerald-300 ${lag}`}>{r.fut || eI == null ? '—' : n0(eI)}</td>
-                    <td className={`${td} ${netCls(net)}`}>{r.fut || net == null ? '—' : (net >= 0 ? '+' : '−') + n0(Math.abs(net))}</td>
+                    <td className={`${td} ${netCls(net)}`}>{r.fut || net == null ? '—' : Math.round(net) === 0 ? '0' : (net > 0 ? '+' : '−') + n0(Math.abs(net))}</td>
                     <td className={`${td} ${B}`}>{x.hasAcct ? n0(r.clicks) : '—'}</td>
                     <td className={td}>{x.hasAcct ? c2(ratio(r.cost, r.clicks)) : '—'}</td>
                     <td className={`${td} ${B}`}>{n0(r.vis)}</td>
@@ -786,7 +808,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
                 );
               })}
               {(() => {
-                const sI = x.hasAcct ? toIls(T('cost'), fxAcc) : null, eI = x.comm == null ? null : toIls(T('earn'), fxA), net = sI != null && eI != null ? eI - sI : null;
+                const sI = x.hasAcct ? toIls(T('cost'), fxAcc) : null, eI = one || x.comm == null ? null : toIls(T('earn'), fxA), net = sI != null && eI != null ? eI - sI : null;
                 const f = 'bg-[#1a2440]';
                 return (
                   <tr className="font-bold">
@@ -802,7 +824,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
                     <td className={`${td} ${f} ${B}`}>{x.hasAcct ? n1(T('conv')) : '—'}</td>
                     <td className={`${td} ${f}`}>{x.hasAcct ? pct(ratio(T('conv'), T('clicks'))) : '—'}</td>
                     <td className={`${td} ${f}`}>{x.hasAcct ? c2(ratio(T('cost'), T('conv'))) : '—'}</td>
-                    <td className={`${td} ${f} ${B}`}>{n0(T('items'))}</td><td className={`${td} ${f}`}>{money(x.m.currency, T('rev'))}</td>
+                    <td className={`${td} ${f} ${B}`}>{one ? '—' : n0(T('items'))}</td><td className={`${td} ${f}`}>{one ? '—' : money(x.m.currency, T('rev'))}</td>
                   </tr>
                 );
               })()}
@@ -903,7 +925,9 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
     );
     const cards = s ? [budgetCard, ...stratCards(s)] : [budgetCard, ownCard];
     return (
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-2.5 min-w-0">
+        <button type="button" onClick={() => { setCampF(c.campaign_id); setDt('today'); }} className="self-start text-[13px] font-bold text-blue-400">
+          See this campaign by day ({PER_LABEL[per].toLowerCase()}) ›</button>
         <div className={`grid gap-3 ${cards.length === 3 ? 'lg:grid-cols-3' : 'md:grid-cols-2'}`}>{cards}</div>
         {s && sharedNote(s)}
       </div>
@@ -934,27 +958,51 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
     r.cost += num(d.cost, 0); r.clicks += num(d.clicks, 0); r.conv += num(d.conv, 0); cmap.set(d.campaign_id, r); });
   const crows = Array.from(cmap.values()).filter(r => r.c || r.cost > 0 || r.clicks > 0).sort((a, b) => b.cost - a.cost || (b.c ? 1 : 0) - (a.c ? 1 : 0));
   const ctot = crows.reduce((a, r) => ({ cost: a.cost + r.cost, clicks: a.clicks + r.clicks, conv: a.conv + r.conv }), { cost: 0, clicks: 0, conv: 0 });
-  const ctd = 'px-2.5 py-2 text-left whitespace-nowrap border-t border-[#24304d]';
-  const cth = 'px-2.5 py-2 text-left align-middle whitespace-nowrap text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold bg-[#1a2440]';
+  const ctd = 'px-2.5 py-2 text-center whitespace-nowrap border-t border-[#24304d]';
+  const cth = 'px-2.5 py-2 text-center align-middle whitespace-nowrap text-[#94a0bd] text-[12px] uppercase tracking-wide font-bold bg-[#1a2440]';
   const COLS = 11;
+  const campCards = (
+    <div className="lg:hidden flex flex-col gap-2">
+      {waitR && <span className="text-[13px] text-[#94a0bd]">Loading…</span>}
+      {!waitR && crows.map(r => {
+        const open = sel === `c:${r.id}`, c = r.c, sh = c ? stratOf(c.strategy_id) : null;
+        const cell = (k: string, v: React.ReactNode, cls = 'text-white') => (
+          <span className="flex flex-col min-w-0"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#94a0bd] truncate">{k}</span><b className={`text-[15px] truncate ${cls}`}>{v}</b></span>);
+        return (
+          <div key={r.id} className={`border rounded-xl min-w-0 ${open ? 'border-blue-500 bg-[#1a2440]' : 'border-[#24304d] bg-[#121a2e]'} ${c ? '' : 'opacity-70'}`}>
+            <button type="button" disabled={!c} aria-expanded={c ? open : undefined} onClick={() => c && setSel(open ? null : `c:${r.id}`)} className="w-full text-left p-2.5 flex flex-col gap-2 min-w-0">
+              <span className="flex items-center gap-2 min-w-0"><span className="font-semibold truncate flex-1">{r.name}</span>{c && <span className={`text-lg ${open ? 'rotate-90 text-white' : 'text-[#94a0bd]'}`} aria-hidden>›</span>}</span>
+              <span className="grid grid-cols-3 gap-x-2 gap-y-1.5">
+                {cell('Spend', ils(toIls(r.cost, fxAcc)))}{cell('Clickouts', n1(r.conv))}{cell('Cost/CO', cur2(ac, ratio(r.cost, r.conv)))}
+                {cell('Budget', c ? money(ac, num(c.budget_amount, 0)) : '—')}{cell('CPC', cur2(ac, ratio(r.cost, r.clicks)))}
+                {cell(c ? bidType(c) + (sh ? ' · shared' : '') : 'Bid', c ? targetLabel(c) : '—', sh ? 'text-violet-300' : 'text-white')}
+              </span>
+            </button>
+            {open && c && <div className="border-t border-[#33416a] p-2 min-w-0">{campEditor(c)}</div>}
+          </div>
+        );
+      })}
+      {!waitR && crows.length > 0 && <span className="text-[13px] text-[#c3cbe0]">Account: spend <b className="text-white">{ils(toIls(ctot.cost, fxAcc))}</b> · clickouts {n1(ctot.conv)} · cost/CO {cur2(ac, ratio(ctot.cost, ctot.conv))}</span>}
+    </div>
+  );
   const campTable = (
-    <div className="bg-[#121a2e] border border-[#24304d] rounded-xl overflow-x-auto">
-      <table className="w-full min-w-[980px] text-[15px] border-separate border-spacing-0">
+    <div className="hidden lg:block bg-[#121a2e] border border-[#24304d] rounded-xl overflow-x-auto">
+      <table className="w-full min-w-[1020px] text-[16px] border-separate border-spacing-0">
         <thead><tr>
-          <th className={`${cth} rounded-tl-xl`}>Campaign · {PER_LABEL[per].toLowerCase()}</th><th className={cth}>Budget / day</th>
+          <th className={`${cth} !text-left rounded-tl-xl`}>Campaign · {PER_LABEL[per].toLowerCase()}</th><th className={cth}>Budget / day</th>
           <th className={`${cth} text-white`}>Spend ₪</th><th className={cth}>Clickouts</th><th className={cth}>Cost / clickout</th>
           <th className={cth}>Clicks</th><th className={cth}>Avg. CPC</th><th className={cth}>Clickout rate</th>
           <th className={cth}>Bidding</th><th className={cth}>Target</th><th className={`${cth} rounded-tr-xl`} />
         </tr></thead>
         <tbody>
           {waitR && <tr><td colSpan={COLS} className={`${ctd} text-[#94a0bd]`}>Loading…</td></tr>}
-          {!waitR && crows.map(r => {
+          {!waitR && crows.map((r, ri) => {
             const open = sel === `c:${r.id}`, c = r.c, sh = c ? stratOf(c.strategy_id) : null;
             return (
               <Fragment key={r.id}>
                 <tr onClick={() => c && setSel(open ? null : `c:${r.id}`)} aria-expanded={c ? open : undefined}
-                  className={`${c ? 'cursor-pointer hover:bg-white/[.03]' : 'opacity-70'} ${open ? 'bg-[#1a2440]' : ''}`}>
-                  <td className={`${ctd} font-semibold max-w-[300px] truncate`} title={r.name}>{r.name}{!c && <small className="ml-1.5 text-[12px] text-[#94a0bd]">not enabled</small>}</td>
+                  className={`${c ? 'cursor-pointer hover:bg-white/[.05]' : 'opacity-70'} ${open ? 'bg-[#1a2440]' : ri % 2 ? 'bg-[#172140]' : ''}`}>
+                  <td className={`${ctd} !text-left font-semibold max-w-[300px] truncate`} title={r.name}>{r.name}{!c && <small className="ml-1.5 text-[12px] text-[#94a0bd]">not enabled</small>}</td>
                   <td className={ctd}>{c ? money(ac, num(c.budget_amount, 0)) : '—'}</td>
                   <td className={`${ctd} font-bold text-white`}>{ils(toIls(r.cost, fxAcc))}</td>
                   <td className={ctd}>{n1(r.conv)}</td>
@@ -988,6 +1036,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
   ) : (
     <div className="flex flex-col gap-3">
       {seasStrip}
+      {campCards}
       {campTable}
       <span className="text-[13px] text-[#94a0bd]">Google Ads numbers · Clickouts = the Google Ads conversion · account day · spend in ₪, budget / CPC / target in {ac} (as in Google Ads) · click a campaign to change its budget or bid.</span>
       {x.strategies.length > 0 && (
