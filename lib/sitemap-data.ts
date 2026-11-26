@@ -13,7 +13,7 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES, type EnBygEntry } from '@/lib/supabase';
 import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale, getIndexModeFor } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
@@ -75,9 +75,25 @@ export async function chunkIds(): Promise<string[]> {
 // (same stable-order rule as getAllKeywords). en → BYG keywords (page re-checks >=1 AE product);
 // ar/ja → noun+BYG translations (getTranslatedSlugs already filters BYG; the /ja page re-checks >=1
 // JP catalog product). Candidate lists only — the page's robots gate makes the final index decision.
+// 2026-11-26 (timeout fix): the EN set is read ONCE per request and memoised (EN_BYG_TTL), shared by
+// the index chunk count AND every chunk slice, so a build/render does a single cheap keyset read
+// (id, slug, created_at) instead of one ~125 MB getEnglishByGSlugs call per caller. The entries carry
+// created_at, so EN chunks need no getSlugCreatedAt pass. Sorted by slug so the chunk COUNT and the
+// chunk SLICES agree across separate requests.
+let enBygMemo: { v: EnBygEntry[]; at: number } | null = null;
+const EN_BYG_TTL_MS = 10 * 60 * 1000;
+async function enCompleteEntries(): Promise<EnBygEntry[]> {
+  const now = Date.now();
+  if (enBygMemo && now - enBygMemo.at < EN_BYG_TTL_MS) return enBygMemo.v;
+  const rows = await getEnglishByGSlugs();
+  const v = rows.slice().sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
+  enBygMemo = { v, at: now };
+  return v;
+}
+
 async function completeSlugsFor(locale: 'en' | 'ar' | 'ja'): Promise<string[]> {
-  const set = locale === 'en' ? await getEnglishByGSlugs() : await getTranslatedSlugs(locale);
-  return Array.from(set).sort();
+  if (locale === 'en') return (await enCompleteEntries()).map((e) => e.slug);
+  return Array.from(await getTranslatedSlugs(locale)).sort();
 }
 
 // Number of 20K chunks for a locale's complete set (>=1 so the index always lists at least one file).
@@ -85,11 +101,20 @@ export async function indexableChunkCount(locale: 'en' | 'ar' | 'ja'): Promise<n
   return Math.max(1, Math.ceil((await completeSlugsFor(locale)).length / CHUNK_SIZE));
 }
 
-// One 20K chunk of a locale's complete set (index_mode='all_complete'). en → /best/<slug>;
-// ar/ja → /<locale>/best/<slug>, self-canonical. Mirrors allowlistEntries' URL + lastmod shape.
+// One 20K chunk of a locale's complete set (index_mode='all_complete'). en → /best/<slug> with the
+// memoised created_at as <lastmod> (no getSlugCreatedAt); ar/ja → /<locale>/best/<slug>, self-canonical,
+// lastmod via getSlugCreatedAt over the small slice.
 export async function indexableChunkEntries(locale: 'en' | 'ar' | 'ja', chunk: number): Promise<SitemapEntry[]> {
   const base = CONFIG.siteUrl;
-  const prefix = locale === 'en' ? '' : `/${locale}`;
+  if (locale === 'en') {
+    const all = await enCompleteEntries();
+    const slice = all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE);
+    return slice.map((e) => ({
+      url: `${base}/best/${encodeURIComponent(e.slug)}`, changefreq: 'weekly', priority: 0.9,
+      lastmod: e.createdAt ?? undefined,
+    }));
+  }
+  const prefix = `/${locale}`;
   const all = await completeSlugsFor(locale);
   const slice = all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE);
   const dates = await getSlugCreatedAt(slice);
