@@ -646,33 +646,63 @@ export async function getMarketplaceSlugs(marketplace: string): Promise<Set<stri
 // false, and re-sent each hour. A slug missing here (or a failed chunk) simply gets NO
 // <lastmod>, which is valid and never churns. created_at is immutable, so a page's lastmod
 // is fixed at its creation day and does not move once the page is crawled.
-// All-indexable (2026-11-26): English /best slugs that have a non-empty buying guide
-// (keywords.qa_guide). Candidate set for the EN sitemap when index_mode(en)='all_complete'. The
-// page's robots gate still ANDs ">=1 in-stock AE product", so a BYG page with no products is
-// listed-but-noindex — the same looseness the pt/es "noun" sitemaps already accept. ONE keyset read
-// on the (id) primary key (never the ~600K-row ae keyword_products join that getMarketplaceSlugs('ae')
-// would do). THROWS on a page error (never a partial set — a truncated sitemap wrongly drops URLs).
-export async function getEnglishByGSlugs(): Promise<Set<string>> {
-  const slugs = new Set<string>();
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return slugs;
-  let after = -1;            // keyset cursor on the (id) PK; ids are positive
-  const page = 1000;
-  for (;;) {
-    const { data, error } = await supabase
-      .from('keywords')
-      .select('id, slug, qa_guide')
-      .gt('id', after)
-      .order('id', { ascending: true })
-      .limit(page);
-    if (error) throw new Error(`getEnglishByGSlugs failed after id ${after}: ${error.message}`);
-    const rows = (data ?? []) as { id: number; slug: string | null; qa_guide: unknown }[];
-    for (const r of rows) {
-      if (r.slug && hasBuyingGuide(r.qa_guide)) slugs.add(r.slug.toLowerCase());
+// All-indexable (2026-11-26): English /best slugs that have a non-empty buying guide, as
+// { slug, createdAt } so the sitemap carries <lastmod> without a second getSlugCreatedAt pass.
+// Candidate set for the EN sitemap when index_mode(en)='all_complete'. The page's robots gate still
+// ANDs ">=1 in-stock AE product", so a BYG page with no products is listed-but-noindex — the same
+// looseness the pt/es "noun" sitemaps accept. ONE keyset read on the (id) PK (never the ~600K-row ae
+// join). THROWS on a page error (never a partial set — a truncated sitemap wrongly drops URLs).
+// 2026-11-26 (build/runtime timeout fix): NEVER pull qa_guide over the wire. The old version selected
+// qa_guide (the full buying-guide JSON, ~1.6 MB per 1,000 rows, ~125 MB over ~80 pages) and tested it
+// in JS; each page's SELECT detoasted that JSON and blew the anon 3 s statement_timeout, failing both
+// the build-time /sitemap.xml prerender and the runtime chunk renders. qa_guide is only ever a
+// non-empty array or NULL (measured 2026-11-26: 68,394 array / 18,598 null, zero empty arrays), so
+// "has a non-empty buying guide" == "qa_guide is not null".
+//   Fast path: ONE call to public.en_byg_slugs() — a jsonb array of { s: lower(slug), c: created_at }
+//   sorted by slug (~5.3 MB), computed under the function's own raised statement_timeout. The paginated
+//   keyset below needs ~68 round-trips (the PostgREST row cap is 1,000) = ~36 s cold (measured), too
+//   slow for a chunk render; the function collapses it to a single round-trip (<10 s).
+//   Fallback: if the function is not created yet, the keyset read (id, slug, created_at only — still no
+//   qa_guide) returns the same set, slower but correct and never 500s; it upgrades automatically once
+//   the function exists. Either path THROWS on a hard error (never a partial set).
+export interface EnBygEntry { slug: string; createdAt: string | null; }
+export async function getEnglishByGSlugs(): Promise<EnBygEntry[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+  // De-dupe by slug: keywords.slug has NO unique index (idx_keywords_slug is a plain btree), so two
+  // rows could share a lowercased slug; the old code de-duped via a Set. First occurrence wins.
+  const bySlug = new Map<string, EnBygEntry>();
+  try {
+    const { data, error } = await supabase.rpc('en_byg_slugs');
+    if (error) throw error;
+    const arr = data as { s: string; c: string | null }[] | null;
+    if (!Array.isArray(arr)) throw new Error('en_byg_slugs did not return a jsonb array');
+    for (const r of arr) {
+      if (r.s && !bySlug.has(r.s)) bySlug.set(r.s, { slug: r.s, createdAt: r.c });
     }
-    if (rows.length < page) break;
-    after = rows[rows.length - 1].id;
+    return Array.from(bySlug.values());
+  } catch (e) {
+    console.error('getEnglishByGSlugs: en_byg_slugs rpc unavailable, falling back to keyset read:', e);
+    let after = -1;            // keyset cursor on the (id) PK; ids are positive
+    const page = 1000;
+    for (;;) {
+      const { data, error } = await supabase
+        .from('keywords')
+        .select('id, slug, created_at')
+        .not('qa_guide', 'is', null)
+        .gt('id', after)
+        .order('id', { ascending: true })
+        .limit(page);
+      if (error) throw new Error(`getEnglishByGSlugs keyset failed after id ${after}: ${error.message}`);
+      const rows = (data ?? []) as { id: number; slug: string | null; created_at: string | null }[];
+      for (const r of rows) {
+        const s = r.slug?.toLowerCase();
+        if (s && !bySlug.has(s)) bySlug.set(s, { slug: s, createdAt: r.created_at });
+      }
+      if (rows.length < page) break;
+      after = rows[rows.length - 1].id;
+    }
+    return Array.from(bySlug.values());
   }
-  return slugs;
 }
 
 export async function getSlugCreatedAt(slugs: string[]): Promise<Map<string, string>> {

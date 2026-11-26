@@ -46,7 +46,10 @@ export async function generateMetadata({
   if (!post) return { title: 'Post Not Found' };
 
   return {
-    title: `${post.title} | ${SITE_NAME}`,
+    // Bare title — the root layout's metadata title.template ("%s | The Winners")
+    // appends the brand. Returning "… | The Winners" here would double it
+    // ("… | The Winners | The Winners"). Mirrors the /best pages' title handling.
+    title: post.title,
     description: post.description,
     authors: [{ name: post.author.name }],
     alternates: { canonical: `${CANONICAL_URL}/blog/${post.slug}` },
