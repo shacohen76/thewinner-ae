@@ -496,6 +496,14 @@ export default function MarketsTab({ adminKey }: { adminKey: string }) {
                   <span className={`text-[15px] font-bold whitespace-nowrap ${x.commUnset || (amzWarn && p.notIn) ? 'text-amber-400' : 'text-emerald-400'}`}>{waitR ? '…' : x.commUnset ? '% missing' : p.earnIls == null ? '—' : '≈' + ils(p.earnIls)}</span>
                   <span className={`text-[15px] font-bold whitespace-nowrap ${netCls(p.netIls)}`}>{waitR ? '…' : ilsS(p.netIls)}</span>
                 </div>
+                {/* phone, 2nd line (owner 11-28): visitors like the desktop column — Today: last 60 min vs normal + pace bar */}
+                <div className="lg:hidden flex items-center gap-2 px-3 pb-2 -mt-1 text-[13px] text-[#94a0bd] min-w-0">
+                  {isToday ? <>
+                    <span className="whitespace-nowrap">60 min <b className="text-[14px] text-white">{x.v60}</b> visitors / {n1(x.n60)} normal</span>
+                    <span className="flex-1 min-w-[32px]"><Pace x={x} /></span>
+                    <span className="whitespace-nowrap">CO <b className={`text-[14px] ${x.c60 != null && x.c60 < x.judgeCo && x.v60 >= 3 ? 'text-red-400' : 'text-white'}`}>{pct(x.c60)}</b></span>
+                  </> : <span className="truncate">{waitR ? '…' : <><b className="text-[14px] text-white">{n0(p.vis)}</b> visitors · {n0(p.outs)} clickouts · rate <b className="text-[14px] text-white">{pct(p.crSite)}</b></>}</span>}
+                </div>
                 {/* desktop */}
                 <div className={`hidden lg:grid ${BOARD} gap-x-3.5 items-center px-4 py-2 min-h-[66px]`}>
                   <div className="flex items-center gap-3 min-w-0">
