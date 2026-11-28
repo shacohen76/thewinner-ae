@@ -16,6 +16,11 @@ import RelatedPages from '@/components/RelatedPages';
 import RelatedPagesPt from '@/components/RelatedPagesPt';
 import LocaleLinks from '@/components/LocaleLinks';
 import { CONFIG, getCurrentYear } from '@/lib/utils';
+// 2026-11-28 (homepage magazine): extra crawlable link sections (top guides / blog / videos).
+import HomeTopBest from '@/components/HomeTopBest';
+import HomeFromBlog from '@/components/HomeFromBlog';
+import HomeVideos from '@/components/HomeVideos';
+import { getTopBest, HOME_TOP_POSTS } from '@/lib/home-featured';
 
 // Categories data — 8 main groups
 const categories = [
@@ -70,6 +75,12 @@ export default function HomePage({ params }: { params: { locale: string } }) {
   const tc = useTranslations('Categories');
   // INTL1 page-copy: localize the home page body (hero, sections, cards, features).
   const t = useTranslations('Home');
+  // 2026-11-28 (homepage magazine): top /best guides for this locale. en/ar/ja have a
+  // curated, score-ranked static snapshot (lib/home-featured); other locales get [] and
+  // keep their existing sections unchanged. hasMagazine gates the new headings so no
+  // message key is requested for a locale that doesn't have one.
+  const topBest = getTopBest(params.locale);
+  const hasMagazine = topBest.length > 0;
 
   return (
     <>
@@ -177,6 +188,26 @@ export default function HomePage({ params }: { params: { locale: string } }) {
           </div>
         </div>
       </section>
+
+      {/* Popular Buying Guides — data-driven /best link grid (crawlable SSR links). */}
+      {hasMagazine && (
+        <HomeTopBest title={t('topBestTitle')} sub={t('topBestSub')} items={topBest} />
+      )}
+
+      {/* From Our Blog — English home only (the blog is served in English today). */}
+      {params.locale === 'en' && (
+        <HomeFromBlog
+          title={t('fromBlogTitle')}
+          sub={t('fromBlogSub')}
+          cta={t('readArticle')}
+          posts={HOME_TOP_POSTS}
+        />
+      )}
+
+      {/* Watch & Learn — renders nothing until the VID 1 lane populates lib/videos. */}
+      {hasMagazine && (
+        <HomeVideos title={t('videosTitle')} sub={t('videosSub')} locale={params.locale} />
+      )}
 
       {/* Why Choose Us */}
       <section className="py-16 bg-white">
