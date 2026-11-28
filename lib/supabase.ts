@@ -754,6 +754,69 @@ export async function getEnglishByGSlugs(): Promise<EnBygEntry[]> {
   }
 }
 
+// 2026-11-26 (BF sitemap, owner): the Black Friday sitemap's scope, as a single Supabase row so the
+// owner widens it without a deploy. 'fixed' = the curated lib/bf-sitemap-slugs.json list (default,
+// no-op). 'all_with_products' = every English BF twin whose base has ≥1 AE product. Read like
+// getIndexModeFor: 5-min memo, and on error keep the last good value (never flip scope on a blip).
+let bfModeMemo: { v: 'fixed' | 'all_with_products'; at: number } | null = null;
+const BF_MODE_TTL_MS = 5 * 60 * 1000;
+export async function getBfSitemapMode(): Promise<'fixed' | 'all_with_products'> {
+  const now = Date.now();
+  if (bfModeMemo && now - bfModeMemo.at < BF_MODE_TTL_MS) return bfModeMemo.v;
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return 'fixed';
+  try {
+    const { data, error } = await supabase.from('seo_bf_sitemap').select('mode').limit(1).maybeSingle();
+    if (error) throw error;
+    const v: 'fixed' | 'all_with_products' = data?.mode === 'all_with_products' ? 'all_with_products' : 'fixed';
+    bfModeMemo = { v, at: now };
+    return v;
+  } catch (e) {
+    console.error('getBfSitemapMode failed, keeping last good (else fixed):', e);
+    if (bfModeMemo) { bfModeMemo.at = now; return bfModeMemo.v; }
+    return 'fixed';
+  }
+}
+
+// 2026-11-26 (BF sitemap, owner "≥1 product, even without BYG"): English /best base slugs with ≥1 AE
+// product — the twin set for the 'all_with_products' scope. Mirrors getEnglishByGSlugs' keyset, but
+// needs the ae keyword_products join (the one getEnglishByGSlugs avoids), so it runs ONLY when the
+// owner has flipped seo_bf_sitemap to 'all_with_products'. !inner keeps only keywords with a matching
+// ae row; limit() pages the PARENT (keywords), ~64 reads. THROWS on error (never a partial sitemap).
+export async function getEnglishAeProductSlugs(): Promise<Set<string>> {
+  const slugs = new Set<string>();
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return slugs;
+  // Fast path (2026-11-26): ONE call to public.en_ae_product_slugs() — a jsonb array of EN base slugs
+  // (lowercased, sorted) with >=1 AE product, served from sitemap_slug_cache by PK index (~ms). The old
+  // keyset over the ae keyword_products !inner join needed ~64 round-trips and intermittently timed out.
+  try {
+    const { data, error } = await supabase.rpc('en_ae_product_slugs');
+    if (error) throw error;
+    const arr = data as string[] | null;
+    if (!Array.isArray(arr)) throw new Error('en_ae_product_slugs did not return a jsonb array');
+    for (const s of arr) if (s) slugs.add(s.toLowerCase());
+    return slugs;
+  } catch (e) {
+    console.error('getEnglishAeProductSlugs: en_ae_product_slugs rpc unavailable, falling back to keyset:', e);
+    let after = -1;
+    const page = 1000;
+    for (;;) {
+      const { data, error } = await supabase
+        .from('keywords')
+        .select('id, slug, keyword_products!inner(keyword_id)')
+        .eq('keyword_products.marketplace', 'ae')
+        .gt('id', after)
+        .order('id', { ascending: true })
+        .limit(page);
+      if (error) throw new Error(`getEnglishAeProductSlugs keyset failed after id ${after}: ${error.message}`);
+      const rows = (data ?? []) as { id: number; slug: string | null }[];
+      for (const r of rows) if (r.slug) slugs.add(r.slug.toLowerCase());
+      if (rows.length < page) break;
+      after = rows[rows.length - 1].id;
+    }
+    return slugs;
+  }
+}
+
 export async function getSlugCreatedAt(slugs: string[]): Promise<Map<string, string>> {
   const out = new Map<string, string>();
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || slugs.length === 0) return out;

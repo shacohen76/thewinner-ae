@@ -13,7 +13,7 @@
 //   /sitemap/best-<i>.xml   -> English /best keyword pages, CHUNK_SIZE each
 // ============================================
 
-import { getAllKeywords, getTranslatedSlugs, getTranslatedByGEntries, getMarketplaceSlugs, getEnglishByGSlugs, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES, type EnBygEntry } from '@/lib/supabase';
+import { getAllKeywords, getTranslatedSlugs, getTranslatedByGEntries, getMarketplaceSlugs, getEnglishByGSlugs, getEnglishAeProductSlugs, getBfSitemapMode, getSlugCreatedAt, MAIN_CATEGORIES, SUBCATEGORY_NAMES, type EnBygEntry } from '@/lib/supabase';
 import { getIndexAllowlist, allowlistRestriction, isAllowlistLocale, getIndexModeFor } from '@/lib/index-allowlist';
 import { getAllSlugs } from '@/lib/blog';
 import { CONFIG } from '@/lib/utils';
@@ -66,8 +66,16 @@ export async function chunkIds(): Promise<string[]> {
       localeIds.push(`indexable-${loc}`);
     }
   }
+  // 2026-11-26 (BF sitemap, owner): BF twins are either the single curated 'black-friday' file
+  // (mode 'fixed', default) or chunked 'black-friday-0..N' (mode 'all_with_products' = every twin
+  // with ≥1 AE product). The [id] route resolves both forms.
+  const bfIds = bfSitemapLive()
+    ? (await getBfSitemapMode()) === 'all_with_products'
+      ? Array.from({ length: await bfChunkCount() }, (_, i) => `black-friday-${i}`)
+      : ['black-friday']
+    : [];
   return ['structural', ...localeIds, ...(BR_PT_ENABLED ? ['indexable-pt'] : []),
-    ...EU_NATIVE_CODES.map((c) => `indexable-${c}`), ...(bfSitemapLive() ? ['black-friday'] : [])];
+    ...EU_NATIVE_CODES.map((c) => `indexable-${c}`), ...bfIds];
 }
 
 // All-indexable (2026-11-26): the COMPLETE slug set for a locale when index_mode='all_complete',
@@ -132,11 +140,12 @@ export async function indexableChunkEntries(locale: 'en' | 'ar' | 'ja', chunk: n
 // base slugs whose base page passed a production Googlebot check, 2026-11-11) — never the full
 // keyword set (Aug-21 index-bloat lesson). Empty when the flag is off or BF_TWINS_NOINDEX_AFTER
 // is reached, so the sitemap stops listing twins the moment they turn noindex.
-// 2026-11-11 (6.8): listed ONLY on the canonical host (thewinner.ae), with absolute canonical URLs —
-// on the other host (thewinners.ae, whose pages canonicalize to thewinner.ae) the chunk is omitted.
+// 2026-11-11 (6.8): originally listed ONLY on the canonical host. 2026-11-26 (owner "let them have
+// their own sitemap", + both hosts via 6.9): now live on BOTH hosts. URLs stay absolute canonical
+// (thewinner.ae) on either host — the twins self-canonicalize to thewinner.ae — so the twin host
+// just re-submits the same canonical set (both hosts are in the one GSC account).
 export function bfSitemapLive(): boolean {
-  const onCanonicalHost = new URL(CONFIG.siteUrl).host === new URL(CONFIG.canonicalUrl).host;
-  return BF_TWINS_ENABLED && !bfTwinsNoindex() && onCanonicalHost;
+  return BF_TWINS_ENABLED && !bfTwinsNoindex();
 }
 
 export function bfTwinEntries(): SitemapEntry[] {
@@ -145,6 +154,28 @@ export function bfTwinEntries(): SitemapEntry[] {
   return (BF_SITEMAP_SLUGS as string[])
     .filter((slug) => bfTwinBaseSlug(slug + BF_SUFFIX, 'en') === slug)   // same guard as the route (no -spc)
     .map((slug) => ({ url: `${base}/best/${encodeURIComponent(slug)}${BF_SUFFIX}`, changefreq: 'daily', priority: 0.8 }));
+}
+
+// 2026-11-26 (BF sitemap, owner "insert BF pages to google"): the 'all_with_products' scope — every
+// English BF twin whose base has ≥1 AE product (getEnglishAeProductSlugs), chunked 20K like the EN
+// index_mode chunks. Sorted by slug so the index chunk COUNT and the chunk SLICES agree across
+// separate requests. -spc bases excluded (same guard as the route / bfTwinEntries). Reached only
+// while seo_bf_sitemap.mode = 'all_with_products'; otherwise the single curated file stays.
+async function bfAllSlugs(): Promise<string[]> {
+  const set = await getEnglishAeProductSlugs();
+  return Array.from(set).filter((slug) => bfTwinBaseSlug(slug + BF_SUFFIX, 'en') === slug).sort();
+}
+
+export async function bfChunkCount(): Promise<number> {
+  return Math.max(1, Math.ceil((await bfAllSlugs()).length / CHUNK_SIZE));
+}
+
+export async function bfChunkEntries(chunk: number): Promise<SitemapEntry[]> {
+  const base = CONFIG.canonicalUrl;
+  const all = await bfAllSlugs();
+  return all.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE).map((slug) => ({
+    url: `${base}/best/${encodeURIComponent(slug)}${BF_SUFFIX}`, changefreq: 'daily', priority: 0.8,
+  }));
 }
 
 // 2026-11-11 (LOCALE SITE 1 · PR B): pt + EU sitemaps list only slugs their locale's index
