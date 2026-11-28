@@ -628,17 +628,19 @@ function Confirm({ a, onNo, onYes }: { a: Ask; onNo: () => void; onYes: () => vo
 }
 
 // compact stepper (owner 11-15: smaller text): [−big][−small] value [+small][+big] + apply button
+// 4 steps (2 + 2) or 6 steps (3 + 3: seasonality ±25, owner 11-27 "add only the 25")
 function Stepper({ steps, value, small, cls, onStep, apply, onApply }: { steps: [number, string][]; value: string; small: string; cls: string;
   onStep: (d: number) => void; apply: string | null; onApply: () => void }) {
+  const half = steps.length / 2, six = steps.length === 6;
   const btn = 'bg-[#1a2440] border border-[#33416a] rounded-xl text-[13px] sm:text-sm font-semibold text-[#c3cbe0] min-h-[44px] px-1 sm:px-2 whitespace-nowrap hover:border-blue-400';
   return (
     <div className="flex flex-col gap-2 min-w-0">
-      <div className="grid grid-cols-[minmax(36px,auto)_minmax(36px,auto)_minmax(76px,1fr)_minmax(36px,auto)_minmax(36px,auto)] gap-1 sm:gap-1.5" role="group">
-        {steps.slice(0, 2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
+      <div className={`grid ${six ? 'grid-cols-[repeat(3,minmax(32px,auto))_minmax(64px,1fr)_repeat(3,minmax(32px,auto))]' : 'grid-cols-[minmax(36px,auto)_minmax(36px,auto)_minmax(76px,1fr)_minmax(36px,auto)_minmax(36px,auto)]'} gap-1 sm:gap-1.5`} role="group">
+        {steps.slice(0, half).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
         <output aria-live="polite" className="flex flex-col items-center justify-center bg-[#0b1020] border border-[#33416a] rounded-xl p-1 min-w-0">
           <span className={`text-lg sm:text-xl font-extrabold leading-tight ${cls}`}>{value}</span><small className="text-[11px] sm:text-[13px] text-[#c3cbe0] text-center leading-tight break-words">{small}</small>
         </output>
-        {steps.slice(2).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
+        {steps.slice(half).map(([d, l]) => <button key={d} type="button" className={btn} onClick={() => onStep(d)}>{l}</button>)}
       </div>
       <button type="button" disabled={!apply} onClick={onApply}
         className="rounded-xl px-3 py-2.5 font-bold text-[14px] sm:text-[15px] text-white bg-blue-500 disabled:bg-[#1a2440] disabled:text-[#94a0bd] break-words">{apply ?? 'Pick a change'}</button>
@@ -732,7 +734,8 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
 
   // ── seasonality (owner 11-21: first in the period tab, also kept in Bids & budgets)
   const seasNow = x.m.seasonality, sd = st('seas'), nowPts = Math.round(((seasNow ?? 1) - 1) * 1000) / 10;
-  const sRange = S('seas_step_range_pts', 25), sCap = S('seas_cap_pts', 60), sFloor = S('seas_floor_pts', -50);
+  // owner 11-27: Google Ads' own range −90 … +999 % (rows set by Manager 6.10; these are only the fallbacks)
+  const sRange = S('seas_step_range_pts', 1089), sCap = S('seas_cap_pts', 999), sFloor = S('seas_floor_pts', -90);
   // owner 11-15: targets are WHOLE percents; only a step that lands on 0 stops at ±0.1 (Google Ads takes no exact 0%).
   const seasStep = (d: number) => {
     const cur = nowPts + sd;
@@ -747,7 +750,7 @@ function Detail({ x, p, per, R, P, orders, dt, setDt, steps, setStep, sel, setSe
     <div className="bg-[#121a2e] border border-[#24304d] rounded-xl p-2.5 flex flex-wrap gap-x-5 gap-y-2.5 items-center">
       <div className="flex flex-col min-w-0"><K>Account seasonality</K><b className="text-[22px] font-extrabold text-white leading-tight">{seasNow == null ? 'none active' : sp(nowPts)}</b>
         {seasNow != null && <span className="text-[12px] text-[#94a0bd]">range {sp(Math.max(nowPts - sRange, sFloor))} … {sp(Math.min(nowPts + sRange, sCap))}</span>}</div>
-      {seasNow != null && <div className="w-full max-w-[460px]"><Stepper steps={[[-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
+      {seasNow != null && <div className="w-full max-w-[460px]"><Stepper steps={[[-25, '−25'], [-5, '−5'], [-1, '−1'], [1, '+1'], [5, '+5'], [25, '+25']]} value={sd === 0 ? '±0' : sp(sdShown)} small={`new ${sp(nowPts + sd)}`} cls={dCls(sd)}
         onStep={seasStep}
         apply={sd ? `Apply seasonality ${sp(nowPts)} → ${sp(nowPts + sd)}` : null}
         onApply={() => onAsk({ x, kind: 'seasonality', from: seasNow, to: Math.round((1 + (nowPts + sd) / 100) * 1000) / 1000, unit: 'pts', title: 'Seasonality', key: `${mk}:seas` })} /></div>}
