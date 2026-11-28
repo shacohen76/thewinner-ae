@@ -105,16 +105,23 @@ export default function ShareButton() {
         <span className="text-sm text-gray-600 font-medium">{t('button')}</span>
       </button>
 
-      {/* Tooltip */}
+      {/* Tooltip
+          2026-11-28 (VID 1): the "copied" hint was cut off ("…share with friends &"). The box had
+          BOTH whitespace-nowrap and whitespace-normal, so the text did not wrap: it ran past the
+          max-w-xs box as white text on the white page, and off-screen on phones.
+          Fix: nowrap only for the short hover label; the copied hint gets a fixed width that wraps
+          and never exceeds the viewport. Anchoring: on phones the button wraps to its own row at
+          the start edge -> open toward the end; from sm up it sits at the end edge of the
+          sort row -> open toward the start, so the box stays on screen (logical props, RTL-safe). */}
       {showTooltip && (
         <div
           className={`
-            absolute top-full mt-2 start-0 z-50
+            absolute top-full mt-2 start-0 sm:start-auto sm:end-0 z-50
             px-4 py-3 rounded-lg shadow-lg
-            text-sm whitespace-nowrap
+            text-sm
             ${copied
-              ? 'bg-green-600 text-white max-w-xs whitespace-normal'
-              : 'bg-gray-800 text-white'
+              ? 'bg-green-600 text-white w-72 max-w-[calc(100vw-2rem)] whitespace-normal'
+              : 'bg-gray-800 text-white whitespace-nowrap'
             }
           `}
           role="tooltip"
@@ -125,7 +132,7 @@ export default function ShareButton() {
           }
           <div
             className={`
-              absolute -top-2 start-4
+              absolute -top-2 start-4 sm:start-auto sm:end-4
               border-8 border-transparent
               ${copied ? 'border-b-green-600' : 'border-b-gray-800'}
             `}
