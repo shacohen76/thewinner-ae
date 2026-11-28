@@ -19,7 +19,6 @@ import { CONFIG, getCurrentYear } from '@/lib/utils';
 // 2026-11-28 (homepage magazine): extra crawlable link sections (top guides / blog / videos).
 import HomeTopBest from '@/components/HomeTopBest';
 import HomeFromBlog from '@/components/HomeFromBlog';
-import HomeVideos from '@/components/HomeVideos';
 import { getTopBest, HOME_TOP_POSTS } from '@/lib/home-featured';
 
 // Categories data — 8 main groups
@@ -204,10 +203,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
         />
       )}
 
-      {/* Watch & Learn — renders nothing until the VID 1 lane populates lib/videos. */}
-      {hasMagazine && (
-        <HomeVideos title={t('videosTitle')} sub={t('videosSub')} locale={params.locale} />
-      )}
+      {/* Videos ("Watch & Learn") section is owned by the VID 1 lane and added once
+          lib/videos + the on-site video pages exist (no videos recorded yet). */}
 
       {/* Why Choose Us */}
       <section className="py-16 bg-white">

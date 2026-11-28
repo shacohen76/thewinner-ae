@@ -10,24 +10,20 @@
 // stays statically prerendered per locale; no DB on the hot path, no new routes.
 //
 // ── TOP /best GUIDES (HOME_TOP_BEST) ─────────────────────────────────────────
-// Source = our own data: public.seo_index_allowlist (active rows) ranked by
-// `score` (clickouts + GSC), intersected with a curated MAINSTREAM set so the
+// Covers every locale the home serves: en, ar, ja, pt, de, es, fr, it, nl, pl, sv.
+// Source = our own ranking data, intersected with a curated MAINSTREAM set so the
 // home shows broad, sensible categories (owner's standing "worldwide, most-
-// searchable, that make sense" rule — see lib/related-pages.ts), native nouns
-// pulled from keyword_translations. Snapshot lives in home-featured.generated.json.
+// searchable, that make sense" rule — see lib/related-pages.ts). Native anchors
+// per locale (en uses curated English labels):
+//   • en, pt, de, es, fr, it, nl, pl, sv → public.sitemap_top_slugs, ranked by `rk`.
+//   • ar, ja                             → public.seo_index_allowlist (active), by `score`.
+// Only currently-ranking slugs are emitted, so a page that loses its products
+// simply drops out of the NEXT snapshot instead of becoming a dead/thin link.
 //
-// REFRESH (re-run when you want fresh rankings — a READ, no write window needed):
-//   with mainstream(slug) as (values ('nokia-phone'),('xiaomi-phones'), … )
-//   select a.locale, a.slug, a.score, t.keyword_text as native_name
-//   from seo_index_allowlist a
-//   join mainstream m on m.slug=a.slug
-//   left join keywords k on k.slug=a.slug
-//   left join keyword_translations t on t.keyword_id=k.id and t.locale=a.locale
-//   where a.active=true and a.locale in ('en','ar','ja')
-//   order by a.locale, a.score desc nulls last;
-// Then: en name = curated English label; ar/ja name = native_name (drop a slug
-// for a locale if its noun is missing / a brand mismatch). Only slugs that are
-// `active` on that locale's allowlist are kept, so every link resolves 200.
+// REFRESH (monthly, or after a big ranking shift): run `node scripts/gen-home-featured.mjs`
+// (reads .env.local; a READ, no write window needed) → it rewrites
+// home-featured.generated.json → open a small PR. The generator holds the MAINSTREAM
+// set, the per-locale source, the curated EN labels and the bad-noun exclusions.
 //
 // ── FROM OUR BLOG (HOME_TOP_POSTS) ───────────────────────────────────────────
 // A hand-picked set of our strongest evergreen guides from content/blog/posts.json.
