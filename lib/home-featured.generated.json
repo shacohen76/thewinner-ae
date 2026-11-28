@@ -1,0 +1,840 @@
+{
+  "en": [
+    {
+      "slug": "oppo-phone",
+      "name": "Oppo Phones"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "Air Fryers"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "Nokia Phones"
+    },
+    {
+      "slug": "asus-vivobook",
+      "name": "ASUS Vivobook Laptops"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "Rasasi Hawas Perfume for Men"
+    },
+    {
+      "slug": "laptops",
+      "name": "Laptops"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "Smartwatches"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "Vacuum Cleaners"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "Face Moisturizers"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "Mobile Phones"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "Steam Irons"
+    },
+    {
+      "slug": "nothing-phone",
+      "name": "Nothing Phones"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "2-in-1 Shampoo & Conditioner"
+    },
+    {
+      "slug": "earbuds",
+      "name": "Wireless Earbuds"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "Xiaomi Tablets"
+    },
+    {
+      "slug": "washing-machines",
+      "name": "Washing Machines"
+    },
+    {
+      "slug": "gaming-laptops",
+      "name": "Gaming Laptops"
+    },
+    {
+      "slug": "xiaomi-phones",
+      "name": "Xiaomi Phones"
+    },
+    {
+      "slug": "tower-fan",
+      "name": "Tower Fans"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "Water Flossers"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "Instant Cameras"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "Xiaomi Vacuum Cleaners"
+    },
+    {
+      "slug": "david-beckham-parfum",
+      "name": "David Beckham Perfume"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "Xiaomi Smartwatches"
+    }
+  ],
+  "ar": [
+    {
+      "slug": "oppo-phone",
+      "name": "هواتف Oppo"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "قلايات هوائية"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "مكانس كهربائية"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "مرطبات الوجه"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "هواتف محمولة"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "أجهزة تابلت xiaomi"
+    },
+    {
+      "slug": "washing-machines",
+      "name": "غسالات الملابس"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "مكاوي البخار"
+    },
+    {
+      "slug": "gaming-laptops",
+      "name": "أجهزة لابتوب الألعاب"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "ساعات ذكية"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "أجهزة خيط الماء"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "كاميرات فورية"
+    },
+    {
+      "slug": "earbuds",
+      "name": "سماعات الأذن"
+    },
+    {
+      "slug": "laptops",
+      "name": "أجهزة لابتوب"
+    },
+    {
+      "slug": "airpods",
+      "name": "سماعات AirPods"
+    },
+    {
+      "slug": "hair-straightener",
+      "name": "مكواة شعر"
+    },
+    {
+      "slug": "coffee-machines",
+      "name": "ماكينات القهوة"
+    },
+    {
+      "slug": "televisions",
+      "name": "أجهزة تلفزيون"
+    }
+  ],
+  "ja": [
+    {
+      "slug": "smart-watches",
+      "name": "スマートウォッチ"
+    },
+    {
+      "slug": "power-bank",
+      "name": "パワーバンク"
+    },
+    {
+      "slug": "blenders",
+      "name": "ミキサー"
+    },
+    {
+      "slug": "coffee-machines",
+      "name": "コーヒーメーカー"
+    },
+    {
+      "slug": "earbuds",
+      "name": "イヤホン"
+    },
+    {
+      "slug": "xiaomi-smartwatch",
+      "name": "シャオミ スマートウォッチ"
+    },
+    {
+      "slug": "electric-toothbrush",
+      "name": "電動歯ブラシ"
+    },
+    {
+      "slug": "baby-chairs",
+      "name": "ベビーチェア"
+    },
+    {
+      "slug": "kettles",
+      "name": "電気ケトル"
+    },
+    {
+      "slug": "gaming-laptops",
+      "name": "ゲーミングノートパソコン"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "掃除機"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "ノンフライヤー"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "シャオミタブレット"
+    },
+    {
+      "slug": "portable-speakers",
+      "name": "ポータブルスピーカー"
+    },
+    {
+      "slug": "amazfit-watches",
+      "name": "Amazfit 腕時計"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "シャオミ ウォッチ"
+    },
+    {
+      "slug": "dog-food",
+      "name": "ドッグフード"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "スマートフォン"
+    }
+  ],
+  "pt": [
+    {
+      "slug": "oppo-phone",
+      "name": "celular Oppo"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "air fryer"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "celular Nokia"
+    },
+    {
+      "slug": "asus-vivobook",
+      "name": "Asus Vivobook"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "perfume rasasi hawas para homens"
+    },
+    {
+      "slug": "laptops",
+      "name": "notebook"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "smartwatch"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "aspirador de pó"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "hidratante facial"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "celular"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "ferro de passar a vapor"
+    },
+    {
+      "slug": "nothing-phone",
+      "name": "celular Nothing"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "shampoo condicionador 2 em 1"
+    },
+    {
+      "slug": "earbuds",
+      "name": "fones de ouvido sem fio"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "tablet xiaomi"
+    },
+    {
+      "slug": "washing-machines",
+      "name": "máquina de lavar"
+    },
+    {
+      "slug": "gaming-laptops",
+      "name": "notebook gamer"
+    },
+    {
+      "slug": "xiaomi-phones",
+      "name": "celular Xiaomi"
+    }
+  ],
+  "de": [
+    {
+      "slug": "air-fryers",
+      "name": "Heißluftfritteuse"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "Nokia Handy"
+    },
+    {
+      "slug": "asus-vivobook",
+      "name": "ASUS Vivobook Laptops"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "Rasasi Hawas Parfum für Herren"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "Smartwatch"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "Staubsauger"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "Feuchtigkeitscreme Gesicht"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "Handy"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "Dampfbügeleisen"
+    },
+    {
+      "slug": "nothing-phone",
+      "name": "Nothing Phone"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "2in1 Shampoo"
+    },
+    {
+      "slug": "earbuds",
+      "name": "In-Ear-Kopfhörer"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "Xiaomi Tablet"
+    },
+    {
+      "slug": "washing-machines",
+      "name": "Waschmaschine"
+    },
+    {
+      "slug": "xiaomi-phones",
+      "name": "Xiaomi Handys"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "Munddusche"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "Sofortbildkamera"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "Xiaomi Staubsauger"
+    }
+  ],
+  "es": [
+    {
+      "slug": "air-fryers",
+      "name": "freidora de aire"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "perfume Rasasi Hawas para hombre"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "smartwatch"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "aspirador"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "hidratante facial"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "plancha de vapor"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "champú y acondicionador 2 en 1"
+    },
+    {
+      "slug": "earbuds",
+      "name": "auriculares inalámbricos"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "tablet Xiaomi"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "irrigador dental"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "cámara instantánea"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "aspiradora Xiaomi"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "reloj Xiaomi"
+    },
+    {
+      "slug": "tefal-iron",
+      "name": "plancha de vapor Tefal"
+    },
+    {
+      "slug": "airpods",
+      "name": "auriculares AirPods"
+    },
+    {
+      "slug": "power-bank",
+      "name": "batería externa"
+    },
+    {
+      "slug": "hair-straightener",
+      "name": "plancha de pelo"
+    },
+    {
+      "slug": "blenders",
+      "name": "batidora de vaso"
+    }
+  ],
+  "fr": [
+    {
+      "slug": "oppo-phone",
+      "name": "téléphone OPPO"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "friteuse à air chaud"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "téléphone portable Nokia"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "eau de parfum RASASI Hawas pour homme"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "montre connectée"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "aspirateur"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "hydratant visage"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "téléphone portable"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "fer à repasser à vapeur"
+    },
+    {
+      "slug": "nothing-phone",
+      "name": "téléphone Nothing"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "shampoing après-shampoing 2 en 1"
+    },
+    {
+      "slug": "earbuds",
+      "name": "écouteurs"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "tablette XIAOMI"
+    },
+    {
+      "slug": "xiaomi-phones",
+      "name": "téléphones XIAOMI"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "hydropulseur"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "appareil photo instantané"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "aspirateur Xiaomi"
+    },
+    {
+      "slug": "david-beckham-parfum",
+      "name": "parfum David Beckham"
+    }
+  ],
+  "it": [
+    {
+      "slug": "oppo-phone",
+      "name": "smartphone OPPO"
+    },
+    {
+      "slug": "air-fryers",
+      "name": "friggitrice ad aria"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "telefono Nokia"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "profumo da uomo Rasasi Hawas"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "smartwatch"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "aspirapolvere"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "crema idratante per il viso"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "cellulare"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "ferro da stiro a vapore"
+    },
+    {
+      "slug": "nothing-phone",
+      "name": "smartphone Nothing"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "shampoo e balsamo 2 in 1"
+    },
+    {
+      "slug": "earbuds",
+      "name": "auricolari"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "tablet Xiaomi"
+    },
+    {
+      "slug": "xiaomi-phones",
+      "name": "Xiaomi smartphone"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "idropulsore dentale portatile"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "fotocamera istantanea"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "aspirapolvere XIAOMI"
+    },
+    {
+      "slug": "david-beckham-parfum",
+      "name": "profumo David Beckham"
+    }
+  ],
+  "nl": [
+    {
+      "slug": "air-fryers",
+      "name": "airfryer"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "Nokia telefoon"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "Rasasi hawas parfum heren"
+    },
+    {
+      "slug": "smart-watches",
+      "name": "smartwatch"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "stofzuiger"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "gezichtscrème"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "mobiele telefoon"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "stoomstrijkijzer"
+    },
+    {
+      "slug": "earbuds",
+      "name": "earbuds"
+    },
+    {
+      "slug": "xiaomi-tablet",
+      "name": "Xiaomi tablet"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "waterflosser"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "instantcamera"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "Xiaomi stofzuiger"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "Xiaomi smartwatch"
+    },
+    {
+      "slug": "lavazza-coffee",
+      "name": "Lavazza koffiebonen"
+    },
+    {
+      "slug": "tefal-iron",
+      "name": "Tefal strijkijzer"
+    },
+    {
+      "slug": "airpods",
+      "name": "AirPods oordopjes"
+    },
+    {
+      "slug": "power-bank",
+      "name": "powerbank"
+    }
+  ],
+  "pl": [
+    {
+      "slug": "air-fryers",
+      "name": "frytkownica beztłuszczowa"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "telefon Nokia"
+    },
+    {
+      "slug": "rasasi-hawas-perfume-for-men",
+      "name": "perfumy męskie Rasasi Hawas"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "odkurzacz"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "krem nawilżający do twarzy"
+    },
+    {
+      "slug": "mobile-phones",
+      "name": "telefon komórkowy"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "żelazko parowe"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "szampon z odżywką 2 w 1"
+    },
+    {
+      "slug": "earbuds",
+      "name": "słuchawki douszne"
+    },
+    {
+      "slug": "water-flosser",
+      "name": "irygator do zębów"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "aparat natychmiastowy"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "odkurzacz Xiaomi"
+    },
+    {
+      "slug": "david-beckham-parfum",
+      "name": "perfumy David Beckham"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "smartwatch Xiaomi"
+    },
+    {
+      "slug": "lavazza-coffee",
+      "name": "kawa Lavazza"
+    },
+    {
+      "slug": "tefal-iron",
+      "name": "żelazko Tefal"
+    },
+    {
+      "slug": "airpods",
+      "name": "słuchawki AirPods"
+    },
+    {
+      "slug": "power-bank",
+      "name": "powerbank"
+    }
+  ],
+  "sv": [
+    {
+      "slug": "air-fryers",
+      "name": "luftfritös"
+    },
+    {
+      "slug": "nokia-phone",
+      "name": "Nokia mobiltelefon"
+    },
+    {
+      "slug": "vacuum-cleaners",
+      "name": "dammsugare"
+    },
+    {
+      "slug": "face-moisturizers",
+      "name": "fuktkräm ansikte"
+    },
+    {
+      "slug": "steam-irons",
+      "name": "ångstrykjärn"
+    },
+    {
+      "slug": "2-in-1-shampoo-conditioner",
+      "name": "2 i 1 schampo och balsam"
+    },
+    {
+      "slug": "earbuds",
+      "name": "hörlurar in-ear"
+    },
+    {
+      "slug": "instant-cameras",
+      "name": "instantkamera"
+    },
+    {
+      "slug": "xiaomi-vacuum-cleaner",
+      "name": "Xiaomi dammsugare"
+    },
+    {
+      "slug": "david-beckham-parfum",
+      "name": "David Beckham parfym"
+    },
+    {
+      "slug": "xiaomi-watches",
+      "name": "Xiaomi smartwatch"
+    },
+    {
+      "slug": "tefal-iron",
+      "name": "Tefal strykjärn"
+    },
+    {
+      "slug": "airpods",
+      "name": "AirPods hörlurar"
+    },
+    {
+      "slug": "power-bank",
+      "name": "powerbank"
+    },
+    {
+      "slug": "hair-straightener",
+      "name": "hårrätare"
+    },
+    {
+      "slug": "blenders",
+      "name": "mixer"
+    },
+    {
+      "slug": "coffee-machines",
+      "name": "kaffemaskin"
+    },
+    {
+      "slug": "amazfit-watches",
+      "name": "Amazfit smartwatch"
+    }
+  ]
+}
