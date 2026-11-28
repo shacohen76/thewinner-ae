@@ -61,7 +61,8 @@ export async function POST(request: NextRequest) {
   const roasOk = (f: number, t: number) => Math.abs(t - f) <= num(S.troas_step_pts, 50) / 100 + 1e-9 && t >= num(S.troas_min, 0.05) - 1e-9;
   const cpaOk = (f: number, t: number) => Math.abs(t - f) <= num(S.bid_step_pct, 0.5) * f + 1e-9 && t >= num(S.bid_min_amount, 0.01) - 1e-9;
   if (kind === 'seasonality') {
-    const range = num(S.seas_step_range_pts, 25) / 100, cap = 1 + num(S.seas_cap_pts, 60) / 100, floor = 1 + num(S.seas_floor_pts, -50) / 100;
+    // owner 11-27: Google Ads' own range −90 … +999 % (pulse_settings rows; these are only the fallbacks)
+    const range = num(S.seas_step_range_pts, 1089) / 100, cap = 1 + num(S.seas_cap_pts, 999) / 100, floor = 1 + num(S.seas_floor_pts, -90) / 100;
     if (Math.abs(to - from) > range + 1e-9 || to > cap + 1e-9 || to < floor - 1e-9) return bad('Seasonality target outside the limits');
     // owner 11-15: Google Ads does not take exactly 0% (×1.000) — use ±0.1% or more
     if (Math.abs(to - 1) < 0.0005) return bad('Exactly 0% is not allowed; use +0.1% / −0.1% or more');
